@@ -25,6 +25,7 @@ export interface Job extends MapPoint {
   whatsapp: string;
   nomadFeatures?: string[];
   btcAccepted?: boolean;
+  isFreeHonor?: boolean;
 }
 
 const DEFAULT_RPG_USER: UserRPG = {
@@ -37,6 +38,8 @@ const DEFAULT_RPG_USER: UserRPG = {
   guild: "Nômades & Van Life",
   pixBalance: 2500.0,
   btcAddress: "bc1q9f88c3a1b77e2a9b44988x1",
+  honorScore: 320,
+  honorTitle: "Paladino Nômade (Rank S) 🏆",
   stats: {
     velocidade: 94,
     confiabilidade: 98,
@@ -46,15 +49,65 @@ const DEFAULT_RPG_USER: UserRPG = {
     { id: "b1", icon: "⚡", title: "Primeiro Sangue PIX", desc: "1ª vaga concluída com PIX na hora", unlocked: true },
     { id: "b2", icon: "🚿", title: "Mestre da Carga 32A", desc: "Forneceu ou usou infra nômade aquecida", unlocked: true },
     { id: "b3", icon: "🔐", title: "Guardião Bitcoin", desc: "Assinou Smart Contract encriptado", unlocked: true },
-    { id: "b4", icon: "🐉", title: "Lorde de Guilda", desc: "Rank SS na Costa Verde", unlocked: false },
+    { id: "b4", icon: "🤝", title: "Anfitrião de Alta Honra", desc: "Ofereceu apoio 100% cortesia a viajantes", unlocked: true },
+  ],
+  rewards: [
+    {
+      id: "r1",
+      category: "Ingresso",
+      icon: "🎟️",
+      title: "Ingresso VIP: Feira Náutica & Ecoturismo Angra 2026",
+      location: "Marina Porto Frade, Angra dos Reis, RJ",
+      requiredLevel: 5,
+      requiredHonor: 100,
+      unlocked: true,
+      claimed: false,
+      description: "Entrada gratuita com acesso à área VIP, palestras sobre tecnologia sustentável e degustação de gastronomia marinha.",
+    },
+    {
+      id: "r2",
+      category: "Camping",
+      icon: "⛺",
+      title: "Passaporte Camping Temático Nômade (3 Noites Cortesia)",
+      location: "Camping Costa Verde, Paraty, RJ",
+      requiredLevel: 10,
+      requiredHonor: 200,
+      unlocked: true,
+      claimed: false,
+      description: "Vaga privativa para Motorhome ou barraca com luz 220V, Wi-Fi Starlink e café da manhã incluso.",
+    },
+    {
+      id: "r3",
+      category: "Aventura",
+      icon: "🧭",
+      title: "Expedição Guiada: Mergulho nas Ilhas de Angra & Abrolhos",
+      location: "Ilha Grande & Abrolhos, BA",
+      requiredLevel: 12,
+      requiredHonor: 250,
+      unlocked: true,
+      claimed: false,
+      description: "Voucher para batismo de mergulho autônomo com instrutor credenciado PADI e barco com fotógrafo subaquático.",
+    },
+    {
+      id: "r4",
+      category: "Comboio",
+      icon: "🚜",
+      title: "Passaporte Comboio de Destinos (Expedição Van Life Costa Verde)",
+      location: "Paraty -> Cumuruxatiba -> Prado, BA",
+      requiredLevel: 15,
+      requiredHonor: 300,
+      unlocked: false,
+      claimed: false,
+      description: "Vaga em comboio organizado com suporte mecânico, rádio comunicador, escolta e recepções festivas nos destinos.",
+    },
   ],
 };
 
 const LEADERBOARD_USERS = [
-  { rank: 1, name: "Allan C.", title: "Cyber Mercenary SS", guild: "Nômades & Van Life", xp: "14.850 XP", level: 52, icon: "👑" },
-  { rank: 2, name: "Kunoichi VIP", title: "Sombra Secret", guild: "Guardiões Sombra ㊙️", xp: "12.400 XP", level: 46, icon: "㊙️" },
-  { rank: 3, name: "Capitão Ruy", title: "Navegador de Abrolhos", guild: "Nômades & Van Life", xp: "9.350 XP", level: 38, icon: "⚓" },
-  { rank: 4, name: "Dev_Mago", title: "Arch-Mage Next.js", guild: "Magos do Código", xp: "8.100 XP", level: 31, icon: "🧙‍♂️" },
+  { rank: 1, name: "Allan C.", title: "Paladino Nômade Rank S", guild: "Nômades & Van Life", xp: "14.850 XP", honor: "320 PTS 🛡️", level: 52, icon: "👑" },
+  { rank: 2, name: "Kunoichi VIP", title: "Guardiã Sombra S", guild: "Guardiões Sombra ㊙️", xp: "12.400 XP", honor: "290 PTS 🛡️", level: 46, icon: "㊙️" },
+  { rank: 3, name: "Capitão Ruy", title: "Anfitrião Benemérito", guild: "Nômades & Van Life", xp: "9.350 XP", honor: "450 PTS 🛡️", level: 38, icon: "⚓" },
+  { rank: 4, name: "Dev_Mago", title: "Arch-Mage Tech", guild: "Magos do Código", xp: "8.100 XP", honor: "180 PTS 🛡️", level: 31, icon: "🧙‍♂️" },
 ];
 
 const CATEGORIES = [
@@ -71,7 +124,7 @@ export default function Home() {
   const [jobs, setJobs] = useState<Job[]>([]);
   const [isLoadingJobs, setIsLoadingJobs] = useState(true);
   const [selectedCategory, setSelectedCategory] = useState("Todas");
-  const [filterType, setFilterType] = useState<"all" | "pix" | "remote" | "local">("all");
+  const [filterType, setFilterType] = useState<"all" | "pix" | "remote" | "local" | "honor">("all");
   const [searchQuery, setSearchQuery] = useState("");
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedJob, setSelectedJob] = useState<Job | null>(null);
@@ -90,6 +143,7 @@ export default function Home() {
   const [newType, setNewType] = useState<"Remoto" | "Presencial">("Presencial");
   const [newDescription, setNewDescription] = useState("");
   const [newClientName, setNewClientName] = useState("");
+  const [isFreeService, setIsFreeService] = useState(false);
 
   const fetchJobs = async () => {
     try {
@@ -135,9 +189,21 @@ export default function Home() {
     showToast(`⚔️ Você se filiou à ${newGuild}! Insígnia atualizada.`);
   };
 
-  const addXp = (amount: number, reason: string) => {
+  const handleClaimReward = (rewardId: string) => {
     if (!user) return;
-    const newXp = user.xp + amount;
+    const updatedRewards = user.rewards.map((r) =>
+      r.id === rewardId ? { ...r, claimed: true } : r
+    );
+    const updatedUser = { ...user, rewards: updatedRewards };
+    setUser(updatedUser);
+    localStorage.setItem("jobpago_rpg_user", JSON.stringify(updatedUser));
+    showToast("🎉 Benefício resgatado! Seu voucher cortesia está ativo no perfil.");
+  };
+
+  const addXpAndHonor = (xpAmount: number, honorAmount: number, reason: string) => {
+    if (!user) return;
+    const newXp = user.xp + xpAmount;
+    const newHonor = user.honorScore + honorAmount;
     let newLevel = user.level;
     let nextXp = user.nextLevelXp;
 
@@ -146,25 +212,32 @@ export default function Home() {
       nextXp = Math.round(nextXp * 1.4);
       showToast(`🎉 PARABÉNS! Você subiu para o Nível ${newLevel}!`);
     } else {
-      showToast(`✨ +${amount} XP Adquirido por: ${reason}`);
+      showToast(`✨ +${xpAmount} XP | 🛡️ +${honorAmount} PTS de Alta Honra por: ${reason}`);
     }
 
-    const updated = { ...user, xp: newXp, level: newLevel, nextLevelXp: nextXp };
+    const updated = {
+      ...user,
+      xp: newXp,
+      level: newLevel,
+      nextLevelXp: nextXp,
+      honorScore: newHonor,
+    };
     setUser(updated);
     localStorage.setItem("jobpago_rpg_user", JSON.stringify(updated));
   };
 
   const handleCreateJob = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!newTitle || !newBudget) return;
+    if (!newTitle) return;
 
     const isSecret = newCategory.includes("Secretos");
+    const budgetVal = isFreeService ? 0 : Number(newBudget || 0);
     const client = newClientName || user?.name || "Allan C. (Nômade VIP)";
 
     const payload = {
-      title: newTitle,
+      title: isFreeService ? `🛡️ [CORTESIA 0800] ${newTitle}` : newTitle,
       category: newCategory,
-      budget: Number(newBudget),
+      budget: budgetVal,
       location: newLocation || "Angra dos Reis, RJ",
       type: newType,
       description: newDescription || "Serviço cadastrado na guilda.",
@@ -172,6 +245,7 @@ export default function Home() {
       whatsapp: "5524993326966",
       isSecret,
       btcAccepted: isSecret,
+      isFreeHonor: isFreeService,
     };
 
     try {
@@ -186,13 +260,17 @@ export default function Home() {
         setJobs([data.job, ...jobs]);
         setIsModalOpen(false);
 
-        // Ganhar XP por publicar tarefa na Guilda
-        addXp(150, "Publicar Serviço na Guilda");
+        if (isFreeService) {
+          addXpAndHonor(200, 50, "Oferecer Serviço 100% Gratuito (Alta Honra)");
+        } else {
+          addXpAndHonor(150, 10, "Publicar Serviço na Guilda");
+        }
 
         setNewTitle("");
         setNewBudget("");
         setNewDescription("");
         setNewLocation("");
+        setIsFreeService(false);
       }
     } catch (err) {
       console.error("Erro ao enviar vaga:", err);
@@ -208,9 +286,10 @@ export default function Home() {
     
     if (!matchesCategory || !matchesSearch) return false;
 
-    if (filterType === "pix") return job.isPixImmediate;
+    if (filterType === "pix") return job.isPixImmediate && job.budget > 0;
     if (filterType === "remote") return job.type === "Remoto";
     if (filterType === "local") return job.type === "Presencial";
+    if (filterType === "honor") return job.budget === 0 || job.isFreeHonor;
 
     return true;
   });
@@ -253,21 +332,21 @@ export default function Home() {
             {user && (
               <button
                 onClick={() => setIsRpgModalOpen(true)}
-                className="flex items-center gap-2.5 bg-white/5 hover:bg-white/10 border border-white/15 rounded-2xl p-1.5 pl-3 transition-all hover:border-emerald-400 shadow-md"
+                className="flex items-center gap-2.5 bg-white/5 hover:bg-white/10 border border-white/15 rounded-2xl p-1.5 pl-3 transition-all hover:border-amber-400 shadow-md"
               >
                 <div className="flex flex-col text-right">
                   <div className="flex items-center gap-1.5 justify-end">
                     <span className="text-xs font-black text-white">{user.name}</span>
-                    <span className="text-[9px] font-black bg-emerald-500/20 text-emerald-400 border border-emerald-500/40 px-1.5 py-0.2 rounded">
-                      Nv. {user.level}
+                    <span className="text-[9px] font-black bg-amber-500/20 text-amber-300 border border-amber-500/40 px-1.5 py-0.2 rounded">
+                      🛡️ {user.honorScore} PTS
                     </span>
                   </div>
                   <span className="text-[10px] text-zinc-400 font-medium">
                     {GUILD_DETAILS[user.guild].icon} {user.guild}
                   </span>
                 </div>
-                <div className="w-8 h-8 rounded-xl bg-gradient-to-br from-emerald-500 to-teal-400 text-black font-black text-xs flex items-center justify-center">
-                  ⚔️
+                <div className="w-8 h-8 rounded-xl bg-gradient-to-br from-amber-400 to-orange-500 text-black font-black text-xs flex items-center justify-center">
+                  🎁
                 </div>
               </button>
             )}
@@ -287,13 +366,13 @@ export default function Home() {
         <div className="text-center max-w-3xl mx-auto">
           <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 text-xs font-black tracking-wide uppercase mb-6 shadow-inner">
             <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
-            Sistema Gamificado de Reputação RPG & Guildas
+            Sistema de Alta Honra, Fornecedores Gratuitos & Loot Vault RPG
           </div>
           <h1 className="text-4xl sm:text-6xl font-black tracking-tight text-white leading-tight">
-            Suba de Nível nas <span className="bg-gradient-to-r from-emerald-400 via-teal-300 to-cyan-400 bg-clip-text text-transparent">Guildas do JobPago</span>
+            Serviços com <span className="bg-gradient-to-r from-emerald-400 via-teal-300 to-cyan-400 bg-clip-text text-transparent">Alta Honra & Recompensas</span>
           </h1>
           <p className="mt-4 text-zinc-400 text-sm sm:text-base leading-relaxed">
-            Acumule XP em serviços concluídos, forneça infraestrutura nômade, assine Smart Contracts em BTC e desbloqueie insígnias lendárias no ranking regional.
+            Ganhe ingressos de feiras, passes de camping, aventuras guiadas e vagas em comboios ao subir de Nível e Nível de Honra no mapa.
           </p>
 
           {/* BUSCA RÁPIDA */}
@@ -321,16 +400,16 @@ export default function Home() {
                 ⚔️ Ranking Regional de Mercenários & Guildas
               </span>
               <h2 className="text-2xl sm:text-3xl font-black text-white mt-1">
-                Líderes de Reputação & Pontuação XP
+                Líderes de Reputação & Pontuação de Honra 🛡️
               </h2>
             </div>
 
             {user && (
               <button
                 onClick={() => setIsRpgModalOpen(true)}
-                className="bg-gradient-to-r from-emerald-500 to-teal-400 text-black font-black px-5 py-2.5 rounded-xl text-xs shadow-lg transition-all hover:scale-105"
+                className="bg-gradient-to-r from-amber-400 via-amber-500 to-orange-500 text-black font-black px-5 py-2.5 rounded-xl text-xs shadow-lg transition-all hover:scale-105"
               >
-                📜 Ver Minha Ficha de Personagem
+                🎁 Abrir Loot Vault & Ficha RPG
               </button>
             )}
           </div>
@@ -339,7 +418,7 @@ export default function Home() {
             {LEADERBOARD_USERS.map((lb) => (
               <div
                 key={lb.rank}
-                className="bg-black/40 border border-white/10 p-4 rounded-2xl flex items-center gap-3 relative overflow-hidden hover:border-emerald-400/50 transition-all"
+                className="bg-black/40 border border-white/10 p-4 rounded-2xl flex items-center gap-3 relative overflow-hidden hover:border-amber-400/50 transition-all"
               >
                 <div className="text-2xl font-black text-emerald-400 w-8 text-center shrink-0">
                   #{lb.rank}
@@ -349,9 +428,9 @@ export default function Home() {
                     <span className="text-xs font-black text-white truncate">{lb.name}</span>
                     <span className="text-xs">{lb.icon}</span>
                   </div>
-                  <span className="text-[10px] text-zinc-400 block truncate">{lb.title}</span>
+                  <span className="text-[10px] text-amber-300 block truncate">{lb.title}</span>
                   <span className="text-[10px] font-bold text-emerald-400 font-mono mt-1 block">
-                    {lb.xp} (Nv. {lb.level})
+                    {lb.xp} | {lb.honor}
                   </span>
                 </div>
               </div>
@@ -499,7 +578,7 @@ export default function Home() {
           </div>
 
           {/* FILTRO TIPO */}
-          <div className="flex items-center gap-2 bg-white/5 p-1 rounded-xl border border-white/10">
+          <div className="flex flex-wrap items-center gap-2 bg-white/5 p-1 rounded-xl border border-white/10">
             <button
               onClick={() => setFilterType("all")}
               className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-all ${
@@ -507,6 +586,14 @@ export default function Home() {
               }`}
             >
               Todos
+            </button>
+            <button
+              onClick={() => setFilterType("honor")}
+              className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-all ${
+                filterType === "honor" ? "bg-amber-400 text-black shadow-lg" : "text-amber-400 hover:text-amber-300"
+              }`}
+            >
+              🛡️ Gratuitos (Alta Honra)
             </button>
             <button
               onClick={() => setFilterType("pix")}
@@ -532,13 +619,16 @@ export default function Home() {
           {filteredJobs.map((job) => {
             const isSecret = job.isSecret || job.category.includes("Secretos");
             const isNomad = job.category.includes("Nômade");
+            const isFree = job.budget === 0 || job.isFreeHonor;
 
             return (
               <div
                 key={job.id}
                 onClick={() => setSelectedJob(job)}
                 className={`rounded-3xl p-6 transition-all duration-300 hover:-translate-y-1.5 cursor-pointer relative flex flex-col justify-between ${
-                  isSecret
+                  isFree
+                    ? "bg-[#161204] border border-amber-500/50 hover:border-amber-400 hover:shadow-2xl hover:shadow-amber-500/20"
+                    : isSecret
                     ? "bg-[#12071a] border border-pink-500/40 hover:border-pink-500 hover:shadow-2xl hover:shadow-pink-500/20"
                     : isNomad
                     ? "bg-[#071712] border border-emerald-500/40 hover:border-emerald-400 hover:shadow-2xl hover:shadow-emerald-500/20"
@@ -549,7 +639,9 @@ export default function Home() {
                   <div className="flex items-center justify-between gap-2 mb-3">
                     <span
                       className={`text-[10px] font-black uppercase tracking-wider px-3 py-1 rounded-full ${
-                        isSecret
+                        isFree
+                          ? "bg-amber-500/20 text-amber-300 border border-amber-500/40"
+                          : isSecret
                           ? "bg-pink-500/20 text-pink-400 border border-pink-500/40"
                           : isNomad
                           ? "bg-emerald-500/20 text-emerald-400 border border-emerald-500/40"
@@ -585,9 +677,15 @@ export default function Home() {
                 <div className="mt-6 pt-4 border-t border-white/10 flex items-center justify-between">
                   <div>
                     <span className="text-[10px] font-bold text-zinc-500 uppercase block">Recompensa</span>
-                    <span className={`text-xl font-black ${isSecret ? "text-pink-400" : "text-emerald-400"}`}>
-                      R$ {job.budget.toLocaleString("pt-BR")}
-                    </span>
+                    {isFree ? (
+                      <span className="text-lg font-black text-amber-300 flex items-center gap-1">
+                        <span>🛡️</span> CORTESIA 0800
+                      </span>
+                    ) : (
+                      <span className={`text-xl font-black ${isSecret ? "text-pink-400" : "text-emerald-400"}`}>
+                        R$ {job.budget.toLocaleString("pt-BR")}
+                      </span>
+                    )}
                   </div>
 
                   <button className="bg-white/10 hover:bg-white/20 text-white font-bold text-xs px-4 py-2.5 rounded-xl transition-all">
@@ -600,12 +698,13 @@ export default function Home() {
         </div>
       </section>
 
-      {/* ── MODAL FICHA DE PERSONAGEM RPG ── */}
+      {/* ── MODAL FICHA DE PERSONAGEM RPG & LOOT VAULT ── */}
       {isRpgModalOpen && user && (
         <ModalPerfilRPG
           user={user}
           onClose={() => setIsRpgModalOpen(false)}
           onUpdateGuild={handleUpdateGuild}
+          onClaimReward={handleClaimReward}
         />
       )}
 
@@ -656,9 +755,15 @@ export default function Home() {
             <div className="flex items-center justify-between mb-6">
               <div>
                 <span className="text-xs text-zinc-500 font-bold block">Valor da Recompensa</span>
-                <span className={`text-3xl font-black ${selectedJob.isSecret ? "text-pink-400" : "text-emerald-400"}`}>
-                  R$ {selectedJob.budget.toLocaleString("pt-BR")}
-                </span>
+                {selectedJob.budget === 0 ? (
+                  <span className="text-2xl font-black text-amber-300 flex items-center gap-1">
+                    <span>🛡️</span> CORTESIA 0800 (Alta Honra)
+                  </span>
+                ) : (
+                  <span className={`text-3xl font-black ${selectedJob.isSecret ? "text-pink-400" : "text-emerald-400"}`}>
+                    R$ {selectedJob.budget.toLocaleString("pt-BR")}
+                  </span>
+                )}
               </div>
 
               {selectedJob.btcAccepted && (
@@ -678,12 +783,11 @@ export default function Home() {
             ) : (
               <button
                 onClick={() => {
-                  addXp(100, "Aceitar Proposta de Serviço");
                   window.open(`https://wa.me/${selectedJob.whatsapp}?text=Olá,%20tenho%20interesse%20no%20serviço:%20${encodeURIComponent(selectedJob.title)}`, "_blank");
                 }}
                 className="w-full bg-gradient-to-r from-emerald-500 to-teal-400 text-black font-extrabold text-sm py-4 rounded-xl shadow-xl shadow-emerald-500/25 transition-all hover:scale-105 flex items-center justify-center gap-2"
               >
-                💬 Entrar em Contato Direto via WhatsApp (+100 XP)
+                💬 Entrar em Contato Direto via WhatsApp
               </button>
             )}
           </div>
@@ -718,13 +822,13 @@ export default function Home() {
 
             <button
               onClick={() => {
-                addXp(250, "Assinar Smart Contract P2P em BTC");
+                showToast("Contrato assinado digitalmente! Redirecionando para canal privativo.");
                 setIsBtcModalOpen(false);
                 setSelectedJob(null);
               }}
               className="w-full bg-gradient-to-r from-pink-600 to-purple-600 text-white font-black text-sm py-4 rounded-xl shadow-lg transition-all hover:scale-105 uppercase tracking-wider"
             >
-              ✅ Aceitar Termos & Enviar Bitcoin (+250 XP)
+              ✅ Aceitar Termos & Enviar Bitcoin
             </button>
           </div>
         </div>
@@ -742,15 +846,33 @@ export default function Home() {
             </button>
 
             <h3 className="text-2xl font-black text-white">+ Publicar Nova Vaga na Guilda</h3>
-            <p className="text-xs text-zinc-400 mt-1">Sua vaga aparecerá instantaneamente no mapa e lhe renderá +150 XP</p>
+            <p className="text-xs text-zinc-400 mt-1">Sua vaga aparecerá instantaneamente no mapa e lhe renderá XP e Honra</p>
 
             <form onSubmit={handleCreateJob} className="mt-6 flex flex-col gap-4">
+              {/* OPÇÃO DE SERVIÇO CORTESIA 0800 */}
+              <div className="bg-amber-500/10 border border-amber-500/30 p-3 rounded-2xl flex items-center justify-between">
+                <div>
+                  <span className="text-xs font-black text-amber-300 flex items-center gap-1">
+                    <span>🛡️</span> Serviço 100% Gratuito (Alta Honra)
+                  </span>
+                  <span className="text-[10px] text-zinc-400 block">
+                    Ganhe +50 PTS de Alta Honra ao doar apoio para nômades na estrada.
+                  </span>
+                </div>
+                <input
+                  type="checkbox"
+                  checked={isFreeService}
+                  onChange={(e) => setIsFreeService(e.target.checked)}
+                  className="w-5 h-5 accent-amber-400 cursor-pointer"
+                />
+              </div>
+
               <div>
                 <label className="text-xs font-bold text-zinc-300 block mb-1">Título da Vaga / Serviço</label>
                 <input
                   type="text"
                   required
-                  placeholder="Ex: Chuveiro Quente + Carga 220V ou Sessão Cosplay"
+                  placeholder="Ex: Chuveiro Quente Cortesia ou Tomada 220V Grátis"
                   value={newTitle}
                   onChange={(e) => setNewTitle(e.target.value)}
                   className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:border-emerald-500"
@@ -773,17 +895,19 @@ export default function Home() {
                   </select>
                 </div>
 
-                <div>
-                  <label className="text-xs font-bold text-zinc-300 block mb-1">Orçamento (R$)</label>
-                  <input
-                    type="number"
-                    required
-                    placeholder="Ex: 150"
-                    value={newBudget}
-                    onChange={(e) => setNewBudget(e.target.value)}
-                    className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:border-emerald-500"
-                  />
-                </div>
+                {!isFreeService && (
+                  <div>
+                    <label className="text-xs font-bold text-zinc-300 block mb-1">Orçamento (R$)</label>
+                    <input
+                      type="number"
+                      required={!isFreeService}
+                      placeholder="Ex: 150"
+                      value={newBudget}
+                      onChange={(e) => setNewBudget(e.target.value)}
+                      className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:border-emerald-500"
+                    />
+                  </div>
+                )}
               </div>
 
               <div className="grid grid-cols-2 gap-4">
@@ -837,7 +961,7 @@ export default function Home() {
                 type="submit"
                 className="mt-2 bg-gradient-to-r from-emerald-500 to-teal-400 text-black font-extrabold text-sm py-3.5 rounded-xl transition-all hover:scale-105 shadow-lg shadow-emerald-500/25"
               >
-                🚀 Publicar na Guilda (+150 XP)
+                🚀 Publicar na Guilda (+XP & +Honra)
               </button>
             </form>
           </div>
@@ -846,7 +970,7 @@ export default function Home() {
 
       {/* ── FOOTER ── */}
       <footer className="border-t border-white/10 py-12 px-4 text-center text-xs text-zinc-500">
-        <p>© 2026 JobPago.com.br · Sistema RPG & Guildas por Allan Candido.</p>
+        <p>© 2026 JobPago.com.br · Sistema RPG, Alta Honra & Loot Vault por Allan Candido.</p>
       </footer>
     </div>
   );
