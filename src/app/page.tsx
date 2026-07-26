@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import dynamic from "next/dynamic";
 import type { MapPoint } from "@/components/MapaServicos";
+import ModalPerfilRPG, { UserRPG, GUILD_DETAILS } from "@/components/ModalPerfilRPG";
 
 const MapaServicos = dynamic(() => import("@/components/MapaServicos"), {
   ssr: false,
@@ -26,25 +27,35 @@ export interface Job extends MapPoint {
   btcAccepted?: boolean;
 }
 
-export interface UserAccount {
-  name: string;
-  email: string;
-  pixBalance: number;
-  btcAddress: string;
-  isVerified: boolean;
-  reputation: number;
-  avatarIcon: string;
-}
-
-const TEST_ACCOUNT: UserAccount = {
-  name: "Allan C. (Nômade VIP & Dev)",
+const DEFAULT_RPG_USER: UserRPG = {
+  name: "Allan C. (Nômade VIP)",
   email: "allan@jobpago.com.br",
+  level: 14,
+  xp: 2850,
+  nextLevelXp: 3500,
+  title: "Cyber Freelancer Rank A ⚡",
+  guild: "Nômades & Van Life",
   pixBalance: 2500.0,
   btcAddress: "bc1q9f88c3a1b77e2a9b44988x1",
-  isVerified: true,
-  reputation: 5.0,
-  avatarIcon: "⚡",
+  stats: {
+    velocidade: 94,
+    confiabilidade: 98,
+    sigilo: 100,
+  },
+  badges: [
+    { id: "b1", icon: "⚡", title: "Primeiro Sangue PIX", desc: "1ª vaga concluída com PIX na hora", unlocked: true },
+    { id: "b2", icon: "🚿", title: "Mestre da Carga 32A", desc: "Forneceu ou usou infra nômade aquecida", unlocked: true },
+    { id: "b3", icon: "🔐", title: "Guardião Bitcoin", desc: "Assinou Smart Contract encriptado", unlocked: true },
+    { id: "b4", icon: "🐉", title: "Lorde de Guilda", desc: "Rank SS na Costa Verde", unlocked: false },
+  ],
 };
+
+const LEADERBOARD_USERS = [
+  { rank: 1, name: "Allan C.", title: "Cyber Mercenary SS", guild: "Nômades & Van Life", xp: "14.850 XP", level: 52, icon: "👑" },
+  { rank: 2, name: "Kunoichi VIP", title: "Sombra Secret", guild: "Guardiões Sombra ㊙️", xp: "12.400 XP", level: 46, icon: "㊙️" },
+  { rank: 3, name: "Capitão Ruy", title: "Navegador de Abrolhos", guild: "Nômades & Van Life", xp: "9.350 XP", level: 38, icon: "⚓" },
+  { rank: 4, name: "Dev_Mago", title: "Arch-Mage Next.js", guild: "Magos do Código", xp: "8.100 XP", level: 31, icon: "🧙‍♂️" },
+];
 
 const CATEGORIES = [
   { name: "Todas", icon: "🔥", color: "from-zinc-500 to-zinc-700" },
@@ -66,9 +77,9 @@ export default function Home() {
   const [selectedJob, setSelectedJob] = useState<Job | null>(null);
   const [isBtcModalOpen, setIsBtcModalOpen] = useState(false);
 
-  // User State
-  const [user, setUser] = useState<UserAccount | null>(null);
-  const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
+  // User State & RPG Modals
+  const [user, setUser] = useState<UserRPG | null>(null);
+  const [isRpgModalOpen, setIsRpgModalOpen] = useState(false);
   const [toastMessage, setToastMessage] = useState<string | null>(null);
 
   // Form Vaga Nova
@@ -80,7 +91,6 @@ export default function Home() {
   const [newDescription, setNewDescription] = useState("");
   const [newClientName, setNewClientName] = useState("");
 
-  // Buscar vagas via API em Tempo Real
   const fetchJobs = async () => {
     try {
       const res = await fetch("/api/jobs");
@@ -98,39 +108,50 @@ export default function Home() {
   useEffect(() => {
     fetchJobs();
 
-    // Carregar usuário do localStorage
-    const savedUser = localStorage.getItem("jobpago_user");
+    const savedUser = localStorage.getItem("jobpago_rpg_user");
     if (savedUser) {
       try {
         setUser(JSON.parse(savedUser));
       } catch (e) {}
     } else {
-      // Logar automaticamente com a conta de teste de exemplo por padrão
-      setUser(TEST_ACCOUNT);
-      localStorage.setItem("jobpago_user", JSON.stringify(TEST_ACCOUNT));
+      setUser(DEFAULT_RPG_USER);
+      localStorage.setItem("jobpago_rpg_user", JSON.stringify(DEFAULT_RPG_USER));
     }
 
-    // Polling a cada 5 segundos para sincronia instantânea
     const interval = setInterval(fetchJobs, 5000);
     return () => clearInterval(interval);
   }, []);
 
-  const handleLoginTestAccount = () => {
-    setUser(TEST_ACCOUNT);
-    localStorage.setItem("jobpago_user", JSON.stringify(TEST_ACCOUNT));
-    setIsLoginModalOpen(false);
-    showToast("🔑 Conectado com sucesso na Conta de Teste VIP!");
-  };
-
-  const handleLogout = () => {
-    setUser(null);
-    localStorage.removeItem("jobpago_user");
-    showToast("Você saiu da conta.");
-  };
-
   const showToast = (msg: string) => {
     setToastMessage(msg);
     setTimeout(() => setToastMessage(null), 4000);
+  };
+
+  const handleUpdateGuild = (newGuild: UserRPG["guild"]) => {
+    if (!user) return;
+    const updated = { ...user, guild: newGuild };
+    setUser(updated);
+    localStorage.setItem("jobpago_rpg_user", JSON.stringify(updated));
+    showToast(`⚔️ Você se filiou à ${newGuild}! Insígnia atualizada.`);
+  };
+
+  const addXp = (amount: number, reason: string) => {
+    if (!user) return;
+    const newXp = user.xp + amount;
+    let newLevel = user.level;
+    let nextXp = user.nextLevelXp;
+
+    if (newXp >= nextXp) {
+      newLevel += 1;
+      nextXp = Math.round(nextXp * 1.4);
+      showToast(`🎉 PARABÉNS! Você subiu para o Nível ${newLevel}!`);
+    } else {
+      showToast(`✨ +${amount} XP Adquirido por: ${reason}`);
+    }
+
+    const updated = { ...user, xp: newXp, level: newLevel, nextLevelXp: nextXp };
+    setUser(updated);
+    localStorage.setItem("jobpago_rpg_user", JSON.stringify(updated));
   };
 
   const handleCreateJob = async (e: React.FormEvent) => {
@@ -146,7 +167,7 @@ export default function Home() {
       budget: Number(newBudget),
       location: newLocation || "Angra dos Reis, RJ",
       type: newType,
-      description: newDescription || "Serviço cadastrado com publicação em tempo real.",
+      description: newDescription || "Serviço cadastrado na guilda.",
       clientName: client,
       whatsapp: "5524993326966",
       isSecret,
@@ -165,13 +186,13 @@ export default function Home() {
         setJobs([data.job, ...jobs]);
         setIsModalOpen(false);
 
-        // Reset
+        // Ganhar XP por publicar tarefa na Guilda
+        addXp(150, "Publicar Serviço na Guilda");
+
         setNewTitle("");
         setNewBudget("");
         setNewDescription("");
         setNewLocation("");
-
-        showToast("🚀 Vaga publicada em TEMPO REAL! Disponível instantaneamente no mapa e na lista.");
       }
     } catch (err) {
       console.error("Erro ao enviar vaga:", err);
@@ -198,8 +219,8 @@ export default function Home() {
     <div className="min-h-screen bg-[#08080c] text-white selection:bg-emerald-500 selection:text-black relative">
       {/* ── TOAST NOTIFICATION ── */}
       {toastMessage && (
-        <div className="fixed bottom-6 right-6 z-50 bg-gradient-to-r from-emerald-500 to-teal-400 text-black font-extrabold px-6 py-3.5 rounded-2xl shadow-2xl animate-in slide-in-from-bottom-5 text-sm flex items-center gap-2">
-          <span>⚡</span> {toastMessage}
+        <div className="fixed bottom-6 right-6 z-50 bg-gradient-to-r from-emerald-500 via-teal-400 to-cyan-400 text-black font-black px-6 py-3.5 rounded-2xl shadow-2xl animate-in slide-in-from-bottom-5 text-sm flex items-center gap-2 border border-black/20">
+          <span>⚔️</span> {toastMessage}
         </div>
       )}
 
@@ -219,40 +240,35 @@ export default function Home() {
             <a href="#mapa-gps" className="hover:text-emerald-400 transition-colors flex items-center gap-1.5">
               <span>🗺️ Mapa GPS</span>
             </a>
-            <a href="#vagas" className="hover:text-emerald-400 transition-colors">Vagas & Infra</a>
-            <a href="#nomade-space" className="hover:text-emerald-400 transition-colors text-emerald-400 font-extrabold">
-              🚐 Espaço Nômade
+            <a href="#guildas-leaderboard" className="hover:text-emerald-400 transition-colors text-emerald-400 font-extrabold flex items-center gap-1">
+              <span>⚔️ Ranking Guildas</span>
             </a>
+            <a href="#nomade-space" className="hover:text-emerald-400 transition-colors">🚐 Nômades</a>
             <a href="#secret-anime" className="hover:text-pink-400 transition-colors text-pink-400 font-extrabold flex items-center gap-1">
               <span>㊙️ Secret Anime</span>
             </a>
           </div>
 
           <div className="flex items-center gap-3">
-            {user ? (
-              <div className="flex items-center gap-2 bg-white/5 border border-white/10 rounded-2xl p-1.5 pl-3">
+            {user && (
+              <button
+                onClick={() => setIsRpgModalOpen(true)}
+                className="flex items-center gap-2.5 bg-white/5 hover:bg-white/10 border border-white/15 rounded-2xl p-1.5 pl-3 transition-all hover:border-emerald-400 shadow-md"
+              >
                 <div className="flex flex-col text-right">
-                  <span className="text-xs font-black text-white flex items-center gap-1">
-                    <span className="text-emerald-400">✓</span> {user.name}
-                  </span>
-                  <span className="text-[10px] text-emerald-400 font-bold">
-                    Saldo: R$ {user.pixBalance.toLocaleString("pt-BR")}
+                  <div className="flex items-center gap-1.5 justify-end">
+                    <span className="text-xs font-black text-white">{user.name}</span>
+                    <span className="text-[9px] font-black bg-emerald-500/20 text-emerald-400 border border-emerald-500/40 px-1.5 py-0.2 rounded">
+                      Nv. {user.level}
+                    </span>
+                  </div>
+                  <span className="text-[10px] text-zinc-400 font-medium">
+                    {GUILD_DETAILS[user.guild].icon} {user.guild}
                   </span>
                 </div>
-                <button
-                  onClick={() => setIsLoginModalOpen(true)}
-                  className="bg-white/10 hover:bg-white/20 text-xs px-2.5 py-1.5 rounded-xl font-bold transition-all"
-                  title="Detalhes da Conta"
-                >
-                  ⚙️
-                </button>
-              </div>
-            ) : (
-              <button
-                onClick={() => setIsLoginModalOpen(true)}
-                className="bg-white/10 border border-white/20 text-white font-extrabold text-xs px-4 py-2.5 rounded-xl hover:bg-white/20 transition-all"
-              >
-                🔑 Conta de Teste
+                <div className="w-8 h-8 rounded-xl bg-gradient-to-br from-emerald-500 to-teal-400 text-black font-black text-xs flex items-center justify-center">
+                  ⚔️
+                </div>
               </button>
             )}
 
@@ -271,13 +287,13 @@ export default function Home() {
         <div className="text-center max-w-3xl mx-auto">
           <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 text-xs font-black tracking-wide uppercase mb-6 shadow-inner">
             <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
-            Persistência em Tempo Real & Conexão Instantânea
+            Sistema Gamificado de Reputação RPG & Guildas
           </div>
           <h1 className="text-4xl sm:text-6xl font-black tracking-tight text-white leading-tight">
-            Serviços Imediatos com <span className="bg-gradient-to-r from-emerald-400 via-teal-300 to-cyan-400 bg-clip-text text-transparent">PIX & Bitcoin</span> no Mapa
+            Suba de Nível nas <span className="bg-gradient-to-r from-emerald-400 via-teal-300 to-cyan-400 bg-clip-text text-transparent">Guildas do JobPago</span>
           </h1>
           <p className="mt-4 text-zinc-400 text-sm sm:text-base leading-relaxed">
-            Publicações gravadas em tempo real sem espera de build. Encontre bicos, pontos de recarga para nômades, apoio de camping, serviços presenciais e sessões secretas com contrato inteligente.
+            Acumule XP em serviços concluídos, forneça infraestrutura nômade, assine Smart Contracts em BTC e desbloqueie insígnias lendárias no ranking regional.
           </p>
 
           {/* BUSCA RÁPIDA */}
@@ -292,6 +308,54 @@ export default function Home() {
             <button className="w-full sm:w-auto bg-emerald-500 text-black font-extrabold px-8 py-3 rounded-xl text-sm transition-all hover:bg-emerald-400 shrink-0">
               🔍 Buscar
             </button>
+          </div>
+        </div>
+      </section>
+
+      {/* ── SEÇÃO LEADERBOARD GUILDAS & MERCENÁRIOS RPG ── */}
+      <section id="guildas-leaderboard" className="py-8 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
+        <div className="rounded-3xl bg-gradient-to-br from-[#0c0d18] to-[#12081c] border border-white/15 p-6 sm:p-8 shadow-2xl relative overflow-hidden">
+          <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4 mb-6">
+            <div>
+              <span className="text-xs font-extrabold text-emerald-400 uppercase tracking-widest">
+                ⚔️ Ranking Regional de Mercenários & Guildas
+              </span>
+              <h2 className="text-2xl sm:text-3xl font-black text-white mt-1">
+                Líderes de Reputação & Pontuação XP
+              </h2>
+            </div>
+
+            {user && (
+              <button
+                onClick={() => setIsRpgModalOpen(true)}
+                className="bg-gradient-to-r from-emerald-500 to-teal-400 text-black font-black px-5 py-2.5 rounded-xl text-xs shadow-lg transition-all hover:scale-105"
+              >
+                📜 Ver Minha Ficha de Personagem
+              </button>
+            )}
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+            {LEADERBOARD_USERS.map((lb) => (
+              <div
+                key={lb.rank}
+                className="bg-black/40 border border-white/10 p-4 rounded-2xl flex items-center gap-3 relative overflow-hidden hover:border-emerald-400/50 transition-all"
+              >
+                <div className="text-2xl font-black text-emerald-400 w-8 text-center shrink-0">
+                  #{lb.rank}
+                </div>
+                <div className="flex-1 min-w-0">
+                  <div className="flex items-center gap-1.5">
+                    <span className="text-xs font-black text-white truncate">{lb.name}</span>
+                    <span className="text-xs">{lb.icon}</span>
+                  </div>
+                  <span className="text-[10px] text-zinc-400 block truncate">{lb.title}</span>
+                  <span className="text-[10px] font-bold text-emerald-400 font-mono mt-1 block">
+                    {lb.xp} (Nv. {lb.level})
+                  </span>
+                </div>
+              </div>
+            ))}
           </div>
         </div>
       </section>
@@ -536,66 +600,13 @@ export default function Home() {
         </div>
       </section>
 
-      {/* ── MODAL CONTA DE TESTE / LOGIN ── */}
-      {isLoginModalOpen && (
-        <div className="fixed inset-0 z-50 bg-black/80 backdrop-blur-md flex items-center justify-center p-4">
-          <div className="w-full max-w-md bg-[#0f111a] border border-white/15 rounded-3xl p-6 sm:p-8 relative shadow-2xl">
-            <button
-              onClick={() => setIsLoginModalOpen(false)}
-              className="absolute top-5 right-5 text-zinc-400 hover:text-white text-xl font-bold"
-            >
-              ✕
-            </button>
-
-            <div className="w-12 h-12 rounded-2xl bg-gradient-to-tr from-emerald-500 to-teal-400 flex items-center justify-center text-2xl text-black font-extrabold mb-4 shadow-lg shadow-emerald-500/20">
-              🔑
-            </div>
-
-            <h3 className="text-2xl font-black text-white">Conta de Teste & Perfil</h3>
-            <p className="text-xs text-zinc-400 mt-1">Conecte-se com 1-clique usando a conta de teste pré-configurada</p>
-
-            {user ? (
-              <div className="mt-6 bg-white/5 border border-white/10 rounded-2xl p-4 text-xs space-y-3">
-                <div className="flex items-center justify-between border-b border-white/10 pb-2">
-                  <span className="text-zinc-400">Usuário Logado:</span>
-                  <span className="font-bold text-white">{user.name}</span>
-                </div>
-                <div className="flex items-center justify-between border-b border-white/10 pb-2">
-                  <span className="text-zinc-400">E-mail:</span>
-                  <span className="font-mono text-zinc-300">{user.email}</span>
-                </div>
-                <div className="flex items-center justify-between border-b border-white/10 pb-2">
-                  <span className="text-zinc-400">Saldo Simulado PIX:</span>
-                  <span className="font-bold text-emerald-400">R$ {user.pixBalance.toLocaleString("pt-BR")}</span>
-                </div>
-                <div className="flex items-center justify-between border-b border-white/10 pb-2">
-                  <span className="text-zinc-400">Carteira BTC:</span>
-                  <span className="font-mono text-orange-400 truncate max-w-[160px]">{user.btcAddress}</span>
-                </div>
-                <div className="flex items-center justify-between pt-1">
-                  <span className="text-zinc-400">Selo de Verificação:</span>
-                  <span className="text-emerald-400 font-bold">✓ Verificado 5.0 ★</span>
-                </div>
-
-                <button
-                  onClick={handleLogout}
-                  className="w-full mt-4 bg-red-500/20 text-red-300 border border-red-500/30 font-bold py-2.5 rounded-xl hover:bg-red-500/30 transition-all text-xs"
-                >
-                  Sair da Conta
-                </button>
-              </div>
-            ) : (
-              <div className="mt-6 flex flex-col gap-3">
-                <button
-                  onClick={handleLoginTestAccount}
-                  className="w-full bg-gradient-to-r from-emerald-500 to-teal-400 text-black font-extrabold py-3.5 rounded-xl shadow-lg transition-all hover:scale-105 text-sm"
-                >
-                  ⚡ Conectar com Conta de Teste VIP (1-Clique)
-                </button>
-              </div>
-            )}
-          </div>
-        </div>
+      {/* ── MODAL FICHA DE PERSONAGEM RPG ── */}
+      {isRpgModalOpen && user && (
+        <ModalPerfilRPG
+          user={user}
+          onClose={() => setIsRpgModalOpen(false)}
+          onUpdateGuild={handleUpdateGuild}
+        />
       )}
 
       {/* ── MODAL DETALHES DO SERVIÇO / CANDIDATURA ── */}
@@ -665,14 +676,15 @@ export default function Home() {
                 🔐 Assinar Smart Contract & Iniciar Atendimento
               </button>
             ) : (
-              <a
-                href={`https://wa.me/${selectedJob.whatsapp}?text=Olá,%20tenho%20interesse%20no%20serviço:%20${encodeURIComponent(selectedJob.title)}`}
-                target="_blank"
-                rel="noreferrer"
+              <button
+                onClick={() => {
+                  addXp(100, "Aceitar Proposta de Serviço");
+                  window.open(`https://wa.me/${selectedJob.whatsapp}?text=Olá,%20tenho%20interesse%20no%20serviço:%20${encodeURIComponent(selectedJob.title)}`, "_blank");
+                }}
                 className="w-full bg-gradient-to-r from-emerald-500 to-teal-400 text-black font-extrabold text-sm py-4 rounded-xl shadow-xl shadow-emerald-500/25 transition-all hover:scale-105 flex items-center justify-center gap-2"
               >
-                💬 Entrar em Contato Direto via WhatsApp
-              </a>
+                💬 Entrar em Contato Direto via WhatsApp (+100 XP)
+              </button>
             )}
           </div>
         </div>
@@ -706,13 +718,13 @@ export default function Home() {
 
             <button
               onClick={() => {
-                showToast("Contrato assinado digitalmente! Redirecionando para canal privativo.");
+                addXp(250, "Assinar Smart Contract P2P em BTC");
                 setIsBtcModalOpen(false);
                 setSelectedJob(null);
               }}
               className="w-full bg-gradient-to-r from-pink-600 to-purple-600 text-white font-black text-sm py-4 rounded-xl shadow-lg transition-all hover:scale-105 uppercase tracking-wider"
             >
-              ✅ Aceitar Termos & Enviar Bitcoin
+              ✅ Aceitar Termos & Enviar Bitcoin (+250 XP)
             </button>
           </div>
         </div>
@@ -729,8 +741,8 @@ export default function Home() {
               ✕
             </button>
 
-            <h3 className="text-2xl font-black text-white">+ Publicar Nova Vaga em Tempo Real</h3>
-            <p className="text-xs text-zinc-400 mt-1">Sua vaga aparecerá instantaneamente para todos no mapa e na lista</p>
+            <h3 className="text-2xl font-black text-white">+ Publicar Nova Vaga na Guilda</h3>
+            <p className="text-xs text-zinc-400 mt-1">Sua vaga aparecerá instantaneamente no mapa e lhe renderá +150 XP</p>
 
             <form onSubmit={handleCreateJob} className="mt-6 flex flex-col gap-4">
               <div>
@@ -825,7 +837,7 @@ export default function Home() {
                 type="submit"
                 className="mt-2 bg-gradient-to-r from-emerald-500 to-teal-400 text-black font-extrabold text-sm py-3.5 rounded-xl transition-all hover:scale-105 shadow-lg shadow-emerald-500/25"
               >
-                🚀 Publicar em Tempo Real (Instantâneo)
+                🚀 Publicar na Guilda (+150 XP)
               </button>
             </form>
           </div>
@@ -834,7 +846,7 @@ export default function Home() {
 
       {/* ── FOOTER ── */}
       <footer className="border-t border-white/10 py-12 px-4 text-center text-xs text-zinc-500">
-        <p>© 2026 JobPago.com.br · Todos os direitos reservados. Allan Candido.</p>
+        <p>© 2026 JobPago.com.br · Sistema RPG & Guildas por Allan Candido.</p>
       </footer>
     </div>
   );
