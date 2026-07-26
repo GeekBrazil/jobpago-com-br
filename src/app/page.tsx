@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import dynamic from "next/dynamic";
 import type { MapPoint } from "@/components/MapaServicos";
 
@@ -26,131 +26,25 @@ export interface Job extends MapPoint {
   btcAccepted?: boolean;
 }
 
-const INITIAL_JOBS: Job[] = [
-  // ── CATEGORIA NÔMADE & INFRA ──
-  {
-    id: "n1",
-    title: "Ponto de Apoio Nômade: Chuveiro Quente + Carga 220V (Bikes/Notebooks)",
-    category: "Nômade & Infra",
-    budget: 35,
-    location: "Praia do Coqueiro, Angra dos Reis, RJ",
-    lat: -23.012,
-    lng: -44.310,
-    type: "Presencial",
-    isPixImmediate: true,
-    postedAgo: "Há 10 min",
-    proposalsCount: 6,
-    description: "Espaço privativo para viajantes e nômades digitais. Banheiro amplo com chuveiro a gás aquecido, tomadas dedicadas de alta carga (bikes elétricas, scooters) e bancada de trabalho para notebooks com Wi-Fi 600MB.",
-    clientName: "Estação Nômade Costa Verde",
-    whatsapp: "5524993326966",
-    nomadFeatures: ["🚿 Chuveiro Quente", "🔋 Carga 220V Alta Carga", "💻 Wi-Fi 600MB", "☕ Café Grátis"],
-  },
-  {
-    id: "n2",
-    title: "Vaga Segura para Motorhome / Van Life + Tomada Industrial + Água",
-    category: "Nômade & Infra",
-    budget: 80,
-    location: "Centro Histórico, Paraty, RJ",
-    lat: -23.218,
-    lng: -44.714,
-    type: "Presencial",
-    isPixImmediate: true,
-    postedAgo: "Há 25 min",
-    proposalsCount: 3,
-    description: "Terreno plano e murado com portão eletrônico para estacionar Motorhomes, Vans ou instalar Camping. Inclui ponto de água potável, descarte de água cinza e energia até 32A.",
-    clientName: "Paraty Van Camping",
-    whatsapp: "5524993326966",
-    nomadFeatures: ["🚐 Vaga Motorhome", "⚡ Ponto 32A", "🚰 Água Potável", "🔒 Portão 24h"],
-  },
+export interface UserAccount {
+  name: string;
+  email: string;
+  pixBalance: number;
+  btcAddress: string;
+  isVerified: boolean;
+  reputation: number;
+  avatarIcon: string;
+}
 
-  // ── SERVIÇOS SECRETOS (ANIME MAXIMALIST CYBERPUNK) ──
-  {
-    id: "s1",
-    title: "㊙️ Encontro Cosplay Cyberpunk & Sessão Fotográfica Privativa",
-    category: "Serviços Secretos ㊙️",
-    budget: 650,
-    location: "Suíte Reservada, Angra dos Reis, RJ",
-    lat: -23.002,
-    lng: -44.318,
-    type: "Presencial",
-    isPixImmediate: true,
-    postedAgo: "Há 5 min",
-    proposalsCount: 2,
-    description: "Sessão temática cosplay no estilo Cyberpunk 2077 / Anime Maximalista. Ambiente com iluminação neon, total sigilo contratual via Smart Contract P2P e pagamento exclusivo em Bitcoin / Lightning.",
-    clientName: "Agência Kunoichi Secret",
-    whatsapp: "5524993326966",
-    isSecret: true,
-    btcAccepted: true,
-  },
-  {
-    id: "s2",
-    title: "㊙️ Banho Sensorial Aromático & Acompanhamento VIP Exclusivo",
-    category: "Serviços Secretos ㊙️",
-    budget: 900,
-    location: "Resort Portogalo, Angra dos Reis, RJ",
-    lat: -23.030,
-    lng: -44.240,
-    type: "Presencial",
-    isPixImmediate: true,
-    postedAgo: "Há 18 min",
-    proposalsCount: 4,
-    description: "Experiência relaxante de banho em ofurô com óleos essenciais, massagem tântrica e acompanhamento discreto para eventos noturnos. Contrato encriptado e suporte a pagamento anônimo.",
-    clientName: "Club Noir VIP",
-    whatsapp: "5524993326966",
-    isSecret: true,
-    btcAccepted: true,
-  },
-
-  // ── TRADICIONAIS ──
-  {
-    id: "1",
-    title: "Criação de Landing Page em Next.js para Imobiliária",
-    category: "Tecnologia & TI",
-    budget: 850,
-    location: "Remoto",
-    lat: -23.005,
-    lng: -44.320,
-    type: "Remoto",
-    isPixImmediate: true,
-    postedAgo: "Há 15 min",
-    proposalsCount: 4,
-    description: "Preciso de um desenvolvedor front-end para criar uma landing page rápida de imóveis com design escuro e responsivo.",
-    clientName: "Allan C.",
-    whatsapp: "5524993326966",
-  },
-  {
-    id: "2",
-    title: "Instalação Elétrica Residencial e Troca de Rejunte",
-    category: "Reformas & Reparos",
-    budget: 380,
-    location: "Porto Frade, Angra dos Reis, RJ",
-    lat: -23.045,
-    lng: -44.420,
-    type: "Presencial",
-    isPixImmediate: true,
-    postedAgo: "Há 42 min",
-    proposalsCount: 2,
-    description: "Instalação de 6 luminárias de LED no teto e pequenos reparos elétricos no condomínio Porto Frade.",
-    clientName: "Marcos V.",
-    whatsapp: "5524993326966",
-  },
-  {
-    id: "3",
-    title: "Edição de 5 Vídeos Curtos para Instagram Reels/TikTok",
-    category: "Design & Mídia",
-    budget: 250,
-    location: "Remoto",
-    lat: -23.001,
-    lng: -44.305,
-    type: "Remoto",
-    isPixImmediate: true,
-    postedAgo: "Há 1 hora",
-    proposalsCount: 7,
-    description: "Buscamos editor dinâmico para colocar legendas animadas e cortes rápidos em 5 vídeos gravados no celular.",
-    clientName: "Agência Lumina",
-    whatsapp: "5524993326966",
-  },
-];
+const TEST_ACCOUNT: UserAccount = {
+  name: "Allan C. (Nômade VIP & Dev)",
+  email: "allan@jobpago.com.br",
+  pixBalance: 2500.0,
+  btcAddress: "bc1q9f88c3a1b77e2a9b44988x1",
+  isVerified: true,
+  reputation: 5.0,
+  avatarIcon: "⚡",
+};
 
 const CATEGORIES = [
   { name: "Todas", icon: "🔥", color: "from-zinc-500 to-zinc-700" },
@@ -163,13 +57,19 @@ const CATEGORIES = [
 ];
 
 export default function Home() {
-  const [jobs, setJobs] = useState<Job[]>(INITIAL_JOBS);
+  const [jobs, setJobs] = useState<Job[]>([]);
+  const [isLoadingJobs, setIsLoadingJobs] = useState(true);
   const [selectedCategory, setSelectedCategory] = useState("Todas");
   const [filterType, setFilterType] = useState<"all" | "pix" | "remote" | "local">("all");
   const [searchQuery, setSearchQuery] = useState("");
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedJob, setSelectedJob] = useState<Job | null>(null);
   const [isBtcModalOpen, setIsBtcModalOpen] = useState(false);
+
+  // User State
+  const [user, setUser] = useState<UserAccount | null>(null);
+  const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
+  const [toastMessage, setToastMessage] = useState<string | null>(null);
 
   // Form Vaga Nova
   const [newTitle, setNewTitle] = useState("");
@@ -180,39 +80,103 @@ export default function Home() {
   const [newDescription, setNewDescription] = useState("");
   const [newClientName, setNewClientName] = useState("");
 
-  const handleCreateJob = (e: React.FormEvent) => {
+  // Buscar vagas via API em Tempo Real
+  const fetchJobs = async () => {
+    try {
+      const res = await fetch("/api/jobs");
+      const data = await res.json();
+      if (data.success && data.jobs) {
+        setJobs(data.jobs);
+      }
+    } catch (err) {
+      console.error("Erro ao buscar vagas em tempo real:", err);
+    } finally {
+      setIsLoadingJobs(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchJobs();
+
+    // Carregar usuário do localStorage
+    const savedUser = localStorage.getItem("jobpago_user");
+    if (savedUser) {
+      try {
+        setUser(JSON.parse(savedUser));
+      } catch (e) {}
+    } else {
+      // Logar automaticamente com a conta de teste de exemplo por padrão
+      setUser(TEST_ACCOUNT);
+      localStorage.setItem("jobpago_user", JSON.stringify(TEST_ACCOUNT));
+    }
+
+    // Polling a cada 5 segundos para sincronia instantânea
+    const interval = setInterval(fetchJobs, 5000);
+    return () => clearInterval(interval);
+  }, []);
+
+  const handleLoginTestAccount = () => {
+    setUser(TEST_ACCOUNT);
+    localStorage.setItem("jobpago_user", JSON.stringify(TEST_ACCOUNT));
+    setIsLoginModalOpen(false);
+    showToast("🔑 Conectado com sucesso na Conta de Teste VIP!");
+  };
+
+  const handleLogout = () => {
+    setUser(null);
+    localStorage.removeItem("jobpago_user");
+    showToast("Você saiu da conta.");
+  };
+
+  const showToast = (msg: string) => {
+    setToastMessage(msg);
+    setTimeout(() => setToastMessage(null), 4000);
+  };
+
+  const handleCreateJob = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!newTitle || !newBudget) return;
 
     const isSecret = newCategory.includes("Secretos");
+    const client = newClientName || user?.name || "Allan C. (Nômade VIP)";
 
-    const created: Job = {
-      id: Date.now().toString(),
+    const payload = {
       title: newTitle,
       category: newCategory,
       budget: Number(newBudget),
       location: newLocation || "Angra dos Reis, RJ",
-      lat: -23.006 + (Math.random() - 0.5) * 0.05,
-      lng: -44.318 + (Math.random() - 0.5) * 0.05,
       type: newType,
-      isPixImmediate: true,
-      postedAgo: "Agora mesmo",
-      proposalsCount: 0,
-      description: newDescription || "Serviço cadastrado na plataforma.",
-      clientName: newClientName || "Contratante JobPago",
+      description: newDescription || "Serviço cadastrado com publicação em tempo real.",
+      clientName: client,
       whatsapp: "5524993326966",
       isSecret,
       btcAccepted: isSecret,
     };
 
-    setJobs([created, ...jobs]);
-    setIsModalOpen(false);
+    try {
+      const res = await fetch("/api/jobs", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload),
+      });
 
-    setNewTitle("");
-    setNewBudget("");
-    setNewDescription("");
-    setNewLocation("");
-    setNewClientName("");
+      const data = await res.json();
+      if (data.success && data.job) {
+        setJobs([data.job, ...jobs]);
+        setIsModalOpen(false);
+
+        // Reset
+        setNewTitle("");
+        setNewBudget("");
+        setNewDescription("");
+        setNewLocation("");
+
+        showToast("🚀 Vaga publicada em TEMPO REAL! Disponível instantaneamente no mapa e na lista.");
+      }
+    } catch (err) {
+      console.error("Erro ao enviar vaga:", err);
+      showToast("Erro ao publicar vaga. Tente novamente.");
+    }
   };
 
   const filteredJobs = jobs.filter((job) => {
@@ -231,7 +195,14 @@ export default function Home() {
   });
 
   return (
-    <div className="min-h-screen bg-[#08080c] text-white selection:bg-emerald-500 selection:text-black">
+    <div className="min-h-screen bg-[#08080c] text-white selection:bg-emerald-500 selection:text-black relative">
+      {/* ── TOAST NOTIFICATION ── */}
+      {toastMessage && (
+        <div className="fixed bottom-6 right-6 z-50 bg-gradient-to-r from-emerald-500 to-teal-400 text-black font-extrabold px-6 py-3.5 rounded-2xl shadow-2xl animate-in slide-in-from-bottom-5 text-sm flex items-center gap-2">
+          <span>⚡</span> {toastMessage}
+        </div>
+      )}
+
       {/* ── NAVBAR ── */}
       <header className="sticky top-0 z-40 backdrop-blur-xl bg-[#08080c]/85 border-b border-white/10">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
@@ -258,11 +229,38 @@ export default function Home() {
           </div>
 
           <div className="flex items-center gap-3">
+            {user ? (
+              <div className="flex items-center gap-2 bg-white/5 border border-white/10 rounded-2xl p-1.5 pl-3">
+                <div className="flex flex-col text-right">
+                  <span className="text-xs font-black text-white flex items-center gap-1">
+                    <span className="text-emerald-400">✓</span> {user.name}
+                  </span>
+                  <span className="text-[10px] text-emerald-400 font-bold">
+                    Saldo: R$ {user.pixBalance.toLocaleString("pt-BR")}
+                  </span>
+                </div>
+                <button
+                  onClick={() => setIsLoginModalOpen(true)}
+                  className="bg-white/10 hover:bg-white/20 text-xs px-2.5 py-1.5 rounded-xl font-bold transition-all"
+                  title="Detalhes da Conta"
+                >
+                  ⚙️
+                </button>
+              </div>
+            ) : (
+              <button
+                onClick={() => setIsLoginModalOpen(true)}
+                className="bg-white/10 border border-white/20 text-white font-extrabold text-xs px-4 py-2.5 rounded-xl hover:bg-white/20 transition-all"
+              >
+                🔑 Conta de Teste
+              </button>
+            )}
+
             <button
               onClick={() => setIsModalOpen(true)}
               className="bg-gradient-to-r from-emerald-500 to-teal-400 text-black font-extrabold text-xs sm:text-sm px-5 py-2.5 rounded-xl shadow-lg shadow-emerald-500/25 transition-all hover:scale-105 hover:shadow-emerald-500/40"
             >
-              + Anunciar Vaga / Serviço
+              + Anunciar Vaga
             </button>
           </div>
         </div>
@@ -273,13 +271,13 @@ export default function Home() {
         <div className="text-center max-w-3xl mx-auto">
           <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 text-xs font-black tracking-wide uppercase mb-6 shadow-inner">
             <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
-            Plataforma de Serviços, Apoio Nômade & Smart Contracts P2P
+            Persistência em Tempo Real & Conexão Instantânea
           </div>
           <h1 className="text-4xl sm:text-6xl font-black tracking-tight text-white leading-tight">
             Serviços Imediatos com <span className="bg-gradient-to-r from-emerald-400 via-teal-300 to-cyan-400 bg-clip-text text-transparent">PIX & Bitcoin</span> no Mapa
           </h1>
           <p className="mt-4 text-zinc-400 text-sm sm:text-base leading-relaxed">
-            Encontre bicos, pontos de recarga para nômades, apoio de camping, serviços presenciais e sessões secretas com contrato inteligente.
+            Publicações gravadas em tempo real sem espera de build. Encontre bicos, pontos de recarga para nômades, apoio de camping, serviços presenciais e sessões secretas com contrato inteligente.
           </p>
 
           {/* BUSCA RÁPIDA */}
@@ -431,7 +429,9 @@ export default function Home() {
         <div className="flex items-center justify-between mb-8">
           <div>
             <h2 className="text-2xl sm:text-3xl font-black text-white">📋 Vagas & Serviços Disponíveis</h2>
-            <p className="text-xs text-zinc-400 mt-1">Exibindo {filteredJobs.length} resultados encontrados</p>
+            <p className="text-xs text-zinc-400 mt-1">
+              {isLoadingJobs ? "Atualizando feed em tempo real..." : `Exibindo ${filteredJobs.length} resultados atualizados`}
+            </p>
           </div>
 
           {/* FILTRO TIPO */}
@@ -535,6 +535,68 @@ export default function Home() {
           })}
         </div>
       </section>
+
+      {/* ── MODAL CONTA DE TESTE / LOGIN ── */}
+      {isLoginModalOpen && (
+        <div className="fixed inset-0 z-50 bg-black/80 backdrop-blur-md flex items-center justify-center p-4">
+          <div className="w-full max-w-md bg-[#0f111a] border border-white/15 rounded-3xl p-6 sm:p-8 relative shadow-2xl">
+            <button
+              onClick={() => setIsLoginModalOpen(false)}
+              className="absolute top-5 right-5 text-zinc-400 hover:text-white text-xl font-bold"
+            >
+              ✕
+            </button>
+
+            <div className="w-12 h-12 rounded-2xl bg-gradient-to-tr from-emerald-500 to-teal-400 flex items-center justify-center text-2xl text-black font-extrabold mb-4 shadow-lg shadow-emerald-500/20">
+              🔑
+            </div>
+
+            <h3 className="text-2xl font-black text-white">Conta de Teste & Perfil</h3>
+            <p className="text-xs text-zinc-400 mt-1">Conecte-se com 1-clique usando a conta de teste pré-configurada</p>
+
+            {user ? (
+              <div className="mt-6 bg-white/5 border border-white/10 rounded-2xl p-4 text-xs space-y-3">
+                <div className="flex items-center justify-between border-b border-white/10 pb-2">
+                  <span className="text-zinc-400">Usuário Logado:</span>
+                  <span className="font-bold text-white">{user.name}</span>
+                </div>
+                <div className="flex items-center justify-between border-b border-white/10 pb-2">
+                  <span className="text-zinc-400">E-mail:</span>
+                  <span className="font-mono text-zinc-300">{user.email}</span>
+                </div>
+                <div className="flex items-center justify-between border-b border-white/10 pb-2">
+                  <span className="text-zinc-400">Saldo Simulado PIX:</span>
+                  <span className="font-bold text-emerald-400">R$ {user.pixBalance.toLocaleString("pt-BR")}</span>
+                </div>
+                <div className="flex items-center justify-between border-b border-white/10 pb-2">
+                  <span className="text-zinc-400">Carteira BTC:</span>
+                  <span className="font-mono text-orange-400 truncate max-w-[160px]">{user.btcAddress}</span>
+                </div>
+                <div className="flex items-center justify-between pt-1">
+                  <span className="text-zinc-400">Selo de Verificação:</span>
+                  <span className="text-emerald-400 font-bold">✓ Verificado 5.0 ★</span>
+                </div>
+
+                <button
+                  onClick={handleLogout}
+                  className="w-full mt-4 bg-red-500/20 text-red-300 border border-red-500/30 font-bold py-2.5 rounded-xl hover:bg-red-500/30 transition-all text-xs"
+                >
+                  Sair da Conta
+                </button>
+              </div>
+            ) : (
+              <div className="mt-6 flex flex-col gap-3">
+                <button
+                  onClick={handleLoginTestAccount}
+                  className="w-full bg-gradient-to-r from-emerald-500 to-teal-400 text-black font-extrabold py-3.5 rounded-xl shadow-lg transition-all hover:scale-105 text-sm"
+                >
+                  ⚡ Conectar com Conta de Teste VIP (1-Clique)
+                </button>
+              </div>
+            )}
+          </div>
+        </div>
+      )}
 
       {/* ── MODAL DETALHES DO SERVIÇO / CANDIDATURA ── */}
       {selectedJob && (
@@ -644,7 +706,7 @@ export default function Home() {
 
             <button
               onClick={() => {
-                alert("Contrato assinado digitalmente! Redirecionando para canal privativo.");
+                showToast("Contrato assinado digitalmente! Redirecionando para canal privativo.");
                 setIsBtcModalOpen(false);
                 setSelectedJob(null);
               }}
@@ -667,8 +729,8 @@ export default function Home() {
               ✕
             </button>
 
-            <h3 className="text-2xl font-black text-white">+ Publicar Nova Vaga / Serviço</h3>
-            <p className="text-xs text-zinc-400 mt-1">Preencha os dados abaixo para exibir no mapa e receber propostas</p>
+            <h3 className="text-2xl font-black text-white">+ Publicar Nova Vaga em Tempo Real</h3>
+            <p className="text-xs text-zinc-400 mt-1">Sua vaga aparecerá instantaneamente para todos no mapa e na lista</p>
 
             <form onSubmit={handleCreateJob} className="mt-6 flex flex-col gap-4">
               <div>
@@ -752,7 +814,7 @@ export default function Home() {
                 <label className="text-xs font-bold text-zinc-300 block mb-1">Seu Nome / Contratante</label>
                 <input
                   type="text"
-                  placeholder="Ex: Estação Nômade"
+                  placeholder={user ? user.name : "Ex: Allan C. (Nômade VIP)"}
                   value={newClientName}
                   onChange={(e) => setNewClientName(e.target.value)}
                   className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:border-emerald-500"
@@ -763,7 +825,7 @@ export default function Home() {
                 type="submit"
                 className="mt-2 bg-gradient-to-r from-emerald-500 to-teal-400 text-black font-extrabold text-sm py-3.5 rounded-xl transition-all hover:scale-105 shadow-lg shadow-emerald-500/25"
               >
-                🚀 Publicar no Mapa Gratuitamente
+                🚀 Publicar em Tempo Real (Instantâneo)
               </button>
             </form>
           </div>
