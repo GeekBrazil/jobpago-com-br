@@ -8,9 +8,9 @@ import ModalPerfilRPG, { UserRPG, GUILD_DETAILS } from "@/components/ModalPerfil
 const MapaServicos = dynamic(() => import("@/components/MapaServicos"), {
   ssr: false,
   loading: () => (
-    <div className="w-full h-[520px] rounded-3xl bg-[#0a0c14] border border-white/10 flex flex-col items-center justify-center text-zinc-400 gap-3">
-      <div className="w-8 h-8 rounded-full border-2 border-emerald-400 border-t-transparent animate-spin"></div>
-      <span className="text-xs font-bold uppercase tracking-wider">Carregando Mapa de Serviços GPS…</span>
+    <div className="w-full h-[520px] rounded-3xl glass-panel flex flex-col items-center justify-center text-cyan-300 gap-3">
+      <div className="w-9 h-9 rounded-full border-2 border-cyan-400 border-t-transparent animate-spin"></div>
+      <span className="text-xs font-black uppercase tracking-widest text-cyan-400">Carregando Mapa Translúcido Glass GPS…</span>
     </div>
   ),
 });
@@ -26,6 +26,7 @@ export interface Job extends MapPoint {
   nomadFeatures?: string[];
   btcAccepted?: boolean;
   isFreeHonor?: boolean;
+  tribo?: string;
 }
 
 const DEFAULT_RPG_USER: UserRPG = {
@@ -110,14 +111,26 @@ const LEADERBOARD_USERS = [
   { rank: 4, name: "Dev_Mago", title: "Arch-Mage Tech", guild: "Magos do Código", xp: "8.100 XP", honor: "180 PTS 🛡️", level: 31, icon: "🧙‍♂️" },
 ];
 
+const TRIBOS_CANONICAS = [
+  { id: "harley", name: "Harley Bikers", icon: "🏍️", desc: "Estradeiros & Custom Bikes" },
+  { id: "investors", name: "Investidores 50+", icon: "💼", desc: "Aportes & Escrow Imobiliário" },
+  { id: "liveaboards", name: "Velejadores", icon: "⛵", desc: "Veleiros & Fundeios Náuticos" },
+  { id: "vanlife", name: "Van Life", icon: "🚐", desc: "Motorhomes & Camping 220V" },
+  { id: "devs", name: "Devs & Tech", icon: "💻", desc: "Full-Stack & Automação IA" },
+  { id: "gamers", name: "Gamers", icon: "🎮", desc: "Consoles Portáteis & Arenas" },
+  { id: "cosplay", name: "Cosplayers", icon: "🎭", desc: "Anime, Figurinos & Props" },
+  { id: "festivais", name: "Festivais", icon: "🎪", desc: "Música, Arte & Marés Bioluminescentes" },
+];
+
 const CATEGORIES = [
-  { name: "Todas", icon: "🔥", color: "from-zinc-500 to-zinc-700" },
-  { name: "Nômade & Infra", icon: "🚐", color: "from-emerald-500 to-teal-400" },
-  { name: "Serviços Secretos ㊙️", icon: "🔞", color: "from-pink-600 via-purple-600 to-cyan-500" },
-  { name: "Reformas & Reparos", icon: "🛠️", color: "from-amber-500 to-orange-400" },
-  { name: "Tecnologia & TI", icon: "💻", color: "from-cyan-500 to-blue-400" },
-  { name: "Design & Mídia", icon: "🎨", color: "from-purple-500 to-indigo-400" },
-  { name: "Transporte & Fretes", icon: "🚚", color: "from-blue-500 to-sky-400" },
+  { name: "Todas", icon: "🔥" },
+  { name: "Harley & Moto-Trails", icon: "🏍️" },
+  { name: "Nômade & Infra", icon: "🚐" },
+  { name: "Serviços Secretos ㊙️", icon: "🔞" },
+  { name: "Reformas & Reparos", icon: "🛠️" },
+  { name: "Tecnologia & TI", icon: "💻" },
+  { name: "Design & Mídia", icon: "🎨" },
+  { name: "Transporte & Fretes", icon: "🚚" },
 ];
 
 export default function Home() {
@@ -295,35 +308,35 @@ export default function Home() {
   });
 
   return (
-    <div className="min-h-screen bg-[#08080c] text-white selection:bg-emerald-500 selection:text-black relative">
-      {/* ── TOAST NOTIFICATION ── */}
+    <div className="min-h-screen text-white selection:bg-cyan-400 selection:text-black relative">
+      {/* ── TOAST NOTIFICATION GLASS ── */}
       {toastMessage && (
-        <div className="fixed bottom-6 right-6 z-50 bg-gradient-to-r from-emerald-500 via-teal-400 to-cyan-400 text-black font-black px-6 py-3.5 rounded-2xl shadow-2xl animate-in slide-in-from-bottom-5 text-sm flex items-center gap-2 border border-black/20">
-          <span>⚔️</span> {toastMessage}
+        <div className="fixed bottom-6 right-6 z-50 glass-panel glass-cyan text-white font-extrabold px-6 py-4 rounded-2xl shadow-2xl animate-in slide-in-from-bottom-5 text-sm flex items-center gap-3">
+          <span className="text-cyan-400 text-lg">⚡</span> {toastMessage}
         </div>
       )}
 
-      {/* ── NAVBAR ── */}
-      <header className="sticky top-0 z-40 backdrop-blur-xl bg-[#08080c]/85 border-b border-white/10">
+      {/* ── NAVBAR GLASSMORPHISM ── */}
+      <header className="sticky top-0 z-40 glass-panel border-b border-white/10">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-xl bg-gradient-to-tr from-emerald-500 via-teal-400 to-cyan-400 flex items-center justify-center font-extrabold text-black text-xl shadow-lg shadow-emerald-500/20">
+            <div className="w-10 h-10 rounded-2xl bg-gradient-to-tr from-cyan-400 via-teal-300 to-amber-300 flex items-center justify-center font-black text-black text-xl shadow-lg shadow-cyan-500/25">
               ⚡
             </div>
-            <span className="text-xl sm:text-2xl font-black tracking-tight bg-gradient-to-r from-white via-zinc-200 to-emerald-400 bg-clip-text text-transparent">
-              JobPago<span className="text-emerald-400">.com.br</span>
+            <span className="text-xl sm:text-2xl font-black tracking-tight bg-gradient-to-r from-white via-cyan-100 to-cyan-400 bg-clip-text text-transparent">
+              JobPago<span className="text-cyan-400">.com.br</span>
             </span>
           </div>
 
-          <div className="hidden md:flex items-center gap-8 text-sm font-semibold text-zinc-400">
-            <a href="#mapa-gps" className="hover:text-emerald-400 transition-colors flex items-center gap-1.5">
+          <div className="hidden lg:flex items-center gap-7 text-xs font-extrabold text-slate-300 uppercase tracking-wider">
+            <a href="#mapa-gps" className="hover:text-cyan-400 transition-colors flex items-center gap-1.5">
               <span>🗺️ Mapa GPS</span>
             </a>
-            <a href="#guildas-leaderboard" className="hover:text-emerald-400 transition-colors text-emerald-400 font-extrabold flex items-center gap-1">
+            <a href="#guildas-leaderboard" className="hover:text-amber-300 transition-colors text-amber-400 flex items-center gap-1">
               <span>⚔️ Ranking Guildas</span>
             </a>
-            <a href="#nomade-space" className="hover:text-emerald-400 transition-colors">🚐 Nômades</a>
-            <a href="#secret-anime" className="hover:text-pink-400 transition-colors text-pink-400 font-extrabold flex items-center gap-1">
+            <a href="#nomade-space" className="hover:text-cyan-400 transition-colors">🚐 Nômades</a>
+            <a href="#secret-anime" className="hover:text-pink-400 transition-colors text-pink-400 flex items-center gap-1">
               <span>㊙️ Secret Anime</span>
             </a>
           </div>
@@ -332,7 +345,7 @@ export default function Home() {
             {user && (
               <button
                 onClick={() => setIsRpgModalOpen(true)}
-                className="flex items-center gap-2.5 bg-white/5 hover:bg-white/10 border border-white/15 rounded-2xl p-1.5 pl-3 transition-all hover:border-amber-400 shadow-md"
+                className="flex items-center gap-2.5 glass-card rounded-2xl p-1.5 pl-3 hover:border-cyan-400"
               >
                 <div className="flex flex-col text-right">
                   <div className="flex items-center gap-1.5 justify-end">
@@ -341,11 +354,11 @@ export default function Home() {
                       🛡️ {user.honorScore} PTS
                     </span>
                   </div>
-                  <span className="text-[10px] text-zinc-400 font-medium">
+                  <span className="text-[10px] text-cyan-300 font-medium">
                     {GUILD_DETAILS[user.guild].icon} {user.guild}
                   </span>
                 </div>
-                <div className="w-8 h-8 rounded-xl bg-gradient-to-br from-amber-400 to-orange-500 text-black font-black text-xs flex items-center justify-center">
+                <div className="w-8 h-8 rounded-xl bg-gradient-to-br from-amber-400 to-amber-500 text-black font-black text-xs flex items-center justify-center shadow-md">
                   🎁
                 </div>
               </button>
@@ -353,7 +366,7 @@ export default function Home() {
 
             <button
               onClick={() => setIsModalOpen(true)}
-              className="bg-gradient-to-r from-emerald-500 to-teal-400 text-black font-extrabold text-xs sm:text-sm px-5 py-2.5 rounded-xl shadow-lg shadow-emerald-500/25 transition-all hover:scale-105 hover:shadow-emerald-500/40"
+              className="bg-gradient-to-r from-cyan-400 to-teal-400 text-black font-black text-xs sm:text-sm px-5 py-2.5 rounded-2xl shadow-xl shadow-cyan-500/20 transition-all hover:scale-105"
             >
               + Anunciar Vaga
             </button>
@@ -361,30 +374,51 @@ export default function Home() {
         </div>
       </header>
 
-      {/* ── HERO BANNER ── */}
+      {/* ── HERO BANNER GLASSMORPHISM ── */}
       <section className="relative pt-12 pb-8 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
-        <div className="text-center max-w-3xl mx-auto">
-          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 text-xs font-black tracking-wide uppercase mb-6 shadow-inner">
-            <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
-            Sistema de Alta Honra, Fornecedores Gratuitos & Loot Vault RPG
+        <div className="text-center max-w-4xl mx-auto">
+          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full glass-panel border border-cyan-400/40 text-cyan-300 text-xs font-black tracking-widest uppercase mb-6 shadow-xl">
+            <span className="w-2 h-2 rounded-full bg-cyan-400 animate-pulse"></span>
+            Interface Glassmorphism Translúcida • 10 Tribos Conectadas
           </div>
+
           <h1 className="text-4xl sm:text-6xl font-black tracking-tight text-white leading-tight">
-            Serviços com <span className="bg-gradient-to-r from-emerald-400 via-teal-300 to-cyan-400 bg-clip-text text-transparent">Alta Honra & Recompensas</span>
+            Ecossistema Nômade & Investimento em <span className="bg-gradient-to-r from-cyan-400 via-teal-300 to-amber-300 bg-clip-text text-transparent">Vidro Translúcido</span>
           </h1>
-          <p className="mt-4 text-zinc-400 text-sm sm:text-base leading-relaxed">
-            Ganhe ingressos de feiras, passes de camping, aventuras guiadas e vagas em comboios ao subir de Nível e Nível de Honra no mapa.
+
+          <p className="mt-4 text-slate-300 text-sm sm:text-base leading-relaxed max-w-2xl mx-auto">
+            De motociclistas estradeiros Harley-Davidson a investidores 50+, velejadores, nômades van life, devs e cosplayers. Conecte-se e resgate recompensas reais.
           </p>
 
-          {/* BUSCA RÁPIDA */}
-          <div className="mt-8 flex flex-col sm:flex-row items-center gap-3 bg-white/5 border border-white/10 p-2 rounded-2xl backdrop-blur-md shadow-2xl">
+          {/* BARRA DE NAVEGAÇÃO DE TRIBOS CANÔNICAS GLASS */}
+          <div className="mt-8 grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-8 gap-2 max-w-5xl mx-auto">
+            {TRIBOS_CANONICAS.map((t) => (
+              <button
+                key={t.id}
+                onClick={() => {
+                  setSearchQuery(t.name);
+                  const el = document.getElementById("vagas");
+                  el?.scrollIntoView({ behavior: "smooth" });
+                }}
+                className="glass-card p-3 rounded-2xl flex flex-col items-center text-center group hover:border-cyan-400/50"
+              >
+                <span className="text-2xl mb-1 group-hover:scale-110 transition-transform">{t.icon}</span>
+                <span className="text-[11px] font-black text-white group-hover:text-cyan-300">{t.name}</span>
+                <span className="text-[9px] text-slate-400 line-clamp-1 mt-0.5">{t.desc}</span>
+              </button>
+            ))}
+          </div>
+
+          {/* BUSCA GLASS */}
+          <div className="mt-8 flex flex-col sm:flex-row items-center gap-3 glass-panel p-2 rounded-2xl shadow-2xl border border-white/20 max-w-2xl mx-auto">
             <input
               type="text"
-              placeholder="Busque por 'chuveiro', 'notebook', 'cosplay', 'landing page'..."
+              placeholder="Busque por 'Harley', 'Investimento 50+', 'Veleiro', 'Cosplay'..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="w-full bg-transparent px-4 py-3 text-sm text-white placeholder-zinc-500 focus:outline-none"
+              className="w-full bg-transparent px-4 py-3 text-sm text-white placeholder-slate-400 focus:outline-none"
             />
-            <button className="w-full sm:w-auto bg-emerald-500 text-black font-extrabold px-8 py-3 rounded-xl text-sm transition-all hover:bg-emerald-400 shrink-0">
+            <button className="w-full sm:w-auto bg-gradient-to-r from-cyan-400 to-teal-400 text-black font-black px-8 py-3 rounded-xl text-sm transition-all hover:scale-105 shrink-0">
               🔍 Buscar
             </button>
           </div>
@@ -393,23 +427,23 @@ export default function Home() {
 
       {/* ── SEÇÃO LEADERBOARD GUILDAS & MERCENÁRIOS RPG ── */}
       <section id="guildas-leaderboard" className="py-8 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
-        <div className="rounded-3xl bg-gradient-to-br from-[#0c0d18] to-[#12081c] border border-white/15 p-6 sm:p-8 shadow-2xl relative overflow-hidden">
+        <div className="glass-panel glass-gold p-6 sm:p-8 rounded-3xl relative overflow-hidden shadow-2xl">
           <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4 mb-6">
             <div>
-              <span className="text-xs font-extrabold text-emerald-400 uppercase tracking-widest">
-                ⚔️ Ranking Regional de Mercenários & Guildas
+              <span className="text-xs font-black text-amber-300 uppercase tracking-widest">
+                ⚔️ Ranking de Alta Honra & Escrow
               </span>
               <h2 className="text-2xl sm:text-3xl font-black text-white mt-1">
-                Líderes de Reputação & Pontuação de Honra 🛡️
+                Líderes de Reputação & Investimento 🛡️
               </h2>
             </div>
 
             {user && (
               <button
                 onClick={() => setIsRpgModalOpen(true)}
-                className="bg-gradient-to-r from-amber-400 via-amber-500 to-orange-500 text-black font-black px-5 py-2.5 rounded-xl text-xs shadow-lg transition-all hover:scale-105"
+                className="bg-gradient-to-r from-amber-400 via-amber-500 to-orange-500 text-black font-black px-6 py-3 rounded-2xl text-xs shadow-xl transition-all hover:scale-105"
               >
-                🎁 Abrir Loot Vault & Ficha RPG
+                🎁 Loot Vault & Benefícios VIP
               </button>
             )}
           </div>
@@ -418,9 +452,9 @@ export default function Home() {
             {LEADERBOARD_USERS.map((lb) => (
               <div
                 key={lb.rank}
-                className="bg-black/40 border border-white/10 p-4 rounded-2xl flex items-center gap-3 relative overflow-hidden hover:border-amber-400/50 transition-all"
+                className="glass-card p-4 rounded-2xl flex items-center gap-3 relative overflow-hidden hover:border-amber-400/60"
               >
-                <div className="text-2xl font-black text-emerald-400 w-8 text-center shrink-0">
+                <div className="text-2xl font-black text-amber-400 w-8 text-center shrink-0">
                   #{lb.rank}
                 </div>
                 <div className="flex-1 min-w-0">
@@ -428,8 +462,8 @@ export default function Home() {
                     <span className="text-xs font-black text-white truncate">{lb.name}</span>
                     <span className="text-xs">{lb.icon}</span>
                   </div>
-                  <span className="text-[10px] text-amber-300 block truncate">{lb.title}</span>
-                  <span className="text-[10px] font-bold text-emerald-400 font-mono mt-1 block">
+                  <span className="text-[10px] text-amber-300 font-bold block truncate">{lb.title}</span>
+                  <span className="text-[10px] font-bold text-cyan-300 font-mono mt-1 block">
                     {lb.xp} | {lb.honor}
                   </span>
                 </div>
@@ -439,18 +473,18 @@ export default function Home() {
         </div>
       </section>
 
-      {/* ── SEÇÃO 1: MAPA INTERATIVO DE SERVIÇOS & ROTAS ── */}
+      {/* ── SEÇÃO 1: MAPA INTERATIVO DE SERVIÇOS & ROTAS GLASS ── */}
       <section id="mapa-gps" className="py-8 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
         <div className="flex flex-col md:flex-row items-start md:items-center justify-between mb-6 gap-4">
           <div>
-            <span className="text-xs font-extrabold text-emerald-400 uppercase tracking-widest">
+            <span className="text-xs font-black text-cyan-400 uppercase tracking-widest">
               Geolocalização Ativa & OSRM Routing
             </span>
             <h2 className="text-2xl sm:text-3xl font-black text-white mt-1">
-              🗺️ Mapa de Serviços & Pontos de Apoio
+              🗺️ Mapa GPS Translúcido de Serviços
             </h2>
-            <p className="text-xs text-zinc-400 mt-1">
-              Veja os serviços mais próximos de você e trace a rota exata de navegação no mapa.
+            <p className="text-xs text-slate-300 mt-1">
+              Encontre rotas de Harley, fundeios de veleiro, pontos 220V e hubs de investimento.
             </p>
           </div>
 
@@ -461,8 +495,8 @@ export default function Home() {
                 onClick={() => setSelectedCategory(cat.name)}
                 className={`px-3 py-1.5 rounded-xl text-xs font-bold transition-all border ${
                   selectedCategory === cat.name
-                    ? "bg-white text-black border-white shadow-lg"
-                    : "bg-white/5 text-zinc-400 border-white/10 hover:border-white/30"
+                    ? "bg-cyan-400 text-black border-cyan-400 font-black shadow-lg"
+                    : "glass-card text-slate-300 border-white/10 hover:border-white/30"
                 }`}
               >
                 {cat.icon} {cat.name}
@@ -479,62 +513,62 @@ export default function Home() {
         />
       </section>
 
-      {/* ── SEÇÃO 2: DESTAQUE ESPAÇO NÔMADE DIGITAL ── */}
+      {/* ── SEÇÃO 2: DESTAQUE ESPAÇO NÔMADE DIGITAL GLASS ── */}
       <section id="nomade-space" className="py-12 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
-        <div className="rounded-3xl bg-gradient-to-br from-emerald-950/40 via-zinc-900/80 to-teal-950/30 border border-emerald-500/30 p-6 sm:p-10 relative overflow-hidden shadow-2xl">
+        <div className="glass-panel glass-cyan p-6 sm:p-10 rounded-3xl relative overflow-hidden shadow-2xl">
           <div className="absolute top-0 right-0 p-8 opacity-10 text-9xl pointer-events-none">🚐</div>
 
           <div className="max-w-2xl">
-            <span className="px-3 py-1 rounded-full bg-emerald-500/20 text-emerald-300 border border-emerald-500/40 text-xs font-black uppercase tracking-wider">
-              Infraestrutura Van Life & Remote Workers
+            <span className="px-3 py-1 rounded-full bg-cyan-400/20 text-cyan-300 border border-cyan-400/40 text-xs font-black uppercase tracking-wider">
+              Infraestrutura Van Life & Harley Travel
             </span>
             <h2 className="text-3xl sm:text-4xl font-black text-white mt-3">
-              🚐 Espaço & Infraestrutura Nômade
+              🚐 Espaço Nômade & Moto-Trails
             </h2>
-            <p className="text-sm text-zinc-300 mt-3 leading-relaxed">
-              Está viajando de motorhome, bike elétrica ou trabalhando remoto? Encontre parceiros que fornecem banheiros com chuveiro aquecido, cargas máximas dedicadas e vagas seguras.
+            <p className="text-sm text-slate-200 mt-3 leading-relaxed">
+              Viajando de Harley-Davidson, motorhome ou veleiro? Encontre locais com chuveiro aquecido, cargas 32A e apoio de fundeio com selo de Alta Honra.
             </p>
 
             <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 mt-6">
-              <div className="bg-black/40 border border-emerald-500/20 p-3 rounded-2xl text-center">
+              <div className="glass-card p-3 rounded-2xl text-center">
                 <span className="text-2xl block mb-1">🚿</span>
                 <span className="text-xs font-bold text-white block">Chuveiro Quente</span>
-                <span className="text-[10px] text-zinc-400">Banhos privativos</span>
+                <span className="text-[10px] text-slate-400">Banhos privativos</span>
               </div>
-              <div className="bg-black/40 border border-emerald-500/20 p-3 rounded-2xl text-center">
+              <div className="glass-card p-3 rounded-2xl text-center">
                 <span className="text-2xl block mb-1">⚡</span>
                 <span className="text-xs font-bold text-white block">Carga 110V/220V/32A</span>
-                <span className="text-[10px] text-zinc-400">Bikes, Laptops & Vans</span>
+                <span className="text-[10px] text-slate-400">Harleys, Vans & Laptops</span>
               </div>
-              <div className="bg-black/40 border border-emerald-500/20 p-3 rounded-2xl text-center">
+              <div className="glass-card p-3 rounded-2xl text-center">
                 <span className="text-2xl block mb-1">🚐</span>
-                <span className="text-xs font-bold text-white block">Vagas Motorhome</span>
-                <span className="text-[10px] text-zinc-400">Camping & Garagem</span>
+                <span className="text-xs font-bold text-white block">Motorhome & Garagem</span>
+                <span className="text-[10px] text-slate-400">Garagens seguras</span>
               </div>
-              <div className="bg-black/40 border border-emerald-500/20 p-3 rounded-2xl text-center">
+              <div className="glass-card p-3 rounded-2xl text-center">
                 <span className="text-2xl block mb-1">💻</span>
                 <span className="text-xs font-bold text-white block">Wi-Fi Alta Velocidade</span>
-                <span className="text-[10px] text-zinc-400">Pontos de Co-working</span>
+                <span className="text-[10px] text-slate-400">Pontos de Co-working</span>
               </div>
             </div>
           </div>
         </div>
       </section>
 
-      {/* ── SEÇÃO 3: SERVIÇOS SECRETOS (ESTILO ANIME MAXIMALIST CYBERPUNK) ── */}
+      {/* ── SEÇÃO 3: SERVIÇOS SECRETOS GLASS ── */}
       <section id="secret-anime" className="py-12 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
-        <div className="rounded-3xl bg-[#0d0714] anime-neon-card p-6 sm:p-10 relative overflow-hidden anime-scanline">
+        <div className="glass-panel glass-pink p-6 sm:p-10 rounded-3xl relative overflow-hidden">
           <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
             <div>
               <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-pink-500/20 border border-pink-500/50 text-pink-400 text-xs font-black uppercase tracking-widest">
                 <span>㊙️ 秘密のサービス</span>
-                <span>• Cyberpunk & Anime Maximalist</span>
+                <span>• Smart Contracts & Bitcoin</span>
               </div>
               <h2 className="text-3xl sm:text-5xl font-black bg-gradient-to-r from-pink-500 via-purple-400 to-cyan-400 bg-clip-text text-transparent mt-3 tracking-tight">
-                Serviços Secretos & Smart Contracts BTC
+                Serviços Secretos & Escrow VIP
               </h2>
-              <p className="text-sm text-zinc-300 mt-2 max-w-2xl leading-relaxed">
-                Sessões cosplay, banhos aromáticos sensoriais, fetiches e experiências exclusivas com sigilo contratual garantido via Bitcoin e pagamentos descentralizados P2P.
+              <p className="text-sm text-slate-300 mt-2 max-w-2xl leading-relaxed">
+                Sessões cosplay, banhos aromáticos sensoriais e experiências exclusivas com sigilo contratual garantido via Bitcoin e pagamentos P2P.
               </p>
             </div>
 
@@ -551,45 +585,45 @@ export default function Home() {
           </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mt-8 pt-6 border-t border-pink-500/30">
-            <div className="bg-black/60 border border-pink-500/30 p-4 rounded-2xl">
+            <div className="glass-card p-4 rounded-2xl">
               <span className="text-pink-400 font-extrabold text-xs block uppercase">🔒 Contrato Encriptado</span>
-              <p className="text-xs text-zinc-400 mt-1">Termos de confidencialidade e regras de aceitação mútua gravados com assinatura digital.</p>
+              <p className="text-xs text-slate-300 mt-1">Termos de confidencialidade gravados com assinatura digital.</p>
             </div>
-            <div className="bg-black/60 border border-purple-500/30 p-4 rounded-2xl">
+            <div className="glass-card p-4 rounded-2xl">
               <span className="text-purple-400 font-extrabold text-xs block uppercase">⚡ Bitcoin & Lightning Network</span>
-              <p className="text-xs text-zinc-400 mt-1">Pagamentos liquidados sem intermediários bancários e com anonimato preservado.</p>
+              <p className="text-xs text-slate-300 mt-1">Pagamentos liquidados com anonimato preservado.</p>
             </div>
-            <div className="bg-black/60 border border-cyan-500/30 p-4 rounded-2xl">
+            <div className="glass-card p-4 rounded-2xl">
               <span className="text-cyan-400 font-extrabold text-xs block uppercase">🎭 Cosplay & Banhos Sensoriais</span>
-              <p className="text-xs text-zinc-400 mt-1">Experiências estéticas imersivas ambientadas com luzes neon e privacidade total.</p>
+              <p className="text-xs text-slate-300 mt-1">Experiências estéticas imersivas com privacidade total.</p>
             </div>
           </div>
         </div>
       </section>
 
-      {/* ── SEÇÃO 4: FEED DE VAGAS E SERVIÇOS ── */}
+      {/* ── SEÇÃO 4: FEED DE VAGAS GLASSMORPHISM ── */}
       <section id="vagas" className="py-12 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
         <div className="flex items-center justify-between mb-8">
           <div>
             <h2 className="text-2xl sm:text-3xl font-black text-white">📋 Vagas & Serviços Disponíveis</h2>
-            <p className="text-xs text-zinc-400 mt-1">
+            <p className="text-xs text-slate-400 mt-1">
               {isLoadingJobs ? "Atualizando feed em tempo real..." : `Exibindo ${filteredJobs.length} resultados atualizados`}
             </p>
           </div>
 
-          {/* FILTRO TIPO */}
-          <div className="flex flex-wrap items-center gap-2 bg-white/5 p-1 rounded-xl border border-white/10">
+          {/* FILTRO TIPO GLASS */}
+          <div className="flex flex-wrap items-center gap-2 glass-panel p-1.5 rounded-2xl">
             <button
               onClick={() => setFilterType("all")}
-              className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-all ${
-                filterType === "all" ? "bg-emerald-500 text-black" : "text-zinc-400 hover:text-white"
+              className={`px-3.5 py-2 rounded-xl text-xs font-black transition-all ${
+                filterType === "all" ? "bg-cyan-400 text-black shadow-lg" : "text-slate-300 hover:text-white"
               }`}
             >
               Todos
             </button>
             <button
               onClick={() => setFilterType("honor")}
-              className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-all ${
+              className={`px-3.5 py-2 rounded-xl text-xs font-black transition-all ${
                 filterType === "honor" ? "bg-amber-400 text-black shadow-lg" : "text-amber-400 hover:text-amber-300"
               }`}
             >
@@ -597,16 +631,16 @@ export default function Home() {
             </button>
             <button
               onClick={() => setFilterType("pix")}
-              className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-all ${
-                filterType === "pix" ? "bg-emerald-500 text-black" : "text-zinc-400 hover:text-white"
+              className={`px-3.5 py-2 rounded-xl text-xs font-black transition-all ${
+                filterType === "pix" ? "bg-cyan-400 text-black shadow-lg" : "text-slate-300 hover:text-white"
               }`}
             >
               ⚡ PIX / BTC
             </button>
             <button
               onClick={() => setFilterType("local")}
-              className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-all ${
-                filterType === "local" ? "bg-emerald-500 text-black" : "text-zinc-400 hover:text-white"
+              className={`px-3.5 py-2 rounded-xl text-xs font-black transition-all ${
+                filterType === "local" ? "bg-cyan-400 text-black shadow-lg" : "text-slate-300 hover:text-white"
               }`}
             >
               📍 Presenciais
@@ -614,7 +648,7 @@ export default function Home() {
           </div>
         </div>
 
-        {/* LISTA DE CARDS */}
+        {/* LISTA DE CARDS GLASS */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {filteredJobs.map((job) => {
             const isSecret = job.isSecret || job.category.includes("Secretos");
@@ -625,14 +659,14 @@ export default function Home() {
               <div
                 key={job.id}
                 onClick={() => setSelectedJob(job)}
-                className={`rounded-3xl p-6 transition-all duration-300 hover:-translate-y-1.5 cursor-pointer relative flex flex-col justify-between ${
+                className={`glass-card rounded-3xl p-6 cursor-pointer relative flex flex-col justify-between ${
                   isFree
-                    ? "bg-[#161204] border border-amber-500/50 hover:border-amber-400 hover:shadow-2xl hover:shadow-amber-500/20"
+                    ? "glass-gold"
                     : isSecret
-                    ? "bg-[#12071a] border border-pink-500/40 hover:border-pink-500 hover:shadow-2xl hover:shadow-pink-500/20"
+                    ? "glass-pink"
                     : isNomad
-                    ? "bg-[#071712] border border-emerald-500/40 hover:border-emerald-400 hover:shadow-2xl hover:shadow-emerald-500/20"
-                    : "bg-white/5 border border-white/10 hover:border-white/25 hover:bg-white/[0.07]"
+                    ? "glass-cyan"
+                    : ""
                 }`}
               >
                 <div>
@@ -644,21 +678,21 @@ export default function Home() {
                           : isSecret
                           ? "bg-pink-500/20 text-pink-400 border border-pink-500/40"
                           : isNomad
-                          ? "bg-emerald-500/20 text-emerald-400 border border-emerald-500/40"
-                          : "bg-white/10 text-zinc-300"
+                          ? "bg-cyan-500/20 text-cyan-300 border border-cyan-500/40"
+                          : "bg-white/10 text-slate-300"
                       }`}
                     >
                       {job.category}
                     </span>
 
-                    <span className="text-xs text-zinc-500 font-semibold">{job.postedAgo}</span>
+                    <span className="text-xs text-slate-400 font-semibold">{job.postedAgo}</span>
                   </div>
 
                   <h3 className="text-lg font-bold text-white leading-snug line-clamp-2">
                     {job.title}
                   </h3>
 
-                  <p className="text-xs text-zinc-400 mt-2 line-clamp-3 leading-relaxed">
+                  <p className="text-xs text-slate-300 mt-2 line-clamp-3 leading-relaxed">
                     {job.description}
                   </p>
 
@@ -666,7 +700,7 @@ export default function Home() {
                   {job.nomadFeatures && (
                     <div className="flex flex-wrap gap-1.5 mt-3">
                       {job.nomadFeatures.map((feat) => (
-                        <span key={feat} className="text-[10px] font-bold bg-emerald-950 text-emerald-300 border border-emerald-500/30 px-2 py-0.5 rounded-md">
+                        <span key={feat} className="text-[10px] font-bold bg-cyan-950/60 text-cyan-300 border border-cyan-500/30 px-2 py-0.5 rounded-md">
                           {feat}
                         </span>
                       ))}
@@ -676,19 +710,19 @@ export default function Home() {
 
                 <div className="mt-6 pt-4 border-t border-white/10 flex items-center justify-between">
                   <div>
-                    <span className="text-[10px] font-bold text-zinc-500 uppercase block">Recompensa</span>
+                    <span className="text-[10px] font-bold text-slate-400 uppercase block">Recompensa</span>
                     {isFree ? (
                       <span className="text-lg font-black text-amber-300 flex items-center gap-1">
                         <span>🛡️</span> CORTESIA 0800
                       </span>
                     ) : (
-                      <span className={`text-xl font-black ${isSecret ? "text-pink-400" : "text-emerald-400"}`}>
+                      <span className={`text-xl font-black ${isSecret ? "text-pink-400" : "text-cyan-400"}`}>
                         R$ {job.budget.toLocaleString("pt-BR")}
                       </span>
                     )}
                   </div>
 
-                  <button className="bg-white/10 hover:bg-white/20 text-white font-bold text-xs px-4 py-2.5 rounded-xl transition-all">
+                  <button className="bg-white/10 hover:bg-white/20 text-white font-extrabold text-xs px-4 py-2.5 rounded-xl transition-all">
                     Ver Detalhes →
                   </button>
                 </div>
@@ -698,7 +732,7 @@ export default function Home() {
         </div>
       </section>
 
-      {/* ── MODAL FICHA DE PERSONAGEM RPG & LOOT VAULT ── */}
+      {/* ── MODAL FICHA DE PERSONAGEM RPG & LOOT VAULT GLASS ── */}
       {isRpgModalOpen && user && (
         <ModalPerfilRPG
           user={user}
@@ -708,42 +742,38 @@ export default function Home() {
         />
       )}
 
-      {/* ── MODAL DETALHES DO SERVIÇO / CANDIDATURA ── */}
+      {/* ── MODAL DETALHES DO SERVIÇO GLASS ── */}
       {selectedJob && (
-        <div className="fixed inset-0 z-50 bg-black/80 backdrop-blur-md flex items-center justify-center p-4">
-          <div className={`w-full max-w-xl rounded-3xl p-6 sm:p-8 relative border shadow-2xl animate-in zoom-in-95 ${
-            selectedJob.isSecret ? "bg-[#14071f] border-pink-500/50" : "bg-[#0f111a] border-white/15"
-          }`}>
+        <div className="fixed inset-0 z-50 bg-black/80 backdrop-blur-xl flex items-center justify-center p-4">
+          <div className="w-full max-w-xl rounded-3xl p-6 sm:p-8 relative glass-panel border border-white/20 shadow-2xl animate-in zoom-in-95">
             <button
               onClick={() => setSelectedJob(null)}
-              className="absolute top-5 right-5 text-zinc-400 hover:text-white text-xl font-bold bg-white/5 w-8 h-8 rounded-full flex items-center justify-center"
+              className="absolute top-5 right-5 text-slate-400 hover:text-white text-xl font-bold bg-white/5 w-8 h-8 rounded-full flex items-center justify-center"
             >
               ✕
             </button>
 
-            <span className={`text-xs font-black uppercase tracking-wider px-3 py-1 rounded-full inline-block mb-3 ${
-              selectedJob.isSecret ? "bg-pink-500/20 text-pink-400 border border-pink-500/40" : "bg-emerald-500/20 text-emerald-400 border border-emerald-500/40"
-            }`}>
+            <span className="text-xs font-black uppercase tracking-wider px-3 py-1 rounded-full inline-block mb-3 bg-cyan-500/20 text-cyan-300 border border-cyan-500/40">
               {selectedJob.category}
             </span>
 
             <h3 className="text-2xl font-black text-white leading-tight">{selectedJob.title}</h3>
 
-            <div className="flex items-center gap-4 mt-3 text-xs text-zinc-400">
+            <div className="flex items-center gap-4 mt-3 text-xs text-slate-400">
               <span>📍 {selectedJob.location}</span>
               <span>👤 {selectedJob.clientName}</span>
             </div>
 
-            <div className="my-6 p-4 rounded-2xl bg-white/5 border border-white/10">
-              <span className="text-xs font-extrabold text-zinc-400 uppercase block mb-1">Descrição Completa</span>
-              <p className="text-sm text-zinc-200 leading-relaxed">{selectedJob.description}</p>
+            <div className="my-6 p-4 rounded-2xl glass-card">
+              <span className="text-xs font-extrabold text-slate-400 uppercase block mb-1">Descrição Completa</span>
+              <p className="text-sm text-slate-200 leading-relaxed">{selectedJob.description}</p>
 
               {selectedJob.nomadFeatures && (
                 <div className="mt-4 pt-3 border-t border-white/10">
-                  <span className="text-xs font-bold text-emerald-400 block mb-2">Comodidades Nômades Inclusas:</span>
+                  <span className="text-xs font-bold text-cyan-400 block mb-2">Comodidades Nômades Inclusas:</span>
                   <div className="flex flex-wrap gap-2">
                     {selectedJob.nomadFeatures.map((f) => (
-                      <span key={f} className="text-xs font-bold bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 px-3 py-1 rounded-lg">
+                      <span key={f} className="text-xs font-bold bg-cyan-500/20 text-cyan-300 border border-cyan-500/30 px-3 py-1 rounded-lg">
                         {f}
                       </span>
                     ))}
@@ -754,21 +784,21 @@ export default function Home() {
 
             <div className="flex items-center justify-between mb-6">
               <div>
-                <span className="text-xs text-zinc-500 font-bold block">Valor da Recompensa</span>
+                <span className="text-xs text-slate-400 font-bold block">Valor da Recompensa</span>
                 {selectedJob.budget === 0 ? (
                   <span className="text-2xl font-black text-amber-300 flex items-center gap-1">
                     <span>🛡️</span> CORTESIA 0800 (Alta Honra)
                   </span>
                 ) : (
-                  <span className={`text-3xl font-black ${selectedJob.isSecret ? "text-pink-400" : "text-emerald-400"}`}>
+                  <span className={`text-3xl font-black ${selectedJob.isSecret ? "text-pink-400" : "text-cyan-400"}`}>
                     R$ {selectedJob.budget.toLocaleString("pt-BR")}
                   </span>
                 )}
               </div>
 
               {selectedJob.btcAccepted && (
-                <span className="text-xs font-black bg-orange-500/20 text-orange-400 border border-orange-500/40 px-3 py-1.5 rounded-xl flex items-center gap-1">
-                  <span>₿</span> Aceita Bitcoin / Lightning
+                <span className="text-xs font-black bg-amber-500/20 text-amber-300 border border-amber-500/40 px-3 py-1.5 rounded-xl flex items-center gap-1">
+                  <span>₿</span> Bitcoin / Lightning
                 </span>
               )}
             </div>
@@ -776,7 +806,7 @@ export default function Home() {
             {selectedJob.isSecret ? (
               <button
                 onClick={() => setIsBtcModalOpen(true)}
-                className="w-full bg-gradient-to-r from-pink-600 via-purple-600 to-cyan-500 text-white font-extrabold text-sm py-4 rounded-xl shadow-xl shadow-pink-500/30 transition-all hover:scale-105 uppercase tracking-wider"
+                className="w-full bg-gradient-to-r from-pink-600 via-purple-600 to-cyan-500 text-white font-black text-sm py-4 rounded-2xl shadow-xl shadow-pink-500/30 transition-all hover:scale-105 uppercase tracking-wider"
               >
                 🔐 Assinar Smart Contract & Iniciar Atendimento
               </button>
@@ -785,7 +815,7 @@ export default function Home() {
                 onClick={() => {
                   window.open(`https://wa.me/${selectedJob.whatsapp}?text=Olá,%20tenho%20interesse%20no%20serviço:%20${encodeURIComponent(selectedJob.title)}`, "_blank");
                 }}
-                className="w-full bg-gradient-to-r from-emerald-500 to-teal-400 text-black font-extrabold text-sm py-4 rounded-xl shadow-xl shadow-emerald-500/25 transition-all hover:scale-105 flex items-center justify-center gap-2"
+                className="w-full bg-gradient-to-r from-cyan-400 to-teal-400 text-black font-black text-sm py-4 rounded-2xl shadow-xl shadow-cyan-500/25 transition-all hover:scale-105 flex items-center justify-center gap-2"
               >
                 💬 Entrar em Contato Direto via WhatsApp
               </button>
@@ -794,29 +824,29 @@ export default function Home() {
         </div>
       )}
 
-      {/* ── MODAL SMART CONTRACT BTC (SERVIÇOS SECRETOS) ── */}
+      {/* ── MODAL SMART CONTRACT BTC GLASS ── */}
       {isBtcModalOpen && selectedJob && (
         <div className="fixed inset-0 z-50 bg-black/90 backdrop-blur-xl flex items-center justify-center p-4">
-          <div className="w-full max-w-lg rounded-3xl bg-[#0f0717] border border-pink-500/60 p-6 sm:p-8 relative shadow-2xl text-center anime-scanline">
+          <div className="w-full max-w-lg rounded-3xl glass-panel glass-pink p-6 sm:p-8 relative shadow-2xl text-center">
             <button
               onClick={() => setIsBtcModalOpen(false)}
-              className="absolute top-5 right-5 text-zinc-400 hover:text-white text-xl font-bold"
+              className="absolute top-5 right-5 text-slate-400 hover:text-white text-xl font-bold"
             >
               ✕
             </button>
 
             <span className="text-4xl block mb-2">⚡ ㊙️ ₿</span>
             <h3 className="text-2xl font-black text-white">Smart Contract P2P & Bitcoin</h3>
-            <p className="text-xs text-zinc-400 mt-1">Acordo contratual confidencial com liquidação em escrow digital.</p>
+            <p className="text-xs text-slate-300 mt-1">Acordo contratual confidencial com liquidação em escrow digital.</p>
 
-            <div className="my-6 p-4 rounded-2xl bg-black/60 border border-pink-500/30 text-left text-xs text-zinc-300 space-y-2">
+            <div className="my-6 p-4 rounded-2xl glass-card text-left text-xs text-slate-200 space-y-2">
               <p className="font-mono text-pink-400">HASH: 0x9f88c3a1b...77e2a9b</p>
               <p>• Este contrato garante sigilo bilateral sobre o atendimento.</p>
-              <p>• O valor de R$ {selectedJob.budget} será mantido em Escrow até a confirmação de conclusão por ambas as partes.</p>
+              <p>• O valor de R$ {selectedJob.budget} será mantido em Escrow até a confirmação por ambas as partes.</p>
               <p>• Suporte a pagamento instantâneo via Lightning Network (LNURL).</p>
             </div>
 
-            <div className="bg-white/5 border border-white/10 p-3 rounded-xl font-mono text-xs text-emerald-400 mb-6 truncate">
+            <div className="bg-white/5 border border-white/10 p-3 rounded-xl font-mono text-xs text-cyan-300 mb-6 truncate">
               lnbc6500n1pj99...x8a2qqqsp572
             </div>
 
@@ -826,7 +856,7 @@ export default function Home() {
                 setIsBtcModalOpen(false);
                 setSelectedJob(null);
               }}
-              className="w-full bg-gradient-to-r from-pink-600 to-purple-600 text-white font-black text-sm py-4 rounded-xl shadow-lg transition-all hover:scale-105 uppercase tracking-wider"
+              className="w-full bg-gradient-to-r from-pink-600 to-purple-600 text-white font-black text-sm py-4 rounded-2xl shadow-lg transition-all hover:scale-105 uppercase tracking-wider"
             >
               ✅ Aceitar Termos & Enviar Bitcoin
             </button>
@@ -834,28 +864,28 @@ export default function Home() {
         </div>
       )}
 
-      {/* ── MODAL PUBLICAR VAGA ── */}
+      {/* ── MODAL PUBLICAR VAGA GLASS ── */}
       {isModalOpen && (
-        <div className="fixed inset-0 z-50 bg-black/80 backdrop-blur-md flex items-center justify-center p-4">
-          <div className="w-full max-w-xl bg-[#0d0e17] border border-white/15 rounded-3xl p-6 sm:p-8 relative shadow-2xl max-h-[90vh] overflow-y-auto">
+        <div className="fixed inset-0 z-50 bg-black/80 backdrop-blur-xl flex items-center justify-center p-4">
+          <div className="w-full max-w-xl glass-panel border border-white/20 rounded-3xl p-6 sm:p-8 relative shadow-2xl max-h-[90vh] overflow-y-auto">
             <button
               onClick={() => setIsModalOpen(false)}
-              className="absolute top-5 right-5 text-zinc-400 hover:text-white text-xl font-bold bg-white/5 w-8 h-8 rounded-full flex items-center justify-center"
+              className="absolute top-5 right-5 text-slate-400 hover:text-white text-xl font-bold bg-white/5 w-8 h-8 rounded-full flex items-center justify-center"
             >
               ✕
             </button>
 
             <h3 className="text-2xl font-black text-white">+ Publicar Nova Vaga na Guilda</h3>
-            <p className="text-xs text-zinc-400 mt-1">Sua vaga aparecerá instantaneamente no mapa e lhe renderá XP e Honra</p>
+            <p className="text-xs text-slate-300 mt-1">Sua vaga aparecerá instantaneamente no mapa e lhe renderá XP e Honra</p>
 
             <form onSubmit={handleCreateJob} className="mt-6 flex flex-col gap-4">
               {/* OPÇÃO DE SERVIÇO CORTESIA 0800 */}
-              <div className="bg-amber-500/10 border border-amber-500/30 p-3 rounded-2xl flex items-center justify-between">
+              <div className="glass-card border border-amber-400/40 p-3 rounded-2xl flex items-center justify-between">
                 <div>
                   <span className="text-xs font-black text-amber-300 flex items-center gap-1">
                     <span>🛡️</span> Serviço 100% Gratuito (Alta Honra)
                   </span>
-                  <span className="text-[10px] text-zinc-400 block">
+                  <span className="text-[10px] text-slate-300 block">
                     Ganhe +50 PTS de Alta Honra ao doar apoio para nômades na estrada.
                   </span>
                 </div>
@@ -868,24 +898,24 @@ export default function Home() {
               </div>
 
               <div>
-                <label className="text-xs font-bold text-zinc-300 block mb-1">Título da Vaga / Serviço</label>
+                <label className="text-xs font-extrabold text-slate-300 block mb-1">Título da Vaga / Serviço</label>
                 <input
                   type="text"
                   required
                   placeholder="Ex: Chuveiro Quente Cortesia ou Tomada 220V Grátis"
                   value={newTitle}
                   onChange={(e) => setNewTitle(e.target.value)}
-                  className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:border-emerald-500"
+                  className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:border-cyan-400"
                 />
               </div>
 
               <div className="grid grid-cols-2 gap-4">
                 <div>
-                  <label className="text-xs font-bold text-zinc-300 block mb-1">Categoria</label>
+                  <label className="text-xs font-extrabold text-slate-300 block mb-1">Categoria</label>
                   <select
                     value={newCategory}
                     onChange={(e) => setNewCategory(e.target.value)}
-                    className="w-full bg-zinc-900 border border-white/10 rounded-xl px-3 py-3 text-sm text-white focus:outline-none focus:border-emerald-500"
+                    className="w-full bg-slate-900 border border-white/10 rounded-xl px-3 py-3 text-sm text-white focus:outline-none focus:border-cyan-400"
                   >
                     {CATEGORIES.filter((c) => c.name !== "Todas").map((c) => (
                       <option key={c.name} value={c.name}>
@@ -897,14 +927,14 @@ export default function Home() {
 
                 {!isFreeService && (
                   <div>
-                    <label className="text-xs font-bold text-zinc-300 block mb-1">Orçamento (R$)</label>
+                    <label className="text-xs font-extrabold text-slate-300 block mb-1">Orçamento (R$)</label>
                     <input
                       type="number"
                       required={!isFreeService}
                       placeholder="Ex: 150"
                       value={newBudget}
                       onChange={(e) => setNewBudget(e.target.value)}
-                      className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:border-emerald-500"
+                      className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:border-cyan-400"
                     />
                   </div>
                 )}
@@ -912,11 +942,11 @@ export default function Home() {
 
               <div className="grid grid-cols-2 gap-4">
                 <div>
-                  <label className="text-xs font-bold text-zinc-300 block mb-1">Modalidade</label>
+                  <label className="text-xs font-extrabold text-slate-300 block mb-1">Modalidade</label>
                   <select
                     value={newType}
                     onChange={(e) => setNewType(e.target.value as "Remoto" | "Presencial")}
-                    className="w-full bg-zinc-900 border border-white/10 rounded-xl px-3 py-3 text-sm text-white focus:outline-none focus:border-emerald-500"
+                    className="w-full bg-slate-900 border border-white/10 rounded-xl px-3 py-3 text-sm text-white focus:outline-none focus:border-cyan-400"
                   >
                     <option value="Presencial">Presencial</option>
                     <option value="Remoto">Remoto</option>
@@ -924,53 +954,53 @@ export default function Home() {
                 </div>
 
                 <div>
-                  <label className="text-xs font-bold text-zinc-300 block mb-1">Cidade / Estado</label>
+                  <label className="text-xs font-extrabold text-slate-300 block mb-1">Cidade / Estado</label>
                   <input
                     type="text"
                     placeholder="Ex: Angra dos Reis, RJ"
                     value={newLocation}
                     onChange={(e) => setNewLocation(e.target.value)}
-                    className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:border-emerald-500"
+                    className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:border-cyan-400"
                   />
                 </div>
               </div>
 
               <div>
-                <label className="text-xs font-bold text-zinc-300 block mb-1">Descrição do Serviço & Comodidades</label>
+                <label className="text-xs font-extrabold text-slate-300 block mb-1">Descrição do Serviço & Comodidades</label>
                 <textarea
                   rows={3}
                   placeholder="Detallhe se há tomadas 220V, Wi-Fi, chuveiro aquecido, fetiches ou termos contratuais..."
                   value={newDescription}
                   onChange={(e) => setNewDescription(e.target.value)}
-                  className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:border-emerald-500"
+                  className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:border-cyan-400"
                 />
               </div>
 
               <div>
-                <label className="text-xs font-bold text-zinc-300 block mb-1">Seu Nome / Contratante</label>
+                <label className="text-xs font-extrabold text-slate-300 block mb-1">Seu Nome / Contratante</label>
                 <input
                   type="text"
                   placeholder={user ? user.name : "Ex: Allan C. (Nômade VIP)"}
                   value={newClientName}
                   onChange={(e) => setNewClientName(e.target.value)}
-                  className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:border-emerald-500"
+                  className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:border-cyan-400"
                 />
               </div>
 
               <button
                 type="submit"
-                className="mt-2 bg-gradient-to-r from-emerald-500 to-teal-400 text-black font-extrabold text-sm py-3.5 rounded-xl transition-all hover:scale-105 shadow-lg shadow-emerald-500/25"
+                className="mt-2 bg-gradient-to-r from-cyan-400 to-teal-400 text-black font-black text-sm py-4 rounded-2xl transition-all hover:scale-105 shadow-xl shadow-cyan-500/25 uppercase tracking-wider"
               >
-                🚀 Publicar na Guilda (+XP & +Honra)
+                🚀 Publicar em Tempo Real (+XP & +Honra)
               </button>
             </form>
           </div>
         </div>
       )}
 
-      {/* ── FOOTER ── */}
-      <footer className="border-t border-white/10 py-12 px-4 text-center text-xs text-zinc-500">
-        <p>© 2026 JobPago.com.br · Sistema RPG, Alta Honra & Loot Vault por Allan Candido.</p>
+      {/* ── FOOTER GLASS ── */}
+      <footer className="border-t border-white/10 py-12 px-4 text-center text-xs text-slate-400">
+        <p>© 2026 JobPago.com.br · Design System Glassmorphic Translúcido por Allan Candido.</p>
       </footer>
     </div>
   );
