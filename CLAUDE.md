@@ -22,9 +22,8 @@
 ## O que está em Produção
 
 - **Página Principal (`src/app/page.tsx`)**:
+  - **Mapa Interativo de Serviços GPS (`MapaServicos.tsx`)**: Renderização dinâmica em Leaflet (Dark Matter) com geolocalização do usuário, marcadores coloridos por categoria e cálculo de rota exata em tempo real (OSRM).
+  - **Categoria Nômade & Infraestrutura**: Mapeamento de pontos de apoio com banheiros/chuveiro quente, tomadas dedicadas de alta carga (110V, 220V, 32A para bikes elétricas, notebooks e motorhomes), vagas seguras para vans/camping e Wi-Fi de alta velocidade.
+  - **Categoria "Serviços Secretos" ㊙️**: Seção temática em estética Anime Maximalista / Cyberpunk Neon, integrando sessões de cosplay, banhos aromáticos sensoriais, fetiches e experiências exclusivas com **Smart Contract P2P** confidencial e pagamentos descentralizados em **Bitcoin (BTC) / Lightning Network**.
   - Hero interativo com busca por palavras-chave e localização.
-  - Filtros por Categoria (Design, Redação, Programação, Video & Edição, Assistente Virtual) e Faixa de Valor (R$ 50 até R$ 500+).
-  - Feed de Vagas/Tarefas em cards detalhados (status, recompensa PIX, badges de urgência e tempo estimado).
-  - Modal de **Publicar Tarefa / Anunciar Vaga**: Formulário completo para inclusão de título, descrição, categoria, valor em PIX e contato.
-  - Modal de **Candidatura Direta**: Formulário express para envio de dados de contato (WhatsApp/E-mail) e chave PIX para recebimento.
-  - Seções de Como Funciona, Garantia de Pagamento e FAQ.
+  - Modal de anúncio de tarefas e candidatura rápida com chave PIX ou BTC.
