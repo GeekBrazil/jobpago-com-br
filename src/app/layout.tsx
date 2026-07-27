@@ -13,8 +13,13 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "JobPago.com.br · Vagas e Serviços Rápidos com Pagamento via PIX",
-  description: "Plataforma de vagas, microtarefas e serviços para freelancers e autônomos com pagamento imediato via PIX.",
+  title: "JobPago.com.br · Ecossistema Nômade, Veleiros, Harley & Investimento",
+  description: "Plataforma para nômades digitais, velejadores, estradeiros de Harley, motorhomes, devs e investidores 50+. Vagas e serviços com pagamento via PIX & Bitcoin.",
+  icons: {
+    icon: "/icon.png",
+    shortcut: "/icon.png",
+    apple: "/icon.png",
+  },
 };
 
 export default function RootLayout({
