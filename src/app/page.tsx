@@ -375,7 +375,16 @@ export default function Home() {
       </header>
 
       {/* ── HERO BANNER GLASSMORPHISM ── */}
-      <section className="relative pt-12 pb-8 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
+      <section className="relative pt-12 pb-8 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto text-center">
+        {/* TOTEM 3D EMBLEM FLUTUANTE TRANSPARENTE */}
+        <div className="flex justify-center mb-4">
+          <img
+            src="/totem_3d_flutuante.png"
+            alt="Totem 3D Nômade JobPago"
+            className="w-28 sm:w-36 h-auto drop-shadow-[0_12px_35px_rgba(0,240,255,0.45)] hover:scale-110 transition-transform duration-500 cursor-pointer"
+          />
+        </div>
+
         <div className="text-center max-w-4xl mx-auto">
           <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full glass-panel border border-cyan-400/40 text-cyan-300 text-xs font-black tracking-widest uppercase mb-6 shadow-xl">
             <span className="w-2 h-2 rounded-full bg-cyan-400 animate-pulse"></span>
