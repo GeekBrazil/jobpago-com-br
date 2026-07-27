@@ -320,9 +320,11 @@ export default function Home() {
       <header className="sticky top-0 z-40 glass-panel border-b border-white/10">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-2xl bg-gradient-to-tr from-cyan-400 via-teal-300 to-amber-300 flex items-center justify-center font-black text-black text-xl shadow-lg shadow-cyan-500/25">
-              ⚡
-            </div>
+            <img
+              src="/icon_flutuante.png"
+              alt="JobPago Logo"
+              className="w-10 h-10 object-contain drop-shadow-[0_0_15px_rgba(0,240,255,0.6)] hover:scale-110 transition-transform duration-300 cursor-pointer"
+            />
             <span className="text-xl sm:text-2xl font-black tracking-tight bg-gradient-to-r from-white via-cyan-100 to-cyan-400 bg-clip-text text-transparent">
               JobPago<span className="text-cyan-400">.com.br</span>
             </span>
