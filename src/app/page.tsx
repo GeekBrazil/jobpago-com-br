@@ -104,11 +104,40 @@ const DEFAULT_RPG_USER: UserRPG = {
   ],
 };
 
-const LEADERBOARD_USERS = [
-  { rank: 1, name: "Allan C.", title: "Paladino Nômade Rank S", guild: "Nômades & Van Life", xp: "14.850 XP", honor: "320 PTS 🛡️", level: 52, icon: "👑" },
-  { rank: 2, name: "Kunoichi VIP", title: "Guardiã Sombra S", guild: "Guardiões Sombra ㊙️", xp: "12.400 XP", honor: "290 PTS 🛡️", level: 46, icon: "㊙️" },
-  { rank: 3, name: "Capitão Ruy", title: "Anfitrião Benemérito", guild: "Nômades & Van Life", xp: "9.350 XP", honor: "450 PTS 🛡️", level: 38, icon: "⚓" },
-  { rank: 4, name: "Dev_Mago", title: "Arch-Mage Tech", guild: "Magos do Código", xp: "8.100 XP", honor: "180 PTS 🛡️", level: 31, icon: "🧙‍♂️" },
+/**
+ * REGRAS DA ALTA HONRA — no lugar do ranking.
+ *
+ * Aqui havia um leaderboard com quatro usuários inventados (Allan C. nível 52,
+ * Kunoichi VIP, Capitão Ruy, Dev_Mago) e XP que ninguém conquistou. Prova
+ * social fabricada some do ar: enquanto não houver gente de verdade no
+ * ranking, a seção mostra COMO se pontua — e esses números são os que o
+ * código realmente concede em `addXpAndHonor`.
+ */
+const REGRAS_HONRA = [
+  {
+    id: "gratuito",
+    icon: "🛡️",
+    xp: "+200 XP",
+    honra: "+50 PTS",
+    title: "Serviço 100% gratuito",
+    desc: "Oferecer apoio de cortesia a quem está na estrada é o que mais vale na régua.",
+  },
+  {
+    id: "publicar",
+    icon: "⚡",
+    xp: "+150 XP",
+    honra: "+10 PTS",
+    title: "Publicar na guilda",
+    desc: "Abrir uma vaga ou serviço para a sua tribo encontrar.",
+  },
+  {
+    id: "nivel",
+    icon: "🎖️",
+    xp: "×1,4",
+    honra: "por nível",
+    title: "Cada nível custa mais",
+    desc: "A meta de XP do próximo nível sobe 40% a cada subida — nível alto não se compra.",
+  },
 ];
 
 const TRIBOS_CANONICAS = [
@@ -325,21 +354,21 @@ export default function Home() {
               alt="JobPago Logo"
               className="w-10 h-10 object-contain drop-shadow-[0_0_15px_rgba(0,240,255,0.6)] hover:scale-110 transition-transform duration-300 cursor-pointer"
             />
-            <span className="text-xl sm:text-2xl font-black tracking-tight bg-gradient-to-r from-white via-cyan-100 to-cyan-400 bg-clip-text text-transparent">
+            <span className="text-xl sm:text-2xl font-black tracking-tight text-white">
               JobPago<span className="text-cyan-400">.com.br</span>
             </span>
           </div>
 
           <div className="hidden lg:flex items-center gap-7 text-xs font-extrabold text-slate-300 uppercase tracking-wider">
             <a href="#mapa-gps" className="hover:text-cyan-400 transition-colors flex items-center gap-1.5">
-              <span>🗺️ Mapa GPS</span>
+              <span>Mapa GPS</span>
             </a>
             <a href="#guildas-leaderboard" className="hover:text-amber-300 transition-colors text-amber-400 flex items-center gap-1">
-              <span>⚔️ Ranking Guildas</span>
+              <span>Alta Honra</span>
             </a>
-            <a href="#nomade-space" className="hover:text-cyan-400 transition-colors">🚐 Nômades</a>
+            <a href="#nomade-space" className="hover:text-cyan-400 transition-colors">Nômades</a>
             <a href="#secret-anime" className="hover:text-pink-400 transition-colors text-pink-400 flex items-center gap-1">
-              <span>㊙️ Secret Anime</span>
+              <span>Serviços Secretos</span>
             </a>
           </div>
 
@@ -360,7 +389,7 @@ export default function Home() {
                     {GUILD_DETAILS[user.guild].icon} {user.guild}
                   </span>
                 </div>
-                <div className="w-8 h-8 rounded-xl bg-gradient-to-br from-amber-400 to-amber-500 text-black font-black text-xs flex items-center justify-center shadow-md">
+                <div className="w-8 h-8 rounded-xl bg-amber-400 text-black font-black text-xs flex items-center justify-center shadow-md">
                   🎁
                 </div>
               </button>
@@ -368,7 +397,7 @@ export default function Home() {
 
             <button
               onClick={() => setIsModalOpen(true)}
-              className="bg-gradient-to-r from-cyan-400 to-teal-400 text-black font-black text-xs sm:text-sm px-5 py-2.5 rounded-2xl shadow-xl shadow-cyan-500/20 transition-all hover:scale-105"
+              className="bg-cyan-400 text-black font-black text-xs sm:text-sm px-5 py-2.5 rounded-2xl shadow-xl transition-all hover:scale-105"
             >
               + Anunciar Vaga
             </button>
@@ -390,11 +419,11 @@ export default function Home() {
         <div className="text-center max-w-4xl mx-auto">
           <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full glass-panel border border-cyan-400/40 text-cyan-300 text-xs font-black tracking-widest uppercase mb-6 shadow-xl">
             <span className="w-2 h-2 rounded-full bg-cyan-400 animate-pulse"></span>
-            Interface Glassmorphism Translúcida • 10 Tribos Conectadas
+            Ecossistema nômade · 10 tribos conectadas
           </div>
 
           <h1 className="text-4xl sm:text-6xl font-black tracking-tight text-white leading-tight">
-            Ecossistema Nômade & Investimento em <span className="bg-gradient-to-r from-cyan-400 via-teal-300 to-amber-300 bg-clip-text text-transparent">Vidro Translúcido</span>
+            Ache quem resolve na estrada e <span className="text-cyan-400">pague no PIX na hora</span>
           </h1>
 
           <p className="mt-4 text-slate-300 text-sm sm:text-base leading-relaxed max-w-2xl mx-auto">
@@ -429,7 +458,7 @@ export default function Home() {
               onChange={(e) => setSearchQuery(e.target.value)}
               className="w-full bg-transparent px-4 py-3 text-sm text-white placeholder-slate-400 focus:outline-none"
             />
-            <button className="w-full sm:w-auto bg-gradient-to-r from-cyan-400 to-teal-400 text-black font-black px-8 py-3 rounded-xl text-sm transition-all hover:scale-105 shrink-0">
+            <button className="w-full sm:w-auto bg-cyan-400 text-black font-black px-8 py-3 rounded-xl text-sm transition-all hover:scale-105 shrink-0">
               🔍 Buscar
             </button>
           </div>
@@ -442,40 +471,43 @@ export default function Home() {
           <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4 mb-6">
             <div>
               <span className="text-xs font-black text-amber-300 uppercase tracking-widest">
-                ⚔️ Ranking de Alta Honra & Escrow
+                Alta Honra
               </span>
               <h2 className="text-2xl sm:text-3xl font-black text-white mt-1">
-                Líderes de Reputação & Investimento 🛡️
+                Como se ganha reputação aqui
               </h2>
+              <p className="text-xs text-slate-300 mt-1 max-w-xl">
+                A régua é pública e vale para todo mundo. O ranking entra quando
+                houver gente de verdade nele.
+              </p>
             </div>
 
             {user && (
               <button
                 onClick={() => setIsRpgModalOpen(true)}
-                className="bg-gradient-to-r from-amber-400 via-amber-500 to-orange-500 text-black font-black px-6 py-3 rounded-2xl text-xs shadow-xl transition-all hover:scale-105"
+                className="bg-amber-400 text-black font-black px-6 py-3 rounded-2xl text-xs shadow-xl transition-all hover:scale-105"
               >
-                🎁 Loot Vault & Benefícios VIP
+                Loot Vault e benefícios
               </button>
             )}
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-            {LEADERBOARD_USERS.map((lb) => (
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+            {REGRAS_HONRA.map((r) => (
               <div
-                key={lb.rank}
-                className="glass-card p-4 rounded-2xl flex items-center gap-3 relative overflow-hidden hover:border-amber-400/60"
+                key={r.id}
+                className="glass-card p-4 rounded-2xl flex items-start gap-3 relative overflow-hidden hover:border-amber-400/60"
               >
-                <div className="text-2xl font-black text-amber-400 w-8 text-center shrink-0">
-                  #{lb.rank}
+                <div className="text-2xl w-8 text-center shrink-0" aria-hidden="true">
+                  {r.icon}
                 </div>
                 <div className="flex-1 min-w-0">
-                  <div className="flex items-center gap-1.5">
-                    <span className="text-xs font-black text-white truncate">{lb.name}</span>
-                    <span className="text-xs">{lb.icon}</span>
-                  </div>
-                  <span className="text-[10px] text-amber-300 font-bold block truncate">{lb.title}</span>
-                  <span className="text-[10px] font-bold text-cyan-300 font-mono mt-1 block">
-                    {lb.xp} | {lb.honor}
+                  <span className="text-xs font-black text-white block">{r.title}</span>
+                  <span className="text-[10px] text-slate-300 block mt-1 leading-relaxed">
+                    {r.desc}
+                  </span>
+                  <span className="text-[10px] font-bold text-amber-300 font-mono mt-2 block">
+                    {r.xp} · {r.honra}
                   </span>
                 </div>
               </div>
@@ -492,7 +524,7 @@ export default function Home() {
               Geolocalização Ativa & OSRM Routing
             </span>
             <h2 className="text-2xl sm:text-3xl font-black text-white mt-1">
-              🗺️ Mapa GPS Translúcido de Serviços
+              Mapa GPS de serviços e rotas
             </h2>
             <p className="text-xs text-slate-300 mt-1">
               Encontre rotas de Harley, fundeios de veleiro, pontos 220V e hubs de investimento.
@@ -575,7 +607,7 @@ export default function Home() {
                 <span>㊙️ 秘密のサービス</span>
                 <span>• Smart Contracts & Bitcoin</span>
               </div>
-              <h2 className="text-3xl sm:text-5xl font-black bg-gradient-to-r from-pink-500 via-purple-400 to-cyan-400 bg-clip-text text-transparent mt-3 tracking-tight">
+              <h2 className="text-3xl sm:text-5xl font-black text-pink-400 mt-3 tracking-tight">
                 Serviços Secretos & Escrow VIP
               </h2>
               <p className="text-sm text-slate-300 mt-2 max-w-2xl leading-relaxed">
@@ -589,9 +621,9 @@ export default function Home() {
                 const el = document.getElementById("vagas");
                 el?.scrollIntoView({ behavior: "smooth" });
               }}
-              className="bg-gradient-to-r from-pink-600 via-purple-600 to-cyan-500 text-white font-black px-8 py-4 rounded-2xl text-sm shadow-xl shadow-pink-500/30 transition-all hover:scale-105 shrink-0 uppercase tracking-wider border border-white/20"
+              className="bg-pink-600 text-white font-black px-8 py-4 rounded-2xl text-sm shadow-xl transition-all hover:scale-105 shrink-0 uppercase tracking-wider border border-white/20"
             >
-              🔥 Explorar Serviços Secretos
+              Explorar serviços secretos
             </button>
           </div>
 
@@ -817,7 +849,7 @@ export default function Home() {
             {selectedJob.isSecret ? (
               <button
                 onClick={() => setIsBtcModalOpen(true)}
-                className="w-full bg-gradient-to-r from-pink-600 via-purple-600 to-cyan-500 text-white font-black text-sm py-4 rounded-2xl shadow-xl shadow-pink-500/30 transition-all hover:scale-105 uppercase tracking-wider"
+                className="w-full bg-pink-600 text-white font-black text-sm py-4 rounded-2xl shadow-xl transition-all hover:scale-105 uppercase tracking-wider"
               >
                 🔐 Assinar Smart Contract & Iniciar Atendimento
               </button>
@@ -826,7 +858,7 @@ export default function Home() {
                 onClick={() => {
                   window.open(`https://wa.me/${selectedJob.whatsapp}?text=Olá,%20tenho%20interesse%20no%20serviço:%20${encodeURIComponent(selectedJob.title)}`, "_blank");
                 }}
-                className="w-full bg-gradient-to-r from-cyan-400 to-teal-400 text-black font-black text-sm py-4 rounded-2xl shadow-xl shadow-cyan-500/25 transition-all hover:scale-105 flex items-center justify-center gap-2"
+                className="w-full bg-cyan-400 text-black font-black text-sm py-4 rounded-2xl shadow-xl shadow-cyan-500/25 transition-all hover:scale-105 flex items-center justify-center gap-2"
               >
                 💬 Entrar em Contato Direto via WhatsApp
               </button>
@@ -867,7 +899,7 @@ export default function Home() {
                 setIsBtcModalOpen(false);
                 setSelectedJob(null);
               }}
-              className="w-full bg-gradient-to-r from-pink-600 to-purple-600 text-white font-black text-sm py-4 rounded-2xl shadow-lg transition-all hover:scale-105 uppercase tracking-wider"
+              className="w-full bg-pink-600 text-white font-black text-sm py-4 rounded-2xl shadow-lg transition-all hover:scale-105 uppercase tracking-wider"
             >
               ✅ Aceitar Termos & Enviar Bitcoin
             </button>
@@ -1000,7 +1032,7 @@ export default function Home() {
 
               <button
                 type="submit"
-                className="mt-2 bg-gradient-to-r from-cyan-400 to-teal-400 text-black font-black text-sm py-4 rounded-2xl transition-all hover:scale-105 shadow-xl shadow-cyan-500/25 uppercase tracking-wider"
+                className="mt-2 bg-cyan-400 text-black font-black text-sm py-4 rounded-2xl transition-all hover:scale-105 shadow-xl shadow-cyan-500/25 uppercase tracking-wider"
               >
                 🚀 Publicar em Tempo Real (+XP & +Honra)
               </button>
