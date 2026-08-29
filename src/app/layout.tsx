@@ -13,8 +13,8 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "JobPago.com.br · Ecossistema Nômade, Veleiros, Harley & Investimento",
-  description: "Plataforma para nômades digitais, velejadores, estradeiros de Harley, motorhomes, devs e investidores 50+. Vagas e serviços com pagamento via PIX & Bitcoin.",
+  title: "JobPago.com.br · Marketplace Nômade & Conexão Direta",
+  description: "Marketplace de conexão direta para nômades digitais, velejadores, estradeiros de Harley, motorhomes, devs e investidores 50+. Vagas e serviços com negociação e PIX combinado direto entre as partes.",
   icons: {
     icon: "/icon.png",
     shortcut: "/icon.png",

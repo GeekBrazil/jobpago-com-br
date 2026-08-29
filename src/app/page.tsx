@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import Link from "next/link";
 import dynamic from "next/dynamic";
 import type { MapPoint } from "@/components/MapaServicos";
 import ModalPerfilRPG, { UserRPG, GUILD_DETAILS } from "@/components/ModalPerfilRPG";
@@ -419,15 +420,15 @@ export default function Home() {
         <div className="text-center max-w-4xl mx-auto">
           <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full glass-panel border border-cyan-400/40 text-cyan-300 text-xs font-black tracking-widest uppercase mb-6 shadow-xl">
             <span className="w-2 h-2 rounded-full bg-cyan-400 animate-pulse"></span>
-            Ecossistema nômade · 10 tribos conectadas
+            PIX COMBINADO DIRETO ENTRE AS PARTES · MARKETPLACE PASSIVO
           </div>
 
           <h1 className="text-4xl sm:text-6xl font-black tracking-tight text-white leading-tight">
-            Ache quem resolve na estrada e <span className="text-cyan-400">pague no PIX na hora</span>
+            Ache quem resolve na estrada com <span className="text-cyan-400">PIX combinado direto</span>
           </h1>
 
           <p className="mt-4 text-slate-300 text-sm sm:text-base leading-relaxed max-w-2xl mx-auto">
-            De motociclistas estradeiros Harley-Davidson a investidores 50+, velejadores, nômades van life, devs e cosplayers. Conecte-se e resgate recompensas reais.
+            De motociclistas estradeiros Harley-Davidson a investidores 50+, velejadores, nômades van life, devs e cosplayers. Conecte-se e combine serviços diretamente sem taxas de intermediação da plataforma.
           </p>
 
           {/* BARRA DE NAVEGAÇÃO DE TRIBOS CANÔNICAS GLASS */}
@@ -461,6 +462,63 @@ export default function Home() {
             <button className="w-full sm:w-auto bg-cyan-400 text-black font-black px-8 py-3 rounded-xl text-sm transition-all hover:scale-105 shrink-0">
               🔍 Buscar
             </button>
+          </div>
+        </div>
+      </section>
+
+      {/* ── SEÇÃO COMO FUNCIONA & ISENÇÃO DE RESPONSABILIDADE ── */}
+      <section id="como-funciona" className="py-8 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
+        <div className="glass-panel p-6 sm:p-8 rounded-3xl border border-white/10 shadow-2xl">
+          <div className="text-center max-w-2xl mx-auto mb-8">
+            <span className="text-xs font-black text-cyan-400 uppercase tracking-widest">
+              Marketplace Passivo & Conexão Direta
+            </span>
+            <h2 className="text-2xl sm:text-3xl font-black text-white mt-1">
+              Como Funciona o JobPago
+            </h2>
+            <p className="text-xs text-slate-300 mt-2">
+              Conexão ponto a ponto entre quem precisa e quem resolve, sem intermediários e sem retenção financeira.
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div className="glass-card p-5 rounded-2xl flex flex-col justify-between">
+              <div>
+                <span className="text-2xl font-black text-cyan-400 font-mono block mb-2">01</span>
+                <h3 className="text-sm font-black text-white">Encontre ou Anuncie</h3>
+                <p className="text-xs text-slate-300 mt-2 leading-relaxed">
+                  Procure no mapa ou publique uma vaga ou oferta de serviço para a sua tribo nômade encontrar.
+                </p>
+              </div>
+            </div>
+
+            <div className="glass-card p-5 rounded-2xl flex flex-col justify-between">
+              <div>
+                <span className="text-2xl font-black text-cyan-400 font-mono block mb-2">02</span>
+                <h3 className="text-sm font-black text-white">Combine Diretamente</h3>
+                <p className="text-xs text-slate-300 mt-2 leading-relaxed">
+                  Conecte-se via WhatsApp ou canal privado e alinhe escopo, prazos, entregáveis e valores sem intermediação.
+                </p>
+              </div>
+            </div>
+
+            <div className="glass-card p-5 rounded-2xl flex flex-col justify-between">
+              <div>
+                <span className="text-2xl font-black text-cyan-400 font-mono block mb-2">03</span>
+                <h3 className="text-sm font-black text-white">PIX Direto entre as Partes</h3>
+                <p className="text-xs text-slate-300 mt-2 leading-relaxed">
+                  Combinado o serviço, o contratante paga o prestador diretamente via PIX — a plataforma não retém, não processa e não custodia o valor.
+                </p>
+              </div>
+            </div>
+          </div>
+
+          {/* Isenção de responsabilidade explícita */}
+          <div className="mt-6 p-4 rounded-2xl bg-white/[0.03] border border-white/10 flex items-start gap-3 text-xs text-slate-400 leading-relaxed">
+            <span className="text-lg shrink-0" aria-hidden="true">⚖️</span>
+            <div>
+              <strong className="text-slate-300">Isenção de Responsabilidade:</strong> O JobPago atua exclusivamente como mural de classificados e marketplace passivo. A negociação, a execução e a liquidação financeira dos serviços são de responsabilidade exclusiva entre contratante e prestador. A plataforma não intermedeia pagamentos nem garante obrigações entre as partes.
+            </div>
           </div>
         </div>
       </section>
@@ -1043,7 +1101,20 @@ export default function Home() {
 
       {/* ── FOOTER GLASS ── */}
       <footer className="border-t border-white/10 py-12 px-4 text-center text-xs text-slate-400">
-        <p>© 2026 JobPago.com.br · Design System Glassmorphic Translúcido por Allan Candido.</p>
+        <div className="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4">
+          <p>© {new Date().getFullYear()} JobPago.com.br · Marketplace Passivo mantido por Allan Candido.</p>
+          <div className="flex items-center gap-6 text-xs text-slate-400">
+            <Link href="/termos" className="hover:text-cyan-400 transition-colors">
+              Termos de Uso
+            </Link>
+            <Link href="/privacidade" className="hover:text-cyan-400 transition-colors">
+              Política de Privacidade
+            </Link>
+            <a href="mailto:allan@jobpago.com.br" className="hover:text-cyan-400 transition-colors">
+              allan@jobpago.com.br
+            </a>
+          </div>
+        </div>
       </footer>
     </div>
   );
