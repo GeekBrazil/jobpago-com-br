@@ -23,7 +23,7 @@
 
 - **Públicos-Alvo Alcançados (10 Tribos Canônicas)**:
   1. 🏍️ **Motociclistas Harley-Davidson & Custom Brasil**: Rotas de estradeiros, motoclubes e apoio.
-  2. 💼 **Homens Investidores 50+**: Aportes em projetos, leilões imobiliários, escrow e contratos seguros.
+  2. 💼 **Homens Investidores 50+**: Aportes em projetos e parcerias comerciais.
   3. 🚐 **Moradores de Motorhome & Van Life**: Chuveiros aquecidos, cargas 220V/32A, água e camping.
   4. ⚓ **Moradores de Veleiro & Velejadores**: Cartas náuticas, poitas/fundeios e tábua de marés.
   5. 💻 **Desenvolvedores & Tech**: Co-working ao ar livre, Wi-Fi alta velocidade e rotas de código.

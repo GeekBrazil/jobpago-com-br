@@ -134,7 +134,7 @@ const REGRAS_HONRA = [
 
 const TRIBOS_CANONICAS = [
   { id: "harley", name: "Harley Bikers", icon: "🏍️", desc: "Estradeiros & Custom Bikes" },
-  { id: "investors", name: "Investidores 50+", icon: "💼", desc: "Aportes & Escrow Imobiliário" },
+  { id: "investors", name: "Investidores 50+", icon: "💼", desc: "Aportes & Negócios Locais" },
   { id: "liveaboards", name: "Velejadores", icon: "⛵", desc: "Veleiros & Fundeios Náuticos" },
   { id: "vanlife", name: "Van Life", icon: "🚐", desc: "Motorhomes & Camping 220V" },
   { id: "devs", name: "Devs & Tech", icon: "💻", desc: "Full-Stack & Automação IA" },
@@ -464,7 +464,7 @@ export default function Home() {
               Mapa GPS de serviços e rotas
             </h2>
             <p className="text-xs text-slate-300 mt-1">
-              Encontre rotas de Harley, fundeios de veleiro, pontos 220V e hubs de investimento.
+              Encontre rotas de Harley, fundeios de veleiro, pontos 220V e suporte para sua viagem.
             </p>
           </div>
 
