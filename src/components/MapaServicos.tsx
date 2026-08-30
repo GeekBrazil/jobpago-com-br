@@ -19,11 +19,13 @@ interface MapaServicosProps {
   points: MapPoint[];
   selectedCategory: string;
   onSelectPoint: (point: MapPoint) => void;
+  allowSecrets?: boolean;
 }
 
 // Icones por Categoria
 const CATEGORY_COLORS: Record<string, string> = {
   "Nômade & Infra": "#10b981",       // Esmeralda / Lime
+  "Harley & Moto-Trails": "#f97316", // Laranja Harley
   "Reformas & Reparos": "#f59e0b",   // Amarelo
   "Tecnologia & TI": "#06b6d4",     // Cyan
   "Design & Mídia": "#a855f7",      // Roxo
@@ -37,6 +39,7 @@ export default function MapaServicos({
   points,
   selectedCategory,
   onSelectPoint,
+  allowSecrets = false,
 }: MapaServicosProps) {
   const mapContainerRef = useRef<HTMLDivElement>(null);
   const mapRef = useRef<L.Map | null>(null);
@@ -46,7 +49,7 @@ export default function MapaServicos({
   const [userPos, setUserPos] = useState<[number, number] | null>(null);
   const [activeDestination, setActiveDestination] = useState<MapPoint | null>(null);
   const [routeInfo, setRouteInfo] = useState<{ distanceKm: string; durationMin: string } | null>(null);
-  const [geoError, setGeoError] = useState<string | null>(null);
+  const [, setGeoError] = useState<string | null>(null);
 
   // Inicializar o Mapa
   useEffect(() => {
@@ -59,10 +62,15 @@ export default function MapaServicos({
       zoomControl: false,
     });
 
-    // Tiles CartoDB Dark Matter para o visual escuro elegante
-    L.tileLayer("https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png", {
-      attribution: '&copy; <a href="https://carto.com/">CARTO</a> &copy; OpenStreetMap',
-      maxZoom: 19,
+    // Camada Esri Dark Gray Base + Reference (Rápida, sem API Key, sem marcas d'água)
+    L.tileLayer("https://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Dark_Gray_Base/MapServer/tile/{z}/{y}/{x}", {
+      attribution: '&copy; Esri &copy; OpenStreetMap',
+      maxZoom: 16,
+    }).addTo(map);
+
+    L.tileLayer("https://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Dark_Gray_Reference/MapServer/tile/{z}/{y}/{x}", {
+      attribution: '',
+      maxZoom: 16,
     }).addTo(map);
 
     L.control.zoom({ position: "bottomright" }).addTo(map);
@@ -70,7 +78,7 @@ export default function MapaServicos({
     mapRef.current = map;
 
     // Obter Geolocalização do Usuário
-    if (navigator.geolocation) {
+    if (typeof window !== "undefined" && navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(
         (pos) => {
           const uLat = pos.coords.latitude;
@@ -91,7 +99,7 @@ export default function MapaServicos({
 
           map.setView(uPos, 13);
         },
-        (err) => {
+        () => {
           setGeoError("Permissão de localização não concedida. Usando centro padrão.");
         }
       );
@@ -117,7 +125,11 @@ export default function MapaServicos({
       }
     });
 
-    const filtered = points.filter(
+    const sanitizedPoints = allowSecrets
+      ? points
+      : points.filter((p) => !p.isSecret && !p.category.includes("Secretos"));
+
+    const filtered = sanitizedPoints.filter(
       (p) => selectedCategory === "Todas" || p.category === selectedCategory
     );
 
@@ -195,7 +207,7 @@ export default function MapaServicos({
         }
       });
     });
-  }, [points, selectedCategory]);
+  }, [points, selectedCategory, allowSecrets]);
 
   // Função para Traçar Rota (OSRM API pública)
   const handleCalculateRoute = async (destination: MapPoint) => {
@@ -203,7 +215,6 @@ export default function MapaServicos({
     const map = mapRef.current;
     if (!map) return;
 
-    // Se o usuário não tiver geolocalização ativa, usar um ponto aproximado padrão
     const originCoords = userPos || [-23.000, -44.300];
 
     try {
@@ -238,7 +249,6 @@ export default function MapaServicos({
       }
     } catch (e) {
       console.error("Erro ao calcular rota:", e);
-      // Fallback: linha reta se OSRM falhar
       if (routePolylineRef.current) map.removeLayer(routePolylineRef.current);
       const fallbackPolyline = L.polyline([originCoords, [destination.lat, destination.lng]], {
         color: "#10b981",
@@ -258,6 +268,10 @@ export default function MapaServicos({
     setRouteInfo(null);
   };
 
+  const visiblePointsCount = allowSecrets
+    ? points.length
+    : points.filter((p) => !p.isSecret && !p.category.includes("Secretos")).length;
+
   return (
     <div className="relative w-full h-[520px] rounded-3xl overflow-hidden border border-white/15 bg-[#0a0c14] shadow-2xl">
       <div ref={mapContainerRef} className="w-full h-full" />
@@ -272,7 +286,7 @@ export default function MapaServicos({
             </span>
           </div>
           <p className="text-[11px] text-zinc-400 mt-1">
-            {points.length} pontos disponíveis na região
+            {visiblePointsCount} pontos disponíveis na região
           </p>
         </div>
 
@@ -312,9 +326,11 @@ export default function MapaServicos({
         <div className="flex items-center gap-1.5 text-[11px] text-zinc-300">
           <span className="w-2.5 h-2.5 rounded-full bg-cyan-400"></span> Tech
         </div>
-        <div className="flex items-center gap-1.5 text-[11px] text-zinc-300">
-          <span className="w-2.5 h-2.5 rounded-full bg-pink-500"></span> Secretos ㊙️
-        </div>
+        {allowSecrets && (
+          <div className="flex items-center gap-1.5 text-[11px] text-zinc-300">
+            <span className="w-2.5 h-2.5 rounded-full bg-pink-500"></span> Secretos ㊙️
+          </div>
+        )}
       </div>
     </div>
   );

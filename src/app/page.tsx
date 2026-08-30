@@ -105,15 +105,6 @@ const DEFAULT_RPG_USER: UserRPG = {
   ],
 };
 
-/**
- * REGRAS DA ALTA HONRA — no lugar do ranking.
- *
- * Aqui havia um leaderboard com quatro usuários inventados (Allan C. nível 52,
- * Kunoichi VIP, Capitão Ruy, Dev_Mago) e XP que ninguém conquistou. Prova
- * social fabricada some do ar: enquanto não houver gente de verdade no
- * ranking, a seção mostra COMO se pontua — e esses números são os que o
- * código realmente concede em `addXpAndHonor`.
- */
 const REGRAS_HONRA = [
   {
     id: "gratuito",
@@ -156,11 +147,12 @@ const CATEGORIES = [
   { name: "Todas", icon: "🔥" },
   { name: "Harley & Moto-Trails", icon: "🏍️" },
   { name: "Nômade & Infra", icon: "🚐" },
-  { name: "Serviços Secretos ㊙️", icon: "🔞" },
   { name: "Reformas & Reparos", icon: "🛠️" },
   { name: "Tecnologia & TI", icon: "💻" },
   { name: "Design & Mídia", icon: "🎨" },
   { name: "Transporte & Fretes", icon: "🚚" },
+  { name: "Fotografia & Eventos", icon: "📸" },
+  { name: "Aulas & Consultoria", icon: "📚" },
 ];
 
 export default function Home() {
@@ -171,7 +163,6 @@ export default function Home() {
   const [searchQuery, setSearchQuery] = useState("");
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedJob, setSelectedJob] = useState<Job | null>(null);
-  const [isBtcModalOpen, setIsBtcModalOpen] = useState(false);
 
   // User State & RPG Modals
   const [user, setUser] = useState<UserRPG | null>(null);
@@ -205,18 +196,18 @@ export default function Home() {
   useEffect(() => {
     fetchJobs();
 
-    const savedUser = localStorage.getItem("jobpago_rpg_user");
-    if (savedUser) {
+    const storedUser = localStorage.getItem("jobpago_rpg_user");
+    if (storedUser) {
       try {
-        setUser(JSON.parse(savedUser));
-      } catch (e) {}
+        setUser(JSON.parse(storedUser));
+      } catch {
+        setUser(DEFAULT_RPG_USER);
+        localStorage.setItem("jobpago_rpg_user", JSON.stringify(DEFAULT_RPG_USER));
+      }
     } else {
       setUser(DEFAULT_RPG_USER);
       localStorage.setItem("jobpago_rpg_user", JSON.stringify(DEFAULT_RPG_USER));
     }
-
-    const interval = setInterval(fetchJobs, 5000);
-    return () => clearInterval(interval);
   }, []);
 
   const showToast = (msg: string) => {
@@ -224,29 +215,11 @@ export default function Home() {
     setTimeout(() => setToastMessage(null), 4000);
   };
 
-  const handleUpdateGuild = (newGuild: UserRPG["guild"]) => {
-    if (!user) return;
-    const updated = { ...user, guild: newGuild };
-    setUser(updated);
-    localStorage.setItem("jobpago_rpg_user", JSON.stringify(updated));
-    showToast(`⚔️ Você se filiou à ${newGuild}! Insígnia atualizada.`);
-  };
-
-  const handleClaimReward = (rewardId: string) => {
-    if (!user) return;
-    const updatedRewards = user.rewards.map((r) =>
-      r.id === rewardId ? { ...r, claimed: true } : r
-    );
-    const updatedUser = { ...user, rewards: updatedRewards };
-    setUser(updatedUser);
-    localStorage.setItem("jobpago_rpg_user", JSON.stringify(updatedUser));
-    showToast("🎉 Benefício resgatado! Seu voucher cortesia está ativo no perfil.");
-  };
-
   const addXpAndHonor = (xpAmount: number, honorAmount: number, reason: string) => {
     if (!user) return;
-    const newXp = user.xp + xpAmount;
-    const newHonor = user.honorScore + honorAmount;
+
+    let newXp = user.xp + xpAmount;
+    let newHonor = user.honorScore + honorAmount;
     let newLevel = user.level;
     let nextXp = user.nextLevelXp;
 
@@ -273,7 +246,6 @@ export default function Home() {
     e.preventDefault();
     if (!newTitle) return;
 
-    const isSecret = newCategory.includes("Secretos");
     const budgetVal = isFreeService ? 0 : Number(newBudget || 0);
     const client = newClientName || user?.name || "Allan C. (Nômade VIP)";
 
@@ -286,8 +258,8 @@ export default function Home() {
       description: newDescription || "Serviço cadastrado na guilda.",
       clientName: client,
       whatsapp: "5524993326966",
-      isSecret,
-      btcAccepted: isSecret,
+      isSecret: false,
+      btcAccepted: false,
       isFreeHonor: isFreeService,
     };
 
@@ -321,7 +293,10 @@ export default function Home() {
     }
   };
 
-  const filteredJobs = jobs.filter((job) => {
+  // Filtragem estrita: NADA de serviços secretos na home pública
+  const publicJobs = jobs.filter((job) => !job.isSecret && !job.category.includes("Secretos"));
+
+  const filteredJobs = publicJobs.filter((job) => {
     const matchesCategory = selectedCategory === "Todas" || job.category === selectedCategory;
     const matchesSearch = job.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
                           job.description.toLowerCase().includes(searchQuery.toLowerCase()) ||
@@ -368,9 +343,13 @@ export default function Home() {
               <span>Alta Honra</span>
             </a>
             <a href="#nomade-space" className="hover:text-cyan-400 transition-colors">Nômades</a>
-            <a href="#secret-anime" className="hover:text-pink-400 transition-colors text-pink-400 flex items-center gap-1">
-              <span>Serviços Secretos</span>
-            </a>
+            <Link
+              href="/secretos"
+              className="hover:text-pink-400 transition-colors text-pink-400/90 flex items-center gap-1.5 px-3 py-1 rounded-xl bg-pink-500/10 border border-pink-500/30 hover:border-pink-500/60"
+            >
+              <span>🔒 Serviços Secretos</span>
+              <span className="text-[9px] bg-pink-500 text-white font-black px-1.5 py-0.2 rounded-full">VIP 18+</span>
+            </Link>
           </div>
 
           <div className="flex items-center gap-3">
@@ -450,133 +429,33 @@ export default function Home() {
             ))}
           </div>
 
-          {/* BUSCA GLASS */}
-          <div className="mt-8 flex flex-col sm:flex-row items-center gap-3 glass-panel p-2 rounded-2xl shadow-2xl border border-white/20 max-w-2xl mx-auto">
-            <input
-              type="text"
-              placeholder="Busque por 'Harley', 'Investimento 50+', 'Veleiro', 'Cosplay'..."
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-              className="w-full bg-transparent px-4 py-3 text-sm text-white placeholder-slate-400 focus:outline-none"
-            />
-            <button className="w-full sm:w-auto bg-cyan-400 text-black font-black px-8 py-3 rounded-xl text-sm transition-all hover:scale-105 shrink-0">
-              🔍 Buscar
-            </button>
-          </div>
-        </div>
-      </section>
-
-      {/* ── SEÇÃO COMO FUNCIONA & ISENÇÃO DE RESPONSABILIDADE ── */}
-      <section id="como-funciona" className="py-8 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
-        <div className="glass-panel p-6 sm:p-8 rounded-3xl border border-white/10 shadow-2xl">
-          <div className="text-center max-w-2xl mx-auto mb-8">
-            <span className="text-xs font-black text-cyan-400 uppercase tracking-widest">
-              Marketplace Passivo & Conexão Direta
-            </span>
-            <h2 className="text-2xl sm:text-3xl font-black text-white mt-1">
-              Como Funciona o JobPago
-            </h2>
-            <p className="text-xs text-slate-300 mt-2">
-              Conexão ponto a ponto entre quem precisa e quem resolve, sem intermediários e sem retenção financeira.
-            </p>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            <div className="glass-card p-5 rounded-2xl flex flex-col justify-between">
-              <div>
-                <span className="text-2xl font-black text-cyan-400 font-mono block mb-2">01</span>
-                <h3 className="text-sm font-black text-white">Encontre ou Anuncie</h3>
-                <p className="text-xs text-slate-300 mt-2 leading-relaxed">
-                  Procure no mapa ou publique uma vaga ou oferta de serviço para a sua tribo nômade encontrar.
-                </p>
-              </div>
-            </div>
-
-            <div className="glass-card p-5 rounded-2xl flex flex-col justify-between">
-              <div>
-                <span className="text-2xl font-black text-cyan-400 font-mono block mb-2">02</span>
-                <h3 className="text-sm font-black text-white">Combine Diretamente</h3>
-                <p className="text-xs text-slate-300 mt-2 leading-relaxed">
-                  Conecte-se via WhatsApp ou canal privado e alinhe escopo, prazos, entregáveis e valores sem intermediação.
-                </p>
-              </div>
-            </div>
-
-            <div className="glass-card p-5 rounded-2xl flex flex-col justify-between">
-              <div>
-                <span className="text-2xl font-black text-cyan-400 font-mono block mb-2">03</span>
-                <h3 className="text-sm font-black text-white">PIX Direto entre as Partes</h3>
-                <p className="text-xs text-slate-300 mt-2 leading-relaxed">
-                  Combinado o serviço, o contratante paga o prestador diretamente via PIX — a plataforma não retém, não processa e não custodia o valor.
-                </p>
-              </div>
-            </div>
-          </div>
-
-          {/* Isenção de responsabilidade explícita */}
-          <div className="mt-6 p-4 rounded-2xl bg-white/[0.03] border border-white/10 flex items-start gap-3 text-xs text-slate-400 leading-relaxed">
-            <span className="text-lg shrink-0" aria-hidden="true">⚖️</span>
-            <div>
-              <strong className="text-slate-300">Isenção de Responsabilidade:</strong> O JobPago atua exclusivamente como mural de classificados e marketplace passivo. A negociação, a execução e a liquidação financeira dos serviços são de responsabilidade exclusiva entre contratante e prestador. A plataforma não intermedeia pagamentos nem garante obrigações entre as partes.
+          {/* BARRA DE BUSCA RÁPIDA */}
+          <div className="mt-6 max-w-xl mx-auto">
+            <div className="relative glass-panel rounded-2xl p-2 flex items-center border border-white/20 shadow-2xl">
+              <span className="text-slate-400 ml-3 mr-2 text-lg">🔍</span>
+              <input
+                type="text"
+                placeholder="Buscar vagas, cidades ou categorias (ex: Chuveiro, Paraty, Harley, Dev)..."
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                className="w-full bg-transparent border-none text-white text-xs sm:text-sm focus:outline-none placeholder-slate-400"
+              />
+              {searchQuery && (
+                <button
+                  onClick={() => setSearchQuery("")}
+                  className="text-slate-400 hover:text-white text-xs px-2"
+                >
+                  ✕
+                </button>
+              )}
             </div>
           </div>
         </div>
       </section>
 
-      {/* ── SEÇÃO LEADERBOARD GUILDAS & MERCENÁRIOS RPG ── */}
-      <section id="guildas-leaderboard" className="py-8 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
-        <div className="glass-panel glass-gold p-6 sm:p-8 rounded-3xl relative overflow-hidden shadow-2xl">
-          <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4 mb-6">
-            <div>
-              <span className="text-xs font-black text-amber-300 uppercase tracking-widest">
-                Alta Honra
-              </span>
-              <h2 className="text-2xl sm:text-3xl font-black text-white mt-1">
-                Como se ganha reputação aqui
-              </h2>
-              <p className="text-xs text-slate-300 mt-1 max-w-xl">
-                A régua é pública e vale para todo mundo. O ranking entra quando
-                houver gente de verdade nele.
-              </p>
-            </div>
-
-            {user && (
-              <button
-                onClick={() => setIsRpgModalOpen(true)}
-                className="bg-amber-400 text-black font-black px-6 py-3 rounded-2xl text-xs shadow-xl transition-all hover:scale-105"
-              >
-                Loot Vault e benefícios
-              </button>
-            )}
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-            {REGRAS_HONRA.map((r) => (
-              <div
-                key={r.id}
-                className="glass-card p-4 rounded-2xl flex items-start gap-3 relative overflow-hidden hover:border-amber-400/60"
-              >
-                <div className="text-2xl w-8 text-center shrink-0" aria-hidden="true">
-                  {r.icon}
-                </div>
-                <div className="flex-1 min-w-0">
-                  <span className="text-xs font-black text-white block">{r.title}</span>
-                  <span className="text-[10px] text-slate-300 block mt-1 leading-relaxed">
-                    {r.desc}
-                  </span>
-                  <span className="text-[10px] font-bold text-amber-300 font-mono mt-2 block">
-                    {r.xp} · {r.honra}
-                  </span>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* ── SEÇÃO 1: MAPA INTERATIVO DE SERVIÇOS & ROTAS GLASS ── */}
+      {/* ── SEÇÃO 1: MAPA GPS DE SERVIÇOS & ROTAS GLASSMORPHISM ── */}
       <section id="mapa-gps" className="py-8 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
-        <div className="flex flex-col md:flex-row items-start md:items-center justify-between mb-6 gap-4">
+        <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4 mb-6">
           <div>
             <span className="text-xs font-black text-cyan-400 uppercase tracking-widest">
               Geolocalização Ativa & OSRM Routing
@@ -606,11 +485,12 @@ export default function Home() {
           </div>
         </div>
 
-        {/* COMPONENTE DO MAPA */}
+        {/* COMPONENTE DO MAPA PÚBLICO (SEM SERVIÇOS SECRETOS) */}
         <MapaServicos
-          points={jobs}
+          points={publicJobs}
           selectedCategory={selectedCategory}
           onSelectPoint={(point) => setSelectedJob(point as Job)}
+          allowSecrets={false}
         />
       </section>
 
@@ -656,53 +536,7 @@ export default function Home() {
         </div>
       </section>
 
-      {/* ── SEÇÃO 3: SERVIÇOS SECRETOS GLASS ── */}
-      <section id="secret-anime" className="py-12 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
-        <div className="glass-panel glass-pink p-6 sm:p-10 rounded-3xl relative overflow-hidden">
-          <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
-            <div>
-              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-pink-500/20 border border-pink-500/50 text-pink-400 text-xs font-black uppercase tracking-widest">
-                <span>㊙️ 秘密のサービス</span>
-                <span>• Smart Contracts & Bitcoin</span>
-              </div>
-              <h2 className="text-3xl sm:text-5xl font-black text-pink-400 mt-3 tracking-tight">
-                Serviços Secretos & Escrow VIP
-              </h2>
-              <p className="text-sm text-slate-300 mt-2 max-w-2xl leading-relaxed">
-                Sessões cosplay, banhos aromáticos sensoriais e experiências exclusivas com sigilo contratual garantido via Bitcoin e pagamentos P2P.
-              </p>
-            </div>
-
-            <button
-              onClick={() => {
-                setSelectedCategory("Serviços Secretos ㊙️");
-                const el = document.getElementById("vagas");
-                el?.scrollIntoView({ behavior: "smooth" });
-              }}
-              className="bg-pink-600 text-white font-black px-8 py-4 rounded-2xl text-sm shadow-xl transition-all hover:scale-105 shrink-0 uppercase tracking-wider border border-white/20"
-            >
-              Explorar serviços secretos
-            </button>
-          </div>
-
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mt-8 pt-6 border-t border-pink-500/30">
-            <div className="glass-card p-4 rounded-2xl">
-              <span className="text-pink-400 font-extrabold text-xs block uppercase">🔒 Contrato Encriptado</span>
-              <p className="text-xs text-slate-300 mt-1">Termos de confidencialidade gravados com assinatura digital.</p>
-            </div>
-            <div className="glass-card p-4 rounded-2xl">
-              <span className="text-purple-400 font-extrabold text-xs block uppercase">⚡ Bitcoin & Lightning Network</span>
-              <p className="text-xs text-slate-300 mt-1">Pagamentos liquidados com anonimato preservado.</p>
-            </div>
-            <div className="glass-card p-4 rounded-2xl">
-              <span className="text-cyan-400 font-extrabold text-xs block uppercase">🎭 Cosplay & Banhos Sensoriais</span>
-              <p className="text-xs text-slate-300 mt-1">Experiências estéticas imersivas com privacidade total.</p>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* ── SEÇÃO 4: FEED DE VAGAS GLASSMORPHISM ── */}
+      {/* ── SEÇÃO 3: FEED DE VAGAS GLASSMORPHISM ── */}
       <section id="vagas" className="py-12 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
         <div className="flex items-center justify-between mb-8">
           <div>
@@ -752,7 +586,6 @@ export default function Home() {
         {/* LISTA DE CARDS GLASS */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {filteredJobs.map((job) => {
-            const isSecret = job.isSecret || job.category.includes("Secretos");
             const isNomad = job.category.includes("Nômade");
             const isFree = job.budget === 0 || job.isFreeHonor;
 
@@ -763,8 +596,6 @@ export default function Home() {
                 className={`glass-card rounded-3xl p-6 cursor-pointer relative flex flex-col justify-between ${
                   isFree
                     ? "glass-gold"
-                    : isSecret
-                    ? "glass-pink"
                     : isNomad
                     ? "glass-cyan"
                     : ""
@@ -772,60 +603,53 @@ export default function Home() {
               >
                 <div>
                   <div className="flex items-center justify-between gap-2 mb-3">
-                    <span
-                      className={`text-[10px] font-black uppercase tracking-wider px-3 py-1 rounded-full ${
-                        isFree
-                          ? "bg-amber-500/20 text-amber-300 border border-amber-500/40"
-                          : isSecret
-                          ? "bg-pink-500/20 text-pink-400 border border-pink-500/40"
-                          : isNomad
-                          ? "bg-cyan-500/20 text-cyan-300 border border-cyan-500/40"
-                          : "bg-white/10 text-slate-300"
-                      }`}
-                    >
+                    <span className="text-xs font-black px-2.5 py-1 rounded-xl bg-white/10 text-cyan-300 border border-white/10">
                       {job.category}
                     </span>
-
-                    <span className="text-xs text-slate-400 font-semibold">{job.postedAgo}</span>
+                    <span className="text-[10px] text-slate-400">{job.postedAgo}</span>
                   </div>
 
-                  <h3 className="text-lg font-bold text-white leading-snug line-clamp-2">
+                  <h3 className="text-lg font-black text-white leading-snug mb-2">
                     {job.title}
                   </h3>
 
-                  <p className="text-xs text-slate-300 mt-2 line-clamp-3 leading-relaxed">
+                  <p className="text-xs text-slate-300 line-clamp-3 mb-4 leading-relaxed">
                     {job.description}
                   </p>
 
-                  {/* Badges de Serviços Nômades */}
                   {job.nomadFeatures && (
-                    <div className="flex flex-wrap gap-1.5 mt-3">
-                      {job.nomadFeatures.map((feat) => (
-                        <span key={feat} className="text-[10px] font-bold bg-cyan-950/60 text-cyan-300 border border-cyan-500/30 px-2 py-0.5 rounded-md">
-                          {feat}
+                    <div className="flex flex-wrap gap-1.5 mb-4">
+                      {job.nomadFeatures.map((f, i) => (
+                        <span key={i} className="text-[10px] bg-cyan-950/60 border border-cyan-400/30 text-cyan-300 px-2 py-0.5 rounded-md">
+                          {f}
                         </span>
                       ))}
                     </div>
                   )}
                 </div>
 
-                <div className="mt-6 pt-4 border-t border-white/10 flex items-center justify-between">
-                  <div>
-                    <span className="text-[10px] font-bold text-slate-400 uppercase block">Recompensa</span>
-                    {isFree ? (
-                      <span className="text-lg font-black text-amber-300 flex items-center gap-1">
-                        <span>🛡️</span> CORTESIA 0800
+                <div className="pt-4 border-t border-white/10">
+                  <div className="flex items-center justify-between mb-4">
+                    <div>
+                      <span className="text-[10px] text-slate-400 block uppercase">Orçamento Combinado</span>
+                      <span className={`text-xl font-black ${isFree ? "text-amber-400" : "text-cyan-400"}`}>
+                        {isFree ? "🛡️ 100% CORTESIA" : `R$ ${job.budget.toLocaleString("pt-BR")}`}
                       </span>
-                    ) : (
-                      <span className={`text-xl font-black ${isSecret ? "text-pink-400" : "text-cyan-400"}`}>
-                        R$ {job.budget.toLocaleString("pt-BR")}
-                      </span>
-                    )}
+                    </div>
+
+                    <div className="flex items-center gap-1">
+                      {job.isPixImmediate && (
+                        <span className="text-xs font-black bg-emerald-500/20 text-emerald-300 border border-emerald-500/40 px-2 py-0.5 rounded-lg flex items-center gap-0.5">
+                          <span>⚡</span> PIX Direto
+                        </span>
+                      )}
+                    </div>
                   </div>
 
-                  <button className="bg-white/10 hover:bg-white/20 text-white font-extrabold text-xs px-4 py-2.5 rounded-xl transition-all">
-                    Ver Detalhes →
-                  </button>
+                  <div className="flex items-center justify-between text-xs text-slate-400 pt-2 border-t border-white/5">
+                    <span>📍 {job.location}</span>
+                    <span className="text-cyan-300 font-bold">Ver Contato →</span>
+                  </div>
                 </div>
               </div>
             );
@@ -833,20 +657,58 @@ export default function Home() {
         </div>
       </section>
 
-      {/* ── MODAL FICHA DE PERSONAGEM RPG & LOOT VAULT GLASS ── */}
-      {isRpgModalOpen && user && (
-        <ModalPerfilRPG
-          user={user}
-          onClose={() => setIsRpgModalOpen(false)}
-          onUpdateGuild={handleUpdateGuild}
-          onClaimReward={handleClaimReward}
-        />
-      )}
+      {/* ── SEÇÃO 4: SISTEMA DE ALTA HONRA & REGRAS DE REPUTAÇÃO ── */}
+      <section id="guildas-leaderboard" className="py-12 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
+        <div className="glass-panel glass-gold p-6 sm:p-10 rounded-3xl relative overflow-hidden shadow-2xl">
+          <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4 mb-8">
+            <div>
+              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-amber-400/20 text-amber-300 border border-amber-400/40 text-xs font-black uppercase tracking-wider">
+                <span>🛡️</span> Sistema de Gamificação & Reputação
+              </div>
+              <h2 className="text-3xl sm:text-4xl font-black text-white mt-2">
+                Como Funciona a Alta Honra
+              </h2>
+              <p className="text-xs sm:text-sm text-slate-300 mt-1 max-w-2xl">
+                A régua de honra mede quem mais agrega valor à comunidade na estrada. Pontue oferecendo serviços gratuitos, anunciando na guilda e construindo reputação real.
+              </p>
+            </div>
 
-      {/* ── MODAL DETALHES DO SERVIÇO GLASS ── */}
+            {user && (
+              <button
+                onClick={() => setIsRpgModalOpen(true)}
+                className="bg-amber-400 hover:bg-amber-300 text-black font-black text-xs sm:text-sm px-6 py-3 rounded-2xl shadow-xl transition-all hover:scale-105 shrink-0"
+              >
+                🎁 Abrir Meu Painel de Recompensas
+              </button>
+            )}
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            {REGRAS_HONRA.map((regra) => (
+              <div key={regra.id} className="glass-card p-6 rounded-2xl border border-amber-400/20 flex flex-col justify-between">
+                <div>
+                  <span className="text-3xl block mb-3">{regra.icon}</span>
+                  <h3 className="text-lg font-black text-white mb-1">{regra.title}</h3>
+                  <p className="text-xs text-slate-300 leading-relaxed">{regra.desc}</p>
+                </div>
+                <div className="mt-6 pt-4 border-t border-white/10 flex items-center justify-between">
+                  <span className="text-xs font-black text-cyan-300 bg-cyan-950/60 border border-cyan-400/30 px-2.5 py-1 rounded-lg">
+                    {regra.xp}
+                  </span>
+                  <span className="text-xs font-black text-amber-300 bg-amber-950/60 border border-amber-400/30 px-2.5 py-1 rounded-lg">
+                    {regra.honra}
+                  </span>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ── MODAL DETALHES DA VAGA ── */}
       {selectedJob && (
         <div className="fixed inset-0 z-50 bg-black/80 backdrop-blur-xl flex items-center justify-center p-4">
-          <div className="w-full max-w-xl rounded-3xl p-6 sm:p-8 relative glass-panel border border-white/20 shadow-2xl animate-in zoom-in-95">
+          <div className="w-full max-w-lg glass-panel p-6 sm:p-8 rounded-3xl relative shadow-2xl">
             <button
               onClick={() => setSelectedJob(null)}
               className="absolute top-5 right-5 text-slate-400 hover:text-white text-xl font-bold bg-white/5 w-8 h-8 rounded-full flex items-center justify-center"
@@ -854,112 +716,50 @@ export default function Home() {
               ✕
             </button>
 
-            <span className="text-xs font-black uppercase tracking-wider px-3 py-1 rounded-full inline-block mb-3 bg-cyan-500/20 text-cyan-300 border border-cyan-500/40">
-              {selectedJob.category}
-            </span>
-
-            <h3 className="text-2xl font-black text-white leading-tight">{selectedJob.title}</h3>
-
-            <div className="flex items-center gap-4 mt-3 text-xs text-slate-400">
-              <span>📍 {selectedJob.location}</span>
-              <span>👤 {selectedJob.clientName}</span>
+            <div className="flex items-center gap-2 mb-3">
+              <span className="text-xs font-black bg-cyan-400/20 text-cyan-300 border border-cyan-400/40 px-3 py-1 rounded-xl uppercase">
+                {selectedJob.category}
+              </span>
+              <span className="text-xs text-slate-400">📍 {selectedJob.location}</span>
             </div>
 
-            <div className="my-6 p-4 rounded-2xl glass-card">
-              <span className="text-xs font-extrabold text-slate-400 uppercase block mb-1">Descrição Completa</span>
-              <p className="text-sm text-slate-200 leading-relaxed">{selectedJob.description}</p>
+            <h3 className="text-2xl font-black text-white leading-tight mb-3">
+              {selectedJob.title}
+            </h3>
 
-              {selectedJob.nomadFeatures && (
-                <div className="mt-4 pt-3 border-t border-white/10">
-                  <span className="text-xs font-bold text-cyan-400 block mb-2">Comodidades Nômades Inclusas:</span>
-                  <div className="flex flex-wrap gap-2">
-                    {selectedJob.nomadFeatures.map((f) => (
-                      <span key={f} className="text-xs font-bold bg-cyan-500/20 text-cyan-300 border border-cyan-500/30 px-3 py-1 rounded-lg">
-                        {f}
-                      </span>
-                    ))}
-                  </div>
-                </div>
-              )}
-            </div>
+            <p className="text-xs text-slate-300 leading-relaxed mb-6">
+              {selectedJob.description}
+            </p>
 
-            <div className="flex items-center justify-between mb-6">
-              <div>
-                <span className="text-xs text-slate-400 font-bold block">Valor da Recompensa</span>
-                {selectedJob.budget === 0 ? (
-                  <span className="text-2xl font-black text-amber-300 flex items-center gap-1">
-                    <span>🛡️</span> CORTESIA 0800 (Alta Honra)
+            {selectedJob.nomadFeatures && (
+              <div className="flex flex-wrap gap-2 mb-6">
+                {selectedJob.nomadFeatures.map((f, i) => (
+                  <span key={i} className="text-xs bg-cyan-950/80 border border-cyan-400/40 text-cyan-300 px-3 py-1 rounded-xl">
+                    {f}
                   </span>
-                ) : (
-                  <span className={`text-3xl font-black ${selectedJob.isSecret ? "text-pink-400" : "text-cyan-400"}`}>
-                    R$ {selectedJob.budget.toLocaleString("pt-BR")}
-                  </span>
-                )}
+                ))}
               </div>
-
-              {selectedJob.btcAccepted && (
-                <span className="text-xs font-black bg-amber-500/20 text-amber-300 border border-amber-500/40 px-3 py-1.5 rounded-xl flex items-center gap-1">
-                  <span>₿</span> Bitcoin / Lightning
-                </span>
-              )}
-            </div>
-
-            {selectedJob.isSecret ? (
-              <button
-                onClick={() => setIsBtcModalOpen(true)}
-                className="w-full bg-pink-600 text-white font-black text-sm py-4 rounded-2xl shadow-xl transition-all hover:scale-105 uppercase tracking-wider"
-              >
-                🔐 Assinar Smart Contract & Iniciar Atendimento
-              </button>
-            ) : (
-              <button
-                onClick={() => {
-                  window.open(`https://wa.me/${selectedJob.whatsapp}?text=Olá,%20tenho%20interesse%20no%20serviço:%20${encodeURIComponent(selectedJob.title)}`, "_blank");
-                }}
-                className="w-full bg-cyan-400 text-black font-black text-sm py-4 rounded-2xl shadow-xl shadow-cyan-500/25 transition-all hover:scale-105 flex items-center justify-center gap-2"
-              >
-                💬 Entrar em Contato Direto via WhatsApp
-              </button>
             )}
-          </div>
-        </div>
-      )}
 
-      {/* ── MODAL SMART CONTRACT BTC GLASS ── */}
-      {isBtcModalOpen && selectedJob && (
-        <div className="fixed inset-0 z-50 bg-black/90 backdrop-blur-xl flex items-center justify-center p-4">
-          <div className="w-full max-w-lg rounded-3xl glass-panel glass-pink p-6 sm:p-8 relative shadow-2xl text-center">
-            <button
-              onClick={() => setIsBtcModalOpen(false)}
-              className="absolute top-5 right-5 text-slate-400 hover:text-white text-xl font-bold"
-            >
-              ✕
-            </button>
-
-            <span className="text-4xl block mb-2">⚡ ㊙️ ₿</span>
-            <h3 className="text-2xl font-black text-white">Smart Contract P2P & Bitcoin</h3>
-            <p className="text-xs text-slate-300 mt-1">Acordo contratual confidencial com liquidação em escrow digital.</p>
-
-            <div className="my-6 p-4 rounded-2xl glass-card text-left text-xs text-slate-200 space-y-2">
-              <p className="font-mono text-pink-400">HASH: 0x9f88c3a1b...77e2a9b</p>
-              <p>• Este contrato garante sigilo bilateral sobre o atendimento.</p>
-              <p>• O valor de R$ {selectedJob.budget} será mantido em Escrow até a confirmação por ambas as partes.</p>
-              <p>• Suporte a pagamento instantâneo via Lightning Network (LNURL).</p>
-            </div>
-
-            <div className="bg-white/5 border border-white/10 p-3 rounded-xl font-mono text-xs text-cyan-300 mb-6 truncate">
-              lnbc6500n1pj99...x8a2qqqsp572
+            <div className="bg-black/40 border border-white/10 p-4 rounded-2xl mb-6 flex items-center justify-between">
+              <div>
+                <span className="text-[10px] text-slate-400 uppercase block">Valor Combinado</span>
+                <span className="text-2xl font-black text-cyan-400">
+                  {selectedJob.budget === 0 ? "🛡️ CORTESIA" : `R$ ${selectedJob.budget.toLocaleString("pt-BR")}`}
+                </span>
+              </div>
+              <span className="text-xs font-black bg-emerald-500/20 text-emerald-300 border border-emerald-500/40 px-3 py-1.5 rounded-xl flex items-center gap-1">
+                <span>⚡</span> PIX Direto
+              </span>
             </div>
 
             <button
               onClick={() => {
-                showToast("Contrato assinado digitalmente! Redirecionando para canal privativo.");
-                setIsBtcModalOpen(false);
-                setSelectedJob(null);
+                window.open(`https://wa.me/${selectedJob.whatsapp}?text=Olá,%20tenho%20interesse%20no%20serviço:%20${encodeURIComponent(selectedJob.title)}`, "_blank");
               }}
-              className="w-full bg-pink-600 text-white font-black text-sm py-4 rounded-2xl shadow-lg transition-all hover:scale-105 uppercase tracking-wider"
+              className="w-full bg-cyan-400 text-black font-black text-sm py-4 rounded-2xl shadow-xl shadow-cyan-500/25 transition-all hover:scale-105 flex items-center justify-center gap-2"
             >
-              ✅ Aceitar Termos & Enviar Bitcoin
+              💬 Entrar em Contato Direto via WhatsApp
             </button>
           </div>
         </div>
@@ -1070,7 +870,7 @@ export default function Home() {
                 <label className="text-xs font-extrabold text-slate-300 block mb-1">Descrição do Serviço & Comodidades</label>
                 <textarea
                   rows={3}
-                  placeholder="Detallhe se há tomadas 220V, Wi-Fi, chuveiro aquecido, fetiches ou termos contratuais..."
+                  placeholder="Detalhe se há tomadas 220V, Wi-Fi, chuveiro aquecido, ferramentas..."
                   value={newDescription}
                   onChange={(e) => setNewDescription(e.target.value)}
                   className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:border-cyan-400"
@@ -1099,11 +899,37 @@ export default function Home() {
         </div>
       )}
 
+      {/* ── MODAL PERFIL RPG & RECOMPENSAS ── */}
+      {isRpgModalOpen && user && (
+        <ModalPerfilRPG
+          user={user}
+          onClose={() => setIsRpgModalOpen(false)}
+          onUpdateGuild={(g) => {
+            const updated = { ...user, guild: g };
+            setUser(updated);
+            localStorage.setItem("jobpago_rpg_user", JSON.stringify(updated));
+            showToast(`⚔️ Você agora é membro oficial da guilda: ${g}`);
+          }}
+          onClaimReward={(rid) => {
+            const updatedRewards = user.rewards.map((r) =>
+              r.id === rid ? { ...r, claimed: true } : r
+            );
+            const updated = { ...user, rewards: updatedRewards };
+            setUser(updated);
+            localStorage.setItem("jobpago_rpg_user", JSON.stringify(updated));
+            showToast("🎁 Recompensa resgatada com sucesso! Apresente o voucher no local.");
+          }}
+        />
+      )}
+
       {/* ── FOOTER GLASS ── */}
       <footer className="border-t border-white/10 py-12 px-4 text-center text-xs text-slate-400">
         <div className="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4">
           <p>© {new Date().getFullYear()} JobPago.com.br · Marketplace Passivo mantido por Allan Candido.</p>
           <div className="flex items-center gap-6 text-xs text-slate-400">
+            <Link href="/secretos" className="hover:text-pink-400 transition-colors text-pink-400/80">
+              🔒 Área Secreta VIP
+            </Link>
             <Link href="/termos" className="hover:text-cyan-400 transition-colors">
               Termos de Uso
             </Link>
