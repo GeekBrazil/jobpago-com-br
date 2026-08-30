@@ -9,7 +9,7 @@ export interface UserRPG {
   xp: number;
   nextLevelXp: number;
   title: string;
-  guild: "Nômades & Van Life" | "Magos do Código" | "Artistas & Cosplay" | "Guardiões Sombra ㊙️";
+  guild: "Nômades & Van Life" | "Devs & Magos da Tecnologia" | "Criadores & Mídia Digital" | "Prestadores & Alta Honra";
   pixBalance: number;
   btcAddress: string;
   honorScore: number; // Pontos de Alta Honra (Gratuidade & Apoio)
@@ -46,28 +46,28 @@ export const GUILD_DETAILS = {
     color: "from-emerald-500 to-teal-400",
     border: "border-emerald-500/40",
     text: "text-emerald-400",
-    desc: "Especialistas em infraestrutura de estrada, cargas 220V/32A, chuveiro quente e apoio motorhome.",
+    desc: "Especialistas em infraestrutura de estrada, cargas 220V/32A, chuveiro quente e apoio para quem vive viajando.",
   },
-  "Magos do Código": {
+  "Devs & Magos da Tecnologia": {
     icon: "💻",
     color: "from-cyan-500 to-blue-400",
     border: "border-cyan-500/40",
     text: "text-cyan-400",
-    desc: "Mestres do desenvolvimento Next.js, automações com IA, APIs e segurança digital.",
+    desc: "Mestres do desenvolvimento Full-Stack, automações de inteligência artificial, APIs e software remoto.",
   },
-  "Artistas & Cosplay": {
+  "Criadores & Mídia Digital": {
     icon: "🎨",
     color: "from-purple-500 to-pink-500",
     border: "border-purple-500/40",
     text: "text-purple-400",
-    desc: "Criadores visuais, editores de Reels/TikTok, ensaios fotográficos e performances temáticas.",
+    desc: "Designers, fotógrafos, editores de vídeo e criadores de conteúdo com entregas de alto impacto.",
   },
-  "Guardiões Sombra ㊙️": {
-    icon: "㊙️",
-    color: "from-pink-600 via-purple-600 to-cyan-500",
-    border: "border-pink-500/50",
-    text: "text-pink-400",
-    desc: "Guardiões de Smart Contracts confidenciais, liquidação em Bitcoin P2P e privacidade total.",
+  "Prestadores & Alta Honra": {
+    icon: "🛠️",
+    color: "from-amber-500 to-orange-400",
+    border: "border-amber-500/50",
+    text: "text-amber-400",
+    desc: "Profissionais de reparos rápidos, fretes, consultoria e apoio solidário direto de alta reputação.",
   },
 };
 

@@ -12,34 +12,29 @@ export interface MapPoint {
   lat: number;
   lng: number;
   details?: string;
-  isSecret?: boolean;
 }
 
 interface MapaServicosProps {
   points: MapPoint[];
   selectedCategory: string;
   onSelectPoint: (point: MapPoint) => void;
-  allowSecrets?: boolean;
 }
 
 // Icones por Categoria
 const CATEGORY_COLORS: Record<string, string> = {
   "Nômade & Infra": "#10b981",       // Esmeralda / Lime
-  "Harley & Moto-Trails": "#f97316", // Laranja Harley
+  "Tecnologia & TI": "#06b6d4",     // Cyan Dev
   "Reformas & Reparos": "#f59e0b",   // Amarelo
-  "Tecnologia & TI": "#06b6d4",     // Cyan
-  "Design & Mídia": "#a855f7",      // Roxo
   "Transporte & Fretes": "#3b82f6",  // Azul
   "Fotografia & Eventos": "#ec4899", // Rosa
   "Aulas & Consultoria": "#6366f1",  // Indigo
-  "Serviços Secretos ㊙️": "#ff007f", // Neon Pink Cyberpunk
+  "Design & Mídia": "#a855f7",      // Roxo
 };
 
 export default function MapaServicos({
   points,
   selectedCategory,
   onSelectPoint,
-  allowSecrets = false,
 }: MapaServicosProps) {
   const mapContainerRef = useRef<HTMLDivElement>(null);
   const mapRef = useRef<L.Map | null>(null);
@@ -125,9 +120,7 @@ export default function MapaServicos({
       }
     });
 
-    const sanitizedPoints = allowSecrets
-      ? points
-      : points.filter((p) => !p.isSecret && !p.category.includes("Secretos"));
+    const sanitizedPoints = points;
 
     const filtered = sanitizedPoints.filter(
       (p) => selectedCategory === "Todas" || p.category === selectedCategory
@@ -135,16 +128,15 @@ export default function MapaServicos({
 
     filtered.forEach((pt) => {
       const color = CATEGORY_COLORS[pt.category] || "#10b981";
-      const isSecret = pt.isSecret || pt.category.includes("Secretos");
 
       const markerHtml = `
         <div style="
-          width: ${isSecret ? "32px" : "26px"};
-          height: ${isSecret ? "32px" : "26px"};
+          width: 26px;
+          height: 26px;
           background-color: ${color};
-          border: 3px solid ${isSecret ? "#ff00ea" : "#ffffff"};
+          border: 3px solid #ffffff;
           border-radius: 50%;
-          box-shadow: 0 0 ${isSecret ? "18px #ff007f" : "10px " + color};
+          box-shadow: 0 0 10px ${color};
           display: flex;
           align-items: center;
           justify-content: center;
@@ -152,7 +144,7 @@ export default function MapaServicos({
           cursor: pointer;
           transition: transform 0.2s;
         ">
-          ${isSecret ? "㊙️" : "⚡"}
+          ⚡
         </div>
       `;
 
@@ -175,7 +167,7 @@ export default function MapaServicos({
           ${pt.title}
         </div>
         <div style="font-size: 13px; font-weight: 900; color: #10b981; margin-bottom: 8px;">
-          R$ ${pt.budget.toLocaleString("pt-BR")} via PIX/BTC
+          R$ ${pt.budget.toLocaleString("pt-BR")} via PIX
         </div>
         <div style="font-size: 11px; color: #9ca3af; margin-bottom: 10px;">
           📍 ${pt.location}
@@ -207,7 +199,7 @@ export default function MapaServicos({
         }
       });
     });
-  }, [points, selectedCategory, allowSecrets]);
+  }, [points, selectedCategory]);
 
   // Função para Traçar Rota (OSRM API pública)
   const handleCalculateRoute = async (destination: MapPoint) => {
@@ -230,14 +222,12 @@ export default function MapaServicos({
           map.removeLayer(routePolylineRef.current);
         }
 
-        const isSecret = destination.isSecret || destination.category.includes("Secretos");
-        const polylineColor = isSecret ? "#ff007f" : "#10b981";
+        const polylineColor = "#10b981";
 
         const polyline = L.polyline(coordinates as [number, number][], {
           color: polylineColor,
           weight: 5,
           opacity: 0.85,
-          dashArray: isSecret ? "8, 8" : undefined,
         }).addTo(map);
 
         routePolylineRef.current = polyline;
@@ -268,9 +258,7 @@ export default function MapaServicos({
     setRouteInfo(null);
   };
 
-  const visiblePointsCount = allowSecrets
-    ? points.length
-    : points.filter((p) => !p.isSecret && !p.category.includes("Secretos")).length;
+  const visiblePointsCount = points.length;
 
   return (
     <div className="relative w-full h-[520px] rounded-3xl overflow-hidden border border-white/15 bg-[#0a0c14] shadow-2xl">
@@ -291,9 +279,9 @@ export default function MapaServicos({
         </div>
 
         {routeInfo && activeDestination && (
-          <div className="bg-[#120817]/95 backdrop-blur-lg border border-pink-500/40 rounded-2xl p-4 shadow-2xl pointer-events-auto max-w-xs animate-in fade-in">
+          <div className="bg-[#0b121c]/95 backdrop-blur-lg border border-cyan-500/40 rounded-2xl p-4 shadow-2xl pointer-events-auto max-w-xs animate-in fade-in">
             <div className="flex items-center justify-between gap-3 mb-2">
-              <span className="text-xs font-black text-pink-400 uppercase tracking-wider">
+              <span className="text-xs font-black text-cyan-400 uppercase tracking-wider">
                 🗺️ Rota Ativa
               </span>
               <button
@@ -318,19 +306,14 @@ export default function MapaServicos({
       <div className="absolute bottom-4 left-4 z-[1000] hidden sm:flex items-center gap-2 bg-[#08080c]/90 backdrop-blur-md border border-white/10 rounded-2xl p-2.5 shadow-xl">
         <span className="text-[10px] font-bold text-zinc-400 uppercase px-1">Legenda:</span>
         <div className="flex items-center gap-1.5 text-[11px] text-zinc-300">
-          <span className="w-2.5 h-2.5 rounded-full bg-emerald-400"></span> Nômade
+          <span className="w-2.5 h-2.5 rounded-full bg-emerald-400"></span> Nômade & Infra
+        </div>
+        <div className="flex items-center gap-1.5 text-[11px] text-zinc-300">
+          <span className="w-2.5 h-2.5 rounded-full bg-cyan-400"></span> Tech & Devs
         </div>
         <div className="flex items-center gap-1.5 text-[11px] text-zinc-300">
           <span className="w-2.5 h-2.5 rounded-full bg-amber-400"></span> Reparos
         </div>
-        <div className="flex items-center gap-1.5 text-[11px] text-zinc-300">
-          <span className="w-2.5 h-2.5 rounded-full bg-cyan-400"></span> Tech
-        </div>
-        {allowSecrets && (
-          <div className="flex items-center gap-1.5 text-[11px] text-zinc-300">
-            <span className="w-2.5 h-2.5 rounded-full bg-pink-500"></span> Secretos ㊙️
-          </div>
-        )}
       </div>
     </div>
   );

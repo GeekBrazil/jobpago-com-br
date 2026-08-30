@@ -133,26 +133,23 @@ const REGRAS_HONRA = [
 ];
 
 const TRIBOS_CANONICAS = [
-  { id: "harley", name: "Harley Bikers", icon: "🏍️", desc: "Estradeiros & Custom Bikes" },
-  { id: "investors", name: "Investidores 50+", icon: "💼", desc: "Aportes & Negócios Locais" },
-  { id: "liveaboards", name: "Velejadores", icon: "⛵", desc: "Veleiros & Fundeios Náuticos" },
-  { id: "vanlife", name: "Van Life", icon: "🚐", desc: "Motorhomes & Camping 220V" },
-  { id: "devs", name: "Devs & Tech", icon: "💻", desc: "Full-Stack & Automação IA" },
-  { id: "gamers", name: "Gamers", icon: "🎮", desc: "Consoles Portáteis & Arenas" },
-  { id: "cosplay", name: "Cosplayers", icon: "🎭", desc: "Anime, Figurinos & Props" },
-  { id: "festivais", name: "Festivais", icon: "🎪", desc: "Música, Arte & Marés Bioluminescentes" },
+  { id: "devs", name: "Devs & Tech", icon: "💻", desc: "Full-Stack, Automação & IA" },
+  { id: "vanlife", name: "Van Life & Nômades", icon: "🚐", desc: "Motorhomes, Energia 220V & Camping" },
+  { id: "reformas", name: "Reformas & Reparos", icon: "🛠️", desc: "Eletricistas & Manutenção" },
+  { id: "fretes", name: "Transporte & Fretes", icon: "🚚", desc: "Carretos & Mudanças" },
+  { id: "foto", name: "Fotografia & Mídia", icon: "📸", desc: "Vídeo, Ensaio & Design" },
+  { id: "aulas", name: "Aulas & Consultoria", icon: "📚", desc: "Mentorias & Consultoria" },
 ];
 
 const CATEGORIES = [
   { name: "Todas", icon: "🔥" },
-  { name: "Harley & Moto-Trails", icon: "🏍️" },
   { name: "Nômade & Infra", icon: "🚐" },
-  { name: "Reformas & Reparos", icon: "🛠️" },
   { name: "Tecnologia & TI", icon: "💻" },
-  { name: "Design & Mídia", icon: "🎨" },
+  { name: "Reformas & Reparos", icon: "🛠️" },
   { name: "Transporte & Fretes", icon: "🚚" },
   { name: "Fotografia & Eventos", icon: "📸" },
   { name: "Aulas & Consultoria", icon: "📚" },
+  { name: "Design & Mídia", icon: "🎨" },
 ];
 
 export default function Home() {
@@ -258,8 +255,6 @@ export default function Home() {
       description: newDescription || "Serviço cadastrado na guilda.",
       clientName: client,
       whatsapp: "5524993326966",
-      isSecret: false,
-      btcAccepted: false,
       isFreeHonor: isFreeService,
     };
 
@@ -293,8 +288,7 @@ export default function Home() {
     }
   };
 
-  // Filtragem estrita: NADA de serviços secretos na home pública
-  const publicJobs = jobs.filter((job) => !job.isSecret && !job.category.includes("Secretos"));
+  const publicJobs = jobs;
 
   const filteredJobs = publicJobs.filter((job) => {
     const matchesCategory = selectedCategory === "Todas" || job.category === selectedCategory;
@@ -339,17 +333,11 @@ export default function Home() {
             <a href="#mapa-gps" className="hover:text-cyan-400 transition-colors flex items-center gap-1.5">
               <span>Mapa GPS</span>
             </a>
+            <a href="#nomade-space" className="hover:text-cyan-400 transition-colors">Infra Nômade</a>
             <a href="#guildas-leaderboard" className="hover:text-amber-300 transition-colors text-amber-400 flex items-center gap-1">
-              <span>Alta Honra</span>
+              <span>Alta Honra & Reputação</span>
             </a>
-            <a href="#nomade-space" className="hover:text-cyan-400 transition-colors">Nômades</a>
-            <Link
-              href="/secretos"
-              className="hover:text-pink-400 transition-colors text-pink-400/90 flex items-center gap-1.5 px-3 py-1 rounded-xl bg-pink-500/10 border border-pink-500/30 hover:border-pink-500/60"
-            >
-              <span>🔒 Serviços Secretos</span>
-              <span className="text-[9px] bg-pink-500 text-white font-black px-1.5 py-0.2 rounded-full">VIP 18+</span>
-            </Link>
+            <a href="#vagas" className="hover:text-cyan-400 transition-colors">Vagas & Serviços</a>
           </div>
 
           <div className="flex items-center gap-3">
@@ -366,7 +354,7 @@ export default function Home() {
                     </span>
                   </div>
                   <span className="text-[10px] text-cyan-300 font-medium">
-                    {GUILD_DETAILS[user.guild].icon} {user.guild}
+                    {GUILD_DETAILS[user.guild]?.icon || "🚐"} {user.guild}
                   </span>
                 </div>
                 <div className="w-8 h-8 rounded-xl bg-amber-400 text-black font-black text-xs flex items-center justify-center shadow-md">
@@ -403,15 +391,15 @@ export default function Home() {
           </div>
 
           <h1 className="text-4xl sm:text-6xl font-black tracking-tight text-white leading-tight">
-            Ache quem resolve na estrada com <span className="text-cyan-400">PIX combinado direto</span>
+            Renda online & conexão para <span className="text-cyan-400">nômades digitais</span>
           </h1>
 
           <p className="mt-4 text-slate-300 text-sm sm:text-base leading-relaxed max-w-2xl mx-auto">
-            De motociclistas estradeiros Harley-Davidson a investidores 50+, velejadores, nômades van life, devs e cosplayers. Conecte-se e combine serviços diretamente sem taxas de intermediação da plataforma.
+            De desenvolvedores e profissionais digitais remotos a viajantes van life e prestadores de serviços essenciais na estrada. Conecte-se e combine trabalhos com PIX direto sem taxas de intermediação.
           </p>
 
           {/* BARRA DE NAVEGAÇÃO DE TRIBOS CANÔNICAS GLASS */}
-          <div className="mt-8 grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-8 gap-2 max-w-5xl mx-auto">
+          <div className="mt-8 grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-2 max-w-5xl mx-auto">
             {TRIBOS_CANONICAS.map((t) => (
               <button
                 key={t.id}
@@ -435,7 +423,7 @@ export default function Home() {
               <span className="text-slate-400 ml-3 mr-2 text-lg">🔍</span>
               <input
                 type="text"
-                placeholder="Buscar vagas, cidades ou categorias (ex: Chuveiro, Paraty, Harley, Dev)..."
+                placeholder="Buscar vagas, cidades ou categorias (ex: Chuveiro, Paraty, Dev, IA)..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 className="w-full bg-transparent border-none text-white text-xs sm:text-sm focus:outline-none placeholder-slate-400"
@@ -464,7 +452,7 @@ export default function Home() {
               Mapa GPS de serviços e rotas
             </h2>
             <p className="text-xs text-slate-300 mt-1">
-              Encontre rotas de Harley, fundeios de veleiro, pontos 220V e suporte para sua viagem.
+              Encontre pontos de apoio, garagens, energia 220V/32A e serviços locais para sua jornada.
             </p>
           </div>
 
@@ -485,12 +473,11 @@ export default function Home() {
           </div>
         </div>
 
-        {/* COMPONENTE DO MAPA PÚBLICO (SEM SERVIÇOS SECRETOS) */}
+        {/* COMPONENTE DO MAPA PÚBLICO */}
         <MapaServicos
           points={publicJobs}
           selectedCategory={selectedCategory}
           onSelectPoint={(point) => setSelectedJob(point as Job)}
-          allowSecrets={false}
         />
       </section>
 
@@ -501,13 +488,13 @@ export default function Home() {
 
           <div className="max-w-2xl">
             <span className="px-3 py-1 rounded-full bg-cyan-400/20 text-cyan-300 border border-cyan-400/40 text-xs font-black uppercase tracking-wider">
-              Infraestrutura Van Life & Harley Travel
+              Infraestrutura Van Life & Trabalho Remoto
             </span>
             <h2 className="text-3xl sm:text-4xl font-black text-white mt-3">
-              🚐 Espaço Nômade & Moto-Trails
+              🚐 Espaço Nômade & Apoio na Estrada
             </h2>
             <p className="text-sm text-slate-200 mt-3 leading-relaxed">
-              Viajando de Harley-Davidson, motorhome ou veleiro? Encontre locais com chuveiro aquecido, cargas 32A e apoio de fundeio com selo de Alta Honra.
+              Viajando de motorhome, campervan ou trabalhando remotamente na estrada? Encontre pontos com chuveiro aquecido, tomadas 220V/32A, Starlink e apoio solidário com selo de Alta Honra.
             </p>
 
             <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 mt-6">
@@ -519,7 +506,7 @@ export default function Home() {
               <div className="glass-card p-3 rounded-2xl text-center">
                 <span className="text-2xl block mb-1">⚡</span>
                 <span className="text-xs font-bold text-white block">Carga 110V/220V/32A</span>
-                <span className="text-[10px] text-slate-400">Harleys, Vans & Laptops</span>
+                <span className="text-[10px] text-slate-400">Vans, Baterias & Laptops</span>
               </div>
               <div className="glass-card p-3 rounded-2xl text-center">
                 <span className="text-2xl block mb-1">🚐</span>
@@ -927,9 +914,6 @@ export default function Home() {
         <div className="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4">
           <p>© {new Date().getFullYear()} JobPago.com.br · Marketplace Passivo mantido por Allan Candido.</p>
           <div className="flex items-center gap-6 text-xs text-slate-400">
-            <Link href="/secretos" className="hover:text-pink-400 transition-colors text-pink-400/80">
-              🔒 Área Secreta VIP
-            </Link>
             <Link href="/termos" className="hover:text-cyan-400 transition-colors">
               Termos de Uso
             </Link>
