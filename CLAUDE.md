@@ -16,19 +16,17 @@
 ## Regras Críticas
 
 - **Nunca** adicionar `Co-Authored-By: Claude` em commits — autoria exclusiva de Allan Candido.
-- **Deploy = Git.** A Vercel builda o `origin/main` (integração GitHub). Padrão: `npm run build` → `git commit` → **`git push origin main`**.
+- **Deploy Obrigatório: `npm run deploy`.** Executa `git push origin main && npx -y vercel --prod --yes` para compilar e publicar na Vercel em produção. `git push` isolado não atualiza a Vercel sem o comando do CLI.
 - Identidade visual: Tema escuro ultra-moderno (`#07090e`), acentos em Verde PIX (`#10b981` / `#059669`) e gradientes vibrantes.
 
-## O que está em Produção
+## Posicionamento de Produção
 
-- **Públicos-Alvo Alcançados (10 Tribos Canônicas)**:
-  1. 🏍️ **Motociclistas Harley-Davidson & Custom Brasil**: Rotas de estradeiros, motoclubes e apoio.
-  2. 💼 **Homens Investidores 50+**: Aportes em projetos e parcerias comerciais.
-  3. 🚐 **Moradores de Motorhome & Van Life**: Chuveiros aquecidos, cargas 220V/32A, água e camping.
-  4. ⚓ **Moradores de Veleiro & Velejadores**: Cartas náuticas, poitas/fundeios e tábua de marés.
-  5. 💻 **Desenvolvedores & Tech**: Co-working ao ar livre, Wi-Fi alta velocidade e rotas de código.
-  6. 🎨 **Artistas, Criadores & Fotógrafos**: Cooperativas de arte, ateliês e fotografia de expedição.
-  7. 🎭 **Cosplayers & Fãs de Anime/Ficção**: Tendas de figurino e Smart Contracts em BTC.
-  8. 🎮 **Gamers & eSports ao Ar Livre**: Arenas de jogos, consoles portáteis e disputas comunitárias.
-  9. 🎪 **Amantes de Festivais de Música & Arte**: Jam sessions, palcos e observação de fenômenos naturais.
-  10. ㊙️ **Serviços Secretos & Escrow VIP**: Experiências reservadas, banhos e sigilo P2P.
+- **Público-Alvo**: Renda Online + Vida Nômade (estrada / motorhome / van life). Marketplace passivo e pagamentos diretos via PIX sem taxas.
+- **6 Tribos Canônicas**:
+  1. 💻 **Devs & Tech**: Programação, sites, automações e suporte técnico.
+  2. 🚐 **Van Life & Nômades**: Pontos de parada, energia, água e apoio de viagem.
+  3. 🛠️ **Reformas & Reparos**: Manutenção em trânsito, elétrica e pequenas reformas.
+  4. 🚚 **Transporte & Fretes**: Carretos, entregas locais e logística ágil.
+  5. 📷 **Fotografia & Mídia**: Captação visual, drone, edição de vídeo e conteúdo.
+  6. 🎓 **Aulas & Consultoria**: Treinamentos, idiomas, mentoria e consultoria remota.
+
