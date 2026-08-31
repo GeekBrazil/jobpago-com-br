@@ -16,7 +16,7 @@
 ## Regras Críticas
 
 - **Nunca** adicionar `Co-Authored-By: Claude` em commits — autoria exclusiva de Allan Candido.
-- **Deploy Obrigatório: `npm run deploy`.** Executa `git push origin main && npx -y vercel --prod --yes` para compilar e publicar na Vercel em produção. `git push` isolado não atualiza a Vercel sem o comando do CLI.
+- **Deploy Obrigatório: `npm run deploy`.** Executa `git push origin main && npx -y vercel --prod --yes && bash ./scripts/verify-deploy.sh` para compilar, aplicar o alias oficial de produção na Vercel e auditar externamente o conteúdo real publicado. `git push` isolado não atualiza a Vercel sem o comando do CLI.
 - Identidade visual: Tema escuro ultra-moderno (`#07090e`), acentos em Verde PIX (`#10b981` / `#059669`) e gradientes vibrantes.
 
 ## Posicionamento de Produção
