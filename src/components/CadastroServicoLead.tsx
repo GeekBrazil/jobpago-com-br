@@ -5,7 +5,6 @@ import Link from "next/link";
 
 interface CadastroServicoLeadProps {
   onSuccess?: () => void;
-  compact?: boolean;
 }
 
 const CATEGORIAS_SERVICOS = [
@@ -18,7 +17,7 @@ const CATEGORIAS_SERVICOS = [
   { id: "design", name: "Design & Criatividade", icon: "🎨" },
 ];
 
-export default function CadastroServicoLead({ onSuccess, compact = false }: CadastroServicoLeadProps) {
+export default function CadastroServicoLead({ onSuccess }: CadastroServicoLeadProps) {
   const [tipo, setTipo] = useState<"prestador" | "contratante">("prestador");
   const [nomeContratado, setNomeContratado] = useState("");
   const [whatsappContratado, setWhatsappContratado] = useState("");
@@ -58,10 +57,9 @@ export default function CadastroServicoLead({ onSuccess, compact = false }: Cada
     e.preventDefault();
     setError(null);
 
-    // Validações básicas no cliente
     const rawDigits = whatsappContratado.replace(/\D/g, "");
     if (rawDigits.length < 10) {
-      setError("Por favor, insira um número de WhatsApp válido com DDD.");
+      setError("Por favor, informe um WhatsApp válido com DDD.");
       return;
     }
 
@@ -72,7 +70,7 @@ export default function CadastroServicoLead({ onSuccess, compact = false }: Cada
     }
 
     if (!lgpdConsent) {
-      setError("É necessário concordar com os termos da LGPD para registrar o serviço.");
+      setError("É necessário autorizar o tratamento de dados de acordo com a LGPD.");
       return;
     }
 
@@ -110,12 +108,12 @@ export default function CadastroServicoLead({ onSuccess, compact = false }: Cada
       setSuccessData({ whatsappUrl: data.whatsappUrl });
       if (onSuccess) onSuccess();
 
-      // Abrir o WhatsApp automaticamente em nova aba com o resumo completo
+      // Dispara abertura em nova janela com a mensagem estruturada
       if (data.whatsappUrl) {
         window.open(data.whatsappUrl, "_blank");
       }
     } catch (err: unknown) {
-      const msg = err instanceof Error ? err.message : "Erro de conexão ao salvar.";
+      const msg = err instanceof Error ? err.message : "Falha ao conectar com o servidor.";
       setError(msg);
     } finally {
       setLoading(false);
@@ -124,18 +122,18 @@ export default function CadastroServicoLead({ onSuccess, compact = false }: Cada
 
   if (successData) {
     return (
-      <div className="glass-panel glass-emerald p-8 sm:p-12 rounded-3xl text-center max-w-2xl mx-auto shadow-2xl animate-fade-in">
-        <div className="w-16 h-16 rounded-full bg-emerald-500/20 border border-emerald-500/40 text-emerald-400 flex items-center justify-center text-3xl mx-auto mb-5 shadow-[0_0_30px_rgba(16,185,129,0.3)]">
+      <div className="glass-panel glass-emerald p-8 sm:p-14 rounded-3xl text-center max-w-2xl mx-auto shadow-2xl animate-fade-in border border-emerald-500/30">
+        <div className="w-16 h-16 rounded-2xl bg-emerald-500/20 border border-emerald-500/40 text-emerald-400 flex items-center justify-center text-3xl mx-auto mb-6 shadow-[0_0_30px_rgba(16,185,129,0.3)]">
           ✓
         </div>
-        <span className="text-xs font-mono font-bold uppercase tracking-widest text-emerald-400">
-          Registro Concluído com Sucesso
+        <span className="text-[11px] font-mono font-bold uppercase tracking-widest text-emerald-400">
+          Despacho Protocolado
         </span>
-        <h3 className="text-2xl sm:text-3xl font-black text-white mt-2">
-          Serviço Cadastrado &amp; LGPD Validada!
+        <h3 className="text-2xl sm:text-3xl font-black text-white mt-2 tracking-tight">
+          Serviço Cadastrado com Sucesso!
         </h3>
         <p className="text-sm text-slate-300 mt-3 leading-relaxed max-w-lg mx-auto">
-          Os dados do contratado e as especificações para o contratante foram armazenados. Nós enviamos os serviços diretamente para os contratantes qualificados da rede.
+          Os dados do contratado e do contratante foram registrados sob a LGPD. O JobPago fará o envio direto para a nossa rede qualificada.
         </p>
 
         <div className="mt-8 flex flex-col sm:flex-row items-center justify-center gap-3">
@@ -167,283 +165,326 @@ export default function CadastroServicoLead({ onSuccess, compact = false }: Cada
   }
 
   return (
-    <div className={`glass-panel rounded-3xl p-6 sm:p-10 max-w-3xl mx-auto shadow-2xl relative border border-white/10 ${compact ? "" : "my-8"}`}>
-      {/* CABEÇALHO */}
-      <div className="mb-8 text-center sm:text-left">
-        <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-500/15 border border-emerald-500/30 text-emerald-300 text-xs font-mono font-bold uppercase tracking-wider mb-3">
-          <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
-          Intermediação Ágil · Captura de Leads LGPD
-        </div>
-        <h2 className="text-2xl sm:text-3xl font-black text-white tracking-tight">
-          Cadastro de Serviços &amp; Conexão Direta
-        </h2>
-        <p className="text-xs sm:text-sm text-slate-300 mt-2 leading-relaxed">
-          Preencha os dados do serviço. <strong className="text-emerald-400 font-bold">Nós enviamos os serviços para o contratante</strong> e conectamos ambas as partes diretamente via WhatsApp com pagamento instantâneo por PIX.
-        </p>
-      </div>
-
-      {/* SELETOR DE PAPEL: PRESTADOR VS CONTRATANTE */}
-      <div className="grid grid-cols-2 gap-3 mb-6 p-1.5 bg-black/40 rounded-2xl border border-white/5">
-        <button
-          type="button"
-          onClick={() => setTipo("prestador")}
-          className={`py-3 px-4 rounded-xl text-xs font-black transition-all cursor-pointer flex items-center justify-center gap-2 ${
-            tipo === "prestador"
-              ? "bg-emerald-500 text-black shadow-lg shadow-emerald-500/25"
-              : "text-slate-400 hover:text-white"
-          }`}
-        >
-          <span>💼</span> Sou Prestador (Contratado)
-        </button>
-        <button
-          type="button"
-          onClick={() => setTipo("contratante")}
-          className={`py-3 px-4 rounded-xl text-xs font-black transition-all cursor-pointer flex items-center justify-center gap-2 ${
-            tipo === "contratante"
-              ? "bg-emerald-500 text-black shadow-lg shadow-emerald-500/25"
-              : "text-slate-400 hover:text-white"
-          }`}
-        >
-          <span>🏢</span> Busco Profissional (Contratante)
-        </button>
-      </div>
-
-      {error && (
-        <div className="mb-6 p-4 rounded-2xl bg-rose-500/15 border border-rose-500/30 text-rose-300 text-xs font-bold flex items-center gap-2">
-          <span>⚠️</span> {error}
-        </div>
-      )}
-
-      <form onSubmit={handleSubmit} className="flex flex-col gap-5">
-        {/* BLOCO 1: DADOS DO CONTATO / PRESTADOR */}
-        <div className="p-5 rounded-2xl bg-white/[0.02] border border-white/5 flex flex-col gap-4">
-          <span className="text-[11px] font-mono font-bold uppercase tracking-wider text-emerald-400 block">
-            1. Dados de Quem Oferece o Serviço (Contratado)
-          </span>
-
-          <div>
-            <label className="text-xs font-extrabold text-slate-300 block mb-1">
-              Nome Completo / Razão Social *
-            </label>
-            <input
-              type="text"
-              required
-              placeholder="Ex: Allan Candido ou Tech Nômade Studio"
-              value={nomeContratado}
-              onChange={(e) => setNomeContratado(e.target.value)}
-              className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-sm text-white placeholder-slate-500 focus:outline-none focus:border-emerald-400 transition-colors"
-            />
+    <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-12 items-start max-w-6xl mx-auto">
+      {/* ── COLUNA ESQUERDA: DIRETRIZ EDITORIAL & PROPOSTA DE VALOR ── */}
+      <div className="lg:col-span-5 flex flex-col gap-6 lg:sticky lg:top-28">
+        <div>
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 text-[11px] font-mono font-bold tracking-wider uppercase mb-4">
+            <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span>
+            Despacho Direto de Serviços
           </div>
-
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-            <div>
-              <label className="text-xs font-extrabold text-slate-300 block mb-1">
-                WhatsApp com DDD (Validado) *
-              </label>
-              <input
-                type="tel"
-                required
-                placeholder="(24) 99332-6966"
-                value={whatsappContratado}
-                onChange={handlePhoneChange}
-                className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-sm text-white placeholder-slate-500 focus:outline-none focus:border-emerald-400 transition-colors font-mono"
-              />
-              <span className="text-[10px] text-slate-500 mt-1 block">
-                Formato com DDD. Usado para validação e abertura direta.
-              </span>
-            </div>
-
-            <div>
-              <label className="text-xs font-extrabold text-slate-300 block mb-1">
-                E-mail Profissional (Validado) *
-              </label>
-              <input
-                type="email"
-                required
-                placeholder="seu.email@exemplo.com"
-                value={emailContratado}
-                onChange={(e) => setEmailContratado(e.target.value)}
-                className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-sm text-white placeholder-slate-500 focus:outline-none focus:border-emerald-400 transition-colors font-mono"
-              />
-              <span className="text-[10px] text-slate-500 mt-1 block">
-                Para confirmação e envio da cópia do despacho.
-              </span>
-            </div>
-          </div>
+          <h1 className="text-3xl sm:text-4xl font-black text-white tracking-tight leading-[1.15]">
+            Nós enviamos os serviços para o contratante.
+          </h1>
+          <p className="mt-4 text-sm text-slate-300 leading-relaxed font-normal">
+            Sem muros de retenção, sem comissões sobre o seu trabalho. Você cadastra o serviço e nós conectamos você a oportunidades reais de contratação com pagamento direto por PIX.
+          </p>
         </div>
 
-        {/* BLOCO 2: DADOS DO CONTRATANTE / DESTINATÁRIO */}
-        <div className="p-5 rounded-2xl bg-white/[0.02] border border-white/5 flex flex-col gap-4">
-          <span className="text-[11px] font-mono font-bold uppercase tracking-wider text-amber-400 block">
-            2. Destinatário do Serviço (Contratante)
-          </span>
-
-          <div>
-            <label className="text-xs font-extrabold text-slate-300 block mb-1">
-              Nome da Empresa Contratante ou Perfil-Alvo Buscado *
-            </label>
-            <input
-              type="text"
-              placeholder="Ex: Startups de Tecnologia, Donos de Pousadas, Proprietários de Motorhome..."
-              value={nomeOuPerfilContratante}
-              onChange={(e) => setNomeOuPerfilContratante(e.target.value)}
-              className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-sm text-white placeholder-slate-500 focus:outline-none focus:border-amber-400 transition-colors"
-            />
-            <span className="text-[10px] text-slate-400 mt-1.5 block leading-relaxed">
-              💡 <em>Aviso de despacho:</em> <strong>Nós enviamos os serviços cadastrados diretamente para o contratante</strong> que você indicar ou para as empresas cadastradas no nosso banco de dados.
+        {/* TIMELINE EM 3 FASES */}
+        <div className="flex flex-col gap-4 border-l border-white/10 pl-5 my-2">
+          <div className="relative">
+            <span className="text-[10px] font-mono font-bold text-emerald-400 uppercase tracking-widest block">
+              Fase 01
             </span>
+            <h4 className="text-sm font-black text-white mt-0.5">Cadastro &amp; Validação</h4>
+            <p className="text-xs text-slate-400 mt-1">
+              WhatsApp com DDD e e-mail validados para contato seguro e direto.
+            </p>
+          </div>
+
+          <div className="relative">
+            <span className="text-[10px] font-mono font-bold text-emerald-400 uppercase tracking-widest block">
+              Fase 02
+            </span>
+            <h4 className="text-sm font-black text-white mt-0.5">Envio pelo JobPago</h4>
+            <p className="text-xs text-slate-400 mt-1">
+              Nós enviamos os seus serviços diretamente para os contratantes qualificados.
+            </p>
+          </div>
+
+          <div className="relative">
+            <span className="text-[10px] font-mono font-bold text-emerald-400 uppercase tracking-widest block">
+              Fase 03
+            </span>
+            <h4 className="text-sm font-black text-white mt-0.5">PIX Instantâneo</h4>
+            <p className="text-xs text-slate-400 mt-1">
+              Negociação de valor e entrega combinada sem taxas de intermediação.
+            </p>
           </div>
         </div>
 
-        {/* BLOCO 3: ESPECIFICAÇÃO DO SERVIÇO */}
-        <div className="p-5 rounded-2xl bg-white/[0.02] border border-white/5 flex flex-col gap-4">
-          <span className="text-[11px] font-mono font-bold uppercase tracking-wider text-emerald-400 block">
-            3. Especificações da Demanda / Serviço
-          </span>
-
+        {/* GARANTIA LGPD */}
+        <div className="p-4 rounded-2xl bg-white/[0.02] border border-white/5 flex items-start gap-3">
+          <span className="text-lg">🔒</span>
           <div>
-            <label className="text-xs font-extrabold text-slate-300 block mb-1">
-              Título do Serviço Oferecido *
-            </label>
-            <input
-              type="text"
-              required
-              placeholder="Ex: Automação de Processos com IA, Ponto de Apoio 220V em Paraty, Reforma Elétrica..."
-              value={tituloServico}
-              onChange={(e) => setTituloServico(e.target.value)}
-              className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-sm text-white placeholder-slate-500 focus:outline-none focus:border-emerald-400 transition-colors"
-            />
+            <h5 className="text-xs font-bold text-white">Privacidade &amp; LGPD</h5>
+            <p className="text-[11px] text-slate-400 mt-0.5 leading-relaxed">
+              Tratamento exclusivo para intermediação conforme a Lei nº 13.709/2018. Seus dados nunca são vendidos a terceiros.
+            </p>
           </div>
+        </div>
+      </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-            <div>
-              <label className="text-xs font-extrabold text-slate-300 block mb-1">Categoria *</label>
-              <select
-                value={categoria}
-                onChange={(e) => setCategoria(e.target.value)}
-                className="w-full bg-slate-900 border border-white/10 rounded-xl px-3 py-3 text-sm text-white focus:outline-none focus:border-emerald-400 cursor-pointer"
-              >
-                {CATEGORIAS_SERVICOS.map((c) => (
-                  <option key={c.id} value={c.name}>
-                    {c.icon} {c.name}
-                  </option>
-                ))}
-              </select>
-            </div>
+      {/* ── COLUNA DIREITA: FORMULÁRIO EDITORIAL REFINADO ── */}
+      <div className="lg:col-span-7 glass-panel rounded-3xl p-6 sm:p-10 border border-white/10 shadow-2xl relative">
+        {/* SELETOR SEGMENTADO */}
+        <div className="flex p-1 bg-black/40 rounded-2xl border border-white/5 mb-6">
+          <button
+            type="button"
+            onClick={() => setTipo("prestador")}
+            className={`flex-1 py-3 px-3 rounded-xl text-xs font-black transition-all cursor-pointer flex items-center justify-center gap-2 ${
+              tipo === "prestador"
+                ? "bg-emerald-500 text-black shadow-lg shadow-emerald-500/25"
+                : "text-slate-400 hover:text-white"
+            }`}
+          >
+            <span>💼</span> Sou Prestador (Contratado)
+          </button>
+          <button
+            type="button"
+            onClick={() => setTipo("contratante")}
+            className={`flex-1 py-3 px-3 rounded-xl text-xs font-black transition-all cursor-pointer flex items-center justify-center gap-2 ${
+              tipo === "contratante"
+                ? "bg-emerald-500 text-black shadow-lg shadow-emerald-500/25"
+                : "text-slate-400 hover:text-white"
+            }`}
+          >
+            <span>🏢</span> Preciso Contratar
+          </button>
+        </div>
 
-            <div>
-              <label className="text-xs font-extrabold text-slate-300 block mb-1">Modalidade *</label>
-              <select
-                value={modalidade}
-                onChange={(e) => setModalidade(e.target.value as "Remoto" | "Presencial")}
-                className="w-full bg-slate-900 border border-white/10 rounded-xl px-3 py-3 text-sm text-white focus:outline-none focus:border-emerald-400 cursor-pointer"
-              >
-                <option value="Remoto">Remoto (Atendimento Online Nacional)</option>
-                <option value="Presencial">Presencial (Na Estrada / Local)</option>
-              </select>
-            </div>
+        {error && (
+          <div className="mb-6 p-4 rounded-2xl bg-rose-500/15 border border-rose-500/30 text-rose-300 text-xs font-bold flex items-center gap-2">
+            <span>⚠️</span> {error}
           </div>
+        )}
 
-          {modalidade === "Presencial" && (
+        <form onSubmit={handleSubmit} className="flex flex-col gap-6">
+          {/* IDENTIFICAÇÃO DO CONTRATADO */}
+          <div className="flex flex-col gap-4">
+            <span className="text-[11px] font-mono font-bold uppercase tracking-wider text-emerald-400">
+              01. Quem Está Oferecendo o Serviço (Contratado)
+            </span>
+
             <div>
-              <label className="text-xs font-extrabold text-slate-300 block mb-1">
-                Cidade &amp; Estado de Atendimento *
+              <label className="text-xs font-bold text-slate-300 block mb-1.5">
+                Nome Completo ou Nome Profissional *
               </label>
               <input
                 type="text"
-                required={modalidade === "Presencial"}
-                placeholder="Ex: Paraty / Angra dos Reis, RJ"
-                value={cidade}
-                onChange={(e) => setCidade(e.target.value)}
-                className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-sm text-white placeholder-slate-500 focus:outline-none focus:border-emerald-400 transition-colors"
+                required
+                placeholder="Ex: Allan Candido · Dev Nômade"
+                value={nomeContratado}
+                onChange={(e) => setNomeContratado(e.target.value)}
+                className="w-full bg-black/30 border border-white/10 rounded-xl px-4 py-3 text-sm text-white placeholder-slate-500 focus:outline-none focus:border-emerald-400 transition-colors"
               />
             </div>
-          )}
 
-          {/* CORTESIA OU VALOR MONETÁRIO */}
-          <div className="glass-card border border-amber-400/30 p-3.5 rounded-xl flex items-center justify-between">
-            <div>
-              <span className="text-xs font-black text-amber-300 flex items-center gap-1">
-                <span>🛡️</span> Serviço 100% Gratuito / Cortesia 0800 (Alta Honra)
-              </span>
-              <span className="text-[10px] text-slate-400 block">
-                Marque se for ponto de apoio solidário, recarga de van, ou mentoria cortesia.
-              </span>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div>
+                <label className="text-xs font-bold text-slate-300 block mb-1.5">
+                  WhatsApp com DDD *
+                </label>
+                <input
+                  type="tel"
+                  required
+                  placeholder="(24) 99332-6966"
+                  value={whatsappContratado}
+                  onChange={handlePhoneChange}
+                  className="w-full bg-black/30 border border-white/10 rounded-xl px-4 py-3 text-sm text-white placeholder-slate-500 focus:outline-none focus:border-emerald-400 transition-colors font-mono"
+                />
+              </div>
+
+              <div>
+                <label className="text-xs font-bold text-slate-300 block mb-1.5">
+                  E-mail Profissional *
+                </label>
+                <input
+                  type="email"
+                  required
+                  placeholder="contato@exemplo.com"
+                  value={emailContratado}
+                  onChange={(e) => setEmailContratado(e.target.value)}
+                  className="w-full bg-black/30 border border-white/10 rounded-xl px-4 py-3 text-sm text-white placeholder-slate-500 focus:outline-none focus:border-emerald-400 transition-colors font-mono"
+                />
+              </div>
             </div>
-            <input
-              type="checkbox"
-              checked={isCortesia}
-              onChange={(e) => setIsCortesia(e.target.checked)}
-              className="w-5 h-5 accent-amber-400 cursor-pointer"
-            />
           </div>
 
-          {!isCortesia && (
+          {/* DESTINATÁRIO: CONTRATANTE */}
+          <div className="flex flex-col gap-4 pt-4 border-t border-white/5">
+            <span className="text-[11px] font-mono font-bold uppercase tracking-wider text-amber-400">
+              02. Destinatário do Serviço (Contratante)
+            </span>
+
             <div>
-              <label className="text-xs font-extrabold text-slate-300 block mb-1">
-                Orçamento Estimado / Tarifa Base (R$)
+              <label className="text-xs font-bold text-slate-300 block mb-1.5">
+                Empresa ou Perfil do Contratante que Deve Receber a Proposta *
               </label>
               <input
-                type="number"
-                placeholder="Ex: 500 ou valor por hora"
-                value={valor}
-                onChange={(e) => setValor(e.target.value)}
-                className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-sm text-white placeholder-slate-500 focus:outline-none focus:border-emerald-400 transition-colors font-mono"
+                type="text"
+                placeholder="Ex: Startups, Donos de Vans, Pousadas, Produtores de Conteúdo..."
+                value={nomeOuPerfilContratante}
+                onChange={(e) => setNomeOuPerfilContratante(e.target.value)}
+                className="w-full bg-black/30 border border-white/10 rounded-xl px-4 py-3 text-sm text-white placeholder-slate-500 focus:outline-none focus:border-amber-400 transition-colors"
+              />
+              <span className="text-[11px] text-slate-400 mt-1 block">
+                Nós enviamos os serviços para o contratante de acordo com o perfil que você indicar.
+              </span>
+            </div>
+          </div>
+
+          {/* DETALHES DO SERVIÇO */}
+          <div className="flex flex-col gap-4 pt-4 border-t border-white/5">
+            <span className="text-[11px] font-mono font-bold uppercase tracking-wider text-emerald-400">
+              03. Especificações da Demanda
+            </span>
+
+            <div>
+              <label className="text-xs font-bold text-slate-300 block mb-1.5">
+                Título do Serviço *
+              </label>
+              <input
+                type="text"
+                required
+                placeholder="Ex: Desenvolvimento Next.js, Manutenção Solar para Vans..."
+                value={tituloServico}
+                onChange={(e) => setTituloServico(e.target.value)}
+                className="w-full bg-black/30 border border-white/10 rounded-xl px-4 py-3 text-sm text-white placeholder-slate-500 focus:outline-none focus:border-emerald-400 transition-colors"
               />
             </div>
-          )}
 
-          <div>
-            <label className="text-xs font-extrabold text-slate-300 block mb-1">
-              Descrição Detalhada do Serviço
-            </label>
-            <textarea
-              rows={3}
-              placeholder="Descreva as habilidades, prazos, infraestrutura disponível ou escopo do trabalho..."
-              value={descricao}
-              onChange={(e) => setDescricao(e.target.value)}
-              className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-sm text-white placeholder-slate-500 focus:outline-none focus:border-emerald-400 transition-colors"
-            />
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div>
+                <label className="text-xs font-bold text-slate-300 block mb-1.5">Categoria</label>
+                <select
+                  value={categoria}
+                  onChange={(e) => setCategoria(e.target.value)}
+                  className="w-full bg-slate-900 border border-white/10 rounded-xl px-3 py-3 text-sm text-white focus:outline-none focus:border-emerald-400 cursor-pointer"
+                >
+                  {CATEGORIAS_SERVICOS.map((c) => (
+                    <option key={c.id} value={c.name}>
+                      {c.icon} {c.name}
+                    </option>
+                  ))}
+                </select>
+              </div>
+
+              <div>
+                <label className="text-xs font-bold text-slate-300 block mb-1.5">Modalidade</label>
+                <select
+                  value={modalidade}
+                  onChange={(e) => setModalidade(e.target.value as "Remoto" | "Presencial")}
+                  className="w-full bg-slate-900 border border-white/10 rounded-xl px-3 py-3 text-sm text-white focus:outline-none focus:border-emerald-400 cursor-pointer"
+                >
+                  <option value="Remoto">Remoto (Atendimento Online Nacional)</option>
+                  <option value="Presencial">Presencial (Local / Estrada)</option>
+                </select>
+              </div>
+            </div>
+
+            {modalidade === "Presencial" && (
+              <div>
+                <label className="text-xs font-bold text-slate-300 block mb-1.5">
+                  Cidade e Estado de Atendimento *
+                </label>
+                <input
+                  type="text"
+                  required
+                  placeholder="Ex: Paraty / Angra dos Reis, RJ"
+                  value={cidade}
+                  onChange={(e) => setCidade(e.target.value)}
+                  className="w-full bg-black/30 border border-white/10 rounded-xl px-4 py-3 text-sm text-white placeholder-slate-500 focus:outline-none focus:border-emerald-400 transition-colors"
+                />
+              </div>
+            )}
+
+            {/* CORTESIA VS ORÇAMENTO */}
+            <div className="flex items-center justify-between p-3.5 rounded-xl bg-amber-950/20 border border-amber-400/20">
+              <div>
+                <span className="text-xs font-black text-amber-300 flex items-center gap-1.5">
+                  <span>🛡️</span> Cortesia Solidária 0800 (Alta Honra)
+                </span>
+                <span className="text-[10px] text-slate-400 block">
+                  Ponto de apoio na estrada, recarga elétrica ou mentoria voluntária.
+                </span>
+              </div>
+              <input
+                type="checkbox"
+                checked={isCortesia}
+                onChange={(e) => setIsCortesia(e.target.checked)}
+                className="w-5 h-5 accent-amber-400 cursor-pointer"
+              />
+            </div>
+
+            {!isCortesia && (
+              <div>
+                <label className="text-xs font-bold text-slate-300 block mb-1.5">
+                  Orçamento Estimado ou Tarifa Base (R$)
+                </label>
+                <input
+                  type="number"
+                  placeholder="Ex: 1500"
+                  value={valor}
+                  onChange={(e) => setValor(e.target.value)}
+                  className="w-full bg-black/30 border border-white/10 rounded-xl px-4 py-3 text-sm text-white placeholder-slate-500 focus:outline-none focus:border-emerald-400 transition-colors font-mono"
+                />
+              </div>
+            )}
+
+            <div>
+              <label className="text-xs font-bold text-slate-300 block mb-1.5">
+                Descrição do Escopo
+              </label>
+              <textarea
+                rows={3}
+                placeholder="Descreva detalhes práticos, entregáveis e diferenciais do serviço..."
+                value={descricao}
+                onChange={(e) => setDescricao(e.target.value)}
+                className="w-full bg-black/30 border border-white/10 rounded-xl px-4 py-3 text-sm text-white placeholder-slate-500 focus:outline-none focus:border-emerald-400 transition-colors"
+              />
+            </div>
           </div>
-        </div>
 
-        {/* BLOCO 4: COMPLIANCE LGPD */}
-        <div className="p-4 rounded-2xl bg-emerald-950/20 border border-emerald-500/20 flex items-start gap-3">
-          <input
-            id="lgpdConsentInput"
-            type="checkbox"
-            required
-            checked={lgpdConsent}
-            onChange={(e) => setLgpdConsent(e.target.checked)}
-            className="w-5 h-5 mt-0.5 accent-emerald-500 cursor-pointer shrink-0"
-          />
-          <label htmlFor="lgpdConsentInput" className="text-[11px] sm:text-xs text-slate-300 leading-relaxed cursor-pointer">
-            <strong className="text-white font-bold">Consentimento LGPD (Lei nº 13.709/2018):</strong> Autorizo expressamente o JobPago a tratar meus dados de contato (telefone e e-mail) para a finalidade de intermediação e despacho de serviços para os contratantes da plataforma. Estou ciente de que poderei revogar o consentimento a qualquer momento de acordo com a{" "}
-            <Link href="/privacidade" target="_blank" className="text-emerald-400 underline hover:text-emerald-300">
-              Política de Privacidade
-            </Link>{" "}
-            e os{" "}
-            <Link href="/termos" target="_blank" className="text-emerald-400 underline hover:text-emerald-300">
-              Termos de Uso
-            </Link>.
-          </label>
-        </div>
+          {/* CONSENTIMENTO LGPD */}
+          <div className="p-4 rounded-2xl bg-emerald-950/20 border border-emerald-500/20 flex items-start gap-3">
+            <input
+              id="lgpdConsentInput"
+              type="checkbox"
+              required
+              checked={lgpdConsent}
+              onChange={(e) => setLgpdConsent(e.target.checked)}
+              className="w-5 h-5 mt-0.5 accent-emerald-500 cursor-pointer shrink-0"
+            />
+            <label htmlFor="lgpdConsentInput" className="text-[11px] text-slate-300 leading-relaxed cursor-pointer">
+              <strong className="text-white font-bold">Consentimento LGPD (Lei nº 13.709/2018):</strong> Autorizo expressamente o JobPago a tratar meus dados de contato para a finalidade exclusiva de intermediação e despacho de serviços para os contratantes. Conheço a{" "}
+              <Link href="/privacidade" target="_blank" className="text-emerald-400 underline hover:text-emerald-300">
+                Política de Privacidade
+              </Link>{" "}
+              e os{" "}
+              <Link href="/termos" target="_blank" className="text-emerald-400 underline hover:text-emerald-300">
+                Termos de Uso
+              </Link>.
+            </label>
+          </div>
 
-        {/* BOTÃO DE SUBMISSÃO */}
-        <button
-          type="submit"
-          disabled={loading}
-          className="btn-primary-emerald w-full py-4 rounded-2xl text-sm font-black uppercase tracking-wider cursor-pointer shadow-xl flex items-center justify-center gap-2 hover:scale-[1.01] transition-all disabled:opacity-50"
-        >
-          {loading ? (
-            <div className="w-5 h-5 rounded-full border-2 border-black border-t-transparent animate-spin"></div>
-          ) : (
-            <>
-              <span>🚀</span> Enviar Serviço para Contratante &amp; Despachar no WhatsApp
-            </>
-          )}
-        </button>
-      </form>
+          {/* BOTÃO DE AÇÃO */}
+          <button
+            type="submit"
+            disabled={loading}
+            className="btn-primary-emerald w-full py-4 rounded-2xl text-xs sm:text-sm font-black uppercase tracking-wider cursor-pointer shadow-xl flex items-center justify-center gap-2 hover:scale-[1.01] transition-all disabled:opacity-50"
+          >
+            {loading ? (
+              <div className="w-5 h-5 rounded-full border-2 border-black border-t-transparent animate-spin"></div>
+            ) : (
+              <>
+                <span>🚀</span> Enviar Serviço para Contratante &amp; Despachar no WhatsApp
+              </>
+            )}
+          </button>
+        </form>
+      </div>
     </div>
   );
 }
