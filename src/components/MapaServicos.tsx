@@ -294,7 +294,7 @@ export default function MapaServicos({
       <button
         type="button"
         onClick={() => localizarRef.current?.()}
-        className="absolute bottom-4 left-4 z-[1000] min-h-[44px] px-4 rounded-2xl bg-[#08080c]/90 backdrop-blur-md border border-emerald-500/30 text-xs font-bold text-emerald-300 hover:border-emerald-400 transition-colors"
+        className="absolute top-4 right-4 z-[1000] min-h-[44px] px-4 rounded-2xl bg-[#08080c]/90 backdrop-blur-md border border-emerald-500/30 text-xs font-bold text-emerald-300 hover:border-emerald-400 transition-colors"
       >
         Minha posição
       </button>
