@@ -17,7 +17,9 @@ export default function CadastrarServicoPage() {
           <Link href="/" className="flex items-center gap-3 group">
             <div className="w-10 h-10 rounded-2xl bg-emerald-500/10 border border-emerald-500/30 flex items-center justify-center p-1.5 shadow-[0_0_20px_rgba(16,185,129,0.2)] group-hover:border-emerald-400 transition-colors">
               <img
-                src="/icon_flutuante.png"
+                src="/icon_flutuante-96.webp"
+                width={96}
+                height={96}
                 alt="JobPago Logo"
                 className="w-full h-full object-contain group-hover:scale-110 transition-transform duration-300"
               />
