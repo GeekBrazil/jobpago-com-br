@@ -39,6 +39,18 @@ const TARGETS = [
       "Política de Privacidade"
     ],
     mustNotContain: []
+  },
+  {
+    name: "Área de Cadastro de Serviços & Leads LGPD (/cadastrar-servico)",
+    url: "https://www.jobpago.com.br/cadastrar-servico",
+    expectedStatus: 200,
+    mustContain: [
+      "Cadastro de Serviços",
+      "Nós enviamos os serviços para o contratante",
+      "Consentimento LGPD",
+      "WhatsApp com DDD"
+    ],
+    mustNotContain: []
   }
 ];
 

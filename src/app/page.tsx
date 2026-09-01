@@ -5,6 +5,7 @@ import Link from "next/link";
 import dynamic from "next/dynamic";
 import type { MapPoint } from "@/components/MapaServicos";
 import ModalPerfilRPG, { UserRPG, GUILD_DETAILS } from "@/components/ModalPerfilRPG";
+import CadastroServicoLead from "@/components/CadastroServicoLead";
 
 const MapaServicos = dynamic(() => import("@/components/MapaServicos"), {
   ssr: false,
@@ -349,6 +350,9 @@ export default function Home() {
             <a href="#vagas" className="hover:text-emerald-400 transition-colors">
               Vagas & Serviços
             </a>
+            <a href="#cadastrar-servico" className="hover:text-emerald-400 transition-colors text-emerald-400/90 flex items-center gap-1">
+              <span>+ Cadastrar Serviço</span>
+            </a>
             <a href="#guildas-leaderboard" className="hover:text-amber-300 transition-colors text-amber-400/90 flex items-center gap-1">
               <span>Alta Honra</span>
             </a>
@@ -419,12 +423,12 @@ export default function Home() {
               <span>🗺️</span> Explorar Mapa & Serviços
             </a>
 
-            <button
-              onClick={() => setIsModalOpen(true)}
+            <a
+              href="#cadastrar-servico"
               className="btn-secondary-glass w-full sm:w-auto px-7 py-3.5 rounded-2xl flex items-center justify-center gap-2 text-xs sm:text-sm font-bold cursor-pointer"
             >
-              <span>⚡</span> Publicar Vaga ou Apoio
-            </button>
+              <span>⚡</span> Cadastrar Serviço &amp; Lead
+            </a>
           </div>
 
           {/* ── DOIS LIVE SHOWCASE CARDS (DEMONSTRAÇÃO VISUAL DO QUE O SITE FAZ) ── */}
@@ -716,6 +720,11 @@ export default function Home() {
             );
           })}
         </div>
+      </section>
+
+      {/* ── SEÇÃO DE CADASTRO DE SERVIÇOS & CAPTURA DE LEADS COM LGPD ── */}
+      <section id="cadastrar-servico" className="py-12 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
+        <CadastroServicoLead onSuccess={() => fetchJobs()} />
       </section>
 
       {/* ── SEÇÃO 4: SISTEMA DE ALTA HONRA & REPUTAÇÃO ── */}
