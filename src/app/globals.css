@@ -2,80 +2,118 @@
 @import "leaflet/dist/leaflet.css";
 
 :root {
-  --background: #060913;
+  --background: #07090e;
   --foreground: #f8fafc;
+  --accent-emerald: #10b981;
+  --accent-amber: #f59e0b;
 }
 
 body {
-  background: radial-gradient(circle at 50% 0%, #0f1c3f 0%, #060913 70%);
+  background: radial-gradient(circle at 50% -10%, #121a2c 0%, #07090e 65%, #040609 100%);
   background-attachment: fixed;
   color: var(--foreground);
   font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
   overflow-x: hidden;
 }
 
-/* ── GLASSMORPHISM UTILITIES ── */
+/* ── HERO TOPOGRAPHIC & COORDINATE GRID PATTERN ── */
+.hero-grid-pattern {
+  background-image: 
+    radial-gradient(rgba(255, 255, 255, 0.08) 1px, transparent 1px),
+    linear-gradient(to right, rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+  background-size: 36px 36px;
+  mask-image: radial-gradient(ellipse 70% 55% at 50% 30%, #000 60%, transparent 100%);
+  -webkit-mask-image: radial-gradient(ellipse 70% 55% at 50% 30%, #000 60%, transparent 100%);
+}
+
+/* ── REFINED GLASSMORPHISM ── */
 .glass-panel {
-  background: rgba(15, 23, 42, 0.65);
+  background: rgba(13, 17, 26, 0.72);
   backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
-  border: 1px solid rgba(255, 255, 255, 0.15);
-  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.4);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: 0 16px 40px -10px rgba(0, 0, 0, 0.6);
 }
 
 .glass-card {
-  background: rgba(255, 255, 255, 0.05);
+  background: rgba(255, 255, 255, 0.03);
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
-  border: 1px solid rgba(255, 255, 255, 0.12);
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  border: 1px solid rgba(255, 255, 255, 0.07);
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .glass-card:hover {
-  background: rgba(255, 255, 255, 0.09);
-  border-color: rgba(0, 240, 255, 0.4);
-  box-shadow: 0 12px 40px 0 rgba(0, 240, 255, 0.15);
-  transform: translateY(-3px);
+  background: rgba(255, 255, 255, 0.055);
+  border-color: rgba(16, 185, 129, 0.35);
+  box-shadow: 0 12px 32px -4px rgba(0, 0, 0, 0.5), 0 0 20px -2px rgba(16, 185, 129, 0.15);
+  transform: translateY(-2px);
 }
 
-.glass-cyan {
-  border-color: rgba(0, 240, 255, 0.4) !important;
-  box-shadow: 0 0 30px rgba(0, 240, 255, 0.2) !important;
+.glass-emerald {
+  border-color: rgba(16, 185, 129, 0.35) !important;
+  box-shadow: 0 8px 30px -4px rgba(16, 185, 129, 0.15) !important;
 }
 
-.glass-gold {
-  border-color: rgba(251, 191, 36, 0.4) !important;
-  box-shadow: 0 0 30px rgba(251, 191, 36, 0.2) !important;
+.glass-amber {
+  border-color: rgba(245, 158, 11, 0.35) !important;
+  box-shadow: 0 8px 30px -4px rgba(245, 158, 11, 0.15) !important;
 }
 
-.glass-pink {
-  border-color: rgba(236, 72, 153, 0.4) !important;
-  box-shadow: 0 0 30px rgba(236, 72, 153, 0.2) !important;
+/* ── BOTÕES DE ALTA CONVERSÃO ── */
+.btn-primary-emerald {
+  background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+  color: #03140c;
+  font-weight: 800;
+  box-shadow: 0 4px 20px -2px rgba(16, 185, 129, 0.45), inset 0 1px 0 rgba(255, 255, 255, 0.3);
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.btn-primary-emerald:hover {
+  background: linear-gradient(135deg, #34d399 0%, #059669 100%);
+  box-shadow: 0 6px 26px -1px rgba(16, 185, 129, 0.6), inset 0 1px 0 rgba(255, 255, 255, 0.4);
+  transform: translateY(-1px) scale(1.01);
+}
+
+.btn-secondary-glass {
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  color: #f8fafc;
+  font-weight: 700;
+  box-shadow: 0 4px 16px -2px rgba(0, 0, 0, 0.3);
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.btn-secondary-glass:hover {
+  background: rgba(255, 255, 255, 0.08);
+  border-color: rgba(255, 255, 255, 0.25);
+  transform: translateY(-1px);
 }
 
 /* User Location Pulsing Marker */
 .user-pulse-marker {
   width: 22px;
   height: 22px;
-  background-color: #00f0ff;
+  background-color: #10b981;
   border: 3px solid #ffffff;
   border-radius: 50%;
-  box-shadow: 0 0 25px #00f0ff;
+  box-shadow: 0 0 20px #10b981;
   animation: userPulse 2s infinite;
 }
 
 @keyframes userPulse {
   0% {
     transform: scale(0.95);
-    box-shadow: 0 0 0 0 rgba(0, 240, 255, 0.7);
+    box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.7);
   }
   70% {
     transform: scale(1.1);
-    box-shadow: 0 0 0 16px rgba(0, 240, 255, 0);
+    box-shadow: 0 0 0 16px rgba(16, 185, 129, 0);
   }
   100% {
     transform: scale(0.95);
-    box-shadow: 0 0 0 0 rgba(0, 240, 255, 0);
+    box-shadow: 0 0 0 0 rgba(16, 185, 129, 0);
   }
 }
 
@@ -84,18 +122,18 @@ body {
   width: 100%;
   height: 100%;
   border-radius: 1.5rem;
-  background: #090e1a !important;
+  background: #080c14 !important;
 }
 
 .leaflet-popup-content-wrapper {
-  background: rgba(15, 23, 42, 0.95) !important;
+  background: rgba(13, 17, 26, 0.95) !important;
   backdrop-filter: blur(16px) !important;
   color: #fff !important;
-  border: 1px solid rgba(0, 240, 255, 0.3) !important;
+  border: 1px solid rgba(16, 185, 129, 0.3) !important;
   border-radius: 1.25rem !important;
   box-shadow: 0 15px 35px rgba(0, 0, 0, 0.6) !important;
 }
 
 .leaflet-popup-tip {
-  background: rgba(15, 23, 42, 0.95) !important;
+  background: rgba(13, 17, 26, 0.95) !important;
 }
