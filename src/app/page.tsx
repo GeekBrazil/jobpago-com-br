@@ -396,6 +396,7 @@ export default function Home() {
         </div>
       </header>
 
+      <main>
       {/* ── HERO BANNER REFINED OBSIDIAN & EMERALD ── */}
       <section className="relative hero-grid-pattern pt-14 sm:pt-20 pb-16 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto text-center overflow-hidden">
         <div className="text-center max-w-4xl mx-auto relative z-10">
@@ -443,9 +444,9 @@ export default function Home() {
                 </span>
                 <span className="text-[11px] font-mono text-emerald-400 font-bold">R$ 3.500</span>
               </div>
-              <h4 className="text-sm font-black text-white leading-snug">
+              <h2 className="text-sm font-black text-white leading-snug">
                 Desenvolvedor Full-Stack / Automação IA & Webhook
-              </h4>
+              </h2>
               <p className="text-[11px] text-slate-300 mt-1 line-clamp-2">
                 Demanda remota ativa: integração de CRM e automação de pagamentos. Pagamento via PIX liberado na entrega.
               </p>
@@ -463,9 +464,9 @@ export default function Home() {
                 </span>
                 <span className="text-[11px] font-mono text-amber-300 font-bold">100% CORTESIA</span>
               </div>
-              <h4 className="text-sm font-black text-white leading-snug">
+              <h2 className="text-sm font-black text-white leading-snug">
                 Ponto de Apoio: Chuveiro Quente + Tomada 220V/32A
-              </h4>
+              </h2>
               <p className="text-[11px] text-slate-300 mt-1 line-clamp-2">
                 Garagem segura para pernoite de motorhome ou campervan em Paraty/RJ com água limpa e Wi-Fi Starlink.
               </p>
@@ -992,6 +993,8 @@ export default function Home() {
       )}
 
       {/* ── FOOTER ELEGANTE ── */}
+      </main>
+
       <footer className="border-t border-white/10 py-12 px-4 text-center text-xs text-slate-400">
         <div className="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4">
           <p>© {new Date().getFullYear()} JobPago.com.br · Marketplace Passivo mantido por Allan Candido.</p>

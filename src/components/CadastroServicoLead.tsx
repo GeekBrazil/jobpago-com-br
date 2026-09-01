@@ -187,7 +187,7 @@ export default function CadastroServicoLead({ onSuccess }: CadastroServicoLeadPr
             <span className="text-[10px] font-mono font-bold text-emerald-400 uppercase tracking-widest block">
               Fase 01
             </span>
-            <h4 className="text-sm font-black text-white mt-0.5">Cadastro &amp; Validação</h4>
+            <h2 className="text-sm font-black text-white mt-0.5">Cadastro &amp; Validação</h2>
             <p className="text-xs text-slate-400 mt-1">
               WhatsApp com DDD e e-mail validados para contato seguro e direto.
             </p>
@@ -197,7 +197,7 @@ export default function CadastroServicoLead({ onSuccess }: CadastroServicoLeadPr
             <span className="text-[10px] font-mono font-bold text-emerald-400 uppercase tracking-widest block">
               Fase 02
             </span>
-            <h4 className="text-sm font-black text-white mt-0.5">Envio pelo JobPago</h4>
+            <h2 className="text-sm font-black text-white mt-0.5">Envio pelo JobPago</h2>
             <p className="text-xs text-slate-400 mt-1">
               Nós enviamos os seus serviços diretamente para os contratantes qualificados.
             </p>
@@ -207,7 +207,7 @@ export default function CadastroServicoLead({ onSuccess }: CadastroServicoLeadPr
             <span className="text-[10px] font-mono font-bold text-emerald-400 uppercase tracking-widest block">
               Fase 03
             </span>
-            <h4 className="text-sm font-black text-white mt-0.5">PIX Instantâneo</h4>
+            <h2 className="text-sm font-black text-white mt-0.5">PIX Instantâneo</h2>
             <p className="text-xs text-slate-400 mt-1">
               Negociação de valor e entrega combinada sem taxas de intermediação.
             </p>
@@ -218,7 +218,7 @@ export default function CadastroServicoLead({ onSuccess }: CadastroServicoLeadPr
         <div className="p-4 rounded-2xl bg-white/[0.02] border border-white/5 flex items-start gap-3">
           <span className="text-lg">🔒</span>
           <div>
-            <h5 className="text-xs font-bold text-white">Privacidade &amp; LGPD</h5>
+            <h3 className="text-xs font-bold text-white">Privacidade &amp; LGPD</h3>
             <p className="text-[11px] text-slate-400 mt-0.5 leading-relaxed">
               Tratamento exclusivo para intermediação conforme a Lei nº 13.709/2018. Seus dados nunca são vendidos a terceiros.
             </p>
@@ -268,13 +268,14 @@ export default function CadastroServicoLead({ onSuccess }: CadastroServicoLeadPr
             </span>
 
             <div>
-              <label className="text-xs font-bold text-slate-300 block mb-1.5">
+              <label htmlFor="nome-contratado" className="text-xs font-bold text-slate-300 block mb-1.5">
                 Nome Completo ou Nome Profissional *
               </label>
               <input
                 type="text"
                 required
                 placeholder="Ex: Allan Candido · Dev Nômade"
+                id="nome-contratado"
                 value={nomeContratado}
                 onChange={(e) => setNomeContratado(e.target.value)}
                 className="w-full bg-black/30 border border-white/10 rounded-xl px-4 py-3 text-sm text-white placeholder-slate-500 focus:outline-none focus:border-emerald-400 transition-colors"
@@ -283,28 +284,30 @@ export default function CadastroServicoLead({ onSuccess }: CadastroServicoLeadPr
 
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div>
-                <label className="text-xs font-bold text-slate-300 block mb-1.5">
+                <label htmlFor="whatsapp-contratado" className="text-xs font-bold text-slate-300 block mb-1.5">
                   WhatsApp com DDD *
                 </label>
                 <input
                   type="tel"
                   required
                   placeholder="(24) 99332-6966"
-                  value={whatsappContratado}
+                  id="whatsapp-contratado"
+                value={whatsappContratado}
                   onChange={handlePhoneChange}
                   className="w-full bg-black/30 border border-white/10 rounded-xl px-4 py-3 text-sm text-white placeholder-slate-500 focus:outline-none focus:border-emerald-400 transition-colors font-mono"
                 />
               </div>
 
               <div>
-                <label className="text-xs font-bold text-slate-300 block mb-1.5">
+                <label htmlFor="email-contratado" className="text-xs font-bold text-slate-300 block mb-1.5">
                   E-mail Profissional *
                 </label>
                 <input
                   type="email"
                   required
                   placeholder="contato@exemplo.com"
-                  value={emailContratado}
+                  id="email-contratado"
+                value={emailContratado}
                   onChange={(e) => setEmailContratado(e.target.value)}
                   className="w-full bg-black/30 border border-white/10 rounded-xl px-4 py-3 text-sm text-white placeholder-slate-500 focus:outline-none focus:border-emerald-400 transition-colors font-mono"
                 />
@@ -319,12 +322,13 @@ export default function CadastroServicoLead({ onSuccess }: CadastroServicoLeadPr
             </span>
 
             <div>
-              <label className="text-xs font-bold text-slate-300 block mb-1.5">
+              <label htmlFor="perfil-contratante" className="text-xs font-bold text-slate-300 block mb-1.5">
                 Empresa ou Perfil do Contratante que Deve Receber a Proposta *
               </label>
               <input
                 type="text"
                 placeholder="Ex: Startups, Donos de Vans, Pousadas, Produtores de Conteúdo..."
+                id="perfil-contratante"
                 value={nomeOuPerfilContratante}
                 onChange={(e) => setNomeOuPerfilContratante(e.target.value)}
                 className="w-full bg-black/30 border border-white/10 rounded-xl px-4 py-3 text-sm text-white placeholder-slate-500 focus:outline-none focus:border-amber-400 transition-colors"
@@ -342,13 +346,14 @@ export default function CadastroServicoLead({ onSuccess }: CadastroServicoLeadPr
             </span>
 
             <div>
-              <label className="text-xs font-bold text-slate-300 block mb-1.5">
+              <label htmlFor="titulo-servico" className="text-xs font-bold text-slate-300 block mb-1.5">
                 Título do Serviço *
               </label>
               <input
                 type="text"
                 required
                 placeholder="Ex: Desenvolvimento Next.js, Manutenção Solar para Vans..."
+                id="titulo-servico"
                 value={tituloServico}
                 onChange={(e) => setTituloServico(e.target.value)}
                 className="w-full bg-black/30 border border-white/10 rounded-xl px-4 py-3 text-sm text-white placeholder-slate-500 focus:outline-none focus:border-emerald-400 transition-colors"
@@ -357,8 +362,9 @@ export default function CadastroServicoLead({ onSuccess }: CadastroServicoLeadPr
 
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div>
-                <label className="text-xs font-bold text-slate-300 block mb-1.5">Categoria</label>
+                <label htmlFor="categoria-servico" className="text-xs font-bold text-slate-300 block mb-1.5">Categoria</label>
                 <select
+                  id="categoria-servico"
                   value={categoria}
                   onChange={(e) => setCategoria(e.target.value)}
                   className="w-full bg-slate-900 border border-white/10 rounded-xl px-3 py-3 text-sm text-white focus:outline-none focus:border-emerald-400 cursor-pointer"
@@ -372,8 +378,9 @@ export default function CadastroServicoLead({ onSuccess }: CadastroServicoLeadPr
               </div>
 
               <div>
-                <label className="text-xs font-bold text-slate-300 block mb-1.5">Modalidade</label>
+                <label htmlFor="modalidade-servico" className="text-xs font-bold text-slate-300 block mb-1.5">Modalidade</label>
                 <select
+                  id="modalidade-servico"
                   value={modalidade}
                   onChange={(e) => setModalidade(e.target.value as "Remoto" | "Presencial")}
                   className="w-full bg-slate-900 border border-white/10 rounded-xl px-3 py-3 text-sm text-white focus:outline-none focus:border-emerald-400 cursor-pointer"
@@ -386,14 +393,15 @@ export default function CadastroServicoLead({ onSuccess }: CadastroServicoLeadPr
 
             {modalidade === "Presencial" && (
               <div>
-                <label className="text-xs font-bold text-slate-300 block mb-1.5">
+                <label htmlFor="cidade-atendimento" className="text-xs font-bold text-slate-300 block mb-1.5">
                   Cidade e Estado de Atendimento *
                 </label>
                 <input
                   type="text"
                   required
                   placeholder="Ex: Paraty / Angra dos Reis, RJ"
-                  value={cidade}
+                  id="cidade-atendimento"
+                value={cidade}
                   onChange={(e) => setCidade(e.target.value)}
                   className="w-full bg-black/30 border border-white/10 rounded-xl px-4 py-3 text-sm text-white placeholder-slate-500 focus:outline-none focus:border-emerald-400 transition-colors"
                 />
@@ -403,14 +411,15 @@ export default function CadastroServicoLead({ onSuccess }: CadastroServicoLeadPr
             {/* CORTESIA VS ORÇAMENTO */}
             <div className="flex items-center justify-between p-3.5 rounded-xl bg-amber-950/20 border border-amber-400/20">
               <div>
-                <span className="text-xs font-black text-amber-300 flex items-center gap-1.5">
+                <label htmlFor="cortesia-solidaria" className="text-xs font-black text-amber-300 flex items-center gap-1.5 cursor-pointer">
                   <span>🛡️</span> Cortesia Solidária 0800 (Alta Honra)
-                </span>
+                </label>
                 <span className="text-[10px] text-slate-400 block">
                   Ponto de apoio na estrada, recarga elétrica ou mentoria voluntária.
                 </span>
               </div>
               <input
+                id="cortesia-solidaria"
                 type="checkbox"
                 checked={isCortesia}
                 onChange={(e) => setIsCortesia(e.target.checked)}
@@ -420,13 +429,14 @@ export default function CadastroServicoLead({ onSuccess }: CadastroServicoLeadPr
 
             {!isCortesia && (
               <div>
-                <label className="text-xs font-bold text-slate-300 block mb-1.5">
+                <label htmlFor="orcamento" className="text-xs font-bold text-slate-300 block mb-1.5">
                   Orçamento Estimado ou Tarifa Base (R$)
                 </label>
                 <input
                   type="number"
                   placeholder="Ex: 1500"
-                  value={valor}
+                  id="orcamento"
+                value={valor}
                   onChange={(e) => setValor(e.target.value)}
                   className="w-full bg-black/30 border border-white/10 rounded-xl px-4 py-3 text-sm text-white placeholder-slate-500 focus:outline-none focus:border-emerald-400 transition-colors font-mono"
                 />
@@ -434,10 +444,11 @@ export default function CadastroServicoLead({ onSuccess }: CadastroServicoLeadPr
             )}
 
             <div>
-              <label className="text-xs font-bold text-slate-300 block mb-1.5">
+              <label htmlFor="descricao-escopo" className="text-xs font-bold text-slate-300 block mb-1.5">
                 Descrição do Escopo
               </label>
               <textarea
+                id="descricao-escopo"
                 rows={3}
                 placeholder="Descreva detalhes práticos, entregáveis e diferenciais do serviço..."
                 value={descricao}
