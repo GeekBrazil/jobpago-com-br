@@ -40,6 +40,8 @@ export default function MapaServicos({
   const mapRef = useRef<L.Map | null>(null);
   const routePolylineRef = useRef<L.Polyline | null>(null);
   const userMarkerRef = useRef<L.Marker | null>(null);
+  /** Guarda o localizador para o botao poder dispara-lo fora do useEffect. */
+  const localizarRef = useRef<(() => void) | null>(null);
 
   const [userPos, setUserPos] = useState<[number, number] | null>(null);
   const [activeDestination, setActiveDestination] = useState<MapPoint | null>(null);
@@ -72,8 +74,11 @@ export default function MapaServicos({
 
     mapRef.current = map;
 
-    // Obter Geolocalização do Usuário
-    if (typeof window !== "undefined" && navigator.geolocation) {
+    // Geolocalização: nunca pedir permissão no carregamento da página.
+    // Só centraliza sozinho em quem já concedeu antes; para os demais o mapa
+    // abre na visão padrão e a localização fica atrás do botão "Minha posição".
+    const localizar = () => {
+      if (typeof window === "undefined" || !navigator.geolocation) return;
       navigator.geolocation.getCurrentPosition(
         (pos) => {
           const uLat = pos.coords.latitude;
@@ -98,6 +103,15 @@ export default function MapaServicos({
           setGeoError("Permissão de localização não concedida. Usando centro padrão.");
         }
       );
+    };
+    localizarRef.current = localizar;
+
+    // Permissions API diz se ja ha consentimento — consultar nao dispara prompt.
+    if (typeof navigator !== "undefined" && navigator.permissions?.query) {
+      navigator.permissions
+        .query({ name: "geolocation" as PermissionName })
+        .then((p) => { if (p.state === "granted") localizar(); })
+        .catch(() => { /* navegador sem Permissions API: espera o clique */ });
     }
 
     return () => {
@@ -129,7 +143,17 @@ export default function MapaServicos({
     filtered.forEach((pt) => {
       const color = CATEGORY_COLORS[pt.category] || "#10b981";
 
+      // Envelope transparente de 44x44: o circulo continua com 26px de diametro,
+      // mas o alvo de toque atende o minimo de 44px sem engordar o mapa.
       const markerHtml = `
+        <div style="
+          width: 44px;
+          height: 44px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          cursor: pointer;
+        ">
         <div style="
           width: 26px;
           height: 26px;
@@ -146,13 +170,14 @@ export default function MapaServicos({
         ">
           ⚡
         </div>
+        </div>
       `;
 
       const customIcon = L.divIcon({
         className: "custom-point-marker",
         html: markerHtml,
-        iconSize: [30, 30],
-        iconAnchor: [15, 15],
+        iconSize: [44, 44],
+        iconAnchor: [22, 22],
       });
 
       const marker = L.marker([pt.lat, pt.lng], { icon: customIcon }).addTo(map);
@@ -263,6 +288,16 @@ export default function MapaServicos({
   return (
     <div className="relative w-full h-[520px] rounded-3xl overflow-hidden border border-white/15 bg-[#0a0c14] shadow-2xl">
       <div ref={mapContainerRef} className="w-full h-full" />
+
+      {/* A permissao de localizacao so e pedida daqui, por acao do usuario.
+          Pedir no carregamento da pagina e dark pattern e reprova no Lighthouse. */}
+      <button
+        type="button"
+        onClick={() => localizarRef.current?.()}
+        className="absolute bottom-4 left-4 z-[1000] min-h-[44px] px-4 rounded-2xl bg-[#08080c]/90 backdrop-blur-md border border-emerald-500/30 text-xs font-bold text-emerald-300 hover:border-emerald-400 transition-colors"
+      >
+        Minha posição
+      </button>
 
       {/* Overlays de Informação e Controles */}
       <div className="absolute top-4 left-4 z-[1000] flex flex-col gap-2 pointer-events-none">
