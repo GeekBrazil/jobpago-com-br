@@ -171,13 +171,13 @@ export default function CadastroServicoLead({ onSuccess }: CadastroServicoLeadPr
         <div>
           <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 text-[11px] font-mono font-bold tracking-wider uppercase mb-4">
             <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span>
-            Despacho Direto de Serviços
+            Cadastro de Serviços · Despacho Direto
           </div>
           <h1 className="text-3xl sm:text-4xl font-black text-white tracking-tight leading-[1.15]">
             Nós enviamos os serviços para o contratante.
           </h1>
           <p className="mt-4 text-sm text-slate-300 leading-relaxed font-normal">
-            Sem muros de retenção, sem comissões sobre o seu trabalho. Você cadastra o serviço e nós conectamos você a oportunidades reais de contratação com pagamento direto por PIX.
+            Sem muros de retenção, sem comissões sobre o seu trabalho. Faça o seu Cadastro de Serviços e nós conectamos você a oportunidades reais de contratação com pagamento direto por PIX.
           </p>
         </div>
 
