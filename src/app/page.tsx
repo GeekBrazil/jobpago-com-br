@@ -438,7 +438,29 @@ export default function Home() {
 
           {/* ── DOIS LIVE SHOWCASE CARDS (DEMONSTRAÇÃO VISUAL DO QUE O SITE FAZ) ── */}
           <div className="mt-12 grid grid-cols-1 md:grid-cols-2 gap-4 max-w-3xl mx-auto text-left">
-            {/* CARD 1: VAGA REMOTA */}
+            {/* CARD 1: PONTO DE APOIO NA ESTRADA — vem primeiro de proposito.
+                No celular os cards empilham, e o primeiro e a primeira prova que
+                o visitante ve. Abrir com uma vaga de dev logo abaixo de um titulo
+                sobre vida na estrada contradizia a promessa. */}
+            <div className="glass-panel glass-amber p-5 rounded-3xl relative overflow-hidden group hover:border-amber-400/50 transition-all">
+              <div className="flex items-center justify-between gap-2 mb-2">
+                <span className="text-[10px] font-black uppercase tracking-wider bg-amber-500/20 text-amber-300 border border-amber-500/30 px-2.5 py-0.5 rounded-full flex items-center gap-1.5">
+                  <span>🛡️</span> Apoio Van Life & Nômade
+                </span>
+                <span className="text-[11px] font-mono text-amber-300 font-bold">100% CORTESIA</span>
+              </div>
+              <h2 className="text-sm font-black text-white leading-snug">
+                Ponto de Apoio: Chuveiro Quente + Tomada 220V/32A
+              </h2>
+              <p className="text-[11px] text-slate-300 mt-1 line-clamp-2">
+                Garagem segura para pernoite de motorhome ou campervan em Paraty/RJ com água limpa e Wi-Fi Starlink.
+              </p>
+              <div className="mt-3 pt-3 border-t border-white/5 flex items-center justify-between text-[10px] text-slate-400 font-mono">
+                <span>📍 Costa Verde, RJ</span>
+                <span className="text-amber-400 font-bold">Alta Honra Solidária 🏆</span>
+    
+
+            {/* CARD 2: VAGA REMOTA */}
             <div className="glass-panel glass-emerald p-5 rounded-3xl relative overflow-hidden group hover:border-emerald-400/50 transition-all">
               <div className="flex items-center justify-between gap-2 mb-2">
                 <span className="text-[10px] font-black uppercase tracking-wider bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 px-2.5 py-0.5 rounded-full flex items-center gap-1.5">
@@ -458,25 +480,7 @@ export default function Home() {
                 <span className="text-emerald-400 font-bold">Negociação Direta 💬</span>
               </div>
             </div>
-
-            {/* CARD 2: PONTO DE APOIO ESTRADA */}
-            <div className="glass-panel glass-amber p-5 rounded-3xl relative overflow-hidden group hover:border-amber-400/50 transition-all">
-              <div className="flex items-center justify-between gap-2 mb-2">
-                <span className="text-[10px] font-black uppercase tracking-wider bg-amber-500/20 text-amber-300 border border-amber-500/30 px-2.5 py-0.5 rounded-full flex items-center gap-1.5">
-                  <span>🛡️</span> Apoio Van Life & Nômade
-                </span>
-                <span className="text-[11px] font-mono text-amber-300 font-bold">100% CORTESIA</span>
-              </div>
-              <h2 className="text-sm font-black text-white leading-snug">
-                Ponto de Apoio: Chuveiro Quente + Tomada 220V/32A
-              </h2>
-              <p className="text-[11px] text-slate-300 mt-1 line-clamp-2">
-                Garagem segura para pernoite de motorhome ou campervan em Paraty/RJ com água limpa e Wi-Fi Starlink.
-              </p>
-              <div className="mt-3 pt-3 border-t border-white/5 flex items-center justify-between text-[10px] text-slate-400 font-mono">
-                <span>📍 Costa Verde, RJ</span>
-                <span className="text-amber-400 font-bold">Alta Honra Solidária 🏆</span>
-              </div>
+          </div>
             </div>
           </div>
 
