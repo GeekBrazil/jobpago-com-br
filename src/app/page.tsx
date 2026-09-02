@@ -5,6 +5,7 @@ import Link from "next/link";
 import dynamic from "next/dynamic";
 import type { MapPoint } from "@/components/MapaServicos";
 import ModalPerfilRPG, { UserRPG, GUILD_DETAILS } from "@/components/ModalPerfilRPG";
+import { CATEGORIAS, FILTROS } from "@/data/categorias";
 
 const MapaServicos = dynamic(() => import("@/components/MapaServicos"), {
   ssr: false,
@@ -132,25 +133,14 @@ const REGRAS_HONRA = [
   },
 ];
 
-const TRIBOS_CANONICAS = [
-  { id: "devs", name: "Devs & Tech", icon: "💻", desc: "Full-Stack, Automação & IA" },
-  { id: "vanlife", name: "Van Life & Nômades", icon: "🚐", desc: "Motorhomes, 220V & Camping" },
-  { id: "reformas", name: "Reformas & Reparos", icon: "🛠️", desc: "Eletricistas & Manutenção" },
-  { id: "fretes", name: "Transporte & Fretes", icon: "🚚", desc: "Carretos & Mudanças" },
-  { id: "foto", name: "Fotografia & Mídia", icon: "📸", desc: "Vídeo, Drone & Design" },
-  { id: "aulas", name: "Aulas & Consultoria", icon: "📚", desc: "Mentorias & Consultorias" },
-];
+const TRIBOS_CANONICAS = CATEGORIAS.map((c) => ({
+  id: c.id,
+  name: c.nome,
+  icon: c.icone,
+  desc: c.descricao,
+}));
 
-const CATEGORIES = [
-  { name: "Todas", icon: "🔥" },
-  { name: "Nômade & Infra", icon: "🚐" },
-  { name: "Tecnologia & TI", icon: "💻" },
-  { name: "Reformas & Reparos", icon: "🛠️" },
-  { name: "Transporte & Fretes", icon: "🚚" },
-  { name: "Fotografia & Eventos", icon: "📸" },
-  { name: "Aulas & Consultoria", icon: "📚" },
-  { name: "Design & Mídia", icon: "🎨" },
-];
+const CATEGORIES = FILTROS;
 
 export default function Home() {
   const [jobs, setJobs] = useState<Job[]>([]);
@@ -411,12 +401,12 @@ export default function Home() {
 
           {/* HEADLINE PRINCIPAL */}
           <h1 className="text-3xl sm:text-5xl lg:text-6xl font-black tracking-tight text-white leading-[1.12]">
-            Renda online & conexões para <span className="text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 via-teal-300 to-emerald-500">nômades digitais</span> na estrada
+            Renda online & conexões para <span className="text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 via-teal-300 to-emerald-500">nômades da estrada</span>
           </h1>
 
           {/* SUBHEADLINE */}
           <p className="mt-5 text-slate-300 text-sm sm:text-base lg:text-lg leading-relaxed max-w-2xl mx-auto font-normal">
-            De desenvolvedores e criadores digitais remotos a viajantes van life e prestadores de serviços essenciais. Conecte-se e combine trabalhos com PIX instantâneo sem taxa de intermediação.
+            De devs e criadores remotos a caminhoneiros, motorhomes e vans: quem trabalha e quem vive na estrada, no mesmo lugar. PIX combinado direto entre as partes, sem taxa de intermediação.
           </p>
 
           {/* DUPLO CTA DE ALTA CONVERSÃO */}

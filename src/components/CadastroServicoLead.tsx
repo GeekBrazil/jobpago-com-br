@@ -1,21 +1,14 @@
 "use client";
 
 import { useState } from "react";
+import { CATEGORIAS } from "@/data/categorias";
 import Link from "next/link";
 
 interface CadastroServicoLeadProps {
   onSuccess?: () => void;
 }
 
-const CATEGORIAS_SERVICOS = [
-  { id: "devs", name: "Tecnologia & TI", icon: "💻" },
-  { id: "vanlife", name: "Nômade & Infra Van Life", icon: "🚐" },
-  { id: "reformas", name: "Reformas & Reparos", icon: "🛠️" },
-  { id: "transporte", name: "Transporte & Fretes", icon: "🚚" },
-  { id: "foto", name: "Fotografia & Mídia", icon: "📸" },
-  { id: "aulas", name: "Aulas & Consultoria", icon: "📚" },
-  { id: "design", name: "Design & Criatividade", icon: "🎨" },
-];
+const CATEGORIAS_SERVICOS = CATEGORIAS.map((c) => ({ id: c.id, name: c.nome, icon: c.icone }));
 
 export default function CadastroServicoLead({ onSuccess }: CadastroServicoLeadProps) {
   const [tipo, setTipo] = useState<"prestador" | "contratante">("prestador");
