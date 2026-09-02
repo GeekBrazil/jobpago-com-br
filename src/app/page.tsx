@@ -318,7 +318,7 @@ export default function Home() {
 
       {/* ── HEADER RESPONSIVO ANTI-SOBREPOSIÇÃO ── */}
       <header className="sticky top-0 z-40 glass-panel border-b border-white/5 backdrop-blur-xl">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between gap-3">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between gap-2 sm:gap-3 overflow-hidden">
           {/* LOGO */}
           <Link href="/" className="flex items-center gap-3 group shrink-0">
             <div className="w-10 h-10 rounded-2xl bg-emerald-500/10 border border-emerald-500/30 flex items-center justify-center p-1.5 shadow-[0_0_20px_rgba(16,185,129,0.2)] group-hover:border-emerald-400 transition-colors">
@@ -334,7 +334,7 @@ export default function Home() {
               <span className="text-xl sm:text-2xl font-black tracking-tight text-white leading-none">
                 JobPago<span className="text-emerald-400">.</span>
               </span>
-              <span className="text-[9px] font-mono font-bold tracking-wider text-slate-400 uppercase mt-0.5">
+              <span className="hidden sm:block text-[9px] font-mono font-bold tracking-wider text-slate-400 uppercase mt-0.5">
                 Renda & Estrada
               </span>
             </div>
@@ -369,10 +369,10 @@ export default function Home() {
               >
                 <div className="flex flex-col text-right">
                   <div className="flex items-center gap-1.5 justify-end">
-                    <span className="text-[11px] sm:text-xs font-black text-white truncate max-w-[90px] sm:max-w-[120px]">
+                    <span className="hidden sm:block text-[11px] sm:text-xs font-black text-white truncate max-w-[90px] sm:max-w-[120px]">
                       {user.name.split(" ")[0]}
                     </span>
-                    <span className="text-[9px] font-black bg-amber-500/15 text-amber-300 border border-amber-500/30 px-1.5 py-0.2 rounded font-mono">
+                    <span className="max-[369px]:hidden text-[9px] font-black bg-amber-500/15 text-amber-300 border border-amber-500/30 px-1.5 py-0.2 rounded font-mono">
                       🛡️ {user.honorScore}
                     </span>
                   </div>
@@ -388,9 +388,12 @@ export default function Home() {
 
             <button
               onClick={() => setIsModalOpen(true)}
-              className="btn-primary-emerald text-xs sm:text-sm px-4 sm:px-5 py-2 sm:py-2.5 rounded-2xl shrink-0 cursor-pointer"
+              className="btn-primary-emerald text-xs sm:text-sm px-3 sm:px-5 py-2 sm:py-2.5 rounded-2xl shrink-0 cursor-pointer whitespace-nowrap"
             >
-              + Anunciar Vaga
+              {/* No celular o rotulo encurta: o header somava 432px em 388 e
+                  este botao — o CTA primario — era o que ficava cortado. */}
+              <span className="sm:hidden">+ Vaga</span>
+              <span className="hidden sm:inline">+ Anunciar Vaga</span>
             </button>
           </div>
         </div>
