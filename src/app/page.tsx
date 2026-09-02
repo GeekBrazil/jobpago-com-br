@@ -458,7 +458,8 @@ export default function Home() {
               <div className="mt-3 pt-3 border-t border-white/5 flex items-center justify-between text-[10px] text-slate-400 font-mono">
                 <span>📍 Costa Verde, RJ</span>
                 <span className="text-amber-400 font-bold">Alta Honra Solidária 🏆</span>
-    
+              </div>
+            </div>
 
             {/* CARD 2: VAGA REMOTA */}
             <div className="glass-panel glass-emerald p-5 rounded-3xl relative overflow-hidden group hover:border-emerald-400/50 transition-all">
@@ -479,8 +480,6 @@ export default function Home() {
                 <span>⚡ PIX Imediato</span>
                 <span className="text-emerald-400 font-bold">Negociação Direta 💬</span>
               </div>
-            </div>
-          </div>
             </div>
           </div>
 
