@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import fs from "fs";
 import path from "path";
+import { Pool } from "pg";
 
 const LEADS_FILE = path.join(process.cwd(), "public", "data", "leads_store.json");
 
@@ -23,13 +24,54 @@ interface LeadPayload {
   timestamp?: string;
 }
 
-let memoryLeads: (LeadPayload & { id: string; createdAt: string })[] = [];
+type LeadRegistrado = LeadPayload & { id: string; createdAt: string; status: string };
 
-function readLeads() {
+// Fallback de emergência — Vercel serverless não tem disco persistente entre
+// invocações, então isso NÃO É a fonte de verdade. Serve só pra não perder o
+// lead na hora se o Postgres estiver fora do ar.
+let memoryLeads: LeadRegistrado[] = [];
+
+const pool = process.env.DATABASE_URL
+  ? new Pool({ connectionString: process.env.DATABASE_URL, max: 3 })
+  : null;
+
+async function gravarNoPostgres(lead: LeadRegistrado) {
+  if (!pool) return false;
+  await pool.query(
+    `INSERT INTO leads (id, tipo, nome_contratado, whatsapp_contratado, email_contratado,
+        nome_contratante, email_contratante, whatsapp_contratante, titulo_servico, categoria,
+        modalidade, cidade, valor, is_cortesia, descricao, lgpd_consent, status, criado_em)
+     VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,$15,$16,$17,$18)
+     ON CONFLICT (id) DO NOTHING`,
+    [
+      lead.id, lead.tipo, lead.nomeContratado, lead.whatsappContratado, lead.emailContratado,
+      lead.nomeOuPerfilContratante || null, lead.emailContratante || null, lead.whatsappContratante || null,
+      lead.tituloServico, lead.categoria, lead.modalidade, lead.cidade || null,
+      String(lead.valor ?? ""), lead.isCortesia, lead.descricao || null, lead.lgpdConsent,
+      lead.status, lead.createdAt,
+    ]
+  );
+  return true;
+}
+
+async function listarDoPostgres(): Promise<LeadRegistrado[] | null> {
+  if (!pool) return null;
+  const { rows } = await pool.query(
+    `SELECT id, tipo, nome_contratado AS "nomeContratado", whatsapp_contratado AS "whatsappContratado",
+            email_contratado AS "emailContratado", nome_contratante AS "nomeOuPerfilContratante",
+            email_contratante AS "emailContratante", whatsapp_contratante AS "whatsappContratante",
+            titulo_servico AS "tituloServico", categoria, modalidade, cidade, valor,
+            is_cortesia AS "isCortesia", descricao, lgpd_consent AS "lgpdConsent", status,
+            criado_em AS "createdAt"
+       FROM leads ORDER BY criado_em DESC LIMIT 500`
+  );
+  return rows;
+}
+
+function readLeadsDoDisco(): LeadRegistrado[] {
   try {
     if (fs.existsSync(LEADS_FILE)) {
-      const content = fs.readFileSync(LEADS_FILE, "utf-8");
-      return JSON.parse(content);
+      return JSON.parse(fs.readFileSync(LEADS_FILE, "utf-8"));
     }
   } catch (err) {
     console.warn("Aviso ao ler arquivo de leads:", err);
@@ -37,12 +79,10 @@ function readLeads() {
   return memoryLeads;
 }
 
-function writeLeads(leads: unknown[]) {
+function writeLeadsNoDisco(leads: LeadRegistrado[]) {
   try {
     const dir = path.dirname(LEADS_FILE);
-    if (!fs.existsSync(dir)) {
-      fs.mkdirSync(dir, { recursive: true });
-    }
+    if (!fs.existsSync(dir)) fs.mkdirSync(dir, { recursive: true });
     fs.writeFileSync(LEADS_FILE, JSON.stringify(leads, null, 2), "utf-8");
   } catch (err) {
     console.warn("Aviso ao persistir leads no disco:", err);
@@ -92,18 +132,27 @@ export async function POST(req: Request) {
       timeZone: "America/Sao_Paulo",
     }).format(new Date());
 
-    const newLead = {
+    const newLead: LeadRegistrado = {
       id: `lead_${Date.now()}_${Math.random().toString(36).substring(2, 6)}`,
       ...body,
       createdAt: nowIso,
       status: "pendente_envio_contratante",
     };
 
-    // Persistência
-    const existing = readLeads();
-    const updated = [newLead, ...existing];
-    memoryLeads = updated;
-    writeLeads(updated);
+    // Persistência: Postgres é a fonte de verdade; disco/memória é só rede de
+    // segurança pra quando DATABASE_URL não está configurado (dev local) ou o
+    // banco falha na hora — sem isso o lead simplesmente sumia (Vercel
+    // serverless não tem disco persistente entre invocações).
+    const gravouNoBanco = await gravarNoPostgres(newLead).catch((err) => {
+      console.error("Erro gravando lead no Postgres:", err);
+      return false;
+    });
+    if (!gravouNoBanco) {
+      const existing = readLeadsDoDisco();
+      const updated = [newLead, ...existing];
+      memoryLeads = updated;
+      writeLeadsNoDisco(updated);
+    }
 
     // 5. Formatação da mensagem para o WhatsApp do Allan (5524993326966)
     const valorTexto = body.isCortesia
@@ -152,6 +201,10 @@ export async function POST(req: Request) {
 }
 
 export async function GET() {
-  const leads = readLeads();
-  return NextResponse.json({ success: true, count: leads.length, leads });
+  const doPostgres = await listarDoPostgres().catch((err) => {
+    console.error("Erro lendo leads do Postgres:", err);
+    return null;
+  });
+  const leads = doPostgres ?? readLeadsDoDisco();
+  return NextResponse.json({ success: true, count: leads.length, leads, fonte: doPostgres ? "postgres" : "disco" });
 }
