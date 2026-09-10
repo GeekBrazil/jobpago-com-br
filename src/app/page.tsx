@@ -391,7 +391,7 @@ export default function Home() {
 
       <main>
       {/* ── HERO BANNER REFINED OBSIDIAN & EMERALD ── */}
-      <section className="relative hero-grid-pattern pt-14 sm:pt-20 pb-16 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto text-center overflow-hidden">
+      <section className="relative hero-grid-pattern pt-6 sm:pt-20 pb-16 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto text-center overflow-hidden">
         <div className="text-center max-w-4xl mx-auto relative z-10">
           {/* BADGE DE CONFIANÇA PIX DIRETO */}
           <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full glass-panel border border-emerald-500/30 text-emerald-300 text-[11px] sm:text-xs font-bold tracking-widest uppercase mb-6 shadow-xl">
