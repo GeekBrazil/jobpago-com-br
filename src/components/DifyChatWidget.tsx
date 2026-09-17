@@ -29,6 +29,7 @@ export default function DifyChatWidget() {
       token: DIFY_TOKEN,
       baseUrl: DIFY_BASE_URL,
       inputs: { site: "jobpago" },
+      dynamicScript: true,
     };
     const script = document.createElement("script");
     script.src = `${DIFY_BASE_URL}/embed.min.js`;
