@@ -89,6 +89,17 @@ function writeLeadsNoDisco(leads: LeadRegistrado[]) {
   }
 }
 
+/* Loga em eventos_site no allancandido.com — jobpago não tem Postgres
+   acessível por HTTP público, então chama o endpoint central em vez de
+   duplicar a tabela aqui. Best-effort: nunca derruba a captura do lead. */
+function logEventoLead(dados: { tipo: string; categoria: string }) {
+  fetch("https://allancandido.com/api/eventos", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ site: "jobpago", tipo: "lead", dados }),
+  }).catch(() => {});
+}
+
 export async function POST(req: Request) {
   try {
     const body: LeadPayload = await req.json();
@@ -153,6 +164,8 @@ export async function POST(req: Request) {
       memoryLeads = updated;
       writeLeadsNoDisco(updated);
     }
+
+    logEventoLead({ tipo: body.tipo, categoria: body.categoria }); // fire-and-forget
 
     // 5. Formatação da mensagem para o WhatsApp do Allan (5524993326966)
     const valorTexto = body.isCortesia
