@@ -2,6 +2,8 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { useSession } from "next-auth/react";
 import dynamic from "next/dynamic";
 import type { MapPoint } from "@/components/MapaServicos";
 import ModalPerfilRPG, { UserRPG, GUILD_DETAILS } from "@/components/ModalPerfilRPG";
@@ -143,6 +145,8 @@ const TRIBOS_CANONICAS = CATEGORIAS.map((c) => ({
 const CATEGORIES = FILTROS;
 
 export default function Home() {
+  const router = useRouter();
+  const { data: session, status: sessionStatus } = useSession();
   const [jobs, setJobs] = useState<Job[]>([]);
   const [isLoadingJobs, setIsLoadingJobs] = useState(true);
   const [selectedCategory, setSelectedCategory] = useState("Todas");
@@ -150,6 +154,27 @@ export default function Home() {
   const [searchQuery, setSearchQuery] = useState("");
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedJob, setSelectedJob] = useState<Job | null>(null);
+
+  // Volta do /entrar já logado e reabre o formulário de anúncio sozinho —
+  // sem isso o clique original em "+ Anunciar Vaga" se perderia no redirect.
+  useEffect(() => {
+    if (sessionStatus !== "authenticated") return;
+    const params = new URLSearchParams(window.location.search);
+    if (params.get("anunciar") === "1") {
+      setIsModalOpen(true);
+      params.delete("anunciar");
+      const query = params.toString();
+      window.history.replaceState(null, "", query ? `/?${query}` : "/");
+    }
+  }, [sessionStatus]);
+
+  function abrirAnunciarVaga() {
+    if (sessionStatus !== "authenticated") {
+      router.push("/entrar?callbackUrl=" + encodeURIComponent("/?anunciar=1"));
+      return;
+    }
+    setIsModalOpen(true);
+  }
 
   // User State & RPG Modals
   const [user, setUser] = useState<UserRPG | null>(null);
@@ -377,7 +402,7 @@ export default function Home() {
             )}
 
             <button
-              onClick={() => setIsModalOpen(true)}
+              onClick={abrirAnunciarVaga}
               className="btn-primary-emerald text-xs sm:text-sm px-3 sm:px-5 py-2 sm:py-2.5 rounded-2xl shrink-0 cursor-pointer whitespace-nowrap"
             >
               {/* No celular o rotulo encurta: o header somava 432px em 388 e

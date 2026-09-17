@@ -3,6 +3,7 @@ import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import EventoVisita from "@/components/EventoVisita";
 import DifyChatWidget from "@/components/DifyChatWidget";
+import AuthProvider from "@/components/AuthProvider";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -48,9 +49,11 @@ export default function RootLayout({
       className={`${geistSans.variable} ${geistMono.variable} h-full antialiased dark`}
     >
       <body className="min-h-full flex flex-col">
-        {children}
-        <EventoVisita />
-        <DifyChatWidget />
+        <AuthProvider>
+          {children}
+          <EventoVisita />
+          <DifyChatWidget />
+        </AuthProvider>
       </body>
     </html>
   );
