@@ -8,6 +8,7 @@ import dynamic from "next/dynamic";
 import type { MapPoint } from "@/components/MapaServicos";
 import ModalPerfilRPG, { UserRPG, GUILD_DETAILS } from "@/components/ModalPerfilRPG";
 import { CATEGORIAS, FILTROS } from "@/data/categorias";
+import { Icon } from "@/components/Icons";
 
 const MapaServicos = dynamic(() => import("@/components/MapaServicos"), {
   ssr: false,
@@ -39,28 +40,28 @@ const DEFAULT_RPG_USER: UserRPG = {
   level: 14,
   xp: 2850,
   nextLevelXp: 3500,
-  title: "Cyber Freelancer Rank A ⚡",
+  title: "Cyber Freelancer Rank A",
   guild: "Nômades & Van Life",
   pixBalance: 2500.0,
   btcAddress: "bc1q9f88c3a1b77e2a9b44988x1",
   honorScore: 320,
-  honorTitle: "Paladino Nômade (Rank S) 🏆",
+  honorTitle: "Paladino Nômade (Rank S)",
   stats: {
     velocidade: 94,
     confiabilidade: 98,
     sigilo: 100,
   },
   badges: [
-    { id: "b1", icon: "⚡", title: "Primeiro Sangue PIX", desc: "1ª vaga concluída com PIX na hora", unlocked: true },
-    { id: "b2", icon: "🚿", title: "Mestre da Carga 32A", desc: "Forneceu ou usou infra nômade aquecida", unlocked: true },
-    { id: "b3", icon: "🔐", title: "Guardião Bitcoin", desc: "Assinou Smart Contract encriptado", unlocked: true },
-    { id: "b4", icon: "🤝", title: "Anfitrião de Alta Honra", desc: "Ofereceu apoio 100% cortesia a viajantes", unlocked: true },
+    { id: "b1", icon: "bolt", title: "Primeiro Sangue PIX", desc: "1ª vaga concluída com PIX na hora", unlocked: true },
+    { id: "b2", icon: "shower", title: "Mestre da Carga 32A", desc: "Forneceu ou usou infra nômade aquecida", unlocked: true },
+    { id: "b3", icon: "lock", title: "Guardião Bitcoin", desc: "Assinou Smart Contract encriptado", unlocked: true },
+    { id: "b4", icon: "handshake", title: "Anfitrião de Alta Honra", desc: "Ofereceu apoio 100% cortesia a viajantes", unlocked: true },
   ],
   rewards: [
     {
       id: "r1",
       category: "Ingresso",
-      icon: "🎟️",
+      icon: "ticket",
       title: "Ingresso VIP: Feira Náutica & Ecoturismo Angra 2026",
       location: "Marina Porto Frade, Angra dos Reis, RJ",
       requiredLevel: 5,
@@ -72,7 +73,7 @@ const DEFAULT_RPG_USER: UserRPG = {
     {
       id: "r2",
       category: "Camping",
-      icon: "⛺",
+      icon: "tent",
       title: "Passaporte Camping Temático Nômade (3 Noites Cortesia)",
       location: "Camping Costa Verde, Paraty, RJ",
       requiredLevel: 10,
@@ -84,7 +85,7 @@ const DEFAULT_RPG_USER: UserRPG = {
     {
       id: "r3",
       category: "Aventura",
-      icon: "🧭",
+      icon: "compass",
       title: "Expedição Guiada: Mergulho nas Ilhas de Angra & Abrolhos",
       location: "Ilha Grande & Abrolhos, BA",
       requiredLevel: 12,
@@ -96,7 +97,7 @@ const DEFAULT_RPG_USER: UserRPG = {
     {
       id: "r4",
       category: "Comboio",
-      icon: "🚜",
+      icon: "tractor",
       title: "Passaporte Comboio de Destinos (Expedição Van Life Costa Verde)",
       location: "Paraty -> Cumuruxatiba -> Prado, BA",
       requiredLevel: 15,
@@ -111,7 +112,7 @@ const DEFAULT_RPG_USER: UserRPG = {
 const REGRAS_HONRA = [
   {
     id: "gratuito",
-    icon: "🛡️",
+    icon: "shield" as const,
     xp: "+200 XP",
     honra: "+50 PTS",
     title: "Serviço 100% gratuito",
@@ -119,7 +120,7 @@ const REGRAS_HONRA = [
   },
   {
     id: "publicar",
-    icon: "⚡",
+    icon: "bolt" as const,
     xp: "+150 XP",
     honra: "+10 PTS",
     title: "Publicar na guilda",
@@ -127,7 +128,7 @@ const REGRAS_HONRA = [
   },
   {
     id: "nivel",
-    icon: "🎖️",
+    icon: "medal" as const,
     xp: "×1,4",
     honra: "por nível",
     title: "Progressão meritocrática",
@@ -238,9 +239,9 @@ export default function Home() {
     if (newXp >= nextXp) {
       newLevel += 1;
       nextXp = Math.round(nextXp * 1.4);
-      showToast(`🎉 PARABÉNS! Você subiu para o Nível ${newLevel}!`);
+      showToast(`Parabéns! Você subiu para o Nível ${newLevel}!`);
     } else {
-      showToast(`✨ +${xpAmount} XP | 🛡️ +${honorAmount} PTS de Alta Honra por: ${reason}`);
+      showToast(`+${xpAmount} XP | +${honorAmount} PTS de Alta Honra por: ${reason}`);
     }
 
     const updated = {
@@ -262,7 +263,7 @@ export default function Home() {
     const client = newClientName || user?.name || "Allan C. (Nômade VIP)";
 
     const payload = {
-      title: isFreeService ? `🛡️ [CORTESIA 0800] ${newTitle}` : newTitle,
+      title: isFreeService ? `[CORTESIA 0800] ${newTitle}` : newTitle,
       category: newCategory,
       budget: budgetVal,
       location: newLocation || "Angra dos Reis, RJ",
@@ -387,16 +388,16 @@ export default function Home() {
                     <span className="hidden sm:block text-[11px] sm:text-xs font-black text-white truncate max-w-[90px] sm:max-w-[120px]">
                       {user.name.split(" ")[0]}
                     </span>
-                    <span className="max-[369px]:hidden text-[9px] font-black bg-amber-500/15 text-amber-300 border border-amber-500/30 px-1.5 py-0.2 rounded font-mono">
-                      🛡️ {user.honorScore}
+                    <span className="max-[369px]:hidden text-[9px] font-black bg-amber-500/15 text-amber-300 border border-amber-500/30 px-1.5 py-0.2 rounded font-mono flex items-center gap-1">
+                      <Icon name="shield" width={10} height={10} /> {user.honorScore}
                     </span>
                   </div>
-                  <span className="text-[9px] sm:text-[10px] text-emerald-400 font-medium truncate max-w-[110px] hidden sm:block">
-                    {GUILD_DETAILS[user.guild]?.icon || "🚐"} Nível {user.level}
+                  <span className="text-[9px] sm:text-[10px] text-emerald-400 font-medium truncate max-w-[110px] hidden sm:flex items-center gap-1">
+                    <Icon name={GUILD_DETAILS[user.guild]?.icon || "van"} width={11} height={11} /> Nível {user.level}
                   </span>
                 </div>
-                <div className="w-7 h-7 sm:w-8 sm:h-8 rounded-xl bg-gradient-to-br from-amber-400 to-amber-600 text-black font-black text-xs flex items-center justify-center shadow-md shrink-0">
-                  🎁
+                <div className="w-7 h-7 sm:w-8 sm:h-8 rounded-xl bg-gradient-to-br from-amber-400 to-amber-600 text-black flex items-center justify-center shadow-md shrink-0">
+                  <Icon name="gift" width={16} height={16} />
                 </div>
               </button>
             )}
@@ -440,14 +441,14 @@ export default function Home() {
               href="#mapa-gps"
               className="btn-primary-emerald w-full sm:w-auto px-7 py-3.5 rounded-2xl flex items-center justify-center gap-2.5 text-xs sm:text-sm font-black shadow-lg cursor-pointer"
             >
-              <span>🗺️</span> Explorar Mapa & Serviços
+              <Icon name="compass" width={16} height={16} /> Explorar Mapa & Serviços
             </a>
 
             <Link
               href="/cadastrar-servico"
               className="btn-secondary-glass w-full sm:w-auto px-7 py-3.5 rounded-2xl flex items-center justify-center gap-2 text-xs sm:text-sm font-bold cursor-pointer"
             >
-              <span>⚡</span> Cadastrar Serviço &amp; Lead
+              <Icon name="bolt" width={16} height={16} /> Cadastrar Serviço &amp; Lead
             </Link>
           </div>
 
@@ -460,7 +461,7 @@ export default function Home() {
             <div className="glass-panel glass-amber p-5 rounded-3xl relative overflow-hidden group hover:border-amber-400/50 transition-all">
               <div className="flex items-center justify-between gap-2 mb-2">
                 <span className="text-[10px] font-black uppercase tracking-wider bg-amber-500/20 text-amber-300 border border-amber-500/30 px-2.5 py-0.5 rounded-full flex items-center gap-1.5">
-                  <span>🛡️</span> Apoio Van Life & Nômade
+                  <Icon name="shield" width={11} height={11} /> Apoio Van Life & Nômade
                 </span>
                 <span className="text-[11px] font-mono text-amber-300 font-bold">100% CORTESIA</span>
               </div>
@@ -471,8 +472,8 @@ export default function Home() {
                 Garagem segura para pernoite de motorhome ou campervan em Paraty/RJ com água limpa e Wi-Fi Starlink.
               </p>
               <div className="mt-3 pt-3 border-t border-white/5 flex items-center justify-between text-[10px] text-slate-400 font-mono">
-                <span>📍 Costa Verde, RJ</span>
-                <span className="text-amber-400 font-bold">Alta Honra Solidária 🏆</span>
+                <span className="flex items-center gap-1"><Icon name="pin" width={11} height={11} /> Costa Verde, RJ</span>
+                <span className="text-amber-400 font-bold flex items-center gap-1">Alta Honra Solidária <Icon name="trophy" width={11} height={11} /></span>
               </div>
             </div>
 
@@ -492,8 +493,8 @@ export default function Home() {
                 Demanda remota ativa: integração de CRM e automação de pagamentos. Pagamento via PIX liberado na entrega.
               </p>
               <div className="mt-3 pt-3 border-t border-white/5 flex items-center justify-between text-[10px] text-slate-400 font-mono">
-                <span>⚡ PIX Imediato</span>
-                <span className="text-emerald-400 font-bold">Negociação Direta 💬</span>
+                <span className="flex items-center gap-1"><Icon name="bolt" width={11} height={11} /> PIX Imediato</span>
+                <span className="text-emerald-400 font-bold flex items-center gap-1">Negociação Direta <Icon name="chat" width={11} height={11} /></span>
               </div>
             </div>
           </div>
@@ -514,7 +515,7 @@ export default function Home() {
                   }}
                   className="glass-card px-3.5 py-2 rounded-2xl flex items-center gap-2 group hover:border-emerald-400/50 hover:bg-white/5 cursor-pointer text-xs"
                 >
-                  <span className="text-base group-hover:scale-110 transition-transform">{t.icon}</span>
+                  <Icon name={t.icon} width={16} height={16} className="text-emerald-400 group-hover:scale-110 transition-transform" />
                   <span className="font-bold text-white group-hover:text-emerald-300">{t.name}</span>
                 </button>
               ))}
@@ -524,7 +525,7 @@ export default function Home() {
           {/* BARRA DE BUSCA RÁPIDA */}
           <div className="mt-6 max-w-xl mx-auto">
             <div className="relative glass-panel rounded-2xl p-2 flex items-center border border-white/10 shadow-2xl focus-within:border-emerald-400/50 transition-colors">
-              <span className="text-slate-400 ml-3 mr-2 text-base">🔍</span>
+              <Icon name="search" width={16} height={16} className="text-slate-400 ml-3 mr-2 shrink-0" />
               <input
                 type="text"
                 placeholder="Buscar vagas, cidades ou categorias (ex: Chuveiro, Paraty, Dev, IA)..."
@@ -535,9 +536,9 @@ export default function Home() {
               {searchQuery && (
                 <button
                   onClick={() => setSearchQuery("")}
-                  className="text-slate-400 hover:text-white text-xs px-2 cursor-pointer"
+                  className="text-slate-400 hover:text-white px-2 cursor-pointer"
                 >
-                  ✕
+                  <Icon name="close" width={13} height={13} />
                 </button>
               )}
             </div>
@@ -570,9 +571,9 @@ export default function Home() {
                   selectedCategory === cat.name
                     ? "bg-emerald-500 text-black border-emerald-400 font-black shadow-lg"
                     : "glass-card text-slate-300 border-white/10 hover:border-white/30"
-                }`}
+                } flex items-center gap-1.5`}
               >
-                {cat.icon} {cat.name}
+                <Icon name={cat.icon} width={13} height={13} /> {cat.name}
               </button>
             ))}
           </div>
@@ -589,37 +590,37 @@ export default function Home() {
       {/* ── SEÇÃO 2: DESTAQUE ESPAÇO NÔMADE DIGITAL ── */}
       <section id="nomade-space" className="py-10 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
         <div className="glass-panel glass-emerald p-6 sm:p-10 rounded-3xl relative overflow-hidden shadow-2xl">
-          <div className="absolute top-0 right-0 p-8 opacity-5 text-9xl pointer-events-none">🚐</div>
+          <Icon name="van" width={220} height={220} className="absolute top-0 right-0 p-8 opacity-5 pointer-events-none" />
 
           <div className="max-w-2xl">
             <span className="px-3 py-1 rounded-full bg-emerald-500/15 text-emerald-300 border border-emerald-500/30 text-xs font-black uppercase tracking-wider">
               Infraestrutura Van Life & Trabalho Remoto
             </span>
-            <h2 className="text-2xl sm:text-4xl font-black text-white mt-3">
-              🚐 Espaço Nômade & Apoio na Estrada
+            <h2 className="text-2xl sm:text-4xl font-black text-white mt-3 flex items-center gap-3">
+              <Icon name="van" width={30} height={30} /> Espaço Nômade & Apoio na Estrada
             </h2>
             <p className="text-sm text-slate-300 mt-3 leading-relaxed">
               Viajando de motorhome, campervan ou trabalhando remotamente na estrada? Encontre pontos com chuveiro aquecido, tomadas 220V/32A, Starlink e apoio solidário com selo de Alta Honra.
             </p>
 
             <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 mt-6">
-              <div className="glass-card p-3 rounded-2xl text-center">
-                <span className="text-2xl block mb-1">🚿</span>
+              <div className="glass-card p-3 rounded-2xl text-center flex flex-col items-center">
+                <Icon name="shower" width={26} height={26} className="mb-1 text-emerald-400" />
                 <span className="text-xs font-bold text-white block">Chuveiro Quente</span>
                 <span className="text-[10px] text-slate-400">Banhos privativos</span>
               </div>
-              <div className="glass-card p-3 rounded-2xl text-center">
-                <span className="text-2xl block mb-1">⚡</span>
+              <div className="glass-card p-3 rounded-2xl text-center flex flex-col items-center">
+                <Icon name="plug" width={26} height={26} className="mb-1 text-emerald-400" />
                 <span className="text-xs font-bold text-white block">Carga 110V/220V/32A</span>
                 <span className="text-[10px] text-slate-400">Vans & Baterias</span>
               </div>
-              <div className="glass-card p-3 rounded-2xl text-center">
-                <span className="text-2xl block mb-1">🚐</span>
+              <div className="glass-card p-3 rounded-2xl text-center flex flex-col items-center">
+                <Icon name="van" width={26} height={26} className="mb-1 text-emerald-400" />
                 <span className="text-xs font-bold text-white block">Motorhome & Garagem</span>
                 <span className="text-[10px] text-slate-400">Pernoite seguro</span>
               </div>
-              <div className="glass-card p-3 rounded-2xl text-center">
-                <span className="text-2xl block mb-1">💻</span>
+              <div className="glass-card p-3 rounded-2xl text-center flex flex-col items-center">
+                <Icon name="wifi" width={26} height={26} className="mb-1 text-emerald-400" />
                 <span className="text-xs font-bold text-white block">Wi-Fi Starlink</span>
                 <span className="text-[10px] text-slate-400">Alta velocidade</span>
               </div>
@@ -632,7 +633,7 @@ export default function Home() {
       <section id="vagas" className="py-10 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
         <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4 mb-8">
           <div>
-            <h2 className="text-2xl sm:text-3xl font-black text-white">📋 Oportunidades & Serviços Disponíveis</h2>
+            <h2 className="text-2xl sm:text-3xl font-black text-white">Oportunidades & Serviços Disponíveis</h2>
             <p className="text-xs text-slate-400 mt-1 font-mono">
               {isLoadingJobs ? "Atualizando feed em tempo real..." : `Exibindo ${filteredJobs.length} resultados atualizados`}
             </p>
@@ -650,27 +651,27 @@ export default function Home() {
             </button>
             <button
               onClick={() => setFilterType("honor")}
-              className={`px-3 py-1.5 rounded-xl text-xs font-black transition-all cursor-pointer ${
+              className={`px-3 py-1.5 rounded-xl text-xs font-black transition-all cursor-pointer flex items-center gap-1.5 ${
                 filterType === "honor" ? "bg-amber-400 text-black shadow-lg" : "text-amber-400 hover:text-amber-300"
               }`}
             >
-              🛡️ Gratuitos (Alta Honra)
+              <Icon name="shield" width={13} height={13} /> Gratuitos (Alta Honra)
             </button>
             <button
               onClick={() => setFilterType("pix")}
-              className={`px-3 py-1.5 rounded-xl text-xs font-black transition-all cursor-pointer ${
+              className={`px-3 py-1.5 rounded-xl text-xs font-black transition-all cursor-pointer flex items-center gap-1.5 ${
                 filterType === "pix" ? "bg-emerald-500 text-black shadow-lg" : "text-slate-300 hover:text-white"
               }`}
             >
-              ⚡ PIX / BTC
+              <Icon name="bolt" width={13} height={13} /> PIX / BTC
             </button>
             <button
               onClick={() => setFilterType("local")}
-              className={`px-3 py-1.5 rounded-xl text-xs font-black transition-all cursor-pointer ${
+              className={`px-3 py-1.5 rounded-xl text-xs font-black transition-all cursor-pointer flex items-center gap-1.5 ${
                 filterType === "local" ? "bg-emerald-500 text-black shadow-lg" : "text-slate-300 hover:text-white"
               }`}
             >
-              📍 Presenciais
+              <Icon name="pin" width={13} height={13} /> Presenciais
             </button>
           </div>
         </div>
@@ -720,22 +721,22 @@ export default function Home() {
                   <div className="flex items-center justify-between mb-3">
                     <div>
                       <span className="text-[9px] text-slate-400 block uppercase font-mono">Valor Combinado</span>
-                      <span className={`text-lg font-black ${isFree ? "text-amber-400" : "text-emerald-400"}`}>
-                        {isFree ? "🛡️ 100% CORTESIA" : `R$ ${job.budget.toLocaleString("pt-BR")}`}
+                      <span className={`text-lg font-black flex items-center gap-1.5 ${isFree ? "text-amber-400" : "text-emerald-400"}`}>
+                        {isFree ? (<><Icon name="shield" width={16} height={16} /> 100% CORTESIA</>) : `R$ ${job.budget.toLocaleString("pt-BR")}`}
                       </span>
                     </div>
 
                     <div className="flex items-center gap-1">
                       {job.isPixImmediate && (
-                        <span className="text-[11px] font-black bg-emerald-500/15 text-emerald-300 border border-emerald-500/30 px-2 py-0.5 rounded-lg flex items-center gap-0.5 font-mono">
-                          <span>⚡</span> PIX Direto
+                        <span className="text-[11px] font-black bg-emerald-500/15 text-emerald-300 border border-emerald-500/30 px-2 py-0.5 rounded-lg flex items-center gap-1 font-mono">
+                          <Icon name="bolt" width={11} height={11} /> PIX Direto
                         </span>
                       )}
                     </div>
                   </div>
 
                   <div className="flex items-center justify-between text-xs text-slate-400 pt-2 border-t border-white/5">
-                    <span className="truncate max-w-[170px]">📍 {job.location}</span>
+                    <span className="truncate max-w-[170px] flex items-center gap-1"><Icon name="pin" width={12} height={12} className="shrink-0" /> {job.location}</span>
                     <span className="text-emerald-400 font-bold shrink-0">Ver Detalhes →</span>
                   </div>
                 </div>
@@ -751,7 +752,7 @@ export default function Home() {
           <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4 mb-8">
             <div>
               <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-amber-400/15 text-amber-300 border border-amber-400/30 text-xs font-black uppercase tracking-wider">
-                <span>🛡️</span> Gamificação Comunitária & Reputação
+                <Icon name="shield" width={13} height={13} /> Gamificação Comunitária & Reputação
               </div>
               <h2 className="text-2xl sm:text-4xl font-black text-white mt-2">
                 Como Funciona a Alta Honra
@@ -764,9 +765,9 @@ export default function Home() {
             {user && (
               <button
                 onClick={() => setIsRpgModalOpen(true)}
-                className="bg-amber-400 hover:bg-amber-300 text-black font-black text-xs sm:text-sm px-6 py-3 rounded-2xl shadow-xl transition-all hover:scale-105 shrink-0 cursor-pointer"
+                className="bg-amber-400 hover:bg-amber-300 text-black font-black text-xs sm:text-sm px-6 py-3 rounded-2xl shadow-xl transition-all hover:scale-105 shrink-0 cursor-pointer flex items-center gap-2"
               >
-                🎁 Abrir Meu Painel de Recompensas
+                <Icon name="gift" width={15} height={15} /> Abrir Meu Painel de Recompensas
               </button>
             )}
           </div>
@@ -775,7 +776,7 @@ export default function Home() {
             {REGRAS_HONRA.map((regra) => (
               <div key={regra.id} className="glass-card p-6 rounded-2xl border border-amber-400/20 flex flex-col justify-between">
                 <div>
-                  <span className="text-3xl block mb-3">{regra.icon}</span>
+                  <Icon name={regra.icon} width={32} height={32} className="mb-3 text-amber-300" />
                   <h3 className="text-lg font-black text-white mb-1">{regra.title}</h3>
                   <p className="text-xs text-slate-300 leading-relaxed font-normal">{regra.desc}</p>
                 </div>
@@ -799,16 +800,16 @@ export default function Home() {
           <div className="w-full max-w-lg glass-panel p-6 sm:p-8 rounded-3xl relative shadow-2xl">
             <button
               onClick={() => setSelectedJob(null)}
-              className="absolute top-5 right-5 text-slate-400 hover:text-white text-lg font-bold bg-white/5 w-8 h-8 rounded-full flex items-center justify-center cursor-pointer"
+              className="absolute top-5 right-5 text-slate-400 hover:text-white bg-white/5 w-8 h-8 rounded-full flex items-center justify-center cursor-pointer"
             >
-              ✕
+              <Icon name="close" width={15} height={15} />
             </button>
 
             <div className="flex items-center gap-2 mb-3">
               <span className="text-xs font-black bg-emerald-500/20 text-emerald-300 border border-emerald-500/40 px-3 py-1 rounded-xl uppercase">
                 {selectedJob.category}
               </span>
-              <span className="text-xs text-slate-400">📍 {selectedJob.location}</span>
+              <span className="text-xs text-slate-400 flex items-center gap-1"><Icon name="pin" width={12} height={12} /> {selectedJob.location}</span>
             </div>
 
             <h3 className="text-2xl font-black text-white leading-tight mb-3">
@@ -832,12 +833,12 @@ export default function Home() {
             <div className="bg-black/40 border border-white/10 p-4 rounded-2xl mb-6 flex items-center justify-between">
               <div>
                 <span className="text-[10px] text-slate-400 uppercase block font-mono">Valor Combinado</span>
-                <span className="text-2xl font-black text-emerald-400 font-mono">
-                  {selectedJob.budget === 0 ? "🛡️ CORTESIA" : `R$ ${selectedJob.budget.toLocaleString("pt-BR")}`}
+                <span className="text-2xl font-black text-emerald-400 font-mono flex items-center gap-2">
+                  {selectedJob.budget === 0 ? (<><Icon name="shield" width={20} height={20} /> CORTESIA</>) : `R$ ${selectedJob.budget.toLocaleString("pt-BR")}`}
                 </span>
               </div>
               <span className="text-xs font-black bg-emerald-500/20 text-emerald-300 border border-emerald-500/40 px-3 py-1.5 rounded-xl flex items-center gap-1 font-mono">
-                <span>⚡</span> PIX Direto
+                <Icon name="bolt" width={13} height={13} /> PIX Direto
               </span>
             </div>
 
@@ -850,7 +851,7 @@ export default function Home() {
               }}
               className="btn-primary-emerald w-full py-4 rounded-2xl text-sm font-black flex items-center justify-center gap-2 cursor-pointer"
             >
-              💬 Entrar em Contato Direto via WhatsApp
+              <Icon name="chat" width={16} height={16} /> Entrar em Contato Direto via WhatsApp
             </button>
           </div>
         </div>
@@ -862,9 +863,9 @@ export default function Home() {
           <div className="w-full max-w-xl glass-panel border border-white/20 rounded-3xl p-6 sm:p-8 relative shadow-2xl max-h-[90vh] overflow-y-auto">
             <button
               onClick={() => setIsModalOpen(false)}
-              className="absolute top-5 right-5 text-slate-400 hover:text-white text-lg font-bold bg-white/5 w-8 h-8 rounded-full flex items-center justify-center cursor-pointer"
+              className="absolute top-5 right-5 text-slate-400 hover:text-white bg-white/5 w-8 h-8 rounded-full flex items-center justify-center cursor-pointer"
             >
-              ✕
+              <Icon name="close" width={15} height={15} />
             </button>
 
             <h3 className="text-2xl font-black text-white">+ Publicar Nova Oportunidade</h3>
@@ -874,8 +875,8 @@ export default function Home() {
               {/* OPÇÃO DE SERVIÇO CORTESIA 0800 */}
               <div className="glass-card border border-amber-400/40 p-3 rounded-2xl flex items-center justify-between">
                 <div>
-                  <span className="text-xs font-black text-amber-300 flex items-center gap-1">
-                    <span>🛡️</span> Ponto de Apoio / Cortesia 0800 (Alta Honra)
+                  <span className="text-xs font-black text-amber-300 flex items-center gap-1.5">
+                    <Icon name="shield" width={13} height={13} /> Ponto de Apoio / Cortesia 0800 (Alta Honra)
                   </span>
                   <span className="text-[10px] text-slate-300 block">
                     Ganhe +50 PTS de Alta Honra ao doar apoio para nômades na estrada.
@@ -981,9 +982,9 @@ export default function Home() {
 
               <button
                 type="submit"
-                className="btn-primary-emerald mt-2 py-4 rounded-2xl text-sm font-black uppercase tracking-wider cursor-pointer"
+                className="btn-primary-emerald mt-2 py-4 rounded-2xl text-sm font-black uppercase tracking-wider cursor-pointer flex items-center justify-center gap-2"
               >
-                🚀 Publicar no Mapa em Tempo Real
+                <Icon name="rocket" width={16} height={16} /> Publicar no Mapa em Tempo Real
               </button>
             </form>
           </div>
@@ -999,7 +1000,7 @@ export default function Home() {
             const updated = { ...user, guild: g };
             setUser(updated);
             localStorage.setItem("jobpago_rpg_user", JSON.stringify(updated));
-            showToast(`⚔️ Você agora é membro oficial da guilda: ${g}`);
+            showToast(`Você agora é membro oficial da guilda: ${g}`);
           }}
           onClaimReward={(rid) => {
             const updatedRewards = user.rewards.map((r) =>
@@ -1008,7 +1009,7 @@ export default function Home() {
             const updated = { ...user, rewards: updatedRewards };
             setUser(updated);
             localStorage.setItem("jobpago_rpg_user", JSON.stringify(updated));
-            showToast("🎁 Recompensa resgatada com sucesso! Apresente o voucher no local.");
+            showToast("Recompensa resgatada com sucesso! Apresente o voucher no local.");
           }}
         />
       )}

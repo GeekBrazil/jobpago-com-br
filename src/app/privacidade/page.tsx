@@ -20,7 +20,7 @@ export default function PrivacidadePage() {
         </Link>
 
         <div className="mb-6 p-4 rounded-xl bg-amber-500/10 border border-amber-500/30 text-amber-300 text-xs leading-relaxed">
-          ⚠️ <strong>Aviso de Minuta Preliminar:</strong> Este documento é uma minuta preliminar em revisão jurídica e ainda não constitui a versão final da Política de Privacidade do JobPago.
+          <strong>Aviso de Minuta Preliminar:</strong> Este documento é uma minuta preliminar em revisão jurídica e ainda não constitui a versão final da Política de Privacidade do JobPago.
         </div>
 
         <h1 className="text-3xl sm:text-4xl font-black text-white mb-6">Política de Privacidade</h1>

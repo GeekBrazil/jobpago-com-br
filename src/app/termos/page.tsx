@@ -20,7 +20,7 @@ export default function TermosPage() {
         </Link>
 
         <div className="mb-6 p-4 rounded-xl bg-amber-500/10 border border-amber-500/30 text-amber-300 text-xs leading-relaxed">
-          ⚠️ <strong>Aviso de Minuta Preliminar:</strong> Este documento é uma minuta preliminar em revisão jurídica e ainda não constitui a versão final dos Termos de Uso do JobPago.
+          <strong>Aviso de Minuta Preliminar:</strong> Este documento é uma minuta preliminar em revisão jurídica e ainda não constitui a versão final dos Termos de Uso do JobPago.
         </div>
 
         <h1 className="text-3xl sm:text-4xl font-black text-white mb-6">Termos de Uso</h1>

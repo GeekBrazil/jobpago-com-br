@@ -20,7 +20,7 @@ const SEED_JOBS = [
     description: "Espaço privativo para viajantes e nômades digitais. Banheiro amplo com chuveiro a gás aquecido, tomadas dedicadas de alta carga (veículos e bikes elétricas) e bancada de trabalho para notebooks com Wi-Fi Starlink 600MB.",
     clientName: "Estação Nômade Costa Verde",
     whatsapp: "5524993326966",
-    nomadFeatures: ["🚿 Chuveiro Quente", "🔋 Carga 220V Alta Carga", "💻 Wi-Fi 600MB", "☕ Café Grátis"],
+    nomadFeatures: ["Chuveiro Quente", "Carga 220V Alta Carga", "Wi-Fi 600MB", "Café Grátis"],
   },
   {
     id: "n2",
@@ -37,7 +37,7 @@ const SEED_JOBS = [
     description: "Terreno plano e murado com portão eletrônico para estacionar Motorhomes e Vans. Inclui ponto de água potável, descarte de água cinza e energia industrial até 32A.",
     clientName: "Paraty Van Camping",
     whatsapp: "5524993326966",
-    nomadFeatures: ["🚐 Vaga Motorhome", "⚡ Ponto 32A", "🚰 Água Potável", "🔒 Portão 24h"],
+    nomadFeatures: ["Vaga Motorhome", "Ponto 32A", "Água Potável", "Portão 24h"],
   },
   {
     id: "t1",
@@ -147,7 +147,7 @@ export async function POST(req: Request) {
       description: body.description || "Serviço cadastrado via plataforma.",
       clientName: body.clientName || "Contratante Anônimo",
       whatsapp: body.whatsapp || "5524993326966",
-      nomadFeatures: body.nomadFeatures || (body.category?.includes("Nômade") ? ["⚡ Carga 220V", "🚿 Chuveiro Quente"] : undefined),
+      nomadFeatures: body.nomadFeatures || (body.category?.includes("Nômade") ? ["Carga 220V", "Chuveiro Quente"] : undefined),
     };
 
     const updated = [newJob, ...currentJobs];

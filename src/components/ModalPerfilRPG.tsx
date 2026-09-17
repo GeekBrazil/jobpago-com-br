@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { Icon, type IconName } from "@/components/Icons";
 
 export interface UserRPG {
   name: string;
@@ -21,7 +22,7 @@ export interface UserRPG {
   };
   badges: Array<{
     id: string;
-    icon: string;
+    icon: IconName;
     title: string;
     desc: string;
     unlocked: boolean;
@@ -29,7 +30,7 @@ export interface UserRPG {
   rewards: Array<{
     id: string;
     category: "Ingresso" | "Camping" | "Aventura" | "Comboio";
-    icon: string;
+    icon: IconName;
     title: string;
     location: string;
     requiredLevel: number;
@@ -40,30 +41,30 @@ export interface UserRPG {
   }>;
 }
 
-export const GUILD_DETAILS = {
+export const GUILD_DETAILS: Record<UserRPG["guild"], { icon: IconName; color: string; border: string; text: string; desc: string }> = {
   "Nômades & Van Life": {
-    icon: "🚐",
+    icon: "van",
     color: "from-emerald-500 to-teal-400",
     border: "border-emerald-500/40",
     text: "text-emerald-400",
     desc: "Especialistas em infraestrutura de estrada, cargas 220V/32A, chuveiro quente e apoio para quem vive viajando.",
   },
   "Devs & Magos da Tecnologia": {
-    icon: "💻",
+    icon: "code",
     color: "from-cyan-500 to-blue-400",
     border: "border-cyan-500/40",
     text: "text-cyan-400",
     desc: "Mestres do desenvolvimento Full-Stack, automações de inteligência artificial, APIs e software remoto.",
   },
   "Criadores & Mídia Digital": {
-    icon: "🎨",
+    icon: "palette",
     color: "from-purple-500 to-pink-500",
     border: "border-purple-500/40",
     text: "text-purple-400",
     desc: "Designers, fotógrafos, editores de vídeo e criadores de conteúdo com entregas de alto impacto.",
   },
   "Prestadores & Alta Honra": {
-    icon: "🛠️",
+    icon: "wrench",
     color: "from-amber-500 to-orange-400",
     border: "border-amber-500/50",
     text: "text-amber-400",
@@ -95,17 +96,17 @@ export default function ModalPerfilRPG({
       <div className="w-full max-w-2xl bg-[#0b0c16] border border-white/15 rounded-3xl p-6 sm:p-8 relative shadow-2xl max-h-[92vh] overflow-y-auto anime-scanline">
         <button
           onClick={onClose}
-          className="absolute top-5 right-5 text-zinc-400 hover:text-white text-xl font-bold bg-white/5 w-8 h-8 rounded-full flex items-center justify-center"
+          className="absolute top-5 right-5 text-zinc-400 hover:text-white bg-white/5 w-8 h-8 rounded-full flex items-center justify-center"
         >
-          ✕
+          <Icon name="close" width={16} height={16} />
         </button>
 
         {/* ── HEADER FICHA DE PERSONAGEM ── */}
         <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 border-b border-white/10 pb-6">
           <div className="flex items-center gap-4">
             <div className="relative">
-              <div className="w-16 h-16 rounded-2xl bg-gradient-to-tr from-emerald-500 via-teal-400 to-cyan-400 flex items-center justify-center text-3xl font-black text-black shadow-lg shadow-emerald-500/20">
-                ⚡
+              <div className="w-16 h-16 rounded-2xl bg-gradient-to-tr from-emerald-500 via-teal-400 to-cyan-400 flex items-center justify-center text-black shadow-lg shadow-emerald-500/20">
+                <Icon name="bolt" width={28} height={28} />
               </div>
               <span className="absolute -bottom-2 -right-2 bg-black border border-emerald-400 text-emerald-400 font-extrabold text-[10px] px-2 py-0.5 rounded-full">
                 Nv. {user.level}
@@ -116,7 +117,7 @@ export default function ModalPerfilRPG({
               <div className="flex items-center gap-2">
                 <h3 className="text-xl font-black text-white">{user.name}</h3>
                 <span className="text-xs font-bold text-amber-400 bg-amber-500/10 border border-amber-500/30 px-2 py-0.5 rounded-md flex items-center gap-1">
-                  <span>🛡️</span> {user.honorTitle}
+                  <Icon name="shield" width={13} height={13} /> {user.honorTitle}
                 </span>
               </div>
               <p className="text-xs text-zinc-400 mt-1 font-mono">{user.email}</p>
@@ -125,7 +126,9 @@ export default function ModalPerfilRPG({
 
           <div className="flex flex-col items-end bg-white/5 border border-white/10 p-3 rounded-2xl shrink-0">
             <span className="text-[10px] font-bold text-amber-400 uppercase">Pontos de Alta Honra</span>
-            <span className="text-lg font-black text-amber-300">🛡️ {user.honorScore} PTS</span>
+            <span className="text-lg font-black text-amber-300 flex items-center gap-1.5">
+              <Icon name="shield" width={16} height={16} /> {user.honorScore} PTS
+            </span>
             <span className="text-[10px] text-emerald-400 font-bold">Anfitrião 100% Cortesia</span>
           </div>
         </div>
@@ -140,7 +143,7 @@ export default function ModalPerfilRPG({
                 : "text-zinc-400 hover:text-white"
             }`}
           >
-            ⚔️ Status & Ficha
+            Status & Ficha
           </button>
           <button
             onClick={() => setActiveTab("guildas")}
@@ -150,7 +153,7 @@ export default function ModalPerfilRPG({
                 : "text-zinc-400 hover:text-white"
             }`}
           >
-            🛡️ Minha Guilda
+            Minha Guilda
           </button>
           <button
             onClick={() => setActiveTab("loot")}
@@ -160,7 +163,7 @@ export default function ModalPerfilRPG({
                 : "text-amber-400 hover:text-amber-300"
             }`}
           >
-            🎁 Loot Vault & Recompensas
+            Loot Vault & Recompensas
             <span className="w-2 h-2 rounded-full bg-amber-400 animate-ping absolute top-2 right-2"></span>
           </button>
         </div>
@@ -187,12 +190,12 @@ export default function ModalPerfilRPG({
             {/* ATRIBUTOS */}
             <div>
               <span className="text-xs font-extrabold text-zinc-400 uppercase block mb-3">
-                📊 Atributos de Combate & Serviço
+                Atributos de Combate & Serviço
               </span>
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
                 <div className="bg-black/40 border border-white/10 p-3.5 rounded-2xl">
                   <div className="flex items-center justify-between text-xs font-bold mb-1">
-                    <span className="text-cyan-400">⚡ Velocidade</span>
+                    <span className="text-cyan-400 flex items-center gap-1"><Icon name="bolt" width={13} height={13} /> Velocidade</span>
                     <span className="text-white font-mono">{user.stats.velocidade}/100</span>
                   </div>
                   <div className="w-full h-1.5 bg-white/10 rounded-full overflow-hidden">
@@ -202,7 +205,7 @@ export default function ModalPerfilRPG({
 
                 <div className="bg-black/40 border border-white/10 p-3.5 rounded-2xl">
                   <div className="flex items-center justify-between text-xs font-bold mb-1">
-                    <span className="text-emerald-400">🛡️ Confiabilidade</span>
+                    <span className="text-emerald-400 flex items-center gap-1"><Icon name="shield" width={13} height={13} /> Confiabilidade</span>
                     <span className="text-white font-mono">{user.stats.confiabilidade}/100</span>
                   </div>
                   <div className="w-full h-1.5 bg-white/10 rounded-full overflow-hidden">
@@ -212,7 +215,7 @@ export default function ModalPerfilRPG({
 
                 <div className="bg-black/40 border border-white/10 p-3.5 rounded-2xl">
                   <div className="flex items-center justify-between text-xs font-bold mb-1">
-                    <span className="text-pink-400">🔒 Sigilo Contratual</span>
+                    <span className="text-pink-400 flex items-center gap-1"><Icon name="lock" width={13} height={13} /> Sigilo Contratual</span>
                     <span className="text-white font-mono">{user.stats.sigilo}/100</span>
                   </div>
                   <div className="w-full h-1.5 bg-white/10 rounded-full overflow-hidden">
@@ -225,7 +228,7 @@ export default function ModalPerfilRPG({
             {/* BADGES / INSÍGNIAS */}
             <div>
               <span className="text-xs font-extrabold text-zinc-400 uppercase block mb-3">
-                🏆 Insígnias & Conquistas Desbloqueadas
+                Insígnias & Conquistas Desbloqueadas
               </span>
               <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
                 {user.badges.map((b) => (
@@ -237,7 +240,7 @@ export default function ModalPerfilRPG({
                         : "bg-black/30 border-white/5 text-zinc-600 opacity-50"
                     }`}
                   >
-                    <span className="text-2xl mb-1">{b.icon}</span>
+                    <Icon name={b.icon} width={26} height={26} className="mb-1" />
                     <span className="text-xs font-bold block">{b.title}</span>
                     <span className="text-[10px] text-zinc-400 mt-1 line-clamp-2">{b.desc}</span>
                   </div>
@@ -252,7 +255,7 @@ export default function ModalPerfilRPG({
           <div className="space-y-6 animate-in fade-in duration-200">
             <div className="p-5 rounded-2xl bg-white/5 border border-white/10">
               <span className="text-xs font-extrabold text-zinc-400 uppercase block mb-3">
-                🛡️ Seleção de Guilda
+                Seleção de Guilda
               </span>
 
               <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 mb-4">
@@ -272,7 +275,7 @@ export default function ModalPerfilRPG({
                           : `bg-black/40 border-white/10 hover:border-white/20 text-zinc-400`
                       }`}
                     >
-                      <span className="text-2xl mb-1">{g.icon}</span>
+                      <Icon name={g.icon} width={22} height={22} className="mb-1" />
                       <span className={`text-xs font-black ${isActive ? g.text : "text-zinc-300"}`}>
                         {gName}
                       </span>
@@ -282,7 +285,7 @@ export default function ModalPerfilRPG({
               </div>
 
               <p className="text-xs text-zinc-300 leading-relaxed bg-black/40 p-3 rounded-xl border border-white/5">
-                <span className={`font-bold ${guildInfo.text}`}>{guildInfo.icon} {selectedGuild}: </span>
+                <span className={`font-bold ${guildInfo.text}`}>{selectedGuild}: </span>
                 {guildInfo.desc}
               </p>
             </div>
@@ -294,7 +297,7 @@ export default function ModalPerfilRPG({
           <div className="space-y-6 animate-in fade-in duration-200">
             <div className="bg-gradient-to-r from-amber-500/15 via-orange-500/10 to-amber-500/5 border border-amber-500/30 p-4 rounded-2xl">
               <div className="flex items-center gap-2">
-                <span className="text-2xl">🎁</span>
+                <Icon name="gift" width={24} height={24} className="text-amber-300" />
                 <div>
                   <h4 className="text-sm font-black text-amber-300">Loot Vault & Benefícios Exclusivos</h4>
                   <p className="text-xs text-zinc-300 mt-0.5">
@@ -321,35 +324,37 @@ export default function ModalPerfilRPG({
                   >
                     <div>
                       <div className="flex items-center justify-between gap-2 mb-2">
-                        <span className="text-xs font-black text-amber-400 bg-amber-500/20 px-2.5 py-0.5 rounded-full border border-amber-500/30">
-                          {rew.icon} {rew.category}
+                        <span className="text-xs font-black text-amber-400 bg-amber-500/20 px-2.5 py-0.5 rounded-full border border-amber-500/30 flex items-center gap-1.5">
+                          <Icon name={rew.icon} width={13} height={13} /> {rew.category}
                         </span>
 
-                        <span className="text-[10px] text-zinc-400 font-mono">
-                          Requer: Nv.{rew.requiredLevel} | 🛡️ {rew.requiredHonor} PTS
+                        <span className="text-[10px] text-zinc-400 font-mono flex items-center gap-1">
+                          Requer: Nv.{rew.requiredLevel} | <Icon name="shield" width={11} height={11} /> {rew.requiredHonor} PTS
                         </span>
                       </div>
 
                       <h4 className="text-sm font-bold text-white leading-snug">{rew.title}</h4>
                       <p className="text-[11px] text-zinc-400 mt-1 line-clamp-2">{rew.description}</p>
-                      <span className="text-[10px] font-bold text-emerald-400 mt-2 block">📍 {rew.location}</span>
+                      <span className="text-[10px] font-bold text-emerald-400 mt-2 flex items-center gap-1">
+                        <Icon name="pin" width={11} height={11} /> {rew.location}
+                      </span>
                     </div>
 
                     <div className="mt-4 pt-3 border-t border-white/10">
                       {rew.claimed ? (
                         <span className="w-full block text-center bg-emerald-500/20 text-emerald-300 font-extrabold text-xs py-2 rounded-xl border border-emerald-500/40">
-                          ✓ Resgatado (Voucher Ativo)
+                          Resgatado (Voucher Ativo)
                         </span>
                       ) : canUnlock ? (
                         <button
                           onClick={() => onClaimReward(rew.id)}
-                          className="w-full bg-gradient-to-r from-amber-500 to-orange-400 text-black font-extrabold text-xs py-2 rounded-xl transition-all hover:scale-105 shadow-md shadow-amber-500/20"
+                          className="w-full bg-gradient-to-r from-amber-500 to-orange-400 text-black font-extrabold text-xs py-2 rounded-xl transition-all hover:scale-105 shadow-md shadow-amber-500/20 flex items-center justify-center gap-1.5"
                         >
-                          🎁 Resgatar Benefício Gratuitamente
+                          <Icon name="gift" width={14} height={14} /> Resgatar Benefício Gratuitamente
                         </button>
                       ) : (
-                        <span className="w-full block text-center bg-white/5 text-zinc-500 font-bold text-xs py-2 rounded-xl border border-white/10">
-                          🔒 Nível ou Honra Insuficiente
+                        <span className="w-full block text-center bg-white/5 text-zinc-500 font-bold text-xs py-2 rounded-xl border border-white/10 flex items-center justify-center gap-1.5">
+                          <Icon name="lock" width={12} height={12} /> Nível ou Honra Insuficiente
                         </span>
                       )}
                     </div>

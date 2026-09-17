@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import L from "leaflet";
+import { Icon } from "@/components/Icons";
 
 export interface MapPoint {
   id: string;
@@ -95,7 +96,7 @@ export default function MapaServicos({
 
           userMarkerRef.current = L.marker(uPos, { icon: userIcon })
             .addTo(map)
-            .bindPopup(`<div style="text-align:center; font-weight:bold; padding:4px;">📍 Você está Aqui</div>`);
+            .bindPopup(`<div style="text-align:center; font-weight:bold; padding:4px;">Você está Aqui</div>`);
 
           map.setView(uPos, 13);
         },
@@ -167,9 +168,7 @@ export default function MapaServicos({
           font-size: 11px;
           cursor: pointer;
           transition: transform 0.2s;
-        ">
-          ⚡
-        </div>
+        "></div>
         </div>
       `;
 
@@ -194,8 +193,9 @@ export default function MapaServicos({
         <div style="font-size: 13px; font-weight: 900; color: #10b981; margin-bottom: 8px;">
           R$ ${pt.budget.toLocaleString("pt-BR")} via PIX
         </div>
-        <div style="font-size: 11px; color: #9ca3af; margin-bottom: 10px;">
-          📍 ${pt.location}
+        <div style="font-size: 11px; color: #9ca3af; margin-bottom: 10px; display:flex; align-items:center; gap:4px;">
+          <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21s7-6.6 7-11.5a7 7 0 1 0-14 0C5 14.4 12 21 12 21z"/><circle cx="12" cy="9.5" r="2.3"/></svg>
+          ${pt.location}
         </div>
         <button id="btn-route-${pt.id}" style="
           width: 100%;
@@ -207,8 +207,13 @@ export default function MapaServicos({
           border-radius: 8px;
           border: none;
           cursor: pointer;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          gap: 4px;
         ">
-          🗺️ Traçar Rota até Aqui
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="m15 9-2 6-6 2 2-6z"/></svg>
+          Traçar Rota até Aqui
         </button>
       `;
 
@@ -316,8 +321,8 @@ export default function MapaServicos({
         {routeInfo && activeDestination && (
           <div className="bg-[#0b121c]/95 backdrop-blur-lg border border-cyan-500/40 rounded-2xl p-4 shadow-2xl pointer-events-auto max-w-xs animate-in fade-in">
             <div className="flex items-center justify-between gap-3 mb-2">
-              <span className="text-xs font-black text-cyan-400 uppercase tracking-wider">
-                🗺️ Rota Ativa
+              <span className="text-xs font-black text-cyan-400 uppercase tracking-wider flex items-center gap-1.5">
+                <Icon name="compass" width={13} height={13} /> Rota Ativa
               </span>
               <button
                 onClick={clearRoute}
@@ -330,8 +335,8 @@ export default function MapaServicos({
               {activeDestination.title}
             </p>
             <div className="flex items-center gap-4 mt-2 text-xs font-bold text-emerald-400">
-              <span>📍 {routeInfo.distanceKm}</span>
-              <span>⏱️ ~{routeInfo.durationMin}</span>
+              <span className="flex items-center gap-1"><Icon name="pin" width={12} height={12} /> {routeInfo.distanceKm}</span>
+              <span className="flex items-center gap-1"><Icon name="clock" width={12} height={12} /> ~{routeInfo.durationMin}</span>
             </div>
           </div>
         )}

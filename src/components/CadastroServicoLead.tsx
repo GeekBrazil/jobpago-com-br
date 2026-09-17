@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { CATEGORIAS } from "@/data/categorias";
 import Link from "next/link";
+import { Icon } from "@/components/Icons";
 
 interface CadastroServicoLeadProps {
   onSuccess?: () => void;
@@ -116,8 +117,8 @@ export default function CadastroServicoLead({ onSuccess }: CadastroServicoLeadPr
   if (successData) {
     return (
       <div className="glass-panel glass-emerald p-8 sm:p-14 rounded-3xl text-center max-w-2xl mx-auto shadow-2xl animate-fade-in border border-emerald-500/30">
-        <div className="w-16 h-16 rounded-2xl bg-emerald-500/20 border border-emerald-500/40 text-emerald-400 flex items-center justify-center text-3xl mx-auto mb-6 shadow-[0_0_30px_rgba(16,185,129,0.3)]">
-          ✓
+        <div className="w-16 h-16 rounded-2xl bg-emerald-500/20 border border-emerald-500/40 text-emerald-400 flex items-center justify-center mx-auto mb-6 shadow-[0_0_30px_rgba(16,185,129,0.3)]">
+          <Icon name="check" width={28} height={28} />
         </div>
         <span className="text-[11px] font-mono font-bold uppercase tracking-widest text-emerald-400">
           Despacho Protocolado
@@ -136,7 +137,7 @@ export default function CadastroServicoLead({ onSuccess }: CadastroServicoLeadPr
             rel="noopener noreferrer"
             className="btn-primary-emerald w-full sm:w-auto px-8 py-3.5 rounded-2xl text-xs sm:text-sm font-black flex items-center justify-center gap-2 cursor-pointer shadow-xl"
           >
-            <span>💬</span> Abrir WhatsApp com Contratante &amp; Contratado
+            <Icon name="chat" width={15} height={15} /> Abrir WhatsApp com Contratante &amp; Contratado
           </a>
           <button
             onClick={() => {
@@ -209,7 +210,7 @@ export default function CadastroServicoLead({ onSuccess }: CadastroServicoLeadPr
 
         {/* GARANTIA LGPD */}
         <div className="p-4 rounded-2xl bg-white/[0.02] border border-white/5 flex items-start gap-3">
-          <span className="text-lg">🔒</span>
+          <Icon name="lock" width={18} height={18} className="text-emerald-400 shrink-0" />
           <div>
             <h3 className="text-xs font-bold text-white">Privacidade &amp; LGPD</h3>
             <p className="text-[11px] text-slate-400 mt-0.5 leading-relaxed">
@@ -232,7 +233,7 @@ export default function CadastroServicoLead({ onSuccess }: CadastroServicoLeadPr
                 : "text-slate-400 hover:text-white"
             }`}
           >
-            <span>💼</span> Sou Prestador (Contratado)
+            <Icon name="briefcase" width={14} height={14} /> Sou Prestador (Contratado)
           </button>
           <button
             type="button"
@@ -243,13 +244,13 @@ export default function CadastroServicoLead({ onSuccess }: CadastroServicoLeadPr
                 : "text-slate-400 hover:text-white"
             }`}
           >
-            <span>🏢</span> Preciso Contratar
+            <Icon name="building" width={14} height={14} /> Preciso Contratar
           </button>
         </div>
 
         {error && (
           <div className="mb-6 p-4 rounded-2xl bg-rose-500/15 border border-rose-500/30 text-rose-300 text-xs font-bold flex items-center gap-2">
-            <span>⚠️</span> {error}
+            <Icon name="warning" width={14} height={14} className="shrink-0" /> {error}
           </div>
         )}
 
@@ -364,7 +365,7 @@ export default function CadastroServicoLead({ onSuccess }: CadastroServicoLeadPr
                 >
                   {CATEGORIAS_SERVICOS.map((c) => (
                     <option key={c.id} value={c.name}>
-                      {c.icon} {c.name}
+                      {c.name}
                     </option>
                   ))}
                 </select>
@@ -405,7 +406,7 @@ export default function CadastroServicoLead({ onSuccess }: CadastroServicoLeadPr
             <div className="flex items-center justify-between p-3.5 rounded-xl bg-amber-950/20 border border-amber-400/20">
               <div>
                 <label htmlFor="cortesia-solidaria" className="text-xs font-black text-amber-300 flex items-center gap-1.5 cursor-pointer">
-                  <span>🛡️</span> Cortesia Solidária 0800 (Alta Honra)
+                  <Icon name="shield" width={13} height={13} /> Cortesia Solidária 0800 (Alta Honra)
                 </label>
                 <span className="text-[10px] text-slate-400 block">
                   Ponto de apoio na estrada, recarga elétrica ou mentoria voluntária.
@@ -483,7 +484,7 @@ export default function CadastroServicoLead({ onSuccess }: CadastroServicoLeadPr
               <div className="w-5 h-5 rounded-full border-2 border-black border-t-transparent animate-spin"></div>
             ) : (
               <>
-                <span>🚀</span> Enviar Serviço para Contratante &amp; Despachar no WhatsApp
+                <Icon name="rocket" width={15} height={15} /> Enviar Serviço para Contratante &amp; Despachar no WhatsApp
               </>
             )}
           </button>

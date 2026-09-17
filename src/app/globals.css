@@ -16,9 +16,26 @@ body {
   overflow-x: hidden;
 }
 
-/* ── HERO TOPOGRAPHIC & COORDINATE GRID PATTERN ── */
+/* ── HERO TOPOGRAPHIC & COORDINATE GRID PATTERN ──
+   A máscara precisa valer só pro padrão de pontos decorativo, não pra
+   seção inteira — antes o mask-image estava direto em .hero-grid-pattern,
+   e como esse mesmo elemento é o <section> com TODO o conteúdo do hero
+   (headline, CTAs, cards, tribos, busca), tudo fora da elipse ia
+   desbotando pra transparente conforme descia a página. Isso criava um
+   "vazio preto" logo abaixo dos cards de exemplo — não era falta de
+   conteúdo, era o conteúdo real sendo mascarado. Mover pro ::before
+   isola o efeito só no papel de parede. */
 .hero-grid-pattern {
-  background-image: 
+  position: relative;
+}
+
+.hero-grid-pattern::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background-image:
     radial-gradient(rgba(255, 255, 255, 0.08) 1px, transparent 1px),
     linear-gradient(to right, rgba(255, 255, 255, 0.03) 1px, transparent 1px),
     linear-gradient(to bottom, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
@@ -27,38 +44,35 @@ body {
   -webkit-mask-image: radial-gradient(ellipse 70% 55% at 50% 30%, #000 60%, transparent 100%);
 }
 
-/* ── REFINED GLASSMORPHISM ── */
+/* ── SUPERFÍCIES SÓLIDAS ──
+   Antes era glassmorphism (fundo quase transparente + blur), que se
+   misturava com o fundo escuro do body e virava "vazio". Fundo opaco e
+   claramente mais claro que o body resolve o contraste sem precisar de
+   blur nenhum. */
 .glass-panel {
-  background: rgba(13, 17, 26, 0.72);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
-  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: #1a2130;
+  border: 1px solid rgba(255, 255, 255, 0.14);
   box-shadow: 0 16px 40px -10px rgba(0, 0, 0, 0.6);
 }
 
 .glass-card {
-  background: rgba(255, 255, 255, 0.03);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
-  border: 1px solid rgba(255, 255, 255, 0.07);
-  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  background: #171d2a;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  transition: border-color 0.2s ease, transform 0.2s ease, background-color 0.2s ease;
 }
 
 .glass-card:hover {
-  background: rgba(255, 255, 255, 0.055);
-  border-color: rgba(16, 185, 129, 0.35);
-  box-shadow: 0 12px 32px -4px rgba(0, 0, 0, 0.5), 0 0 20px -2px rgba(16, 185, 129, 0.15);
+  background: #1c2333;
+  border-color: rgba(16, 185, 129, 0.45);
   transform: translateY(-2px);
 }
 
 .glass-emerald {
-  border-color: rgba(16, 185, 129, 0.35) !important;
-  box-shadow: 0 8px 30px -4px rgba(16, 185, 129, 0.15) !important;
+  border-color: rgba(16, 185, 129, 0.4) !important;
 }
 
 .glass-amber {
-  border-color: rgba(245, 158, 11, 0.35) !important;
-  box-shadow: 0 8px 30px -4px rgba(245, 158, 11, 0.15) !important;
+  border-color: rgba(245, 158, 11, 0.4) !important;
 }
 
 /* ── BOTÕES DE ALTA CONVERSÃO ── */
@@ -77,16 +91,16 @@ body {
 }
 
 .btn-secondary-glass {
-  background: rgba(255, 255, 255, 0.04);
-  border: 1px solid rgba(255, 255, 255, 0.12);
+  background: #171c27;
+  border: 1px solid rgba(255, 255, 255, 0.14);
   color: #f8fafc;
   font-weight: 700;
   box-shadow: 0 4px 16px -2px rgba(0, 0, 0, 0.3);
-  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  transition: background-color 0.2s ease, border-color 0.2s ease, transform 0.2s ease;
 }
 
 .btn-secondary-glass:hover {
-  background: rgba(255, 255, 255, 0.08);
+  background: #1c2230;
   border-color: rgba(255, 255, 255, 0.25);
   transform: translateY(-1px);
 }
@@ -126,8 +140,7 @@ body {
 }
 
 .leaflet-popup-content-wrapper {
-  background: rgba(13, 17, 26, 0.95) !important;
-  backdrop-filter: blur(16px) !important;
+  background: #131822 !important;
   color: #fff !important;
   border: 1px solid rgba(16, 185, 129, 0.3) !important;
   border-radius: 1.25rem !important;
@@ -135,5 +148,5 @@ body {
 }
 
 .leaflet-popup-tip {
-  background: rgba(13, 17, 26, 0.95) !important;
+  background: #131822 !important;
 }
