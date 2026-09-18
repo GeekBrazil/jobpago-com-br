@@ -82,6 +82,7 @@ export default function MapaServicos({
   // de GPS nem de um ponto de apoio cadastrado como destino.
   const [isTracingMode, setIsTracingMode] = useState(false);
   const isTracingModeRef = useRef(false);
+  const [isRoutePanelHidden, setIsRoutePanelHidden] = useState(false);
   const [waypoints, setWaypoints] = useState<{ lat: number; lng: number; nome: string }[]>([]);
   const waypointMarkersRef = useRef<L.Marker[]>([]);
   const tracedRouteRef = useRef<L.Polyline | null>(null);
@@ -572,6 +573,7 @@ export default function MapaServicos({
           type="button"
           onClick={() => {
             if (isTracingMode) limparTracado();
+            setIsRoutePanelHidden(false);
             setIsTracingMode((v) => !v);
           }}
           className={`min-h-[44px] px-4 rounded-2xl backdrop-blur-md border text-xs font-bold transition-colors ${
@@ -621,11 +623,34 @@ export default function MapaServicos({
           </div>
         )}
 
-        {isTracingMode && (
+        {isTracingMode && isRoutePanelHidden && (
+          <button
+            type="button"
+            onClick={() => setIsRoutePanelHidden(false)}
+            className="bg-[#0b121c]/95 backdrop-blur-lg border border-amber-500/40 rounded-2xl px-4 py-2.5 shadow-2xl pointer-events-auto flex items-center gap-2 text-xs font-black text-amber-300 uppercase tracking-wider hover:border-amber-400 transition-colors"
+          >
+            <Icon name="pin" width={22} height={22} />
+            {waypoints.length > 0 ? `${waypoints.length} ponto${waypoints.length === 1 ? "" : "s"}` : "Traçando rota"}
+            <span className="text-amber-400/70 normal-case font-bold">— ver painel</span>
+          </button>
+        )}
+
+        {isTracingMode && !isRoutePanelHidden && (
           <div className="bg-[#0b121c]/95 backdrop-blur-lg border border-amber-500/40 rounded-2xl p-4 shadow-2xl pointer-events-auto max-w-xs animate-in fade-in">
-            <span className="text-xs font-black text-amber-300 uppercase tracking-wider flex items-center gap-1.5">
-              <Icon name="pin" width={30} height={30} /> Clique no mapa pra marcar pontos
-            </span>
+            <div className="flex items-center justify-between gap-3">
+              <span className="text-xs font-black text-amber-300 uppercase tracking-wider flex items-center gap-1.5">
+                <Icon name="pin" width={30} height={30} /> Clique no mapa pra marcar pontos
+              </span>
+              <button
+                type="button"
+                onClick={() => setIsRoutePanelHidden(true)}
+                aria-label="Esconder painel de rota"
+                title="Esconder painel pra ver a rota"
+                className="shrink-0 text-zinc-400 hover:text-white text-sm font-black px-1.5 rounded-lg hover:bg-white/10 transition-colors"
+              >
+                −
+              </button>
+            </div>
 
             {waypoints.length > 0 && (
               <ol className="mt-3 flex flex-col gap-1 max-h-32 overflow-y-auto text-xs text-slate-200">
