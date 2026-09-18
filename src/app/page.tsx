@@ -453,9 +453,6 @@ export default function Home() {
             </Link>
           </div>
 
-          {/* ── CARROSSEL DE ANÚNCIOS (ALTERNA A CADA 3S, FOTO + CLIQUE ABRE DETALHES) ── */}
-          <CarrosselAnuncios jobs={jobs} onSelect={setSelectedJob} />
-
           {/* BARRA DE BUSCA RÁPIDA */}
           <div className="mt-10 max-w-xl mx-auto">
             <div className="relative glass-panel rounded-2xl p-2 flex items-center border border-white/10 shadow-2xl focus-within:border-emerald-400/50 transition-colors">
@@ -479,6 +476,9 @@ export default function Home() {
           </div>
         </div>
       </section>
+
+      {/* ── CARROSSEL DE ANÚNCIOS: FAIXA CONTÍNUA DE UMA PONTA A OUTRA DA JANELA ── */}
+      <CarrosselAnuncios jobs={jobs} onSelect={setSelectedJob} />
 
       {/* ── SEÇÃO 1: MAPA GPS DE SERVIÇOS & ROTAS ── */}
       <section id="mapa-gps" className="py-10 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">

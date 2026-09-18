@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { Icon } from "@/components/Icons";
 import type { Job } from "@/app/page";
 
-const SEGUNDOS_POR_CARD = 5;
+const SEGUNDOS_POR_CARD = 4;
 
 function CardAnuncio({ job, onSelect }: { job: Job; onSelect: (job: Job) => void }) {
   const isFree = job.budget === 0 || job.isFreeHonor;
@@ -12,13 +12,12 @@ function CardAnuncio({ job, onSelect }: { job: Job; onSelect: (job: Job) => void
   return (
     <button
       onClick={() => onSelect(job)}
-      style={{ width: "100%" }}
-      className={`shrink-0 text-left glass-panel ${
+      className={`shrink-0 w-[260px] sm:w-[320px] text-left glass-panel ${
         isFree ? "glass-amber" : isNomad ? "glass-emerald" : ""
       } rounded-3xl relative overflow-hidden group hover:border-emerald-400/50 transition-all cursor-pointer p-0`}
     >
       {job.imagemUrl && (
-        <div className="relative h-40 sm:h-48 w-full overflow-hidden">
+        <div className="relative h-36 sm:h-44 w-full overflow-hidden">
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
             src={job.imagemUrl}
@@ -39,21 +38,18 @@ function CardAnuncio({ job, onSelect }: { job: Job; onSelect: (job: Job) => void
                 : "bg-emerald-500/20 text-emerald-300 border-emerald-500/30"
             }`}
           >
-            {isFree ? <Icon name="shield" width={26} height={26} /> : <Icon name="bolt" width={26} height={26} />}
+            {isFree ? <Icon name="shield" width={22} height={22} /> : <Icon name="bolt" width={22} height={22} />}
             {job.category}
-          </span>
-          <span className={`text-[11px] font-mono font-bold ${isFree ? "text-amber-300" : "text-emerald-400"}`}>
-            {isFree ? "100% CORTESIA" : `R$ ${job.budget.toLocaleString("pt-BR")}`}
           </span>
         </div>
         <h2 className="text-sm font-black text-white leading-snug">{job.title}</h2>
         <p className="text-[11px] text-slate-300 mt-1 line-clamp-2">{job.description}</p>
         <div className="mt-3 pt-3 border-t border-white/5 flex items-center justify-between text-[10px] text-slate-400 font-mono">
-          <span className="flex items-center gap-1">
-            <Icon name="pin" width={26} height={26} /> {job.location}
+          <span className={`font-mono font-bold ${isFree ? "text-amber-300" : "text-emerald-400"}`}>
+            {isFree ? "100% CORTESIA" : `R$ ${job.budget.toLocaleString("pt-BR")}`}
           </span>
-          <span className={`font-bold flex items-center gap-1 ${isFree ? "text-amber-400" : "text-emerald-400"}`}>
-            Ver detalhes <Icon name="chat" width={26} height={26} />
+          <span className="flex items-center gap-1">
+            <Icon name="pin" width={22} height={22} /> {job.location}
           </span>
         </div>
       </div>
@@ -77,32 +73,35 @@ export default function CarrosselAnuncios({
 
   if (total === 0) return null;
 
-  // Fita dobrada: anda continuamente até -50% (uma volta completa pelos
-  // itens originais) e reinicia em 0 — o segundo bloco é idêntico ao
-  // primeiro, então o corte é invisível e a rolagem nunca para.
+  // Fita dobrada: cada card carrega seu próprio espaçamento à direita (em vez
+  // de gap no flex), então cada "slot" tem largura fixa e igual. Isso faz o
+  // -50% do translateX cair exatamente onde a cópia repetida começa — sem
+  // esse cuidado, o padding do container e o gap entre itens desalinham a
+  // matemática e o loop pula visivelmente a cada volta.
   const faixa = total > 1 ? [...jobs, ...jobs] : jobs;
   const duracaoS = Math.max(total, 1) * SEGUNDOS_POR_CARD;
 
   return (
-    <div className="mt-12 max-w-lg mx-auto">
-      <div className="relative overflow-hidden rounded-3xl">
-        <div
-          className="flex"
-          style={
-            total > 1 && !reducedMotion
-              ? {
-                  width: `${faixa.length * 100}%`,
-                  animation: `carrosselAnuncios ${duracaoS}s linear infinite`,
-                }
-              : { width: "100%" }
-          }
-        >
-          {faixa.map((job, i) => (
-            <div key={`${job.id}-${i}`} style={{ width: `${100 / faixa.length}%` }} className="shrink-0 px-0">
-              <CardAnuncio job={job} onSelect={onSelect} />
-            </div>
-          ))}
-        </div>
+    <div
+      className="mt-12 relative w-screen overflow-hidden"
+      style={{ left: "50%", marginLeft: "-50vw" }}
+    >
+      <div
+        className="flex w-max py-2"
+        style={{
+          maskImage:
+            "linear-gradient(to right, transparent 0, black 60px, black calc(100% - 60px), transparent 100%)",
+          WebkitMaskImage:
+            "linear-gradient(to right, transparent 0, black 60px, black calc(100% - 60px), transparent 100%)",
+          animation:
+            total > 1 && !reducedMotion ? `carrosselAnuncios ${duracaoS}s linear infinite` : undefined,
+        }}
+      >
+        {faixa.map((job, i) => (
+          <div key={`${job.id}-${i}`} className="shrink-0 pr-5">
+            <CardAnuncio job={job} onSelect={onSelect} />
+          </div>
+        ))}
       </div>
     </div>
   );
