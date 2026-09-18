@@ -271,7 +271,7 @@ export default function ComoFuncionaPage() {
               href="/cadastrar-servico"
               className="btn-secondary-glass w-full sm:w-auto px-7 py-3.5 rounded-2xl flex items-center justify-center gap-2 text-sm sm:text-base font-bold cursor-pointer"
             >
-              <Icon name="bolt" width={16} height={16} /> Cadastrar Serviço &amp; Lead
+              <Icon name="handshake" width={16} height={16} /> Oferecer ou Contratar
             </Link>
           </div>
         </section>
