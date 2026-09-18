@@ -27,7 +27,7 @@ const CATEGORY_COLORS: Record<string, string> = {
   "Tecnologia & TI": "#06b6d4",     // Cyan Dev
   "Reformas & Reparos": "#f59e0b",   // Amarelo
   "Transporte & Fretes": "#3b82f6",  // Azul
-  "Fotografia & Eventos": "#ec4899", // Rosa
+  "Vídeo & Conteúdo": "#ec4899",     // Rosa
   "Aulas & Consultoria": "#6366f1",  // Indigo
   "Design & Mídia": "#a855f7",      // Roxo
 };

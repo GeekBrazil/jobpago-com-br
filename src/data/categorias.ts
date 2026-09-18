@@ -29,9 +29,9 @@ export const CATEGORIAS: Categoria[] = [
   { id: "devs", nome: "Tecnologia & TI", icone: "code", descricao: "Full-Stack, Automação & IA" },
   { id: "reformas", nome: "Reformas & Reparos", icone: "wrench", descricao: "Eletricistas & Manutenção" },
   { id: "transporte", nome: "Transporte & Fretes", icone: "delivery", descricao: "Carretos & Mudanças" },
-  { id: "foto", nome: "Fotografia & Eventos", icone: "camera", descricao: "Vídeo, Drone & Design" },
+  { id: "foto", nome: "Vídeo & Conteúdo", icone: "camera", descricao: "Drone, Edição & Redes Sociais" },
   { id: "aulas", nome: "Aulas & Consultoria", icone: "book", descricao: "Mentorias & Consultorias" },
-  { id: "design", nome: "Design & Mídia", icone: "palette", descricao: "Identidade, social e edição" },
+  { id: "design", nome: "Design & Mídia", icone: "palette", descricao: "Identidade Visual & Social" },
 ];
 
 /** Chips de filtro da home. "Todas" não é categoria, é ausência de filtro. */
