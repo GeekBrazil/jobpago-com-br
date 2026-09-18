@@ -51,6 +51,18 @@ export default function MapaServicos({
   const [routeInfo, setRouteInfo] = useState<{ distanceKm: string; durationMin: string } | null>(null);
   const [, setGeoError] = useState<string | null>(null);
 
+  // ── TRAÇADOR MANUAL DE ROTA ──
+  // Modo separado do "Traçar Rota até um ponto": aqui o usuário clica no mapa
+  // pra empilhar waypoints livres (ex: cidades de uma viagem), sem precisar
+  // de GPS nem de um ponto de apoio cadastrado como destino.
+  const [isTracingMode, setIsTracingMode] = useState(false);
+  const isTracingModeRef = useRef(false);
+  const [waypoints, setWaypoints] = useState<{ lat: number; lng: number; nome: string }[]>([]);
+  const waypointMarkersRef = useRef<L.Marker[]>([]);
+  const tracedRouteRef = useRef<L.Polyline | null>(null);
+  const [isResolvingRoute, setIsResolvingRoute] = useState(false);
+  const [tracedRouteInfo, setTracedRouteInfo] = useState<{ distanceKm: string; durationMin: string } | null>(null);
+
   // Inicializar o Mapa
   useEffect(() => {
     if (!mapContainerRef.current || mapRef.current) return;
@@ -76,6 +88,13 @@ export default function MapaServicos({
     L.control.zoom({ position: "bottomright" }).addTo(map);
 
     mapRef.current = map;
+
+    // Clique no mapa só empilha waypoint quando o modo de traçar rota está
+    // ativo — o ref evita closure velha, já que este efeito roda uma vez só.
+    map.on("click", (e: L.LeafletMouseEvent) => {
+      if (!isTracingModeRef.current) return;
+      addWaypoint(e.latlng.lat, e.latlng.lng);
+    });
 
     // Geolocalização: nunca pedir permissão no carregamento da página.
     // Só centraliza sozinho em quem já concedeu antes; para os demais o mapa
@@ -292,6 +311,118 @@ export default function MapaServicos({
     setRouteInfo(null);
   };
 
+  // Sincroniza o ref pro click handler (registrado uma vez só) ver o modo atual.
+  useEffect(() => {
+    isTracingModeRef.current = isTracingMode;
+  }, [isTracingMode]);
+
+  // Nominatim de graça pede uso moderado — clique manual já pauta o ritmo
+  // sozinho (uma chamada por clique humano, nunca em loop automático).
+  const reverseGeocode = async (lat: number, lng: number): Promise<string> => {
+    try {
+      const res = await fetch(
+        `https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lng}&zoom=10&addressdetails=1`
+      );
+      const data = await res.json();
+      const addr = data.address || {};
+      const cidade = addr.city || addr.town || addr.village || addr.municipality || data.name;
+      const uf = addr.state_code || addr.state;
+      return cidade ? `${cidade}${uf ? " / " + uf : ""}` : `${lat.toFixed(3)}, ${lng.toFixed(3)}`;
+    } catch {
+      return `${lat.toFixed(3)}, ${lng.toFixed(3)}`;
+    }
+  };
+
+  const addWaypoint = (lat: number, lng: number) => {
+    const map = mapRef.current;
+    if (!map) return;
+
+    const numero = waypointMarkersRef.current.length + 1;
+    const icon = L.divIcon({
+      className: "waypoint-marker",
+      html: `<div style="
+        width: 26px; height: 26px; border-radius: 50%;
+        background: #fbbf24; border: 3px solid #78350f;
+        color: #1c1005; font-weight: 900; font-size: 12px;
+        display: flex; align-items: center; justify-content: center;
+        box-shadow: 0 0 10px rgba(251,191,36,0.6);
+      ">${numero}</div>`,
+      iconSize: [26, 26],
+      iconAnchor: [13, 13],
+    });
+    const marker = L.marker([lat, lng], { icon }).addTo(map);
+    waypointMarkersRef.current.push(marker);
+
+    setWaypoints((prev) => [...prev, { lat, lng, nome: "Resolvendo endereço…" }]);
+
+    reverseGeocode(lat, lng).then((nome) => {
+      setWaypoints((prev) => {
+        const idx = numero - 1;
+        if (!prev[idx]) return prev;
+        const next = [...prev];
+        next[idx] = { ...next[idx], nome };
+        marker.bindTooltip(`${numero}. ${nome}`, { permanent: false });
+        return next;
+      });
+    });
+  };
+
+  const limparTracado = () => {
+    const map = mapRef.current;
+    waypointMarkersRef.current.forEach((m) => map?.removeLayer(m));
+    waypointMarkersRef.current = [];
+    if (tracedRouteRef.current && map) {
+      map.removeLayer(tracedRouteRef.current);
+      tracedRouteRef.current = null;
+    }
+    setWaypoints([]);
+    setTracedRouteInfo(null);
+  };
+
+  const calcularRotaTracada = async () => {
+    const map = mapRef.current;
+    if (!map || waypoints.length < 2) return;
+    setIsResolvingRoute(true);
+    try {
+      const coordsStr = waypoints.map((w) => `${w.lng},${w.lat}`).join(";");
+      const url = `https://router.project-osrm.org/route/v1/driving/${coordsStr}?overview=full&geometries=geojson`;
+      const res = await fetch(url);
+      const data = await res.json();
+
+      if (data.routes && data.routes.length > 0) {
+        const route = data.routes[0];
+        const coordinates = route.geometry.coordinates.map((c: [number, number]) => [c[1], c[0]]);
+
+        if (tracedRouteRef.current) map.removeLayer(tracedRouteRef.current);
+
+        const polyline = L.polyline(coordinates as [number, number][], {
+          color: "#fbbf24",
+          weight: 5,
+          opacity: 0.85,
+          dashArray: "1, 8",
+          lineCap: "round",
+        }).addTo(map);
+
+        tracedRouteRef.current = polyline;
+        map.fitBounds(polyline.getBounds(), { padding: [50, 50] });
+
+        setTracedRouteInfo({
+          distanceKm: (route.distance / 1000).toFixed(0) + " km",
+          durationMin: Math.round(route.duration / 60) + " min",
+        });
+      }
+    } catch (e) {
+      console.error("Erro ao calcular rota traçada:", e);
+    } finally {
+      setIsResolvingRoute(false);
+    }
+  };
+
+  const copiarListaCidades = () => {
+    const lista = waypoints.map((w) => w.nome).join(", ");
+    navigator.clipboard?.writeText(lista).catch(() => {});
+  };
+
   const visiblePointsCount = points.length;
 
   return (
@@ -300,13 +431,29 @@ export default function MapaServicos({
 
       {/* A permissao de localizacao so e pedida daqui, por acao do usuario.
           Pedir no carregamento da pagina e dark pattern e reprova no Lighthouse. */}
-      <button
-        type="button"
-        onClick={() => localizarRef.current?.()}
-        className="absolute top-4 right-4 z-[1000] min-h-[44px] px-4 rounded-2xl bg-[#08080c]/90 backdrop-blur-md border border-emerald-500/30 text-xs font-bold text-emerald-300 hover:border-emerald-400 transition-colors"
-      >
-        Minha posição
-      </button>
+      <div className="absolute top-4 right-4 z-[1000] flex flex-col items-end gap-2">
+        <button
+          type="button"
+          onClick={() => localizarRef.current?.()}
+          className="min-h-[44px] px-4 rounded-2xl bg-[#08080c]/90 backdrop-blur-md border border-emerald-500/30 text-xs font-bold text-emerald-300 hover:border-emerald-400 transition-colors"
+        >
+          Minha posição
+        </button>
+        <button
+          type="button"
+          onClick={() => {
+            if (isTracingMode) limparTracado();
+            setIsTracingMode((v) => !v);
+          }}
+          className={`min-h-[44px] px-4 rounded-2xl backdrop-blur-md border text-xs font-bold transition-colors ${
+            isTracingMode
+              ? "bg-amber-500 border-amber-300 text-black"
+              : "bg-[#08080c]/90 border-amber-500/30 text-amber-300 hover:border-amber-400"
+          }`}
+        >
+          {isTracingMode ? "Sair do Modo Rota" : "Traçar Minha Rota"}
+        </button>
+      </div>
 
       {/* Overlays de Informação e Controles */}
       <div className="absolute top-4 left-4 z-[1000] flex flex-col gap-2 pointer-events-none">
@@ -341,6 +488,55 @@ export default function MapaServicos({
             <div className="flex items-center gap-4 mt-2 text-xs font-bold text-emerald-400">
               <span className="flex items-center gap-1"><Icon name="pin" width={12} height={12} /> {routeInfo.distanceKm}</span>
               <span className="flex items-center gap-1"><Icon name="clock" width={12} height={12} /> ~{routeInfo.durationMin}</span>
+            </div>
+          </div>
+        )}
+
+        {isTracingMode && (
+          <div className="bg-[#0b121c]/95 backdrop-blur-lg border border-amber-500/40 rounded-2xl p-4 shadow-2xl pointer-events-auto max-w-xs animate-in fade-in">
+            <span className="text-xs font-black text-amber-300 uppercase tracking-wider flex items-center gap-1.5">
+              <Icon name="pin" width={13} height={13} /> Clique no mapa pra marcar pontos
+            </span>
+
+            {waypoints.length > 0 && (
+              <ol className="mt-3 flex flex-col gap-1 max-h-32 overflow-y-auto text-xs text-slate-200">
+                {waypoints.map((w, i) => (
+                  <li key={i} className="flex items-center gap-1.5">
+                    <span className="text-amber-400 font-black">{i + 1}.</span> {w.nome}
+                  </li>
+                ))}
+              </ol>
+            )}
+
+            {tracedRouteInfo && (
+              <div className="flex items-center gap-4 mt-3 text-xs font-bold text-amber-300">
+                <span className="flex items-center gap-1"><Icon name="pin" width={12} height={12} /> {tracedRouteInfo.distanceKm}</span>
+                <span className="flex items-center gap-1"><Icon name="clock" width={12} height={12} /> ~{tracedRouteInfo.durationMin}</span>
+              </div>
+            )}
+
+            <div className="flex flex-wrap gap-2 mt-3">
+              <button
+                onClick={calcularRotaTracada}
+                disabled={waypoints.length < 2 || isResolvingRoute}
+                className="text-xs font-black px-3 py-1.5 rounded-lg bg-amber-500 text-black disabled:opacity-40 disabled:cursor-not-allowed"
+              >
+                {isResolvingRoute ? "Calculando…" : "Calcular Rota"}
+              </button>
+              <button
+                onClick={copiarListaCidades}
+                disabled={waypoints.length === 0}
+                className="text-xs font-bold px-3 py-1.5 rounded-lg bg-white/10 text-white disabled:opacity-40 disabled:cursor-not-allowed"
+              >
+                Copiar Lista de Cidades
+              </button>
+              <button
+                onClick={limparTracado}
+                disabled={waypoints.length === 0}
+                className="text-xs font-bold px-3 py-1.5 rounded-lg bg-white/10 text-zinc-300 disabled:opacity-40 disabled:cursor-not-allowed"
+              >
+                Limpar
+              </button>
             </div>
           </div>
         )}

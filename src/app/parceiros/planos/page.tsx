@@ -1,6 +1,7 @@
 import Link from "next/link";
 import type { Metadata } from "next";
 import { PLANOS, linkWhatsapp, WHATSAPP } from "@/data/planos-parceiro";
+import ReguaContribuicao from "@/components/ReguaContribuicao";
 
 export const metadata: Metadata = {
   title: "Parceiros da Expedição · JobPago.com.br",
@@ -133,6 +134,26 @@ export default function PlanosParceiroPage() {
               );
             })}
           </div>
+        </section>
+
+        {/* ── RÉGUA DE CONTRIBUIÇÃO PIX (sem estabelecimento) ── */}
+        <section aria-labelledby="regua" className="mt-14">
+          <h2 id="regua" className="text-xl sm:text-2xl font-black text-white">
+            Não tem estabelecimento na rota?
+          </h2>
+          <p className="mt-2 text-sm text-slate-400 max-w-2xl">
+            Você também pode apoiar a Expedição como pessoa física, sem
+            precisar ter um posto, pousada ou camping.
+          </p>
+          <div className="mt-6">
+            <ReguaContribuicao />
+          </div>
+          <Link
+            href="/noticias-estrada"
+            className="mt-4 inline-flex items-center gap-1.5 text-xs font-bold text-emerald-400 hover:underline"
+          >
+            Ver Notícias da Estrada →
+          </Link>
         </section>
 
         {/* ── LIMITE DO ACORDO ── */}
