@@ -43,6 +43,11 @@ export default function MapaServicos({
   const mapRef = useRef<L.Map | null>(null);
   const routePolylineRef = useRef<L.Polyline | null>(null);
   const userMarkerRef = useRef<L.Marker | null>(null);
+  /** Camadas do control nativo do Leaflet — Certificados é a primeira camada
+      de dado externo; CNPJ georreferenciado entra do mesmo jeito quando
+      existir (hoje não existe nenhum CNPJ com lat/lon, ver CLAUDE.md). */
+  const oportunidadesLayerRef = useRef<L.LayerGroup | null>(null);
+  const certificadosLayerRef = useRef<L.LayerGroup | null>(null);
   /** Guarda o localizador para o botao poder dispara-lo fora do useEffect. */
   const localizarRef = useRef<(() => void) | null>(null);
 
@@ -74,7 +79,11 @@ export default function MapaServicos({
       zoomControl: false,
     });
 
-    // Camada Esri Dark Gray Base + Reference (Rápida, sem API Key, sem marcas d'água)
+    // CARTO Dark Matter passou a exigir API key até pro estilo básico
+    // (watermark "API KEY REQUIRED" confirmado ao vivo em 18/09/2026) —
+    // voltando pro Esri, que continua de graça e sem chave. O ganho visual
+    // agora vem do filtro CSS no container (ver classe mapa-tema-escuro),
+    // não troca de provedor de novo sem testar em produção antes.
     L.tileLayer("https://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Dark_Gray_Base/MapServer/tile/{z}/{y}/{x}", {
       attribution: '&copy; Esri &copy; OpenStreetMap',
       maxZoom: 16,
@@ -86,6 +95,22 @@ export default function MapaServicos({
     }).addTo(map);
 
     L.control.zoom({ position: "bottomright" }).addTo(map);
+
+    const oportunidadesLayer = L.layerGroup().addTo(map);
+    const certificadosLayer = L.layerGroup();
+    oportunidadesLayerRef.current = oportunidadesLayer;
+    certificadosLayerRef.current = certificadosLayer;
+
+    L.control
+      .layers(
+        undefined,
+        {
+          "Oportunidades & Serviços": oportunidadesLayer,
+          "Estabelecimentos Certificados": certificadosLayer,
+        },
+        { position: "bottomleft", collapsed: true }
+      )
+      .addTo(map);
 
     mapRef.current = map;
 
@@ -149,12 +174,11 @@ export default function MapaServicos({
     const map = mapRef.current;
     if (!map) return;
 
-    // Limpar markers existentes (exceto usuário)
-    map.eachLayer((layer) => {
-      if (layer instanceof L.Marker && layer !== userMarkerRef.current) {
-        map.removeLayer(layer);
-      }
-    });
+    const oportunidadesLayer = oportunidadesLayerRef.current;
+    const certificadosLayer = certificadosLayerRef.current;
+    if (!oportunidadesLayer || !certificadosLayer) return;
+    oportunidadesLayer.clearLayers();
+    certificadosLayer.clearLayers();
 
     const sanitizedPoints = points;
 
@@ -162,9 +186,11 @@ export default function MapaServicos({
       (p) => selectedCategory === "Todas" || p.category === selectedCategory
     );
 
-    filtered.forEach((pt) => {
-      const color = CATEGORY_COLORS[pt.category] || "#10b981";
-      const ringColor = pt.isVerifiedPartner ? "#fbbf24" : "#ffffff";
+    // Uma função por ponto, chamada até 2x (camada de Oportunidades sempre,
+    // camada de Certificados só se verificado) — cada camada precisa da sua
+    // própria instância de marker/popup, um único Marker não vive em duas
+    // camadas do Leaflet ao mesmo tempo sem conflito de DOM.
+    const criarMarker = (pt: MapPoint, color: string, ringColor: string) => {
 
       // Envelope transparente de 44x44: o circulo continua com 26px de diametro,
       // mas o alvo de toque atende o minimo de 44px sem engordar o mapa.
@@ -202,7 +228,7 @@ export default function MapaServicos({
         iconAnchor: [22, 22],
       });
 
-      const marker = L.marker([pt.lat, pt.lng], { icon: customIcon }).addTo(map);
+      const marker = L.marker([pt.lat, pt.lng], { icon: customIcon });
 
       const popupContent = document.createElement("div");
       popupContent.className = "p-2 min-w-[200px]";
@@ -251,6 +277,18 @@ export default function MapaServicos({
           };
         }
       });
+
+      return marker;
+    };
+
+    filtered.forEach((pt) => {
+      const color = CATEGORY_COLORS[pt.category] || "#10b981";
+
+      criarMarker(pt, color, pt.isVerifiedPartner ? "#fbbf24" : "#ffffff").addTo(oportunidadesLayer);
+
+      if (pt.isVerifiedPartner) {
+        criarMarker(pt, color, "#fbbf24").addTo(certificadosLayer);
+      }
     });
   }, [points, selectedCategory]);
 
@@ -427,7 +465,10 @@ export default function MapaServicos({
 
   return (
     <div className="relative w-full h-[520px] rounded-3xl overflow-hidden border border-white/15 bg-[#0a0c14] shadow-2xl">
-      <div ref={mapContainerRef} className="w-full h-full" />
+      <div
+        ref={mapContainerRef}
+        className="w-full h-full [&_.leaflet-tile-pane]:[filter:saturate(1.35)_contrast(1.2)_brightness(0.85)]"
+      />
 
       {/* A permissao de localizacao so e pedida daqui, por acao do usuario.
           Pedir no carregamento da pagina e dark pattern e reprova no Lighthouse. */}
