@@ -138,6 +138,71 @@ export default function MapaServicos({
 
     mapRef.current = map;
 
+    // Em touch, o drag de 1 dedo do Leaflet "sequestra" o scroll da página
+    // inteira (chamava preventDefault no touchmove pra fazer pan do mapa,
+    // mesmo quando a intenção era só continuar rolando a home). Desliga o
+    // pan de 1 dedo e só reativa com 2 dedos no mapa — o tap continua
+    // funcionando normal (handler separado do Leaflet, não afetado por
+    // dragging.disable()), então clicar em pin e marcar waypoint não muda.
+    let cleanupTouchPan: (() => void) | undefined;
+    const isTouchDevice = typeof window !== "undefined" && window.matchMedia("(pointer: coarse)").matches;
+    if (isTouchDevice) {
+      map.dragging.disable();
+      const container = map.getContainer();
+
+      const dica = document.createElement("div");
+      dica.textContent = "Use 2 dedos pra mover o mapa";
+      dica.style.cssText =
+        "position:absolute;left:50%;bottom:14px;transform:translateX(-50%);" +
+        "background:rgba(0,0,0,0.8);color:#fff;font-size:11px;font-weight:700;" +
+        "padding:6px 12px;border-radius:999px;z-index:1500;pointer-events:none;" +
+        "opacity:0;transition:opacity 200ms ease;white-space:nowrap;";
+      container.appendChild(dica);
+
+      let dicaTimeout: ReturnType<typeof setTimeout> | null = null;
+      let touchStart: { x: number; y: number } | null = null;
+      const mostrarDica = () => {
+        dica.style.opacity = "1";
+        if (dicaTimeout) clearTimeout(dicaTimeout);
+        dicaTimeout = setTimeout(() => { dica.style.opacity = "0"; }, 1400);
+      };
+
+      const onTouchStart = (e: TouchEvent) => {
+        if (e.touches.length >= 2) {
+          map.dragging.enable();
+          touchStart = null;
+        } else {
+          touchStart = { x: e.touches[0].clientX, y: e.touches[0].clientY };
+        }
+      };
+      const onTouchMove = (e: TouchEvent) => {
+        if (e.touches.length !== 1 || !touchStart) return;
+        const dx = Math.abs(e.touches[0].clientX - touchStart.x);
+        const dy = Math.abs(e.touches[0].clientY - touchStart.y);
+        if (dx > 8 || dy > 8) {
+          mostrarDica();
+          touchStart = null;
+        }
+      };
+      const onTouchEnd = (e: TouchEvent) => {
+        if (e.touches.length < 2) map.dragging.disable();
+      };
+
+      container.addEventListener("touchstart", onTouchStart, { passive: true });
+      container.addEventListener("touchmove", onTouchMove, { passive: true });
+      container.addEventListener("touchend", onTouchEnd, { passive: true });
+      container.addEventListener("touchcancel", onTouchEnd, { passive: true });
+
+      cleanupTouchPan = () => {
+        container.removeEventListener("touchstart", onTouchStart);
+        container.removeEventListener("touchmove", onTouchMove);
+        container.removeEventListener("touchend", onTouchEnd);
+        container.removeEventListener("touchcancel", onTouchEnd);
+        if (dicaTimeout) clearTimeout(dicaTimeout);
+        dica.remove();
+      };
+    }
+
     // Clique no mapa só empilha waypoint quando o modo de traçar rota está
     // ativo — o ref evita closure velha, já que este efeito roda uma vez só.
     map.on("click", (e: L.LeafletMouseEvent) => {
@@ -186,6 +251,7 @@ export default function MapaServicos({
     }
 
     return () => {
+      cleanupTouchPan?.();
       if (mapRef.current) {
         mapRef.current.remove();
         mapRef.current = null;
