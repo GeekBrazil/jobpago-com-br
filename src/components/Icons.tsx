@@ -396,7 +396,45 @@ const ICON_MAP = {
 
 export type IconName = keyof typeof ICON_MAP;
 
-export function Icon({ name, ...props }: { name: IconName } & SVGProps<SVGSVGElement>) {
+/* Ícones com arte 3D gerada (estilo glossy colorido, fundo removido)
+   — ficam em /public/icones/<nome>.webp. O resto usa o SVG de linha até
+   ganhar arte própria também; trocar aqui quando o resto for gerado. */
+const REAL_ART: Partial<Record<IconName, true>> = {
+  van: true,
+  truck: true,
+  code: true,
+  wrench: true,
+  delivery: true,
+  camera: true,
+  book: true,
+  palette: true,
+  bolt: true,
+  shield: true,
+  pin: true,
+  compass: true,
+  search: true,
+};
+
+export function Icon({
+  name,
+  className,
+  width = 20,
+  height = 20,
+  ...props
+}: { name: IconName } & SVGProps<SVGSVGElement>) {
+  if (REAL_ART[name]) {
+    return (
+      // eslint-disable-next-line @next/next/no-img-element
+      <img
+        src={`/icones/${name}.webp`}
+        alt=""
+        width={width as number}
+        height={height as number}
+        className={className}
+        style={{ display: "inline-block", objectFit: "contain" }}
+      />
+    );
+  }
   const Component = ICON_MAP[name];
-  return <Component {...props} />;
+  return <Component className={className} width={width} height={height} {...props} />;
 }
