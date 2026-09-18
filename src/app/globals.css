@@ -136,6 +136,15 @@ h1, h2, h3, button, .btn-primary-emerald, .btn-secondary-glass {
   animation: userPulse 2s infinite;
 }
 
+@keyframes carrosselAnuncios {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+
 @keyframes userPulse {
   0% {
     transform: scale(0.95);
