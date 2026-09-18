@@ -172,19 +172,39 @@ export async function POST(req: Request) {
       ? "🛡️ 100% CORTESIA (0800 Alta Honra)"
       : `R$ ${Number(body.valor || 0).toLocaleString("pt-BR")}`;
 
-    const mensagemWhatsapp = `⚡ *NOVO SERVIÇO CADASTRADO — JOBPAGO*
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-📋 *AÇÃO:* Envio do serviço diretamente para o Contratante
+    const isContratante = body.tipo === "contratante";
 
-👤 *DADOS DO CONTRATADO (Prestador):*
+    const blocoAcao = isContratante
+      ? "📋 *AÇÃO:* Buscar profissional na rede pra atender esse pedido"
+      : "📋 *AÇÃO:* Envio do serviço diretamente para o Contratante";
+
+    const blocoQuemPreencheu = isContratante
+      ? `🏢 *DADOS DO CONTRATANTE (quem preencheu):*
 • Nome: ${body.nomeContratado}
 • WhatsApp: ${body.whatsappContratado}
 • E-mail: ${body.emailContratado}
-• Localidade: ${body.cidade || "Não informada / Remoto"}
+• Localidade: ${body.cidade || "Não informada / Remoto"}`
+      : `👤 *DADOS DO CONTRATADO (Prestador):*
+• Nome: ${body.nomeContratado}
+• WhatsApp: ${body.whatsappContratado}
+• E-mail: ${body.emailContratado}
+• Localidade: ${body.cidade || "Não informada / Remoto"}`;
 
-🏢 *DADOS DO CONTRATANTE (Destinatário):*
+    const blocoDestino = isContratante
+      ? `🔍 *PROFISSIONAL PROCURADO:*
+• Perfil buscado: ${body.nomeOuPerfilContratante || "Não especificado"}
+• Modalidade: O contratante quer que a rede busque esse profissional.`
+      : `🏢 *DADOS DO CONTRATANTE (Destinatário):*
 • Contratante / Perfil: ${body.nomeOuPerfilContratante || "Contratantes da Rede JobPago"}
-• Modalidade: Nós enviamos os serviços para o contratante.
+• Modalidade: Nós enviamos os serviços para o contratante.`;
+
+    const mensagemWhatsapp = `⚡ *NOVO ${isContratante ? "PEDIDO DE CONTRATAÇÃO" : "SERVIÇO CADASTRADO"} — JOBPAGO*
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+${blocoAcao}
+
+${blocoQuemPreencheu}
+
+${blocoDestino}
 
 🛠️ *DETALHES DO SERVIÇO:*
 • Título: ${body.tituloServico}

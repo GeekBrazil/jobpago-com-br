@@ -677,6 +677,27 @@ export default function Home() {
         </div>
 
         {/* LISTA DE CARDS */}
+        {filteredJobs.length === 0 && !isLoadingJobs ? (
+          <div className="glass-card rounded-3xl p-10 sm:p-14 text-center flex flex-col items-center gap-4">
+            <div className="w-14 h-14 rounded-2xl bg-emerald-500/10 border border-emerald-500/30 flex items-center justify-center">
+              <Icon name="compass" width={26} height={26} />
+            </div>
+            <h3 className="text-lg sm:text-xl font-black text-white">
+              Ainda não tem oportunidade publicada em {selectedCategory}
+            </h3>
+            <p className="text-sm text-slate-400 max-w-md">
+              Seja o primeiro a publicar uma vaga nessa categoria, ou cadastre sua demanda que a gente busca alguém pra você na rede.
+            </p>
+            <div className="flex flex-col sm:flex-row gap-3 mt-2">
+              <button onClick={abrirAnunciarVaga} className="btn-primary-emerald px-6 py-3 rounded-2xl text-sm font-black cursor-pointer">
+                + Publicar Oportunidade
+              </button>
+              <Link href="/cadastrar-servico" className="btn-secondary-glass px-6 py-3 rounded-2xl text-sm font-bold cursor-pointer">
+                Cadastrar Minha Demanda
+              </Link>
+            </div>
+          </div>
+        ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
           {filteredJobs.map((job) => {
             const isNomad = job.category.includes("Nômade");
@@ -744,6 +765,7 @@ export default function Home() {
             );
           })}
         </div>
+        )}
       </section>
 
       {/* ── SEÇÃO 4: SISTEMA DE ALTA HONRA & REPUTAÇÃO ── */}

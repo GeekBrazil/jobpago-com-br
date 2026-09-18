@@ -13,6 +13,7 @@ const CATEGORIAS_SERVICOS = CATEGORIAS.map((c) => ({ id: c.id, name: c.nome, ico
 
 export default function CadastroServicoLead({ onSuccess }: CadastroServicoLeadProps) {
   const [tipo, setTipo] = useState<"prestador" | "contratante">("prestador");
+  const isContratante = tipo === "contratante";
   const [nomeContratado, setNomeContratado] = useState("");
   const [whatsappContratado, setWhatsappContratado] = useState("");
   const [emailContratado, setEmailContratado] = useState("");
@@ -124,10 +125,12 @@ export default function CadastroServicoLead({ onSuccess }: CadastroServicoLeadPr
           Despacho Protocolado
         </span>
         <h3 className="text-2xl sm:text-3xl font-black text-white mt-2 tracking-tight">
-          Serviço Cadastrado com Sucesso!
+          {isContratante ? "Pedido Cadastrado com Sucesso!" : "Serviço Cadastrado com Sucesso!"}
         </h3>
         <p className="text-sm text-slate-300 mt-3 leading-relaxed max-w-lg mx-auto">
-          Os dados do contratado e do contratante foram registrados sob a LGPD. O JobPago fará o envio direto para a nossa rede qualificada.
+          {isContratante
+            ? "Os dados do seu pedido foram registrados sob a LGPD. O JobPago vai buscar um profissional qualificado na nossa rede."
+            : "Os dados do contratado e do contratante foram registrados sob a LGPD. O JobPago fará o envio direto para a nossa rede qualificada."}
         </p>
 
         <div className="mt-8 flex flex-col sm:flex-row items-center justify-center gap-3">
@@ -137,7 +140,8 @@ export default function CadastroServicoLead({ onSuccess }: CadastroServicoLeadPr
             rel="noopener noreferrer"
             className="btn-primary-emerald w-full sm:w-auto px-8 py-3.5 rounded-2xl text-xs sm:text-sm font-black flex items-center justify-center gap-2 cursor-pointer shadow-xl"
           >
-            <Icon name="chat" width={15} height={15} /> Abrir WhatsApp com Contratante &amp; Contratado
+            <Icon name="chat" width={15} height={15} />{" "}
+            {isContratante ? "Abrir WhatsApp com Profissional & Contratante" : "Abrir WhatsApp com Contratante & Contratado"}
           </a>
           <button
             onClick={() => {
@@ -258,17 +262,17 @@ export default function CadastroServicoLead({ onSuccess }: CadastroServicoLeadPr
           {/* IDENTIFICAÇÃO DO CONTRATADO */}
           <div className="flex flex-col gap-4">
             <span className="text-[11px] font-mono font-bold uppercase tracking-wider text-emerald-400">
-              01. Quem Está Oferecendo o Serviço (Contratado)
+              {isContratante ? "01. Seus Dados de Contato (Contratante)" : "01. Quem Está Oferecendo o Serviço (Contratado)"}
             </span>
 
             <div>
               <label htmlFor="nome-contratado" className="text-xs font-bold text-slate-300 block mb-1.5">
-                Nome Completo ou Nome Profissional *
+                {isContratante ? "Nome Completo ou Empresa *" : "Nome Completo ou Nome Profissional *"}
               </label>
               <input
                 type="text"
                 required
-                placeholder="Ex: Allan Candido · Dev Nômade"
+                placeholder={isContratante ? "Ex: Pousada Vista Mar / Allan Candido" : "Ex: Allan Candido · Dev Nômade"}
                 id="nome-contratado"
                 value={nomeContratado}
                 onChange={(e) => setNomeContratado(e.target.value)}
@@ -294,7 +298,7 @@ export default function CadastroServicoLead({ onSuccess }: CadastroServicoLeadPr
 
               <div>
                 <label htmlFor="email-contratado" className="text-xs font-bold text-slate-300 block mb-1.5">
-                  E-mail Profissional *
+                  {isContratante ? "E-mail de Contato *" : "E-mail Profissional *"}
                 </label>
                 <input
                   type="email"
@@ -309,26 +313,34 @@ export default function CadastroServicoLead({ onSuccess }: CadastroServicoLeadPr
             </div>
           </div>
 
-          {/* DESTINATÁRIO: CONTRATANTE */}
+          {/* DESTINATÁRIO: CONTRATANTE OU PERFIL DO PROFISSIONAL */}
           <div className="flex flex-col gap-4 pt-4 border-t border-white/5">
             <span className="text-[11px] font-mono font-bold uppercase tracking-wider text-amber-400">
-              02. Destinatário do Serviço (Contratante)
+              {isContratante ? "02. Que Profissional Você Precisa" : "02. Destinatário do Serviço (Contratante)"}
             </span>
 
             <div>
               <label htmlFor="perfil-contratante" className="text-xs font-bold text-slate-300 block mb-1.5">
-                Empresa ou Perfil do Contratante que Deve Receber a Proposta *
+                {isContratante
+                  ? "Perfil do Profissional que Você Procura *"
+                  : "Empresa ou Perfil do Contratante que Deve Receber a Proposta *"}
               </label>
               <input
                 type="text"
-                placeholder="Ex: Startups, Donos de Vans, Pousadas, Produtores de Conteúdo..."
+                placeholder={
+                  isContratante
+                    ? "Ex: Motorista pra Frete de Retorno, Eletricista, Dev Full-Stack..."
+                    : "Ex: Startups, Donos de Vans, Pousadas, Produtores de Conteúdo..."
+                }
                 id="perfil-contratante"
                 value={nomeOuPerfilContratante}
                 onChange={(e) => setNomeOuPerfilContratante(e.target.value)}
                 className="w-full bg-black/30 border border-white/10 rounded-xl px-4 py-3 text-sm text-white placeholder-slate-500 focus:outline-none focus:border-amber-400 transition-colors"
               />
               <span className="text-[11px] text-slate-400 mt-1 block">
-                Nós enviamos os serviços para o contratante de acordo com o perfil que você indicar.
+                {isContratante
+                  ? "Nós buscamos na rede um profissional qualificado com esse perfil."
+                  : "Nós enviamos os serviços para o contratante de acordo com o perfil que você indicar."}
               </span>
             </div>
           </div>
@@ -341,12 +353,16 @@ export default function CadastroServicoLead({ onSuccess }: CadastroServicoLeadPr
 
             <div>
               <label htmlFor="titulo-servico" className="text-xs font-bold text-slate-300 block mb-1.5">
-                Título do Serviço *
+                {isContratante ? "Título da Vaga *" : "Título do Serviço *"}
               </label>
               <input
                 type="text"
                 required
-                placeholder="Ex: Desenvolvimento Next.js, Manutenção Solar para Vans..."
+                placeholder={
+                  isContratante
+                    ? "Ex: Preciso de Motorista pra Frete de Retorno..."
+                    : "Ex: Desenvolvimento Next.js, Manutenção Solar para Vans..."
+                }
                 id="titulo-servico"
                 value={tituloServico}
                 onChange={(e) => setTituloServico(e.target.value)}
@@ -478,13 +494,16 @@ export default function CadastroServicoLead({ onSuccess }: CadastroServicoLeadPr
           <button
             type="submit"
             disabled={loading}
-            className="btn-primary-emerald w-full py-4 rounded-2xl text-xs sm:text-sm font-black uppercase tracking-wider cursor-pointer shadow-xl flex items-center justify-center gap-2 hover:scale-[1.01] transition-all disabled:opacity-50"
+            className="btn-primary-emerald w-full py-4 rounded-2xl text-xs sm:text-sm font-black uppercase tracking-wider cursor-pointer shadow-xl flex items-center justify-center gap-2 transition-all disabled:opacity-50"
           >
             {loading ? (
               <div className="w-5 h-5 rounded-full border-2 border-black border-t-transparent animate-spin"></div>
             ) : (
               <>
-                <Icon name="rocket" width={15} height={15} /> Enviar Serviço para Contratante &amp; Despachar no WhatsApp
+                <Icon name="rocket" width={15} height={15} />{" "}
+                {isContratante
+                  ? "Enviar Pedido para a Rede de Profissionais & Despachar no WhatsApp"
+                  : "Enviar Serviço para Contratante & Despachar no WhatsApp"}
               </>
             )}
           </button>
