@@ -49,7 +49,7 @@ export default function CertificadosPage() {
         {/* HERO */}
         <div className="max-w-3xl">
           <span className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full glass-panel border border-amber-400/30 text-amber-300 text-[10px] sm:text-xs font-black tracking-widest uppercase">
-            <Icon name="shield" width={15} height={15} /> Selo Verificado
+            <Icon name="shield" width={30} height={30} /> Selo Verificado
           </span>
 
           <h1 className="mt-6 text-3xl sm:text-5xl font-black text-white leading-[1.12]">
@@ -87,7 +87,7 @@ export default function CertificadosPage() {
               download
               className="btn-secondary-glass inline-flex items-center gap-2 px-5 py-2.5 rounded-2xl text-xs font-bold cursor-pointer mt-4"
             >
-              <Icon name="check" width={15} height={15} /> Baixar PNG pra impressão
+              <Icon name="check" width={30} height={30} /> Baixar PNG pra impressão
             </a>
           </div>
         </section>

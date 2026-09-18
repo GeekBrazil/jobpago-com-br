@@ -98,7 +98,7 @@ export default function ReguaContribuicao() {
               <span
                 className={`text-xs font-black px-3 py-1.5 rounded-xl border flex items-center gap-1.5 ${TONS[faixa.tom].bg} ${TONS[faixa.tom].texto} ${TONS[faixa.tom].borda}`}
               >
-                <Icon name="medal" width={15} height={15} /> {faixa.insignia}
+                <Icon name="medal" width={30} height={30} /> {faixa.insignia}
               </span>
             ) : (
               <span className="text-xs font-bold text-slate-500">Arraste pra desbloquear uma insígnia</span>
@@ -111,7 +111,7 @@ export default function ReguaContribuicao() {
             rel="noopener noreferrer"
             className="btn-primary-emerald w-full sm:w-auto px-6 py-3 rounded-2xl text-sm font-black cursor-pointer flex items-center justify-center gap-2 whitespace-nowrap"
           >
-            <Icon name="chat" width={17} height={17} /> Contribuir via PIX
+            <Icon name="chat" width={34} height={34} /> Contribuir via PIX
           </a>
         </div>
 

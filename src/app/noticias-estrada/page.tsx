@@ -67,7 +67,7 @@ export default function NoticiasEstradaPage() {
           {NOTICIAS_ESTRADA.length === 0 ? (
             <div className="glass-card rounded-3xl p-10 sm:p-14 text-center flex flex-col items-center gap-4">
               <div className="w-14 h-14 rounded-2xl bg-emerald-500/10 border border-emerald-500/30 flex items-center justify-center">
-                <Icon name="rocket" width={26} height={26} />
+                <Icon name="rocket" width={52} height={52} />
               </div>
               <h3 className="text-lg sm:text-xl font-black text-white">
                 A estrada ainda não começou

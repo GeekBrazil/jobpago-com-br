@@ -602,7 +602,7 @@ export default function MapaServicos({
           <div className="bg-[#0b121c]/95 backdrop-blur-lg border border-cyan-500/40 rounded-2xl p-4 shadow-2xl pointer-events-auto max-w-xs animate-in fade-in">
             <div className="flex items-center justify-between gap-3 mb-2">
               <span className="text-xs font-black text-cyan-400 uppercase tracking-wider flex items-center gap-1.5">
-                <Icon name="compass" width={15} height={15} /> Rota Ativa
+                <Icon name="compass" width={30} height={30} /> Rota Ativa
               </span>
               <button
                 onClick={clearRoute}
@@ -615,8 +615,8 @@ export default function MapaServicos({
               {activeDestination.title}
             </p>
             <div className="flex items-center gap-4 mt-2 text-xs font-bold text-emerald-400">
-              <span className="flex items-center gap-1"><Icon name="pin" width={14} height={14} /> {routeInfo.distanceKm}</span>
-              <span className="flex items-center gap-1"><Icon name="clock" width={14} height={14} /> ~{routeInfo.durationMin}</span>
+              <span className="flex items-center gap-1"><Icon name="pin" width={28} height={28} /> {routeInfo.distanceKm}</span>
+              <span className="flex items-center gap-1"><Icon name="clock" width={28} height={28} /> ~{routeInfo.durationMin}</span>
             </div>
           </div>
         )}
@@ -624,7 +624,7 @@ export default function MapaServicos({
         {isTracingMode && (
           <div className="bg-[#0b121c]/95 backdrop-blur-lg border border-amber-500/40 rounded-2xl p-4 shadow-2xl pointer-events-auto max-w-xs animate-in fade-in">
             <span className="text-xs font-black text-amber-300 uppercase tracking-wider flex items-center gap-1.5">
-              <Icon name="pin" width={15} height={15} /> Clique no mapa pra marcar pontos
+              <Icon name="pin" width={30} height={30} /> Clique no mapa pra marcar pontos
             </span>
 
             {waypoints.length > 0 && (
@@ -639,8 +639,8 @@ export default function MapaServicos({
 
             {tracedRouteInfo && (
               <div className="flex items-center gap-4 mt-3 text-xs font-bold text-amber-300">
-                <span className="flex items-center gap-1"><Icon name="pin" width={14} height={14} /> {tracedRouteInfo.distanceKm}</span>
-                <span className="flex items-center gap-1"><Icon name="clock" width={14} height={14} /> ~{tracedRouteInfo.durationMin}</span>
+                <span className="flex items-center gap-1"><Icon name="pin" width={28} height={28} /> {tracedRouteInfo.distanceKm}</span>
+                <span className="flex items-center gap-1"><Icon name="clock" width={28} height={28} /> ~{tracedRouteInfo.durationMin}</span>
               </div>
             )}
 

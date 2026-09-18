@@ -77,12 +77,12 @@ export default function ComoFuncionaPage() {
           <div className="mt-8 grid grid-cols-1 md:grid-cols-2 gap-5">
             <div className="glass-panel border border-emerald-500/20 rounded-3xl p-6 sm:p-8">
               <div className="w-12 h-12 rounded-2xl bg-emerald-500/10 border border-emerald-500/30 flex items-center justify-center mb-4">
-                <Icon name="building" width={22} height={22} className="text-emerald-400" />
+                <Icon name="building" width={44} height={44} className="text-emerald-400" />
               </div>
               <h3 className="text-lg font-black text-white">Quem precisa contratar</h3>
               <ul className="mt-4 space-y-3 text-sm text-slate-300 leading-relaxed">
                 <li className="flex gap-2.5">
-                  <Icon name="check" width={18} height={18} className="text-emerald-400 shrink-0 mt-0.5" />
+                  <Icon name="check" width={36} height={36} className="text-emerald-400 shrink-0 mt-0.5" />
                   <span>
                     <strong className="text-white">+ Anunciar Vaga</strong> no topo publica sua
                     vaga no mapa e no feed em tempo real. Quem tem interesse te chama
@@ -90,7 +90,7 @@ export default function ComoFuncionaPage() {
                   </span>
                 </li>
                 <li className="flex gap-2.5">
-                  <Icon name="check" width={18} height={18} className="text-emerald-400 shrink-0 mt-0.5" />
+                  <Icon name="check" width={36} height={36} className="text-emerald-400 shrink-0 mt-0.5" />
                   <span>
                     Ou usa{" "}
                     <Link href="/cadastrar-servico" className="text-emerald-400 underline hover:text-emerald-300">
@@ -105,12 +105,12 @@ export default function ComoFuncionaPage() {
 
             <div className="glass-panel border border-white/10 rounded-3xl p-6 sm:p-8">
               <div className="w-12 h-12 rounded-2xl bg-white/5 border border-white/15 flex items-center justify-center mb-4">
-                <Icon name="briefcase" width={22} height={22} className="text-slate-200" />
+                <Icon name="briefcase" width={44} height={44} className="text-slate-200" />
               </div>
               <h3 className="text-lg font-black text-white">Quem presta o serviço</h3>
               <ul className="mt-4 space-y-3 text-sm text-slate-300 leading-relaxed">
                 <li className="flex gap-2.5">
-                  <Icon name="check" width={18} height={18} className="text-emerald-400 shrink-0 mt-0.5" />
+                  <Icon name="check" width={36} height={36} className="text-emerald-400 shrink-0 mt-0.5" />
                   <span>
                     Filtra o mapa ou o feed pela sua categoria (Nômade & Infra,
                     Estrada & Cargas, Tecnologia & TI...) e chama direto no
@@ -118,7 +118,7 @@ export default function ComoFuncionaPage() {
                   </span>
                 </li>
                 <li className="flex gap-2.5">
-                  <Icon name="check" width={18} height={18} className="text-emerald-400 shrink-0 mt-0.5" />
+                  <Icon name="check" width={36} height={36} className="text-emerald-400 shrink-0 mt-0.5" />
                   <span>
                     Ou usa{" "}
                     <Link href="/cadastrar-servico" className="text-emerald-400 underline hover:text-emerald-300">
@@ -192,7 +192,7 @@ export default function ComoFuncionaPage() {
         <section className="mt-16 glass-panel border border-emerald-500/20 rounded-3xl p-6 sm:p-10">
           <div className="flex items-start gap-4">
             <div className="w-12 h-12 rounded-2xl bg-emerald-500/10 border border-emerald-500/30 flex items-center justify-center shrink-0">
-              <Icon name="bolt" width={22} height={22} className="text-emerald-400" />
+              <Icon name="bolt" width={44} height={44} className="text-emerald-400" />
             </div>
             <div>
               <h2 className="text-lg sm:text-xl font-black text-white">PIX direto, sem comissão</h2>
@@ -210,7 +210,7 @@ export default function ComoFuncionaPage() {
         <section className="mt-10 glass-panel glass-amber border border-amber-400/25 rounded-3xl p-6 sm:p-10">
           <div className="flex items-start gap-4">
             <div className="w-12 h-12 rounded-2xl bg-amber-400/15 border border-amber-400/30 flex items-center justify-center shrink-0">
-              <Icon name="shield" width={22} height={22} className="text-amber-300" />
+              <Icon name="shield" width={44} height={44} className="text-amber-300" />
             </div>
             <div className="flex-1">
               <h2 className="text-lg sm:text-xl font-black text-white">Alta Honra: reputação de quem ajuda na estrada</h2>
@@ -245,7 +245,7 @@ export default function ComoFuncionaPage() {
           <div className="mt-8 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
             {CATEGORIAS.map((cat) => (
               <div key={cat.id} className="glass-card rounded-2xl p-5 border border-white/10">
-                <Icon name={cat.icone} width={28} height={28} />
+                <Icon name={cat.icone} width={56} height={56} />
                 <h3 className="text-sm font-black text-white mt-3">{cat.nome}</h3>
                 <p className="text-xs text-slate-400 mt-1">{cat.descricao}</p>
               </div>
@@ -265,13 +265,13 @@ export default function ComoFuncionaPage() {
               href="/#mapa-gps"
               className="btn-primary-emerald w-full sm:w-auto px-7 py-3.5 rounded-2xl flex items-center justify-center gap-2.5 text-sm sm:text-base font-black shadow-lg cursor-pointer"
             >
-              <Icon name="compass" width={18} height={18} /> Explorar Mapa & Serviços
+              <Icon name="compass" width={36} height={36} /> Explorar Mapa & Serviços
             </Link>
             <Link
               href="/cadastrar-servico"
               className="btn-secondary-glass w-full sm:w-auto px-7 py-3.5 rounded-2xl flex items-center justify-center gap-2 text-sm sm:text-base font-bold cursor-pointer"
             >
-              <Icon name="handshake" width={18} height={18} /> Oferecer ou Contratar
+              <Icon name="handshake" width={36} height={36} /> Oferecer ou Contratar
             </Link>
           </div>
         </section>

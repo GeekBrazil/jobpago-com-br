@@ -390,15 +390,15 @@ export default function Home() {
                       {user.name.split(" ")[0]}
                     </span>
                     <span className="max-[369px]:hidden text-[9px] font-black bg-amber-500/15 text-amber-300 border border-amber-500/30 px-1.5 py-0.2 rounded font-mono flex items-center gap-1">
-                      <Icon name="shield" width={12} height={12} /> {user.honorScore}
+                      <Icon name="shield" width={24} height={24} /> {user.honorScore}
                     </span>
                   </div>
                   <span className="text-[9px] sm:text-[10px] text-emerald-400 font-medium truncate max-w-[110px] hidden sm:flex items-center gap-1">
-                    <Icon name={GUILD_DETAILS[user.guild]?.icon || "van"} width={13} height={13} /> Nível {user.level}
+                    <Icon name={GUILD_DETAILS[user.guild]?.icon || "van"} width={26} height={26} /> Nível {user.level}
                   </span>
                 </div>
                 <div className="w-7 h-7 sm:w-8 sm:h-8 rounded-xl bg-gradient-to-br from-amber-400 to-amber-600 text-black flex items-center justify-center shadow-md shrink-0">
-                  <Icon name="gift" width={18} height={18} />
+                  <Icon name="gift" width={36} height={36} />
                 </div>
               </button>
             )}
@@ -442,14 +442,14 @@ export default function Home() {
               href="#mapa-gps"
               className="btn-primary-emerald w-full sm:w-auto px-7 py-3.5 rounded-2xl flex items-center justify-center gap-2.5 text-sm sm:text-base font-black shadow-lg cursor-pointer"
             >
-              <Icon name="compass" width={18} height={18} /> Explorar Mapa & Serviços
+              <Icon name="compass" width={36} height={36} /> Explorar Mapa & Serviços
             </a>
 
             <Link
               href="/cadastrar-servico"
               className="btn-secondary-glass w-full sm:w-auto px-7 py-3.5 rounded-2xl flex items-center justify-center gap-2 text-sm sm:text-base font-bold cursor-pointer"
             >
-              <Icon name="handshake" width={18} height={18} /> Oferecer ou Contratar
+              <Icon name="handshake" width={36} height={36} /> Oferecer ou Contratar
             </Link>
           </div>
 
@@ -459,7 +459,7 @@ export default function Home() {
           {/* BARRA DE BUSCA RÁPIDA */}
           <div className="mt-10 max-w-xl mx-auto">
             <div className="relative glass-panel rounded-2xl p-2 flex items-center border border-white/10 shadow-2xl focus-within:border-emerald-400/50 transition-colors">
-              <Icon name="search" width={18} height={18} className="text-slate-400 ml-3 mr-2 shrink-0" />
+              <Icon name="search" width={36} height={36} className="text-slate-400 ml-3 mr-2 shrink-0" />
               <input
                 type="text"
                 placeholder="Buscar vagas, cidades ou categorias (ex: Chuveiro, Paraty, Dev, IA)..."
@@ -472,7 +472,7 @@ export default function Home() {
                   onClick={() => setSearchQuery("")}
                   className="text-slate-400 hover:text-white px-2 cursor-pointer"
                 >
-                  <Icon name="close" width={15} height={15} />
+                  <Icon name="close" width={30} height={30} />
                 </button>
               )}
             </div>
@@ -507,7 +507,7 @@ export default function Home() {
                     : "glass-card text-slate-300 border-white/10 hover:border-white/30"
                 } flex items-center gap-1.5`}
               >
-                <Icon name={cat.icon} width={15} height={15} /> {cat.name}
+                <Icon name={cat.icon} width={30} height={30} /> {cat.name}
               </button>
             ))}
           </div>
@@ -524,14 +524,14 @@ export default function Home() {
       {/* ── SEÇÃO 2: DESTAQUE ESPAÇO NÔMADE DIGITAL ── */}
       <section id="nomade-space" className="py-10 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
         <div className="glass-panel glass-emerald p-6 sm:p-10 rounded-3xl relative overflow-hidden shadow-2xl">
-          <Icon name="van" width={220} height={220} className="absolute top-0 right-0 p-8 opacity-5 pointer-events-none" />
+          <Icon name="van" width={440} height={440} className="absolute top-0 right-0 p-8 opacity-5 pointer-events-none" />
 
           <div className="max-w-2xl">
             <span className="px-3 py-1 rounded-full bg-emerald-500/15 text-emerald-300 border border-emerald-500/30 text-xs font-black uppercase tracking-wider">
               Infraestrutura Van Life & Trabalho Remoto
             </span>
             <h2 className="text-2xl sm:text-4xl font-black text-white mt-3 flex items-center gap-3">
-              <Icon name="van" width={30} height={30} /> Espaço Nômade & Apoio na Estrada
+              <Icon name="van" width={60} height={60} /> Espaço Nômade & Apoio na Estrada
             </h2>
             <p className="text-sm text-slate-300 mt-3 leading-relaxed">
               Viajando de motorhome, campervan ou trabalhando remotamente na estrada? Encontre pontos com chuveiro aquecido, tomadas 220V/32A, Starlink e apoio solidário com selo de Alta Honra.
@@ -546,22 +546,22 @@ export default function Home() {
 
             <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 mt-6">
               <div className="glass-card p-3 rounded-2xl text-center flex flex-col items-center">
-                <Icon name="shower" width={26} height={26} className="mb-1 text-emerald-400" />
+                <Icon name="shower" width={52} height={52} className="mb-1 text-emerald-400" />
                 <span className="text-xs font-bold text-white block">Chuveiro Quente</span>
                 <span className="text-[10px] text-slate-400">Banhos privativos</span>
               </div>
               <div className="glass-card p-3 rounded-2xl text-center flex flex-col items-center">
-                <Icon name="plug" width={26} height={26} className="mb-1 text-emerald-400" />
+                <Icon name="plug" width={52} height={52} className="mb-1 text-emerald-400" />
                 <span className="text-xs font-bold text-white block">Carga 110V/220V/32A</span>
                 <span className="text-[10px] text-slate-400">Vans & Baterias</span>
               </div>
               <div className="glass-card p-3 rounded-2xl text-center flex flex-col items-center">
-                <Icon name="van" width={26} height={26} className="mb-1 text-emerald-400" />
+                <Icon name="van" width={52} height={52} className="mb-1 text-emerald-400" />
                 <span className="text-xs font-bold text-white block">Motorhome & Garagem</span>
                 <span className="text-[10px] text-slate-400">Pernoite seguro</span>
               </div>
               <div className="glass-card p-3 rounded-2xl text-center flex flex-col items-center">
-                <Icon name="wifi" width={26} height={26} className="mb-1 text-emerald-400" />
+                <Icon name="wifi" width={52} height={52} className="mb-1 text-emerald-400" />
                 <span className="text-xs font-bold text-white block">Wi-Fi Starlink</span>
                 <span className="text-[10px] text-slate-400">Alta velocidade</span>
               </div>
@@ -572,13 +572,13 @@ export default function Home() {
                 href="/certificados"
                 className="btn-secondary-glass inline-flex items-center gap-2 px-5 py-2.5 rounded-2xl text-xs font-bold cursor-pointer"
               >
-                <Icon name="shield" width={16} height={16} className="text-amber-300" /> Ver Estabelecimentos Certificados
+                <Icon name="shield" width={32} height={32} className="text-amber-300" /> Ver Estabelecimentos Certificados
               </Link>
               <Link
                 href="/contribuir"
                 className="btn-secondary-glass inline-flex items-center gap-2 px-5 py-2.5 rounded-2xl text-xs font-bold cursor-pointer"
               >
-                <Icon name="pin" width={16} height={16} className="text-emerald-400" /> Contribuir com uma Foto
+                <Icon name="pin" width={32} height={32} className="text-emerald-400" /> Contribuir com uma Foto
               </Link>
             </div>
           </div>
@@ -611,7 +611,7 @@ export default function Home() {
                 filterType === "honor" ? "bg-amber-400 text-black shadow-lg" : "text-amber-400 hover:text-amber-300"
               }`}
             >
-              <Icon name="shield" width={15} height={15} /> Gratuitos (Alta Honra)
+              <Icon name="shield" width={30} height={30} /> Gratuitos (Alta Honra)
             </button>
             <button
               onClick={() => setFilterType("pix")}
@@ -619,7 +619,7 @@ export default function Home() {
                 filterType === "pix" ? "bg-emerald-500 text-black shadow-lg" : "text-slate-300 hover:text-white"
               }`}
             >
-              <Icon name="bolt" width={15} height={15} /> PIX / BTC
+              <Icon name="bolt" width={30} height={30} /> PIX / BTC
             </button>
             <button
               onClick={() => setFilterType("local")}
@@ -627,7 +627,7 @@ export default function Home() {
                 filterType === "local" ? "bg-emerald-500 text-black shadow-lg" : "text-slate-300 hover:text-white"
               }`}
             >
-              <Icon name="pin" width={15} height={15} /> Presenciais
+              <Icon name="pin" width={30} height={30} /> Presenciais
             </button>
           </div>
         </div>
@@ -636,7 +636,7 @@ export default function Home() {
         {filteredJobs.length === 0 && !isLoadingJobs ? (
           <div className="glass-card rounded-3xl p-10 sm:p-14 text-center flex flex-col items-center gap-4">
             <div className="w-14 h-14 rounded-2xl bg-emerald-500/10 border border-emerald-500/30 flex items-center justify-center">
-              <Icon name="compass" width={26} height={26} />
+              <Icon name="compass" width={52} height={52} />
             </div>
             <h3 className="text-lg sm:text-xl font-black text-white">
               Ainda não tem oportunidade publicada em {selectedCategory}
@@ -678,7 +678,7 @@ export default function Home() {
                           title="Estabelecimento visitado e verificado pelo JobPago"
                           className="text-[10px] font-black px-2 py-1 rounded-xl bg-amber-500/15 text-amber-300 border border-amber-500/30 flex items-center gap-1"
                         >
-                          <Icon name="shield" width={13} height={13} /> Verificado
+                          <Icon name="shield" width={26} height={26} /> Verificado
                         </span>
                       )}
                     </div>
@@ -709,21 +709,21 @@ export default function Home() {
                     <div>
                       <span className="text-[9px] text-slate-400 block uppercase font-mono">Valor Combinado</span>
                       <span className={`text-lg font-black flex items-center gap-1.5 ${isFree ? "text-amber-400" : "text-emerald-400"}`}>
-                        {isFree ? (<><Icon name="shield" width={18} height={18} /> 100% CORTESIA</>) : `R$ ${job.budget.toLocaleString("pt-BR")}`}
+                        {isFree ? (<><Icon name="shield" width={36} height={36} /> 100% CORTESIA</>) : `R$ ${job.budget.toLocaleString("pt-BR")}`}
                       </span>
                     </div>
 
                     <div className="flex items-center gap-1">
                       {job.isPixImmediate && (
                         <span className="text-[11px] font-black bg-emerald-500/15 text-emerald-300 border border-emerald-500/30 px-2 py-0.5 rounded-lg flex items-center gap-1 font-mono">
-                          <Icon name="bolt" width={13} height={13} /> PIX Direto
+                          <Icon name="bolt" width={26} height={26} /> PIX Direto
                         </span>
                       )}
                     </div>
                   </div>
 
                   <div className="flex items-center justify-between text-xs text-slate-400 pt-2 border-t border-white/5">
-                    <span className="truncate max-w-[170px] flex items-center gap-1"><Icon name="pin" width={14} height={14} className="shrink-0" /> {job.location}</span>
+                    <span className="truncate max-w-[170px] flex items-center gap-1"><Icon name="pin" width={28} height={28} className="shrink-0" /> {job.location}</span>
                     <span className="text-emerald-400 font-bold shrink-0">Ver Detalhes →</span>
                   </div>
                 </div>
@@ -740,7 +740,7 @@ export default function Home() {
           <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4 mb-8">
             <div>
               <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-amber-400/15 text-amber-300 border border-amber-400/30 text-xs font-black uppercase tracking-wider">
-                <Icon name="shield" width={15} height={15} /> Gamificação Comunitária & Reputação
+                <Icon name="shield" width={30} height={30} /> Gamificação Comunitária & Reputação
               </div>
               <h2 className="text-2xl sm:text-4xl font-black text-white mt-2">
                 Como Funciona a Alta Honra
@@ -755,7 +755,7 @@ export default function Home() {
                 onClick={() => setIsRpgModalOpen(true)}
                 className="bg-amber-400 hover:bg-amber-300 text-black font-black text-xs sm:text-sm px-6 py-3 rounded-2xl shadow-xl transition-all hover:scale-105 shrink-0 cursor-pointer flex items-center gap-2"
               >
-                <Icon name="gift" width={17} height={17} /> Abrir Meu Painel de Recompensas
+                <Icon name="gift" width={34} height={34} /> Abrir Meu Painel de Recompensas
               </button>
             )}
           </div>
@@ -764,7 +764,7 @@ export default function Home() {
             {REGRAS_HONRA.map((regra) => (
               <div key={regra.id} className="glass-card p-6 rounded-2xl border border-amber-400/20 flex flex-col justify-between">
                 <div>
-                  <Icon name={regra.icon} width={32} height={32} className="mb-3 text-amber-300" />
+                  <Icon name={regra.icon} width={64} height={64} className="mb-3 text-amber-300" />
                   <h3 className="text-lg font-black text-white mb-1">{regra.title}</h3>
                   <p className="text-xs text-slate-300 leading-relaxed font-normal">{regra.desc}</p>
                 </div>
@@ -790,7 +790,7 @@ export default function Home() {
               onClick={() => setSelectedJob(null)}
               className="absolute top-5 right-5 text-slate-400 hover:text-white bg-white/5 w-8 h-8 rounded-full flex items-center justify-center cursor-pointer"
             >
-              <Icon name="close" width={17} height={17} />
+              <Icon name="close" width={34} height={34} />
             </button>
 
             <div className="flex items-center gap-2 mb-3 flex-wrap">
@@ -799,10 +799,10 @@ export default function Home() {
               </span>
               {selectedJob.isVerifiedPartner && (
                 <span className="text-xs font-black bg-amber-500/20 text-amber-300 border border-amber-500/40 px-3 py-1 rounded-xl flex items-center gap-1">
-                  <Icon name="shield" width={14} height={14} /> Estabelecimento Certificado
+                  <Icon name="shield" width={28} height={28} /> Estabelecimento Certificado
                 </span>
               )}
-              <span className="text-xs text-slate-400 flex items-center gap-1"><Icon name="pin" width={14} height={14} /> {selectedJob.location}</span>
+              <span className="text-xs text-slate-400 flex items-center gap-1"><Icon name="pin" width={28} height={28} /> {selectedJob.location}</span>
             </div>
 
             <h3 className="text-2xl font-black text-white leading-tight mb-3">
@@ -827,11 +827,11 @@ export default function Home() {
               <div>
                 <span className="text-[10px] text-slate-400 uppercase block font-mono">Valor Combinado</span>
                 <span className="text-2xl font-black text-emerald-400 font-mono flex items-center gap-2">
-                  {selectedJob.budget === 0 ? (<><Icon name="shield" width={20} height={20} /> CORTESIA</>) : `R$ ${selectedJob.budget.toLocaleString("pt-BR")}`}
+                  {selectedJob.budget === 0 ? (<><Icon name="shield" width={40} height={40} /> CORTESIA</>) : `R$ ${selectedJob.budget.toLocaleString("pt-BR")}`}
                 </span>
               </div>
               <span className="text-xs font-black bg-emerald-500/20 text-emerald-300 border border-emerald-500/40 px-3 py-1.5 rounded-xl flex items-center gap-1 font-mono">
-                <Icon name="bolt" width={15} height={15} /> PIX Direto
+                <Icon name="bolt" width={30} height={30} /> PIX Direto
               </span>
             </div>
 
@@ -844,7 +844,7 @@ export default function Home() {
               }}
               className="btn-primary-emerald w-full py-4 rounded-2xl text-sm font-black flex items-center justify-center gap-2 cursor-pointer"
             >
-              <Icon name="chat" width={18} height={18} /> Entrar em Contato Direto via WhatsApp
+              <Icon name="chat" width={36} height={36} /> Entrar em Contato Direto via WhatsApp
             </button>
           </div>
         </div>
@@ -858,7 +858,7 @@ export default function Home() {
               onClick={() => setIsModalOpen(false)}
               className="absolute top-5 right-5 text-slate-400 hover:text-white bg-white/5 w-8 h-8 rounded-full flex items-center justify-center cursor-pointer"
             >
-              <Icon name="close" width={17} height={17} />
+              <Icon name="close" width={34} height={34} />
             </button>
 
             <h3 className="text-2xl font-black text-white">+ Publicar Nova Oportunidade</h3>
@@ -869,7 +869,7 @@ export default function Home() {
               <div className="glass-card border border-amber-400/40 p-3 rounded-2xl flex items-center justify-between">
                 <div>
                   <span className="text-xs font-black text-amber-300 flex items-center gap-1.5">
-                    <Icon name="shield" width={15} height={15} /> Ponto de Apoio / Cortesia 0800 (Alta Honra)
+                    <Icon name="shield" width={30} height={30} /> Ponto de Apoio / Cortesia 0800 (Alta Honra)
                   </span>
                   <span className="text-[10px] text-slate-300 block">
                     Ganhe +50 PTS de Alta Honra ao doar apoio para nômades na estrada.
@@ -977,7 +977,7 @@ export default function Home() {
                 type="submit"
                 className="btn-primary-emerald mt-2 py-4 rounded-2xl text-sm font-black uppercase tracking-wider cursor-pointer flex items-center justify-center gap-2"
               >
-                <Icon name="rocket" width={18} height={18} /> Publicar no Mapa em Tempo Real
+                <Icon name="rocket" width={36} height={36} /> Publicar no Mapa em Tempo Real
               </button>
             </form>
           </div>

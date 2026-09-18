@@ -67,3 +67,16 @@ todas com fonte única em `src/data/`:
   massa com esses CNPJs **não está automatizado de propósito** — precisa de
   lista de municípios da rota + aprovação da mensagem antes de qualquer disparo.
 
+## Pendências de UX conhecidas (não implementadas ainda)
+
+- **Mapa difícil de rolar no celular**: o gesto de scroll da página fica
+  "preso" dentro do `MapaServicos.tsx` (Leaflet captura o touch/scroll pra
+  pan do mapa), dificultando continuar rolando a home no mobile. Pedido do
+  Allan em 2026-09-18, ainda não implementado.
+- **Painel de waypoints do traçador de rota sem opção de esconder**: o card
+  "Traçar Minha Rota" (lista de waypoints + botões Calcular Rota/Copiar
+  Lista/Limpar) fica sempre visível sobre o mapa quando o modo de traçado
+  está ativo, cobrindo a rota desenhada. Falta um botão de
+  minimizar/esconder esse painel pra ver o mapa por baixo. Pedido do Allan
+  em 2026-09-18, ainda não implementado.
+

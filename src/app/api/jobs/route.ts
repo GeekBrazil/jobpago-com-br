@@ -39,7 +39,7 @@ const SEED_JOBS = [
     clientName: "Paraty Van Camping",
     whatsapp: "5524993326966",
     nomadFeatures: ["Vaga Motorhome", "Ponto 32A", "Água Potável", "Portão 24h"],
-    imagemUrl: "https://images.unsplash.com/photo-1533176403861-b654cad1ecf1?w=800&h=500&fit=crop&auto=format&q=80",
+    imagemUrl: "https://images.unsplash.com/photo-1727206398239-995c73a01b35?w=800&h=500&fit=crop&auto=format&q=80",
   },
   {
     id: "t1",
@@ -56,7 +56,7 @@ const SEED_JOBS = [
     description: "Desenvolvimento de fluxo n8n / Python para automação de mensagens e integração com CRM. Trabalho 100% remoto para devs nômades.",
     clientName: "Tech Nômade Studio",
     whatsapp: "5524993326966",
-    imagemUrl: "https://images.unsplash.com/photo-1545184180-25d471fe75eb?w=800&h=500&fit=crop&auto=format&q=80",
+    imagemUrl: "https://images.unsplash.com/photo-1651169611508-3a4247bfc244?w=800&h=500&fit=crop&auto=format&q=80",
   },
   {
     id: "1",

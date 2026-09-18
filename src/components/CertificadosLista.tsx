@@ -36,7 +36,7 @@ export default function CertificadosLista() {
       {!loading && certificados.length === 0 && (
         <div className="mt-6 glass-card rounded-3xl p-10 sm:p-14 text-center flex flex-col items-center gap-4">
           <div className="w-14 h-14 rounded-2xl bg-amber-500/10 border border-amber-500/30 flex items-center justify-center">
-            <Icon name="shield" width={26} height={26} className="text-amber-300" />
+            <Icon name="shield" width={52} height={52} className="text-amber-300" />
           </div>
           <h3 className="text-lg sm:text-xl font-black text-white">
             Nenhum estabelecimento certificado ainda
@@ -56,7 +56,7 @@ export default function CertificadosLista() {
               <div>
                 <div className="flex items-center gap-1.5 mb-3">
                   <span className="text-[10px] font-black px-2 py-1 rounded-xl bg-amber-500/15 text-amber-300 border border-amber-500/30 flex items-center gap-1">
-                    <Icon name="shield" width={13} height={13} /> Verificado
+                    <Icon name="shield" width={26} height={26} /> Verificado
                   </span>
                   <span className="text-xs font-black px-2.5 py-1 rounded-xl bg-white/5 text-emerald-300 border border-white/10">
                     {job.category}
@@ -66,7 +66,7 @@ export default function CertificadosLista() {
                 <p className="text-xs text-slate-300 leading-relaxed">{job.description}</p>
               </div>
               <span className="text-xs text-slate-400 flex items-center gap-1 mt-4">
-                <Icon name="pin" width={14} height={14} /> {job.location}
+                <Icon name="pin" width={28} height={28} /> {job.location}
               </span>
             </div>
           ))}
@@ -77,7 +77,7 @@ export default function CertificadosLista() {
       <div className="mt-10 glass-panel border border-amber-400/25 rounded-3xl p-6 sm:p-10 flex flex-col sm:flex-row items-center justify-between gap-6">
         <div>
           <h3 className="text-lg font-black text-white flex items-center gap-2">
-            <Icon name="shield" width={20} height={20} className="text-amber-300" /> Seu estabelecimento na rota?
+            <Icon name="shield" width={40} height={40} className="text-amber-300" /> Seu estabelecimento na rota?
           </h3>
           <p className="mt-2 text-sm text-slate-300 leading-relaxed max-w-lg">
             Posto, pousada, camping ou oficina. Peça o Selo JobPago
@@ -92,7 +92,7 @@ export default function CertificadosLista() {
             rel="noopener noreferrer"
             className="btn-primary-emerald px-6 py-3 rounded-2xl text-sm font-black cursor-pointer flex items-center justify-center gap-2 whitespace-nowrap"
           >
-            <Icon name="chat" width={17} height={17} /> Pedir Meu Selo
+            <Icon name="chat" width={34} height={34} /> Pedir Meu Selo
           </a>
           <Link
             href="/parceiros/planos"
