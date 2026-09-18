@@ -358,6 +358,9 @@ export default function Home() {
 
           {/* NAVEGAÇÃO CENTRAL (DESKTOP) */}
           <nav className="hidden xl:flex items-center gap-6 text-xs font-bold text-slate-300 uppercase tracking-wider">
+            <Link href="/como-funciona" className="hover:text-emerald-400 transition-colors">
+              Como Funciona
+            </Link>
             <a href="#mapa-gps" className="hover:text-emerald-400 transition-colors">
               Mapa GPS
             </a>
@@ -1043,6 +1046,9 @@ export default function Home() {
         <div className="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4">
           <p>© {new Date().getFullYear()} JobPago.com.br · Marketplace Passivo mantido por Allan Candido.</p>
           <div className="flex items-center gap-6 text-xs text-slate-400">
+            <Link href="/como-funciona" className="hover:text-emerald-400 transition-colors">
+              Como Funciona
+            </Link>
             <Link href="/termos" className="hover:text-emerald-400 transition-colors">
               Termos de Uso
             </Link>
