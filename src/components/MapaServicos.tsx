@@ -17,6 +17,25 @@ export interface MapPoint {
   isVerifiedPartner?: boolean;
 }
 
+/** Ponto da camada compartilhada de fotos (allancandido.com/api/pontos-fotograficos) —
+    mesma fonte que o Olho do Investidor e o Sofia bot alimentam e leem. */
+interface PontoFoto {
+  id: number;
+  origem: string;
+  tipo_contribuidor: "allan" | "empresario" | "viajante";
+  verificado: boolean;
+  titulo: string;
+  categoria: string | null;
+  descricao: string | null;
+  foto_url: string;
+  lat: number;
+  lng: number;
+  fonte_geo: "exif" | "manual";
+  criado_em: string;
+}
+
+const PONTOS_FOTO_API = "https://allancandido.com/api/pontos-fotograficos";
+
 interface MapaServicosProps {
   points: MapPoint[];
   selectedCategory: string;
@@ -48,6 +67,7 @@ export default function MapaServicos({
       existir (hoje não existe nenhum CNPJ com lat/lon, ver CLAUDE.md). */
   const oportunidadesLayerRef = useRef<L.LayerGroup | null>(null);
   const certificadosLayerRef = useRef<L.LayerGroup | null>(null);
+  const fotosComunidadeLayerRef = useRef<L.LayerGroup | null>(null);
   /** Guarda o localizador para o botao poder dispara-lo fora do useEffect. */
   const localizarRef = useRef<(() => void) | null>(null);
 
@@ -98,8 +118,10 @@ export default function MapaServicos({
 
     const oportunidadesLayer = L.layerGroup().addTo(map);
     const certificadosLayer = L.layerGroup();
+    const fotosComunidadeLayer = L.layerGroup();
     oportunidadesLayerRef.current = oportunidadesLayer;
     certificadosLayerRef.current = certificadosLayer;
+    fotosComunidadeLayerRef.current = fotosComunidadeLayer;
 
     L.control
       .layers(
@@ -107,6 +129,7 @@ export default function MapaServicos({
         {
           "Oportunidades & Serviços": oportunidadesLayer,
           "Estabelecimentos Certificados": certificadosLayer,
+          "Fotos da Comunidade": fotosComunidadeLayer,
         },
         { position: "bottomleft", collapsed: true }
       )
@@ -291,6 +314,71 @@ export default function MapaServicos({
       }
     });
   }, [points, selectedCategory]);
+
+  // Camada compartilhada de fotos georreferenciadas (allancandido.com) —
+  // busca uma vez, a mesma base que o Olho do Investidor e o Sofia bot
+  // alimentam. Só traz o que já está status=aprovado (a API filtra isso
+  // sozinha sem precisar de secret aqui).
+  useEffect(() => {
+    const layer = fotosComunidadeLayerRef.current;
+    if (!layer) return;
+
+    const CORES_TIPO: Record<string, string> = {
+      allan: "#fbbf24",
+      empresario: "#38bdf8",
+      viajante: "#a78bfa",
+    };
+    const LABEL_TIPO: Record<string, string> = {
+      allan: "Verificado pelo JobPago",
+      empresario: "Enviado pelo estabelecimento",
+      viajante: "Avistamento de viajante",
+    };
+
+    fetch(PONTOS_FOTO_API)
+      .then((res) => res.json())
+      .then((data: { ok: boolean; pontos: PontoFoto[] }) => {
+        if (!data.ok || !Array.isArray(data.pontos)) return;
+        const map = mapRef.current;
+        if (!map) return;
+
+        data.pontos.forEach((p) => {
+          const cor = CORES_TIPO[p.tipo_contribuidor] || "#a78bfa";
+          const icon = L.divIcon({
+            className: "foto-comunidade-marker",
+            html: `
+              <div style="
+                width: 38px; height: 38px; border-radius: 10px;
+                background-image: url('${p.foto_url}');
+                background-size: cover; background-position: center;
+                border: 3px solid ${cor};
+                box-shadow: 0 0 10px ${cor};
+              "></div>
+            `,
+            iconSize: [38, 38],
+            iconAnchor: [19, 19],
+          });
+
+          const marker = L.marker([p.lat, p.lng], { icon });
+          const popup = document.createElement("div");
+          popup.className = "p-2 min-w-[200px]";
+          popup.innerHTML = `
+            <img src="${p.foto_url}" style="width:100%; border-radius:8px; margin-bottom:8px; max-height:140px; object-fit:cover;" />
+            <div style="font-size: 10px; font-weight: 800; color: ${cor}; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 2px;">
+              ${LABEL_TIPO[p.tipo_contribuidor] || "Comunidade"}
+            </div>
+            <div style="font-size: 14px; font-weight: 700; color: #fff; line-height: 1.2; margin-bottom: 4px;">
+              ${p.titulo}
+            </div>
+            ${p.descricao ? `<div style="font-size: 12px; color: #9ca3af;">${p.descricao}</div>` : ""}
+          `;
+          marker.bindPopup(popup);
+          marker.addTo(layer);
+        });
+      })
+      .catch(() => {
+        // camada é um extra — nunca deve derrubar o resto do mapa
+      });
+  }, []);
 
   // Função para Traçar Rota (OSRM API pública)
   const handleCalculateRoute = async (destination: MapPoint) => {

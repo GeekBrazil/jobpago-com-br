@@ -9,11 +9,25 @@
 }
 
 body {
-  background: radial-gradient(circle at 50% -10%, #121a2c 0%, #07090e 65%, #040609 100%);
-  background-attachment: fixed;
+  position: relative;
+  background: #07090e;
   color: var(--foreground);
   font-family: var(--font-sans), system-ui, -apple-system, sans-serif;
   overflow-x: hidden;
+}
+
+/* O glow radial precisa ficar fixo em relação à viewport (o efeito é ficar
+   "colado" no topo enquanto rola), mas "background-attachment: fixed" direto
+   no body quebra o compositing de qualquer backdrop-filter sobreposto — some
+   o fundo (fica branco ou preto sólido) ao rolar em qualquer header sticky
+   com blur, bug de compositing conhecido do Chromium. Um ::before fixo e
+   isolado (z-index -1) dá o mesmo efeito visual sem conflitar. */
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  background: radial-gradient(circle at 50% -10%, #121a2c 0%, #07090e 65%, #040609 100%);
 }
 
 h1, h2, h3, button, .btn-primary-emerald, .btn-secondary-glass {

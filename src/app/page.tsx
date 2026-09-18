@@ -638,12 +638,20 @@ export default function Home() {
               </div>
             </div>
 
-            <Link
-              href="/certificados"
-              className="btn-secondary-glass inline-flex items-center gap-2 px-5 py-2.5 rounded-2xl text-xs font-bold cursor-pointer mt-6"
-            >
-              <Icon name="shield" width={14} height={14} className="text-amber-300" /> Ver Estabelecimentos Certificados
-            </Link>
+            <div className="flex flex-wrap gap-3 mt-6">
+              <Link
+                href="/certificados"
+                className="btn-secondary-glass inline-flex items-center gap-2 px-5 py-2.5 rounded-2xl text-xs font-bold cursor-pointer"
+              >
+                <Icon name="shield" width={14} height={14} className="text-amber-300" /> Ver Estabelecimentos Certificados
+              </Link>
+              <Link
+                href="/contribuir"
+                className="btn-secondary-glass inline-flex items-center gap-2 px-5 py-2.5 rounded-2xl text-xs font-bold cursor-pointer"
+              >
+                <Icon name="pin" width={14} height={14} className="text-emerald-400" /> Contribuir com uma Foto
+              </Link>
+            </div>
           </div>
         </div>
       </section>
