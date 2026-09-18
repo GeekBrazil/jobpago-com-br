@@ -404,7 +404,7 @@ export default function Home() {
 
             <button
               onClick={abrirAnunciarVaga}
-              className="btn-primary-emerald text-xs sm:text-sm px-3 sm:px-5 py-2 sm:py-2.5 rounded-2xl shrink-0 cursor-pointer whitespace-nowrap"
+              className="btn-primary-emerald text-xs sm:text-base px-3 sm:px-6 py-2 sm:py-3 rounded-2xl shrink-0 cursor-pointer whitespace-nowrap"
             >
               {/* No celular o rotulo encurta: o header somava 432px em 388 e
                   este botao — o CTA primario — era o que ficava cortado. */}
@@ -439,14 +439,14 @@ export default function Home() {
           <div className="mt-8 flex flex-col sm:flex-row items-center justify-center gap-3.5 max-w-md mx-auto">
             <a
               href="#mapa-gps"
-              className="btn-primary-emerald w-full sm:w-auto px-7 py-3.5 rounded-2xl flex items-center justify-center gap-2.5 text-xs sm:text-sm font-black shadow-lg cursor-pointer"
+              className="btn-primary-emerald w-full sm:w-auto px-7 py-3.5 rounded-2xl flex items-center justify-center gap-2.5 text-sm sm:text-base font-black shadow-lg cursor-pointer"
             >
               <Icon name="compass" width={16} height={16} /> Explorar Mapa & Serviços
             </a>
 
             <Link
               href="/cadastrar-servico"
-              className="btn-secondary-glass w-full sm:w-auto px-7 py-3.5 rounded-2xl flex items-center justify-center gap-2 text-xs sm:text-sm font-bold cursor-pointer"
+              className="btn-secondary-glass w-full sm:w-auto px-7 py-3.5 rounded-2xl flex items-center justify-center gap-2 text-sm sm:text-base font-bold cursor-pointer"
             >
               <Icon name="bolt" width={16} height={16} /> Cadastrar Serviço &amp; Lead
             </Link>
