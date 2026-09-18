@@ -67,14 +67,13 @@ todas com fonte única em `src/data/`:
   massa com esses CNPJs **não está automatizado de propósito** — precisa de
   lista de municípios da rota + aprovação da mensagem antes de qualquer disparo.
 
-## Pendências de UX conhecidas (não implementadas ainda)
+## UX do mapa em touch (2026-09-18)
 
-- **Mapa difícil de rolar no celular**: o gesto de scroll da página fica
-  "preso" dentro do `MapaServicos.tsx` (Leaflet captura o touch/scroll pra
-  pan do mapa), dificultando continuar rolando a home no mobile. Pedido do
-  Allan em 2026-09-18, ainda não implementado.
-
-Painel de waypoints do traçador de rota já tem opção de esconder (botão
-"−" no cabeçalho do painel, vira uma pill compacta clicável) — implementado
-em 2026-09-18.
+- **Mapa não prende mais o scroll da página no celular**: `dragging` do
+  Leaflet fica desligado em telas `pointer: coarse`, só reativa com 2 dedos
+  no mapa (dica visual aparece quando detecta 1 dedo tentando arrastar).
+  Tap continua normal — handler separado do Leaflet, não afetado por
+  `dragging.disable()`.
+- Painel de waypoints do traçador de rota tem opção de esconder (botão
+  "−" no cabeçalho do painel, vira uma pill compacta clicável).
 
