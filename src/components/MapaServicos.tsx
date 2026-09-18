@@ -25,7 +25,7 @@ interface MapaServicosProps {
 const CATEGORY_COLORS: Record<string, string> = {
   "Nômade & Infra": "#10b981",       // Esmeralda / Lime
   "Tecnologia & TI": "#06b6d4",     // Cyan Dev
-  "Reformas & Reparos": "#f59e0b",   // Amarelo
+  "Estrada & Cargas": "#f59e0b",     // Âmbar
   "Transporte & Fretes": "#3b82f6",  // Azul
   "Vídeo & Conteúdo": "#ec4899",     // Rosa
   "Aulas & Consultoria": "#6366f1",  // Indigo
@@ -352,7 +352,7 @@ export default function MapaServicos({
           <span className="w-2.5 h-2.5 rounded-full bg-cyan-400"></span> Tech & Devs
         </div>
         <div className="flex items-center gap-1.5 text-[11px] text-zinc-300">
-          <span className="w-2.5 h-2.5 rounded-full bg-amber-400"></span> Reparos
+          <span className="w-2.5 h-2.5 rounded-full bg-amber-400"></span> Estrada & Cargas
         </div>
       </div>
     </div>

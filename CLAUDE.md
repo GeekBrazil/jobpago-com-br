@@ -25,11 +25,13 @@
 ## Posicionamento de Produção
 
 - **Público-Alvo**: Renda Online + Vida Nômade (estrada / motorhome / van life). Marketplace passivo e pagamentos diretos via PIX sem taxas.
-- **6 Tribos Canônicas**:
-  1. 💻 **Devs & Tech**: Programação, sites, automações e suporte técnico.
-  2. 🚐 **Van Life & Nômades**: Pontos de parada, energia, água e apoio de viagem.
-  3. 🛠️ **Reformas & Reparos**: Manutenção em trânsito, elétrica e pequenas reformas.
-  4. 🚚 **Transporte & Fretes**: Carretos, entregas locais e logística ágil.
-  5. 📷 **Fotografia & Mídia**: Captação visual, drone, edição de vídeo e conteúdo.
-  6. 🎓 **Aulas & Consultoria**: Treinamentos, idiomas, mentoria e consultoria remota.
+- **7 Categorias** — fonte única em `src/data/categorias.ts` (`CATEGORIAS`), não documentar de cabeça: esse arquivo é a verdade, isso aqui é só um resumo pra orientação rápida.
+  1. 🚐 **Nômade & Infra**: Motorhomes, 220V & Camping.
+  2. 🚛 **Estrada & Cargas**: Chapa, socorro mecânico, frete de retorno e guincho.
+  3. 💻 **Tecnologia & TI**: Full-Stack, Automação & IA.
+  4. 🚚 **Transporte & Fretes**: Carretos & Mudanças.
+  5. 🎥 **Vídeo & Conteúdo**: Drone, Edição & Redes Sociais.
+  6. 🎓 **Aulas & Consultoria**: Mentorias & Consultorias.
+  7. 🎨 **Design & Mídia**: Identidade Visual & Social.
+- **Critério pra categoria caber no escopo**: tem que servir quem trabalha/vive na estrada — exigir um ativo ou vantagem de nômade (van, mobilidade, trabalho remoto), não só coincidir geograficamente com a região onde o Allan mora. Foi esse critério que tirou "Reformas & Reparos" em 2026-09-18: a descrição tinha genericado pra "Eletricistas & Manutenção" (a tribo original, ainda mais antiga, era "Manutenção em trânsito") e a única vaga cadastrada era conserto elétrico residencial comum — nenhuma relação com estrada, van ou trabalho remoto. Categoria e vaga de exemplo removidas juntas.
 

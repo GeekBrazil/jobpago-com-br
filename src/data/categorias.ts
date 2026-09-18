@@ -27,7 +27,6 @@ export const CATEGORIAS: Categoria[] = [
   { id: "vanlife", nome: "Nômade & Infra", icone: "van", descricao: "Motorhomes, 220V & Camping" },
   { id: "estrada", nome: "Estrada & Cargas", icone: "truck", descricao: "Chapa, socorro mecânico, frete de retorno e guincho" },
   { id: "devs", nome: "Tecnologia & TI", icone: "code", descricao: "Full-Stack, Automação & IA" },
-  { id: "reformas", nome: "Reformas & Reparos", icone: "wrench", descricao: "Eletricistas & Manutenção" },
   { id: "transporte", nome: "Transporte & Fretes", icone: "delivery", descricao: "Carretos & Mudanças" },
   { id: "foto", nome: "Vídeo & Conteúdo", icone: "camera", descricao: "Drone, Edição & Redes Sociais" },
   { id: "aulas", nome: "Aulas & Consultoria", icone: "book", descricao: "Mentorias & Consultorias" },
