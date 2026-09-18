@@ -37,7 +37,6 @@ export default function CarrosselAnuncios({
       className="mt-12 max-w-lg mx-auto"
       onMouseEnter={() => setPausado(true)}
       onMouseLeave={() => setPausado(false)}
-      onTouchStart={() => setPausado(true)}
     >
       <div className="relative overflow-hidden rounded-3xl">
         <div
