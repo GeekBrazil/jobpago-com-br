@@ -44,6 +44,13 @@ export default function PlanosParceiroPage() {
             pátio. O que passa no teste entra no mapa do JobPago com selo, data e a
             lista do que foi verificado.
           </p>
+
+          <Link
+            href="/certificados"
+            className="mt-4 inline-flex items-center gap-1.5 text-xs font-bold text-amber-300 hover:underline"
+          >
+            Ver a lista de estabelecimentos já certificados →
+          </Link>
         </header>
 
         {/* ── O QUE O SELO SIGNIFICA ── */}

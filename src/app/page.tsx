@@ -32,6 +32,8 @@ export interface Job extends MapPoint {
   btcAccepted?: boolean;
   isFreeHonor?: boolean;
   tribo?: string;
+  /** Estabelecimento visitado e verificado pessoalmente (ver /parceiros/planos e /certificados). */
+  isVerifiedPartner?: boolean;
 }
 
 const DEFAULT_RPG_USER: UserRPG = {
@@ -605,6 +607,13 @@ export default function Home() {
             <p className="text-sm text-slate-300 mt-3 leading-relaxed">
               Viajando de motorhome, campervan ou trabalhando remotamente na estrada? Encontre pontos com chuveiro aquecido, tomadas 220V/32A, Starlink e apoio solidário com selo de Alta Honra.
             </p>
+            <p className="text-sm text-slate-400 mt-2 leading-relaxed">
+              Dono de posto, pousada ou camping? Anuncie sua vaga paga aqui do mesmo jeito, ou vire{" "}
+              <Link href="/parceiros/planos" className="text-emerald-400 underline hover:text-emerald-300">
+                parceiro verificado
+              </Link>{" "}
+              e apareça com selo pra quem está passando agora.
+            </p>
 
             <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 mt-6">
               <div className="glass-card p-3 rounded-2xl text-center flex flex-col items-center">
@@ -628,6 +637,13 @@ export default function Home() {
                 <span className="text-[10px] text-slate-400">Alta velocidade</span>
               </div>
             </div>
+
+            <Link
+              href="/certificados"
+              className="btn-secondary-glass inline-flex items-center gap-2 px-5 py-2.5 rounded-2xl text-xs font-bold cursor-pointer mt-6"
+            >
+              <Icon name="shield" width={14} height={14} className="text-amber-300" /> Ver Estabelecimentos Certificados
+            </Link>
           </div>
         </div>
       </section>
@@ -716,9 +732,19 @@ export default function Home() {
               >
                 <div>
                   <div className="flex items-center justify-between gap-2 mb-3">
-                    <span className="text-xs font-black px-2.5 py-1 rounded-xl bg-white/5 text-emerald-300 border border-white/10">
-                      {job.category}
-                    </span>
+                    <div className="flex items-center gap-1.5">
+                      <span className="text-xs font-black px-2.5 py-1 rounded-xl bg-white/5 text-emerald-300 border border-white/10">
+                        {job.category}
+                      </span>
+                      {job.isVerifiedPartner && (
+                        <span
+                          title="Estabelecimento visitado e verificado pelo JobPago"
+                          className="text-[10px] font-black px-2 py-1 rounded-xl bg-amber-500/15 text-amber-300 border border-amber-500/30 flex items-center gap-1"
+                        >
+                          <Icon name="shield" width={11} height={11} /> Verificado
+                        </span>
+                      )}
+                    </div>
                     <span className="text-[10px] text-slate-400 font-mono">{job.postedAgo}</span>
                   </div>
 
@@ -830,10 +856,15 @@ export default function Home() {
               <Icon name="close" width={15} height={15} />
             </button>
 
-            <div className="flex items-center gap-2 mb-3">
+            <div className="flex items-center gap-2 mb-3 flex-wrap">
               <span className="text-xs font-black bg-emerald-500/20 text-emerald-300 border border-emerald-500/40 px-3 py-1 rounded-xl uppercase">
                 {selectedJob.category}
               </span>
+              {selectedJob.isVerifiedPartner && (
+                <span className="text-xs font-black bg-amber-500/20 text-amber-300 border border-amber-500/40 px-3 py-1 rounded-xl flex items-center gap-1">
+                  <Icon name="shield" width={12} height={12} /> Estabelecimento Certificado
+                </span>
+              )}
               <span className="text-xs text-slate-400 flex items-center gap-1"><Icon name="pin" width={12} height={12} /> {selectedJob.location}</span>
             </div>
 

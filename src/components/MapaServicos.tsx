@@ -13,6 +13,8 @@ export interface MapPoint {
   lat: number;
   lng: number;
   details?: string;
+  /** Estabelecimento visitado e verificado pessoalmente (selo no pin do mapa). */
+  isVerifiedPartner?: boolean;
 }
 
 interface MapaServicosProps {
@@ -143,9 +145,11 @@ export default function MapaServicos({
 
     filtered.forEach((pt) => {
       const color = CATEGORY_COLORS[pt.category] || "#10b981";
+      const ringColor = pt.isVerifiedPartner ? "#fbbf24" : "#ffffff";
 
       // Envelope transparente de 44x44: o circulo continua com 26px de diametro,
       // mas o alvo de toque atende o minimo de 44px sem engordar o mapa.
+      // Anel âmbar em vez de branco marca estabelecimento verificado (ver /certificados).
       const markerHtml = `
         <div style="
           width: 44px;
@@ -159,7 +163,7 @@ export default function MapaServicos({
           width: 26px;
           height: 26px;
           background-color: ${color};
-          border: 3px solid #ffffff;
+          border: 3px solid ${ringColor};
           border-radius: 50%;
           box-shadow: 0 0 10px ${color};
           display: flex;

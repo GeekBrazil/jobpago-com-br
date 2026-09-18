@@ -77,6 +77,7 @@ export const PLANOS: PlanoParceiro[] = [
     entregaveis: [
       "Nome da marca no nome da expedição",
       "Presença em toda a comunicação do percurso",
+      "Acesso aos planos de análise de dados e insights do SaaS investigativo em allancandido.com",
       "Escopo e contrapartidas definidos caso a caso",
     ],
     tom: "slate",
