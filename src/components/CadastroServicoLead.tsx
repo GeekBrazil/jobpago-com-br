@@ -140,7 +140,7 @@ export default function CadastroServicoLead({ onSuccess }: CadastroServicoLeadPr
             rel="noopener noreferrer"
             className="btn-primary-emerald w-full sm:w-auto px-8 py-3.5 rounded-2xl text-xs sm:text-sm font-black flex items-center justify-center gap-2 cursor-pointer shadow-xl"
           >
-            <Icon name="chat" width={15} height={15} />{" "}
+            <Icon name="chat" width={17} height={17} />{" "}
             {isContratante ? "Abrir WhatsApp com Profissional & Contratante" : "Abrir WhatsApp com Contratante & Contratado"}
           </a>
           <button
@@ -214,7 +214,7 @@ export default function CadastroServicoLead({ onSuccess }: CadastroServicoLeadPr
 
         {/* GARANTIA LGPD */}
         <div className="p-4 rounded-2xl bg-white/[0.02] border border-white/5 flex items-start gap-3">
-          <Icon name="lock" width={18} height={18} className="text-emerald-400 shrink-0" />
+          <Icon name="lock" width={20} height={20} className="text-emerald-400 shrink-0" />
           <div>
             <h3 className="text-xs font-bold text-white">Privacidade &amp; LGPD</h3>
             <p className="text-[11px] text-slate-400 mt-0.5 leading-relaxed">
@@ -237,7 +237,7 @@ export default function CadastroServicoLead({ onSuccess }: CadastroServicoLeadPr
                 : "text-slate-400 hover:text-white"
             }`}
           >
-            <Icon name="briefcase" width={14} height={14} /> Sou Prestador (Contratado)
+            <Icon name="briefcase" width={16} height={16} /> Sou Prestador (Contratado)
           </button>
           <button
             type="button"
@@ -248,13 +248,13 @@ export default function CadastroServicoLead({ onSuccess }: CadastroServicoLeadPr
                 : "text-slate-400 hover:text-white"
             }`}
           >
-            <Icon name="building" width={14} height={14} /> Preciso Contratar
+            <Icon name="building" width={16} height={16} /> Preciso Contratar
           </button>
         </div>
 
         {error && (
           <div className="mb-6 p-4 rounded-2xl bg-rose-500/15 border border-rose-500/30 text-rose-300 text-xs font-bold flex items-center gap-2">
-            <Icon name="warning" width={14} height={14} className="shrink-0" /> {error}
+            <Icon name="warning" width={16} height={16} className="shrink-0" /> {error}
           </div>
         )}
 
@@ -422,7 +422,7 @@ export default function CadastroServicoLead({ onSuccess }: CadastroServicoLeadPr
             <div className="flex items-center justify-between p-3.5 rounded-xl bg-amber-950/20 border border-amber-400/20">
               <div>
                 <label htmlFor="cortesia-solidaria" className="text-xs font-black text-amber-300 flex items-center gap-1.5 cursor-pointer">
-                  <Icon name="shield" width={13} height={13} /> Cortesia Solidária 0800 (Alta Honra)
+                  <Icon name="shield" width={15} height={15} /> Cortesia Solidária 0800 (Alta Honra)
                 </label>
                 <span className="text-[10px] text-slate-400 block">
                   Ponto de apoio na estrada, recarga elétrica ou mentoria voluntária.
@@ -500,7 +500,7 @@ export default function CadastroServicoLead({ onSuccess }: CadastroServicoLeadPr
               <div className="w-5 h-5 rounded-full border-2 border-black border-t-transparent animate-spin"></div>
             ) : (
               <>
-                <Icon name="rocket" width={15} height={15} />{" "}
+                <Icon name="rocket" width={17} height={17} />{" "}
                 {isContratante
                   ? "Enviar Pedido para a Rede de Profissionais & Despachar no WhatsApp"
                   : "Enviar Serviço para Contratante & Despachar no WhatsApp"}

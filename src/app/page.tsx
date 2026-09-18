@@ -7,8 +7,9 @@ import { useSession } from "next-auth/react";
 import dynamic from "next/dynamic";
 import type { MapPoint } from "@/components/MapaServicos";
 import ModalPerfilRPG, { UserRPG, GUILD_DETAILS } from "@/components/ModalPerfilRPG";
-import { CATEGORIAS, FILTROS } from "@/data/categorias";
+import { FILTROS } from "@/data/categorias";
 import { Icon } from "@/components/Icons";
+import CarrosselAnuncios from "@/components/CarrosselAnuncios";
 
 const MapaServicos = dynamic(() => import("@/components/MapaServicos"), {
   ssr: false,
@@ -34,6 +35,8 @@ export interface Job extends MapPoint {
   tribo?: string;
   /** Estabelecimento visitado e verificado pessoalmente (ver /parceiros/planos e /certificados). */
   isVerifiedPartner?: boolean;
+  /** Foto de contexto pro card do carrossel — opcional, nem toda vaga tem uma ainda. */
+  imagemUrl?: string;
 }
 
 const DEFAULT_RPG_USER: UserRPG = {
@@ -137,13 +140,6 @@ const REGRAS_HONRA = [
     desc: "A meta de XP do próximo nível sobe 40% a cada subida — nível alto é fruto de reputação real.",
   },
 ];
-
-const TRIBOS_CANONICAS = CATEGORIAS.map((c) => ({
-  id: c.id,
-  name: c.nome,
-  icon: c.icone,
-  desc: c.descricao,
-}));
 
 const CATEGORIES = FILTROS;
 
@@ -394,15 +390,15 @@ export default function Home() {
                       {user.name.split(" ")[0]}
                     </span>
                     <span className="max-[369px]:hidden text-[9px] font-black bg-amber-500/15 text-amber-300 border border-amber-500/30 px-1.5 py-0.2 rounded font-mono flex items-center gap-1">
-                      <Icon name="shield" width={10} height={10} /> {user.honorScore}
+                      <Icon name="shield" width={12} height={12} /> {user.honorScore}
                     </span>
                   </div>
                   <span className="text-[9px] sm:text-[10px] text-emerald-400 font-medium truncate max-w-[110px] hidden sm:flex items-center gap-1">
-                    <Icon name={GUILD_DETAILS[user.guild]?.icon || "van"} width={11} height={11} /> Nível {user.level}
+                    <Icon name={GUILD_DETAILS[user.guild]?.icon || "van"} width={13} height={13} /> Nível {user.level}
                   </span>
                 </div>
                 <div className="w-7 h-7 sm:w-8 sm:h-8 rounded-xl bg-gradient-to-br from-amber-400 to-amber-600 text-black flex items-center justify-center shadow-md shrink-0">
-                  <Icon name="gift" width={16} height={16} />
+                  <Icon name="gift" width={18} height={18} />
                 </div>
               </button>
             )}
@@ -446,91 +442,24 @@ export default function Home() {
               href="#mapa-gps"
               className="btn-primary-emerald w-full sm:w-auto px-7 py-3.5 rounded-2xl flex items-center justify-center gap-2.5 text-sm sm:text-base font-black shadow-lg cursor-pointer"
             >
-              <Icon name="compass" width={16} height={16} /> Explorar Mapa & Serviços
+              <Icon name="compass" width={18} height={18} /> Explorar Mapa & Serviços
             </a>
 
             <Link
               href="/cadastrar-servico"
               className="btn-secondary-glass w-full sm:w-auto px-7 py-3.5 rounded-2xl flex items-center justify-center gap-2 text-sm sm:text-base font-bold cursor-pointer"
             >
-              <Icon name="handshake" width={16} height={16} /> Oferecer ou Contratar
+              <Icon name="handshake" width={18} height={18} /> Oferecer ou Contratar
             </Link>
           </div>
 
-          {/* ── DOIS LIVE SHOWCASE CARDS (DEMONSTRAÇÃO VISUAL DO QUE O SITE FAZ) ── */}
-          <div className="mt-12 grid grid-cols-1 md:grid-cols-2 gap-4 max-w-3xl mx-auto text-left">
-            {/* CARD 1: PONTO DE APOIO NA ESTRADA — vem primeiro de proposito.
-                No celular os cards empilham, e o primeiro e a primeira prova que
-                o visitante ve. Abrir com uma vaga de dev logo abaixo de um titulo
-                sobre vida na estrada contradizia a promessa. */}
-            <div className="glass-panel glass-amber p-5 rounded-3xl relative overflow-hidden group hover:border-amber-400/50 transition-all">
-              <div className="flex items-center justify-between gap-2 mb-2">
-                <span className="text-[10px] font-black uppercase tracking-wider bg-amber-500/20 text-amber-300 border border-amber-500/30 px-2.5 py-0.5 rounded-full flex items-center gap-1.5">
-                  <Icon name="shield" width={11} height={11} /> Apoio Van Life & Nômade
-                </span>
-                <span className="text-[11px] font-mono text-amber-300 font-bold">100% CORTESIA</span>
-              </div>
-              <h2 className="text-sm font-black text-white leading-snug">
-                Ponto de Apoio: Chuveiro Quente + Tomada 220V/32A
-              </h2>
-              <p className="text-[11px] text-slate-300 mt-1 line-clamp-2">
-                Garagem segura para pernoite de motorhome ou campervan em Paraty/RJ com água limpa e Wi-Fi Starlink.
-              </p>
-              <div className="mt-3 pt-3 border-t border-white/5 flex items-center justify-between text-[10px] text-slate-400 font-mono">
-                <span className="flex items-center gap-1"><Icon name="pin" width={11} height={11} /> Costa Verde, RJ</span>
-                <span className="text-amber-400 font-bold flex items-center gap-1">Alta Honra Solidária <Icon name="trophy" width={11} height={11} /></span>
-              </div>
-            </div>
-
-            {/* CARD 2: VAGA REMOTA */}
-            <div className="glass-panel glass-emerald p-5 rounded-3xl relative overflow-hidden group hover:border-emerald-400/50 transition-all">
-              <div className="flex items-center justify-between gap-2 mb-2">
-                <span className="text-[10px] font-black uppercase tracking-wider bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 px-2.5 py-0.5 rounded-full flex items-center gap-1.5">
-                  <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span>
-                  Trabalho Remoto Digital
-                </span>
-                <span className="text-[11px] font-mono text-emerald-400 font-bold">R$ 3.500</span>
-              </div>
-              <h2 className="text-sm font-black text-white leading-snug">
-                Desenvolvedor Full-Stack / Automação IA & Webhook
-              </h2>
-              <p className="text-[11px] text-slate-300 mt-1 line-clamp-2">
-                Demanda remota ativa: integração de CRM e automação de pagamentos. Pagamento via PIX liberado na entrega.
-              </p>
-              <div className="mt-3 pt-3 border-t border-white/5 flex items-center justify-between text-[10px] text-slate-400 font-mono">
-                <span className="flex items-center gap-1"><Icon name="bolt" width={11} height={11} /> PIX Imediato</span>
-                <span className="text-emerald-400 font-bold flex items-center gap-1">Negociação Direta <Icon name="chat" width={11} height={11} /></span>
-              </div>
-            </div>
-          </div>
-
-          {/* BARRA DE NAVEGAÇÃO DE TRIBOS (PÍLULAS DESLIZANTES RESPONSIVAS) */}
-          <div className="mt-10 max-w-4xl mx-auto">
-            <span className="text-[10px] font-black uppercase tracking-widest text-slate-400 block mb-3">
-              Explore por Tribo & Categoria
-            </span>
-            <div className="flex items-center justify-center flex-wrap gap-2">
-              {TRIBOS_CANONICAS.map((t) => (
-                <button
-                  key={t.id}
-                  onClick={() => {
-                    setSearchQuery(t.name);
-                    const el = document.getElementById("vagas");
-                    el?.scrollIntoView({ behavior: "smooth" });
-                  }}
-                  className="glass-card px-3.5 py-2 rounded-2xl flex items-center gap-2 group hover:border-emerald-400/50 hover:bg-white/5 cursor-pointer text-xs"
-                >
-                  <Icon name={t.icon} width={16} height={16} className="text-emerald-400 group-hover:scale-110 transition-transform" />
-                  <span className="font-bold text-white group-hover:text-emerald-300">{t.name}</span>
-                </button>
-              ))}
-            </div>
-          </div>
+          {/* ── CARROSSEL DE ANÚNCIOS (ALTERNA A CADA 3S, FOTO + CLIQUE ABRE DETALHES) ── */}
+          <CarrosselAnuncios jobs={jobs} onSelect={setSelectedJob} />
 
           {/* BARRA DE BUSCA RÁPIDA */}
-          <div className="mt-6 max-w-xl mx-auto">
+          <div className="mt-10 max-w-xl mx-auto">
             <div className="relative glass-panel rounded-2xl p-2 flex items-center border border-white/10 shadow-2xl focus-within:border-emerald-400/50 transition-colors">
-              <Icon name="search" width={16} height={16} className="text-slate-400 ml-3 mr-2 shrink-0" />
+              <Icon name="search" width={18} height={18} className="text-slate-400 ml-3 mr-2 shrink-0" />
               <input
                 type="text"
                 placeholder="Buscar vagas, cidades ou categorias (ex: Chuveiro, Paraty, Dev, IA)..."
@@ -543,7 +472,7 @@ export default function Home() {
                   onClick={() => setSearchQuery("")}
                   className="text-slate-400 hover:text-white px-2 cursor-pointer"
                 >
-                  <Icon name="close" width={13} height={13} />
+                  <Icon name="close" width={15} height={15} />
                 </button>
               )}
             </div>
@@ -578,7 +507,7 @@ export default function Home() {
                     : "glass-card text-slate-300 border-white/10 hover:border-white/30"
                 } flex items-center gap-1.5`}
               >
-                <Icon name={cat.icon} width={13} height={13} /> {cat.name}
+                <Icon name={cat.icon} width={15} height={15} /> {cat.name}
               </button>
             ))}
           </div>
@@ -643,13 +572,13 @@ export default function Home() {
                 href="/certificados"
                 className="btn-secondary-glass inline-flex items-center gap-2 px-5 py-2.5 rounded-2xl text-xs font-bold cursor-pointer"
               >
-                <Icon name="shield" width={14} height={14} className="text-amber-300" /> Ver Estabelecimentos Certificados
+                <Icon name="shield" width={16} height={16} className="text-amber-300" /> Ver Estabelecimentos Certificados
               </Link>
               <Link
                 href="/contribuir"
                 className="btn-secondary-glass inline-flex items-center gap-2 px-5 py-2.5 rounded-2xl text-xs font-bold cursor-pointer"
               >
-                <Icon name="pin" width={14} height={14} className="text-emerald-400" /> Contribuir com uma Foto
+                <Icon name="pin" width={16} height={16} className="text-emerald-400" /> Contribuir com uma Foto
               </Link>
             </div>
           </div>
@@ -682,7 +611,7 @@ export default function Home() {
                 filterType === "honor" ? "bg-amber-400 text-black shadow-lg" : "text-amber-400 hover:text-amber-300"
               }`}
             >
-              <Icon name="shield" width={13} height={13} /> Gratuitos (Alta Honra)
+              <Icon name="shield" width={15} height={15} /> Gratuitos (Alta Honra)
             </button>
             <button
               onClick={() => setFilterType("pix")}
@@ -690,7 +619,7 @@ export default function Home() {
                 filterType === "pix" ? "bg-emerald-500 text-black shadow-lg" : "text-slate-300 hover:text-white"
               }`}
             >
-              <Icon name="bolt" width={13} height={13} /> PIX / BTC
+              <Icon name="bolt" width={15} height={15} /> PIX / BTC
             </button>
             <button
               onClick={() => setFilterType("local")}
@@ -698,7 +627,7 @@ export default function Home() {
                 filterType === "local" ? "bg-emerald-500 text-black shadow-lg" : "text-slate-300 hover:text-white"
               }`}
             >
-              <Icon name="pin" width={13} height={13} /> Presenciais
+              <Icon name="pin" width={15} height={15} /> Presenciais
             </button>
           </div>
         </div>
@@ -749,7 +678,7 @@ export default function Home() {
                           title="Estabelecimento visitado e verificado pelo JobPago"
                           className="text-[10px] font-black px-2 py-1 rounded-xl bg-amber-500/15 text-amber-300 border border-amber-500/30 flex items-center gap-1"
                         >
-                          <Icon name="shield" width={11} height={11} /> Verificado
+                          <Icon name="shield" width={13} height={13} /> Verificado
                         </span>
                       )}
                     </div>
@@ -780,21 +709,21 @@ export default function Home() {
                     <div>
                       <span className="text-[9px] text-slate-400 block uppercase font-mono">Valor Combinado</span>
                       <span className={`text-lg font-black flex items-center gap-1.5 ${isFree ? "text-amber-400" : "text-emerald-400"}`}>
-                        {isFree ? (<><Icon name="shield" width={16} height={16} /> 100% CORTESIA</>) : `R$ ${job.budget.toLocaleString("pt-BR")}`}
+                        {isFree ? (<><Icon name="shield" width={18} height={18} /> 100% CORTESIA</>) : `R$ ${job.budget.toLocaleString("pt-BR")}`}
                       </span>
                     </div>
 
                     <div className="flex items-center gap-1">
                       {job.isPixImmediate && (
                         <span className="text-[11px] font-black bg-emerald-500/15 text-emerald-300 border border-emerald-500/30 px-2 py-0.5 rounded-lg flex items-center gap-1 font-mono">
-                          <Icon name="bolt" width={11} height={11} /> PIX Direto
+                          <Icon name="bolt" width={13} height={13} /> PIX Direto
                         </span>
                       )}
                     </div>
                   </div>
 
                   <div className="flex items-center justify-between text-xs text-slate-400 pt-2 border-t border-white/5">
-                    <span className="truncate max-w-[170px] flex items-center gap-1"><Icon name="pin" width={12} height={12} className="shrink-0" /> {job.location}</span>
+                    <span className="truncate max-w-[170px] flex items-center gap-1"><Icon name="pin" width={14} height={14} className="shrink-0" /> {job.location}</span>
                     <span className="text-emerald-400 font-bold shrink-0">Ver Detalhes →</span>
                   </div>
                 </div>
@@ -811,7 +740,7 @@ export default function Home() {
           <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4 mb-8">
             <div>
               <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-amber-400/15 text-amber-300 border border-amber-400/30 text-xs font-black uppercase tracking-wider">
-                <Icon name="shield" width={13} height={13} /> Gamificação Comunitária & Reputação
+                <Icon name="shield" width={15} height={15} /> Gamificação Comunitária & Reputação
               </div>
               <h2 className="text-2xl sm:text-4xl font-black text-white mt-2">
                 Como Funciona a Alta Honra
@@ -826,7 +755,7 @@ export default function Home() {
                 onClick={() => setIsRpgModalOpen(true)}
                 className="bg-amber-400 hover:bg-amber-300 text-black font-black text-xs sm:text-sm px-6 py-3 rounded-2xl shadow-xl transition-all hover:scale-105 shrink-0 cursor-pointer flex items-center gap-2"
               >
-                <Icon name="gift" width={15} height={15} /> Abrir Meu Painel de Recompensas
+                <Icon name="gift" width={17} height={17} /> Abrir Meu Painel de Recompensas
               </button>
             )}
           </div>
@@ -861,7 +790,7 @@ export default function Home() {
               onClick={() => setSelectedJob(null)}
               className="absolute top-5 right-5 text-slate-400 hover:text-white bg-white/5 w-8 h-8 rounded-full flex items-center justify-center cursor-pointer"
             >
-              <Icon name="close" width={15} height={15} />
+              <Icon name="close" width={17} height={17} />
             </button>
 
             <div className="flex items-center gap-2 mb-3 flex-wrap">
@@ -870,10 +799,10 @@ export default function Home() {
               </span>
               {selectedJob.isVerifiedPartner && (
                 <span className="text-xs font-black bg-amber-500/20 text-amber-300 border border-amber-500/40 px-3 py-1 rounded-xl flex items-center gap-1">
-                  <Icon name="shield" width={12} height={12} /> Estabelecimento Certificado
+                  <Icon name="shield" width={14} height={14} /> Estabelecimento Certificado
                 </span>
               )}
-              <span className="text-xs text-slate-400 flex items-center gap-1"><Icon name="pin" width={12} height={12} /> {selectedJob.location}</span>
+              <span className="text-xs text-slate-400 flex items-center gap-1"><Icon name="pin" width={14} height={14} /> {selectedJob.location}</span>
             </div>
 
             <h3 className="text-2xl font-black text-white leading-tight mb-3">
@@ -902,7 +831,7 @@ export default function Home() {
                 </span>
               </div>
               <span className="text-xs font-black bg-emerald-500/20 text-emerald-300 border border-emerald-500/40 px-3 py-1.5 rounded-xl flex items-center gap-1 font-mono">
-                <Icon name="bolt" width={13} height={13} /> PIX Direto
+                <Icon name="bolt" width={15} height={15} /> PIX Direto
               </span>
             </div>
 
@@ -915,7 +844,7 @@ export default function Home() {
               }}
               className="btn-primary-emerald w-full py-4 rounded-2xl text-sm font-black flex items-center justify-center gap-2 cursor-pointer"
             >
-              <Icon name="chat" width={16} height={16} /> Entrar em Contato Direto via WhatsApp
+              <Icon name="chat" width={18} height={18} /> Entrar em Contato Direto via WhatsApp
             </button>
           </div>
         </div>
@@ -929,7 +858,7 @@ export default function Home() {
               onClick={() => setIsModalOpen(false)}
               className="absolute top-5 right-5 text-slate-400 hover:text-white bg-white/5 w-8 h-8 rounded-full flex items-center justify-center cursor-pointer"
             >
-              <Icon name="close" width={15} height={15} />
+              <Icon name="close" width={17} height={17} />
             </button>
 
             <h3 className="text-2xl font-black text-white">+ Publicar Nova Oportunidade</h3>
@@ -940,7 +869,7 @@ export default function Home() {
               <div className="glass-card border border-amber-400/40 p-3 rounded-2xl flex items-center justify-between">
                 <div>
                   <span className="text-xs font-black text-amber-300 flex items-center gap-1.5">
-                    <Icon name="shield" width={13} height={13} /> Ponto de Apoio / Cortesia 0800 (Alta Honra)
+                    <Icon name="shield" width={15} height={15} /> Ponto de Apoio / Cortesia 0800 (Alta Honra)
                   </span>
                   <span className="text-[10px] text-slate-300 block">
                     Ganhe +50 PTS de Alta Honra ao doar apoio para nômades na estrada.
@@ -1048,7 +977,7 @@ export default function Home() {
                 type="submit"
                 className="btn-primary-emerald mt-2 py-4 rounded-2xl text-sm font-black uppercase tracking-wider cursor-pointer flex items-center justify-center gap-2"
               >
-                <Icon name="rocket" width={16} height={16} /> Publicar no Mapa em Tempo Real
+                <Icon name="rocket" width={18} height={18} /> Publicar no Mapa em Tempo Real
               </button>
             </form>
           </div>

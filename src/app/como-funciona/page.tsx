@@ -82,7 +82,7 @@ export default function ComoFuncionaPage() {
               <h3 className="text-lg font-black text-white">Quem precisa contratar</h3>
               <ul className="mt-4 space-y-3 text-sm text-slate-300 leading-relaxed">
                 <li className="flex gap-2.5">
-                  <Icon name="check" width={16} height={16} className="text-emerald-400 shrink-0 mt-0.5" />
+                  <Icon name="check" width={18} height={18} className="text-emerald-400 shrink-0 mt-0.5" />
                   <span>
                     <strong className="text-white">+ Anunciar Vaga</strong> no topo publica sua
                     vaga no mapa e no feed em tempo real. Quem tem interesse te chama
@@ -90,7 +90,7 @@ export default function ComoFuncionaPage() {
                   </span>
                 </li>
                 <li className="flex gap-2.5">
-                  <Icon name="check" width={16} height={16} className="text-emerald-400 shrink-0 mt-0.5" />
+                  <Icon name="check" width={18} height={18} className="text-emerald-400 shrink-0 mt-0.5" />
                   <span>
                     Ou usa{" "}
                     <Link href="/cadastrar-servico" className="text-emerald-400 underline hover:text-emerald-300">
@@ -110,7 +110,7 @@ export default function ComoFuncionaPage() {
               <h3 className="text-lg font-black text-white">Quem presta o serviço</h3>
               <ul className="mt-4 space-y-3 text-sm text-slate-300 leading-relaxed">
                 <li className="flex gap-2.5">
-                  <Icon name="check" width={16} height={16} className="text-emerald-400 shrink-0 mt-0.5" />
+                  <Icon name="check" width={18} height={18} className="text-emerald-400 shrink-0 mt-0.5" />
                   <span>
                     Filtra o mapa ou o feed pela sua categoria (Nômade & Infra,
                     Estrada & Cargas, Tecnologia & TI...) e chama direto no
@@ -118,7 +118,7 @@ export default function ComoFuncionaPage() {
                   </span>
                 </li>
                 <li className="flex gap-2.5">
-                  <Icon name="check" width={16} height={16} className="text-emerald-400 shrink-0 mt-0.5" />
+                  <Icon name="check" width={18} height={18} className="text-emerald-400 shrink-0 mt-0.5" />
                   <span>
                     Ou usa{" "}
                     <Link href="/cadastrar-servico" className="text-emerald-400 underline hover:text-emerald-300">
@@ -265,13 +265,13 @@ export default function ComoFuncionaPage() {
               href="/#mapa-gps"
               className="btn-primary-emerald w-full sm:w-auto px-7 py-3.5 rounded-2xl flex items-center justify-center gap-2.5 text-sm sm:text-base font-black shadow-lg cursor-pointer"
             >
-              <Icon name="compass" width={16} height={16} /> Explorar Mapa & Serviços
+              <Icon name="compass" width={18} height={18} /> Explorar Mapa & Serviços
             </Link>
             <Link
               href="/cadastrar-servico"
               className="btn-secondary-glass w-full sm:w-auto px-7 py-3.5 rounded-2xl flex items-center justify-center gap-2 text-sm sm:text-base font-bold cursor-pointer"
             >
-              <Icon name="handshake" width={16} height={16} /> Oferecer ou Contratar
+              <Icon name="handshake" width={18} height={18} /> Oferecer ou Contratar
             </Link>
           </div>
         </section>

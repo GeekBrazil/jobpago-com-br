@@ -98,7 +98,7 @@ export default function ModalPerfilRPG({
           onClick={onClose}
           className="absolute top-5 right-5 text-zinc-400 hover:text-white bg-white/5 w-8 h-8 rounded-full flex items-center justify-center"
         >
-          <Icon name="close" width={16} height={16} />
+          <Icon name="close" width={18} height={18} />
         </button>
 
         {/* ── HEADER FICHA DE PERSONAGEM ── */}
@@ -117,7 +117,7 @@ export default function ModalPerfilRPG({
               <div className="flex items-center gap-2">
                 <h3 className="text-xl font-black text-white">{user.name}</h3>
                 <span className="text-xs font-bold text-amber-400 bg-amber-500/10 border border-amber-500/30 px-2 py-0.5 rounded-md flex items-center gap-1">
-                  <Icon name="shield" width={13} height={13} /> {user.honorTitle}
+                  <Icon name="shield" width={15} height={15} /> {user.honorTitle}
                 </span>
               </div>
               <p className="text-xs text-zinc-400 mt-1 font-mono">{user.email}</p>
@@ -127,7 +127,7 @@ export default function ModalPerfilRPG({
           <div className="flex flex-col items-end bg-white/5 border border-white/10 p-3 rounded-2xl shrink-0">
             <span className="text-[10px] font-bold text-amber-400 uppercase">Pontos de Alta Honra</span>
             <span className="text-lg font-black text-amber-300 flex items-center gap-1.5">
-              <Icon name="shield" width={16} height={16} /> {user.honorScore} PTS
+              <Icon name="shield" width={18} height={18} /> {user.honorScore} PTS
             </span>
             <span className="text-[10px] text-emerald-400 font-bold">Anfitrião 100% Cortesia</span>
           </div>
@@ -195,7 +195,7 @@ export default function ModalPerfilRPG({
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
                 <div className="bg-black/40 border border-white/10 p-3.5 rounded-2xl">
                   <div className="flex items-center justify-between text-xs font-bold mb-1">
-                    <span className="text-cyan-400 flex items-center gap-1"><Icon name="bolt" width={13} height={13} /> Velocidade</span>
+                    <span className="text-cyan-400 flex items-center gap-1"><Icon name="bolt" width={15} height={15} /> Velocidade</span>
                     <span className="text-white font-mono">{user.stats.velocidade}/100</span>
                   </div>
                   <div className="w-full h-1.5 bg-white/10 rounded-full overflow-hidden">
@@ -205,7 +205,7 @@ export default function ModalPerfilRPG({
 
                 <div className="bg-black/40 border border-white/10 p-3.5 rounded-2xl">
                   <div className="flex items-center justify-between text-xs font-bold mb-1">
-                    <span className="text-emerald-400 flex items-center gap-1"><Icon name="shield" width={13} height={13} /> Confiabilidade</span>
+                    <span className="text-emerald-400 flex items-center gap-1"><Icon name="shield" width={15} height={15} /> Confiabilidade</span>
                     <span className="text-white font-mono">{user.stats.confiabilidade}/100</span>
                   </div>
                   <div className="w-full h-1.5 bg-white/10 rounded-full overflow-hidden">
@@ -215,7 +215,7 @@ export default function ModalPerfilRPG({
 
                 <div className="bg-black/40 border border-white/10 p-3.5 rounded-2xl">
                   <div className="flex items-center justify-between text-xs font-bold mb-1">
-                    <span className="text-pink-400 flex items-center gap-1"><Icon name="lock" width={13} height={13} /> Sigilo Contratual</span>
+                    <span className="text-pink-400 flex items-center gap-1"><Icon name="lock" width={15} height={15} /> Sigilo Contratual</span>
                     <span className="text-white font-mono">{user.stats.sigilo}/100</span>
                   </div>
                   <div className="w-full h-1.5 bg-white/10 rounded-full overflow-hidden">
@@ -325,18 +325,18 @@ export default function ModalPerfilRPG({
                     <div>
                       <div className="flex items-center justify-between gap-2 mb-2">
                         <span className="text-xs font-black text-amber-400 bg-amber-500/20 px-2.5 py-0.5 rounded-full border border-amber-500/30 flex items-center gap-1.5">
-                          <Icon name={rew.icon} width={13} height={13} /> {rew.category}
+                          <Icon name={rew.icon} width={15} height={15} /> {rew.category}
                         </span>
 
                         <span className="text-[10px] text-zinc-400 font-mono flex items-center gap-1">
-                          Requer: Nv.{rew.requiredLevel} | <Icon name="shield" width={11} height={11} /> {rew.requiredHonor} PTS
+                          Requer: Nv.{rew.requiredLevel} | <Icon name="shield" width={13} height={13} /> {rew.requiredHonor} PTS
                         </span>
                       </div>
 
                       <h4 className="text-sm font-bold text-white leading-snug">{rew.title}</h4>
                       <p className="text-[11px] text-zinc-400 mt-1 line-clamp-2">{rew.description}</p>
                       <span className="text-[10px] font-bold text-emerald-400 mt-2 flex items-center gap-1">
-                        <Icon name="pin" width={11} height={11} /> {rew.location}
+                        <Icon name="pin" width={13} height={13} /> {rew.location}
                       </span>
                     </div>
 
@@ -350,11 +350,11 @@ export default function ModalPerfilRPG({
                           onClick={() => onClaimReward(rew.id)}
                           className="w-full bg-gradient-to-r from-amber-500 to-orange-400 text-black font-extrabold text-xs py-2 rounded-xl transition-all hover:scale-105 shadow-md shadow-amber-500/20 flex items-center justify-center gap-1.5"
                         >
-                          <Icon name="gift" width={14} height={14} /> Resgatar Benefício Gratuitamente
+                          <Icon name="gift" width={16} height={16} /> Resgatar Benefício Gratuitamente
                         </button>
                       ) : (
                         <span className="w-full block text-center bg-white/5 text-zinc-500 font-bold text-xs py-2 rounded-xl border border-white/10 flex items-center justify-center gap-1.5">
-                          <Icon name="lock" width={12} height={12} /> Nível ou Honra Insuficiente
+                          <Icon name="lock" width={14} height={14} /> Nível ou Honra Insuficiente
                         </span>
                       )}
                     </div>

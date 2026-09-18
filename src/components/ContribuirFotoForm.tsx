@@ -121,7 +121,7 @@ export default function ContribuirFotoForm() {
             tipo === "viajante" ? "bg-emerald-500 text-black shadow-lg" : "text-slate-400 hover:text-white"
           }`}
         >
-          <Icon name="compass" width={14} height={14} /> Sou Viajante
+          <Icon name="compass" width={16} height={16} /> Sou Viajante
         </button>
         <button
           type="button"
@@ -130,13 +130,13 @@ export default function ContribuirFotoForm() {
             tipo === "empresario" ? "bg-emerald-500 text-black shadow-lg" : "text-slate-400 hover:text-white"
           }`}
         >
-          <Icon name="building" width={14} height={14} /> Sou Empresário
+          <Icon name="building" width={16} height={16} /> Sou Empresário
         </button>
       </div>
 
       {error && (
         <div className="mb-6 p-4 rounded-2xl bg-rose-500/15 border border-rose-500/30 text-rose-300 text-xs font-bold flex items-center gap-2">
-          <Icon name="warning" width={14} height={14} className="shrink-0" /> {error}
+          <Icon name="warning" width={16} height={16} className="shrink-0" /> {error}
         </div>
       )}
 
@@ -169,7 +169,7 @@ export default function ContribuirFotoForm() {
               onClick={pedirLocalizacaoAtual}
               className="text-xs font-black px-3 py-2 rounded-lg bg-amber-400 text-black shrink-0"
             >
-              <Icon name="pin" width={12} height={12} className="inline mr-1" /> Usar Minha Posição
+              <Icon name="pin" width={14} height={14} className="inline mr-1" /> Usar Minha Posição
             </button>
           </div>
         )}
@@ -244,7 +244,7 @@ export default function ContribuirFotoForm() {
             <div className="w-5 h-5 rounded-full border-2 border-black border-t-transparent animate-spin"></div>
           ) : (
             <>
-              <Icon name="rocket" width={16} height={16} /> Enviar Foto
+              <Icon name="rocket" width={18} height={18} /> Enviar Foto
             </>
           )}
         </button>

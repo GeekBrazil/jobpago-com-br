@@ -21,6 +21,7 @@ const SEED_JOBS = [
     clientName: "Estação Nômade Costa Verde",
     whatsapp: "5524993326966",
     nomadFeatures: ["Chuveiro Quente", "Carga 220V Alta Carga", "Wi-Fi 600MB", "Café Grátis"],
+    imagemUrl: "https://images.unsplash.com/photo-1626327547387-b2663804dd50?w=800&h=500&fit=crop&auto=format&q=80",
   },
   {
     id: "n2",
@@ -38,6 +39,7 @@ const SEED_JOBS = [
     clientName: "Paraty Van Camping",
     whatsapp: "5524993326966",
     nomadFeatures: ["Vaga Motorhome", "Ponto 32A", "Água Potável", "Portão 24h"],
+    imagemUrl: "https://images.unsplash.com/photo-1533176403861-b654cad1ecf1?w=800&h=500&fit=crop&auto=format&q=80",
   },
   {
     id: "t1",
@@ -54,6 +56,7 @@ const SEED_JOBS = [
     description: "Desenvolvimento de fluxo n8n / Python para automação de mensagens e integração com CRM. Trabalho 100% remoto para devs nômades.",
     clientName: "Tech Nômade Studio",
     whatsapp: "5524993326966",
+    imagemUrl: "https://images.unsplash.com/photo-1545184180-25d471fe75eb?w=800&h=500&fit=crop&auto=format&q=80",
   },
   {
     id: "1",
@@ -70,6 +73,7 @@ const SEED_JOBS = [
     description: "Desenvolvedor front-end para criar uma landing page rápida com design responsivo e alta performance.",
     clientName: "Allan C.",
     whatsapp: "5524993326966",
+    imagemUrl: "https://images.unsplash.com/photo-1579389083046-e3df9c2b3325?w=800&h=500&fit=crop&auto=format&q=80",
   },
   {
     id: "e1",
@@ -86,6 +90,7 @@ const SEED_JOBS = [
     description: "Preciso de carreteiro disponível pra frete de retorno saindo de Angra dos Reis rumo a São Paulo essa semana. Carga geral, até 3 toneladas, carregamento e descarga com equipe no local. Pagamento combinado, PIX na entrega.",
     clientName: "Depósito Costa Verde",
     whatsapp: "5524993326966",
+    imagemUrl: "https://images.unsplash.com/photo-1592805144716-feeccccef5ac?w=800&h=500&fit=crop&auto=format&q=80",
   },
   {
     id: "f1",
@@ -102,6 +107,7 @@ const SEED_JOBS = [
     description: "Mudança de apartamento pequeno (2 quartos) dentro de Paraty. Preciso de van ou caminhão 3/4 com ajudante pra carregar e descarregar. Poucos móveis grandes (sofá, cama, geladeira), resto é caixa.",
     clientName: "Fernanda R.",
     whatsapp: "5524993326966",
+    imagemUrl: "https://images.unsplash.com/photo-1715645948484-da40dd56bc93?w=800&h=500&fit=crop&auto=format&q=80",
   },
 ];
 

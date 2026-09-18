@@ -47,7 +47,7 @@ export default function ContribuirPage() {
       <main className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-14 sm:py-20">
         <div className="max-w-2xl">
           <span className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full glass-panel border border-emerald-500/30 text-emerald-300 text-[10px] sm:text-xs font-black tracking-widest uppercase">
-            <Icon name="pin" width={13} height={13} /> Camada da Comunidade
+            <Icon name="pin" width={15} height={15} /> Camada da Comunidade
           </span>
 
           <h1 className="mt-6 text-3xl sm:text-5xl font-black text-white leading-[1.12]">
