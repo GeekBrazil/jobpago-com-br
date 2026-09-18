@@ -35,3 +35,35 @@
   7. 🎨 **Design & Mídia**: Identidade Visual & Social.
 - **Critério pra categoria caber no escopo**: tem que servir quem trabalha/vive na estrada — exigir um ativo ou vantagem de nômade (van, mobilidade, trabalho remoto), não só coincidir geograficamente com a região onde o Allan mora. Foi esse critério que tirou "Reformas & Reparos" em 2026-09-18: a descrição tinha genericado pra "Eletricistas & Manutenção" (a tribo original, ainda mais antiga, era "Manutenção em trânsito") e a única vaga cadastrada era conserto elétrico residencial comum — nenhuma relação com estrada, van ou trabalho remoto. Categoria e vaga de exemplo removidas juntas.
 
+## Expedição JobPago (Angra dos Reis → Fortaleza)
+
+Viagem real que o Allan vai fazer, visitando estabelecimentos (postos, pousadas,
+camping, oficinas) que pedem selo de verificação. Peças já construídas (18/09/2026),
+todas com fonte única em `src/data/`:
+
+- `/parceiros/planos` — 4 níveis de patrocínio pra **estabelecimento** (Permuta,
+  Local, Regional, Master), dados em `planos-parceiro.ts`. Não tem checkout de
+  propósito — todo acordo fecha no WhatsApp. Também tem a régua de contribuição
+  PIX (`ReguaContribuicao.tsx`) pra quem quer apoiar **sem** ter estabelecimento.
+- `/certificados` — lista pública de quem já foi verificado, com QR code único
+  (`public/qrcode-certificados.png`, mesmo adesivo físico serve pra qualquer
+  parceiro — não gerar um código por local). Campo `isVerifiedPartner` no tipo
+  `Job`/`MapPoint` liga o selo ao card, ao modal e ao pin âmbar no mapa.
+- `/noticias-estrada` — onde entram as publicações prometidas nas faixas de
+  contribuição/patrocínio (`apoiadores.ts`, array `NOTICIAS_ESTRADA` — o Allan
+  edita à mão depois de confirmar o PIX, sem admin UI ainda).
+- Mapa da home (`MapaServicos.tsx`) tem um traçador manual de rota: botão
+  "Traçar Minha Rota", cada clique empilha um waypoint com geocodificação
+  reversa via Nominatim, "Calcular Rota" desenha o trajeto real via OSRM
+  (multi-ponto), "Copiar Lista de Cidades" exporta os nomes resolvidos — feito
+  pra alimentar prospecção de CNPJ por município (ver próximo item).
+- **CNPJ por trajeto**: banco local `cnpj_nacional` (Postgres, container
+  `postgres` do stack n8n-ollama, notebook do Allan) já tem 28M+ empresas
+  categorizadas por CNAE (`pousada`, `posto_combustivel`,
+  `camping_estacionamento`, `oficina_mecanica`, `turismo_passeio`, etc.), mas
+  **zero geocodificadas** — filtrar por `municipio` (nome já resolvido), não
+  por coordenada. Query e números reais por estado documentados no relatório
+  de auditoria (Claude Docs, "O Que Falta na Estrada"). Primeiro contato em
+  massa com esses CNPJs **não está automatizado de propósito** — precisa de
+  lista de municípios da rota + aprovação da mensagem antes de qualquer disparo.
+
