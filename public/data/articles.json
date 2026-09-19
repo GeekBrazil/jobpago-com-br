@@ -1,0 +1,13 @@
+[
+  {
+    "id": "expedicao-angra-fortaleza-inicio",
+    "title": "Abertura Oficial da Expedição JobPago: De Angra dos Reis a Fortaleza",
+    "summary": "Mapeamento em campo de postos, pontos de apoio, oficinas e restaurantes que valorizam quem vive na estrada.",
+    "category": "Expedição",
+    "coverImage": "https://images.unsplash.com/photo-1519003722824-194d4455a60c?auto=format&fit=crop&q=80&w=1200",
+    "publishedAt": "2026-09-18T10:00:00.000Z",
+    "status": "published",
+    "featured": true,
+    "content": "<p class=\"leading-relaxed my-3 text-slate-300 font-sans text-base\">Iniciamos oficialmente a jornada de milhares de quilômetros mapeando e certificando os melhores pontos de parada do Brasil. Cada estabelecimento certificado pelo JobPago passa por auditoria presencial de infraestrutura para motoristas e transportadores.</p>"
+  }
+]
