@@ -51,6 +51,16 @@ const TARGETS = [
       "WhatsApp com DDD"
     ],
     mustNotContain: []
+  },
+  {
+    name: "Blog Público & Ingestão de Artigos (/blog)",
+    url: "https://www.jobpago.com.br/blog",
+    expectedStatus: 200,
+    mustContain: [
+      "Blog",
+      "JobPago"
+    ],
+    mustNotContain: []
   }
 ];
 
