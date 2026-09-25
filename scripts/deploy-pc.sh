@@ -87,7 +87,9 @@ else echo "    ⚠️ Não achei 'Build step skipped' no log do deploy $DEP_ID �
 echo "==> [5/6] Verificando produção..."
 node "$DIR/verify-deploy.mjs"
 
-echo "==> [6/6] Limpando imagens antigas do app (VPS e PC; mantém a atual)..."
+echo "==> [6/6] Limpando imagens antigas do app (VPS: mantém a atual; PC: atual + anterior)..."
 ssh "$VPS" "docker images '$APP_UUID' --format '{{.Repository}}:{{.Tag}}' | grep -v ':$SHA\\$' | xargs -r docker rmi > /dev/null 2>&1 || true"
-docker images "$APP_UUID" --format '{{.Repository}}:{{.Tag}}' | grep -v ":$SHA\$" | xargs -r docker rmi > /dev/null 2>&1 || true
+# no PC: mantém a imagem atual e a anterior (para voltar atrás)
+docker images "$APP_UUID" --format '{{.Repository}}:{{.Tag}}' | tail -n +3 | xargs -r docker rmi > /dev/null 2>&1 || true
+docker builder prune -f --filter until=72h > /dev/null 2>&1 || true
 echo "✅ JobPago publicado (build no PC)."
