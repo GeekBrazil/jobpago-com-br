@@ -2,7 +2,7 @@ import type { Metadata, Viewport } from "next";
 import { Bricolage_Grotesque, Plus_Jakarta_Sans } from "next/font/google";
 import "./globals.css";
 import EventoVisita from "@/components/EventoVisita";
-import DifyChatWidget from "@/components/DifyChatWidget";
+import Script from "next/script";
 import AuthProvider from "@/components/AuthProvider";
 
 const fontDisplay = Bricolage_Grotesque({
@@ -52,7 +52,8 @@ export default function RootLayout({
         <AuthProvider>
           {children}
           <EventoVisita />
-          <DifyChatWidget />
+          {/* chat de atendimento — widget único servido pelo allancandido.com (substitui o Dify) */}
+          <Script src="https://allancandido.com/chat/widget.js" data-site="jobpago" strategy="lazyOnload" />
         </AuthProvider>
       </body>
     </html>
