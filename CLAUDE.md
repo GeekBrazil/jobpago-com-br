@@ -4,6 +4,14 @@
 
 > **Plataforma de Microtarefas e Vagas Rápidas com Pagamento via PIX.**
 
+## Deploy — build SEMPRE no PC do Allan (regra de 2026-09-25)
+
+`npm run deploy` = `scripts/deploy-pc.sh`: imagem montada no PC a partir do
+commit → `docker save | ssh docker load` no VPS → Coolify publica sem rebuild
+("Build step skipped"). O auto-deploy do Coolify está desligado: push não
+compila nada. Nunca interromper o deploy nem usar `timeout` nele. Mesmo
+esquema do allancandido.com (ver o CLAUDE.md de lá e o vault).
+
 ## Stack
 
 | Camada | Tecnologia |
