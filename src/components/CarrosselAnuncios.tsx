@@ -13,8 +13,8 @@ function CardAnuncio({ job, onSelect }: { job: Job; onSelect: (job: Job) => void
     <button
       onClick={() => onSelect(job)}
       className={`shrink-0 w-[260px] sm:w-[320px] text-left glass-panel ${
-        isFree ? "glass-amber" : isNomad ? "glass-emerald" : ""
-      } rounded-3xl relative overflow-hidden group hover:border-emerald-400/50 transition-all cursor-pointer p-0`}
+        isFree ? "glass-amber" : isNomad ? "glass-amalfi" : ""
+      } rounded-3xl relative overflow-hidden group hover:border-amber-400/50 transition-all cursor-pointer p-0`}
     >
       {job.imagemUrl && (
         <div className="relative h-36 sm:h-44 w-full overflow-hidden">
@@ -35,7 +35,7 @@ function CardAnuncio({ job, onSelect }: { job: Job; onSelect: (job: Job) => void
             className={`text-[10px] font-black uppercase tracking-wider px-2.5 py-0.5 rounded-full flex items-center gap-1.5 border ${
               isFree
                 ? "bg-amber-500/20 text-amber-300 border-amber-500/30"
-                : "bg-emerald-500/20 text-emerald-300 border-emerald-500/30"
+                : "bg-orange-500/20 text-orange-300 border-orange-500/30"
             }`}
           >
             {isFree ? <Icon name="shield" width={22} height={22} /> : <Icon name="bolt" width={22} height={22} />}
@@ -45,7 +45,7 @@ function CardAnuncio({ job, onSelect }: { job: Job; onSelect: (job: Job) => void
         <h2 className="text-sm font-black text-white leading-snug">{job.title}</h2>
         <p className="text-[11px] text-slate-300 mt-1 line-clamp-2">{job.description}</p>
         <div className="mt-3 pt-3 border-t border-white/5 flex items-center justify-between text-[10px] text-slate-400 font-mono">
-          <span className={`font-mono font-bold ${isFree ? "text-amber-300" : "text-emerald-400"}`}>
+          <span className={`font-mono font-bold ${isFree ? "text-amber-300" : "text-amber-400"}`}>
             {isFree ? "100% CORTESIA" : `R$ ${job.budget.toLocaleString("pt-BR")}`}
           </span>
           <span className="flex items-center gap-1">

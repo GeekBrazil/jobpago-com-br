@@ -58,7 +58,7 @@ export default function CertificadosLista() {
                   <span className="text-[10px] font-black px-2 py-1 rounded-xl bg-amber-500/15 text-amber-300 border border-amber-500/30 flex items-center gap-1">
                     <Icon name="shield" width={26} height={26} /> Verificado
                   </span>
-                  <span className="text-xs font-black px-2.5 py-1 rounded-xl bg-white/5 text-emerald-300 border border-white/10">
+                  <span className="text-xs font-black px-2.5 py-1 rounded-xl bg-white/5 text-amber-300 border border-white/10">
                     {job.category}
                   </span>
                 </div>
@@ -90,7 +90,7 @@ export default function CertificadosLista() {
             href={PEDIR_SELO_URL}
             target="_blank"
             rel="noopener noreferrer"
-            className="btn-primary-emerald px-6 py-3 rounded-2xl text-sm font-black cursor-pointer flex items-center justify-center gap-2 whitespace-nowrap"
+            className="btn-primary-amalfi px-6 py-3 rounded-2xl text-sm font-black cursor-pointer flex items-center justify-center gap-2 whitespace-nowrap"
           >
             <Icon name="chat" width={34} height={34} /> Pedir Meu Selo
           </a>

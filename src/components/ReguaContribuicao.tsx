@@ -12,7 +12,6 @@ import { WHATSAPP } from "@/data/planos-parceiro";
 
 const TONS: Record<string, { texto: string; bg: string; borda: string }> = {
   slate: { texto: "text-slate-300", bg: "bg-white/5", borda: "border-white/15" },
-  emerald: { texto: "text-emerald-300", bg: "bg-emerald-500/15", borda: "border-emerald-500/30" },
   amber: { texto: "text-amber-300", bg: "bg-amber-500/15", borda: "border-amber-500/30" },
   cyan: { texto: "text-cyan-300", bg: "bg-cyan-500/15", borda: "border-cyan-500/30" },
 };
@@ -62,7 +61,7 @@ export default function ReguaContribuicao() {
           {/* TRILHA */}
           <div className="relative h-2 rounded-full bg-white/10 overflow-visible">
             <div
-              className="absolute h-2 rounded-full bg-gradient-to-r from-emerald-500 to-amber-400 transition-all"
+              className="absolute h-2 rounded-full bg-gradient-to-r from-orange-500 to-amber-400 transition-all"
               style={{ width: `${pct}%` }}
             />
             {FAIXAS_CONTRIBUICAO.map((f) => {
@@ -109,7 +108,7 @@ export default function ReguaContribuicao() {
             href={linkWhatsappContribuicao}
             target="_blank"
             rel="noopener noreferrer"
-            className="btn-primary-emerald w-full sm:w-auto px-6 py-3 rounded-2xl text-sm font-black cursor-pointer flex items-center justify-center gap-2 whitespace-nowrap"
+            className="btn-primary-amalfi w-full sm:w-auto px-6 py-3 rounded-2xl text-sm font-black cursor-pointer flex items-center justify-center gap-2 whitespace-nowrap"
           >
             <Icon name="chat" width={34} height={34} /> Contribuir via PIX
           </a>

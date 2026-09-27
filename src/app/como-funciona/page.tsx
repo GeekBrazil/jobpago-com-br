@@ -12,12 +12,12 @@ export const metadata: Metadata = {
 
 export default function ComoFuncionaPage() {
   return (
-    <div className="min-h-screen text-slate-100 selection:bg-emerald-500 selection:text-black">
+    <div className="min-h-screen text-slate-100 selection:bg-amber-500 selection:text-black">
       {/* HEADER SIMPLES DE NAVEGAÇÃO */}
       <header className="sticky top-0 z-40 glass-panel border-b border-white/5 backdrop-blur-xl">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
           <Link href="/" className="flex items-center gap-3 group">
-            <div className="w-10 h-10 rounded-2xl bg-emerald-500/10 border border-emerald-500/30 flex items-center justify-center p-1.5 shadow-[0_0_20px_rgba(16,185,129,0.2)] group-hover:border-emerald-400 transition-colors">
+            <div className="w-10 h-10 rounded-2xl bg-amber-500/10 border border-amber-500/30 flex items-center justify-center p-1.5 shadow-[0_0_20px_rgba(245,158,11,0.25)] group-hover:border-amber-400 transition-colors">
               <img
                 src="/icon_flutuante-96.webp"
                 width={96}
@@ -28,7 +28,7 @@ export default function ComoFuncionaPage() {
             </div>
             <div className="flex flex-col">
               <span className="text-xl sm:text-2xl font-black tracking-tight text-white leading-none">
-                JobPago<span className="text-emerald-400">.</span>
+                JobPago<span className="text-amber-400">.</span>
               </span>
               <span className="text-[9px] font-mono font-bold tracking-wider text-slate-400 uppercase mt-0.5">
                 Renda &amp; Estrada
@@ -48,8 +48,8 @@ export default function ComoFuncionaPage() {
       <main className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-14 sm:py-20">
         {/* HERO */}
         <div className="max-w-3xl">
-          <span className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full glass-panel border border-emerald-500/30 text-emerald-300 text-[10px] sm:text-xs font-black tracking-widest uppercase">
-            <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
+          <span className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full glass-panel border border-amber-500/30 text-amber-300 text-[10px] sm:text-xs font-black tracking-widest uppercase">
+            <span className="w-1.5 h-1.5 rounded-full bg-amber-400 animate-pulse" />
             Guia Rápido
           </span>
 
@@ -75,14 +75,14 @@ export default function ComoFuncionaPage() {
           </p>
 
           <div className="mt-8 grid grid-cols-1 md:grid-cols-2 gap-5">
-            <div className="glass-panel border border-emerald-500/20 rounded-3xl p-6 sm:p-8">
-              <div className="w-12 h-12 rounded-2xl bg-emerald-500/10 border border-emerald-500/30 flex items-center justify-center mb-4">
-                <Icon name="building" width={44} height={44} className="text-emerald-400" />
+            <div className="glass-panel border border-amber-500/20 rounded-3xl p-6 sm:p-8">
+              <div className="w-12 h-12 rounded-2xl bg-amber-500/10 border border-amber-500/30 flex items-center justify-center mb-4">
+                <Icon name="building" width={44} height={44} className="text-amber-400" />
               </div>
               <h3 className="text-lg font-black text-white">Quem precisa contratar</h3>
               <ul className="mt-4 space-y-3 text-sm text-slate-300 leading-relaxed">
                 <li className="flex gap-2.5">
-                  <Icon name="check" width={36} height={36} className="text-emerald-400 shrink-0 mt-0.5" />
+                  <Icon name="check" width={36} height={36} className="text-amber-400 shrink-0 mt-0.5" />
                   <span>
                     <strong className="text-white">+ Anunciar Vaga</strong> no topo publica sua
                     vaga no mapa e no feed em tempo real. Quem tem interesse te chama
@@ -90,10 +90,10 @@ export default function ComoFuncionaPage() {
                   </span>
                 </li>
                 <li className="flex gap-2.5">
-                  <Icon name="check" width={36} height={36} className="text-emerald-400 shrink-0 mt-0.5" />
+                  <Icon name="check" width={36} height={36} className="text-amber-400 shrink-0 mt-0.5" />
                   <span>
                     Ou usa{" "}
-                    <Link href="/cadastrar-servico" className="text-emerald-400 underline hover:text-emerald-300">
+                    <Link href="/cadastrar-servico" className="text-amber-400 underline hover:text-amber-300">
                       Cadastrar Serviço
                     </Link>{" "}
                     → aba <strong className="text-white">Preciso Contratar</strong>: descreve o
@@ -110,7 +110,7 @@ export default function ComoFuncionaPage() {
               <h3 className="text-lg font-black text-white">Quem presta o serviço</h3>
               <ul className="mt-4 space-y-3 text-sm text-slate-300 leading-relaxed">
                 <li className="flex gap-2.5">
-                  <Icon name="check" width={36} height={36} className="text-emerald-400 shrink-0 mt-0.5" />
+                  <Icon name="check" width={36} height={36} className="text-amber-400 shrink-0 mt-0.5" />
                   <span>
                     Filtra o mapa ou o feed pela sua categoria (Nômade & Infra,
                     Estrada & Cargas, Tecnologia & TI...) e chama direto no
@@ -118,10 +118,10 @@ export default function ComoFuncionaPage() {
                   </span>
                 </li>
                 <li className="flex gap-2.5">
-                  <Icon name="check" width={36} height={36} className="text-emerald-400 shrink-0 mt-0.5" />
+                  <Icon name="check" width={36} height={36} className="text-amber-400 shrink-0 mt-0.5" />
                   <span>
                     Ou usa{" "}
-                    <Link href="/cadastrar-servico" className="text-emerald-400 underline hover:text-emerald-300">
+                    <Link href="/cadastrar-servico" className="text-amber-400 underline hover:text-amber-300">
                       Cadastrar Serviço
                     </Link>{" "}
                     → aba <strong className="text-white">Sou Prestador</strong>: cadastra uma vez e
@@ -139,7 +139,7 @@ export default function ComoFuncionaPage() {
 
           <div className="mt-8 grid grid-cols-1 md:grid-cols-2 gap-8">
             <div>
-              <span className="text-[11px] font-mono font-bold uppercase tracking-widest text-emerald-400">
+              <span className="text-[11px] font-mono font-bold uppercase tracking-widest text-amber-400">
                 Caminho 01
               </span>
               <h3 className="text-base font-black text-white mt-1">Mapa & Feed em Tempo Real</h3>
@@ -189,10 +189,10 @@ export default function ComoFuncionaPage() {
         </section>
 
         {/* PIX DIRETO, SEM COMISSÃO */}
-        <section className="mt-16 glass-panel border border-emerald-500/20 rounded-3xl p-6 sm:p-10">
+        <section className="mt-16 glass-panel border border-amber-500/20 rounded-3xl p-6 sm:p-10">
           <div className="flex items-start gap-4">
-            <div className="w-12 h-12 rounded-2xl bg-emerald-500/10 border border-emerald-500/30 flex items-center justify-center shrink-0">
-              <Icon name="bolt" width={44} height={44} className="text-emerald-400" />
+            <div className="w-12 h-12 rounded-2xl bg-amber-500/10 border border-amber-500/30 flex items-center justify-center shrink-0">
+              <Icon name="bolt" width={44} height={44} className="text-amber-400" />
             </div>
             <div>
               <h2 className="text-lg sm:text-xl font-black text-white">PIX direto, sem comissão</h2>
@@ -238,7 +238,7 @@ export default function ComoFuncionaPage() {
 
         {/* CATEGORIAS */}
         <section className="mt-16">
-          <h2 className="text-xl sm:text-2xl font-black text-white">8 tribos, 1 mapa</h2>
+          <h2 className="text-xl sm:text-2xl font-black text-white">7 categorias da estrada, 1 mapa</h2>
           <p className="mt-2 text-sm text-slate-400 max-w-2xl">
             Cada categoria já tem gente publicando e procurando. Encontre a sua.
           </p>
@@ -263,7 +263,7 @@ export default function ComoFuncionaPage() {
           <div className="mt-6 flex flex-col sm:flex-row items-center justify-center gap-3.5">
             <Link
               href="/#mapa-gps"
-              className="btn-primary-emerald w-full sm:w-auto px-7 py-3.5 rounded-2xl flex items-center justify-center gap-2.5 text-sm sm:text-base font-black shadow-lg cursor-pointer"
+              className="btn-primary-amalfi w-full sm:w-auto px-7 py-3.5 rounded-2xl flex items-center justify-center gap-2.5 text-sm sm:text-base font-black shadow-lg cursor-pointer"
             >
               <Icon name="compass" width={36} height={36} /> Explorar Mapa & Serviços
             </Link>
@@ -282,13 +282,13 @@ export default function ComoFuncionaPage() {
         <div className="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4">
           <p>© {new Date().getFullYear()} JobPago.com.br · Marketplace Passivo mantido por Allan Candido.</p>
           <div className="flex items-center gap-6 text-xs text-slate-400">
-            <Link href="/termos" className="hover:text-emerald-400 transition-colors">
+            <Link href="/termos" className="hover:text-amber-400 transition-colors">
               Termos de Uso
             </Link>
-            <Link href="/privacidade" className="hover:text-emerald-400 transition-colors">
+            <Link href="/privacidade" className="hover:text-amber-400 transition-colors">
               Política de Privacidade
             </Link>
-            <a href="mailto:allan@jobpago.com.br" className="hover:text-emerald-400 transition-colors">
+            <a href="mailto:allan@jobpago.com.br" className="hover:text-amber-400 transition-colors">
               allan@jobpago.com.br
             </a>
           </div>

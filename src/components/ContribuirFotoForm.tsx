@@ -80,15 +80,15 @@ export default function ContribuirFotoForm() {
 
   if (sucesso) {
     return (
-      <div className="glass-panel glass-emerald p-8 sm:p-14 rounded-3xl text-center max-w-2xl mx-auto shadow-2xl border border-emerald-500/30">
-        <div className="w-16 h-16 rounded-2xl bg-emerald-500/20 border border-emerald-500/40 text-emerald-400 flex items-center justify-center mx-auto mb-6">
+      <div className="glass-panel glass-amalfi p-8 sm:p-14 rounded-3xl text-center max-w-2xl mx-auto shadow-2xl border border-amber-500/30">
+        <div className="w-16 h-16 rounded-2xl bg-amber-500/20 border border-amber-500/40 text-amber-400 flex items-center justify-center mx-auto mb-6">
           <Icon name="check" width={56} height={56} />
         </div>
         <h3 className="text-2xl font-black text-white">Foto enviada!</h3>
         <p className="text-sm text-slate-300 mt-3 leading-relaxed max-w-lg mx-auto">
           Fica pendente até o Allan revisar e aprovar. Quando aprovada, aparece
           na camada &quot;Fotos da Comunidade&quot; do mapa e em{" "}
-          <a href="https://jobpago.com.br/certificados" className="text-emerald-400 underline">
+          <a href="https://jobpago.com.br/certificados" className="text-amber-400 underline">
             /certificados
           </a>
           , se for o caso.
@@ -118,7 +118,7 @@ export default function ContribuirFotoForm() {
           type="button"
           onClick={() => setTipo("viajante")}
           className={`flex-1 py-3 px-3 rounded-xl text-xs font-black transition-all cursor-pointer flex items-center justify-center gap-2 ${
-            tipo === "viajante" ? "bg-emerald-500 text-black shadow-lg" : "text-slate-400 hover:text-white"
+            tipo === "viajante" ? "bg-amber-500 text-black shadow-lg" : "text-slate-400 hover:text-white"
           }`}
         >
           <Icon name="compass" width={32} height={32} /> Sou Viajante
@@ -127,7 +127,7 @@ export default function ContribuirFotoForm() {
           type="button"
           onClick={() => setTipo("empresario")}
           className={`flex-1 py-3 px-3 rounded-xl text-xs font-black transition-all cursor-pointer flex items-center justify-center gap-2 ${
-            tipo === "empresario" ? "bg-emerald-500 text-black shadow-lg" : "text-slate-400 hover:text-white"
+            tipo === "empresario" ? "bg-amber-500 text-black shadow-lg" : "text-slate-400 hover:text-white"
           }`}
         >
           <Icon name="building" width={32} height={32} /> Sou Empresário
@@ -152,7 +152,7 @@ export default function ContribuirFotoForm() {
               setPrecisaManual(false);
               setLatManual(null);
             }}
-            className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-sm text-white file:mr-3 file:py-1.5 file:px-3 file:rounded-lg file:border-0 file:bg-emerald-500 file:text-black file:font-bold file:text-xs"
+            className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-sm text-white file:mr-3 file:py-1.5 file:px-3 file:rounded-lg file:border-0 file:bg-amber-500 file:text-black file:font-bold file:text-xs"
           />
           <p className="text-[11px] text-slate-500 mt-1">
             Se a foto tiver GPS (a maioria das câmeras de celular tem), a localização é automática.
@@ -182,7 +182,7 @@ export default function ContribuirFotoForm() {
             placeholder="Ex: Posto com chuveiro e 220V"
             value={titulo}
             onChange={(e) => setTitulo(e.target.value)}
-            className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:border-emerald-400"
+            className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:border-amber-400"
           />
         </div>
 
@@ -191,7 +191,7 @@ export default function ContribuirFotoForm() {
           <select
             value={categoria}
             onChange={(e) => setCategoria(e.target.value)}
-            className="w-full bg-slate-900 border border-white/10 rounded-xl px-3 py-3 text-sm text-white focus:outline-none focus:border-emerald-400"
+            className="w-full bg-slate-900 border border-white/10 rounded-xl px-3 py-3 text-sm text-white focus:outline-none focus:border-amber-400"
           >
             {CATEGORIAS.map((c) => (
               <option key={c.id} value={c.nome}>
@@ -208,7 +208,7 @@ export default function ContribuirFotoForm() {
             placeholder="O que tem nesse ponto? Chuveiro, tomada, Wi-Fi, socorro mecânico..."
             value={descricao}
             onChange={(e) => setDescricao(e.target.value)}
-            className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:border-emerald-400"
+            className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:border-amber-400"
           />
         </div>
 
@@ -220,7 +220,7 @@ export default function ContribuirFotoForm() {
               placeholder="Opcional"
               value={nomeContribuidor}
               onChange={(e) => setNomeContribuidor(e.target.value)}
-              className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:border-emerald-400"
+              className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:border-amber-400"
             />
           </div>
           <div>
@@ -230,7 +230,7 @@ export default function ContribuirFotoForm() {
               placeholder="Opcional"
               value={contato}
               onChange={(e) => setContato(e.target.value)}
-              className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:border-emerald-400"
+              className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:border-amber-400"
             />
           </div>
         </div>
@@ -238,7 +238,7 @@ export default function ContribuirFotoForm() {
         <button
           type="submit"
           disabled={loading}
-          className="btn-primary-emerald mt-2 py-4 rounded-2xl text-sm font-black uppercase tracking-wider cursor-pointer flex items-center justify-center gap-2 disabled:opacity-50"
+          className="btn-primary-amalfi mt-2 py-4 rounded-2xl text-sm font-black uppercase tracking-wider cursor-pointer flex items-center justify-center gap-2 disabled:opacity-50"
         >
           {loading ? (
             <div className="w-5 h-5 rounded-full border-2 border-black border-t-transparent animate-spin"></div>

@@ -269,23 +269,23 @@ export default function BlogAdminIngestion() {
         <div className="max-w-6xl mx-auto px-4 py-2 flex justify-end">
           <button
             onClick={() => setShowLoginModal(true)}
-            className="text-xs font-mono text-slate-400 hover:text-emerald-400 transition-colors flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-white/5 bg-white/[0.02]"
+            className="text-xs font-mono text-slate-400 hover:text-amber-400 transition-colors flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-white/5 bg-white/[0.02]"
           >
             <span>🔒</span> Acesso Admin (Allan Candido)
           </button>
         </div>
       ) : (
-        <div className="bg-slate-950/90 border-b border-emerald-500/30 backdrop-blur-xl px-4 py-3 text-white shadow-2xl">
+        <div className="bg-slate-950/90 border-b border-amber-500/30 backdrop-blur-xl px-4 py-3 text-white shadow-2xl">
           <div className="max-w-6xl mx-auto flex items-center justify-between flex-wrap gap-4">
             <div className="flex items-center gap-3">
-              <div className="w-8 h-8 rounded-lg bg-emerald-500 text-black font-black flex items-center justify-center text-xs">
+              <div className="w-8 h-8 rounded-lg bg-amber-500 text-black font-black flex items-center justify-center text-xs">
                 JP
               </div>
               <div>
                 <p className="text-xs font-bold leading-tight">
                   Painel de Ingestão de Blog • {adminUser?.name || "Allan Candido"}
                 </p>
-                <p className="text-[10px] text-emerald-400 font-mono">
+                <p className="text-[10px] text-amber-400 font-mono">
                   {adminUser?.email || "angravirtualpro@gmail.com"} (Reconhecido como Admin)
                 </p>
               </div>
@@ -295,7 +295,7 @@ export default function BlogAdminIngestion() {
               <button
                 onClick={handleSelectDirectory}
                 disabled={isScanning}
-                className="bg-emerald-500 hover:bg-emerald-400 text-black text-xs font-black px-3.5 py-2 rounded-xl flex items-center gap-1.5 transition-colors"
+                className="bg-amber-500 hover:bg-amber-400 text-black text-xs font-black px-3.5 py-2 rounded-xl flex items-center gap-1.5 transition-colors"
               >
                 <span>📂</span> {isScanning ? "Lendo pasta..." : "Conectar Pasta Local (Downloads/Artigos blog)"}
               </button>
@@ -320,7 +320,7 @@ export default function BlogAdminIngestion() {
             <div
               className={`max-w-6xl mx-auto mt-3 p-2.5 rounded-xl text-xs font-medium ${
                 message.type === "success"
-                  ? "bg-emerald-500/10 border border-emerald-500/30 text-emerald-300"
+                  ? "bg-amber-500/10 border border-amber-500/30 text-amber-300"
                   : message.type === "error"
                   ? "bg-rose-500/10 border border-rose-500/30 text-rose-300"
                   : "bg-blue-500/10 border border-blue-500/30 text-blue-300"
@@ -343,7 +343,7 @@ export default function BlogAdminIngestion() {
                   >
                     <div className="flex-1 min-w-[280px]">
                       <div className="flex items-center gap-2 mb-1">
-                        <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">
+                        <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-amber-500/10 text-amber-400 border border-amber-500/20">
                           {item.parsed.category}
                         </span>
                         <span className="text-[11px] text-slate-500 font-mono">{item.name}</span>
@@ -362,7 +362,7 @@ export default function BlogAdminIngestion() {
                       <button
                         onClick={() => handlePublish(item)}
                         disabled={publishingName === item.name}
-                        className="text-xs font-bold px-3.5 py-1.5 rounded-lg bg-emerald-500 hover:bg-emerald-400 text-black flex items-center gap-1.5 transition-colors"
+                        className="text-xs font-bold px-3.5 py-1.5 rounded-lg bg-amber-500 hover:bg-amber-400 text-black flex items-center gap-1.5 transition-colors"
                       >
                         <span>🚀</span> {publishingName === item.name ? "Publicando..." : "Publicar e Excluir Arquivo Local"}
                       </button>
@@ -382,10 +382,10 @@ export default function BlogAdminIngestion() {
           onClick={() => setShowLoginModal(false)}
         >
           <div
-            className="bg-slate-900 border border-emerald-500/30 rounded-2xl p-6 max-w-sm w-full shadow-2xl text-center"
+            className="bg-slate-900 border border-amber-500/30 rounded-2xl p-6 max-w-sm w-full shadow-2xl text-center"
             onClick={(e) => e.stopPropagation()}
           >
-            <div className="w-12 h-12 rounded-xl bg-emerald-500 text-black font-black flex items-center justify-center text-lg mx-auto mb-3">
+            <div className="w-12 h-12 rounded-xl bg-amber-500 text-black font-black flex items-center justify-center text-lg mx-auto mb-3">
               JP
             </div>
             <h3 className="text-base font-bold text-white mb-1">Área do Administrador</h3>
@@ -418,11 +418,11 @@ export default function BlogAdminIngestion() {
                 placeholder="Chave Mestra Admin"
                 value={loginSecret}
                 onChange={(e) => setLoginSecret(e.target.value)}
-                className="w-full bg-slate-950 border border-white/10 rounded-xl px-3 py-2 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-emerald-500"
+                className="w-full bg-slate-950 border border-white/10 rounded-xl px-3 py-2 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-amber-500"
               />
               <button
                 type="submit"
-                className="w-full bg-emerald-500/10 hover:bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 text-xs font-bold py-2 rounded-xl transition-colors"
+                className="w-full bg-amber-500/10 hover:bg-amber-500/20 text-amber-400 border border-amber-500/30 text-xs font-bold py-2 rounded-xl transition-colors"
               >
                 Autenticar Chave Mestra
               </button>
@@ -442,7 +442,7 @@ export default function BlogAdminIngestion() {
             onClick={(e) => e.stopPropagation()}
           >
             <div className="flex items-center justify-between mb-4">
-              <span className="text-[10px] font-bold text-emerald-400 uppercase tracking-widest">
+              <span className="text-[10px] font-bold text-amber-400 uppercase tracking-widest">
                 Prévia • {previewArticle.category}
               </span>
               <button onClick={() => setPreviewArticle(null)} className="text-slate-400 hover:text-white">✕</button>
@@ -468,7 +468,7 @@ export default function BlogAdminIngestion() {
                   else handlePublish({ name: `${previewArticle.id}.md`, parsed: previewArticle });
                   setPreviewArticle(null);
                 }}
-                className="text-xs font-bold px-4 py-2 rounded-xl bg-emerald-500 text-black"
+                className="text-xs font-bold px-4 py-2 rounded-xl bg-amber-500 text-black"
               >
                 Publicar Artigo
               </button>

@@ -12,11 +12,11 @@ export const metadata: Metadata = {
 
 export default function NoticiasEstradaPage() {
   return (
-    <div className="min-h-screen text-slate-100 selection:bg-emerald-500 selection:text-black">
+    <div className="min-h-screen text-slate-100 selection:bg-amber-500 selection:text-black">
       <header className="sticky top-0 z-40 glass-panel border-b border-white/5 backdrop-blur-xl">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
           <Link href="/" className="flex items-center gap-3 group">
-            <div className="w-10 h-10 rounded-2xl bg-emerald-500/10 border border-emerald-500/30 flex items-center justify-center p-1.5 shadow-[0_0_20px_rgba(16,185,129,0.2)] group-hover:border-emerald-400 transition-colors">
+            <div className="w-10 h-10 rounded-2xl bg-amber-500/10 border border-amber-500/30 flex items-center justify-center p-1.5 shadow-[0_0_20px_rgba(245,158,11,0.25)] group-hover:border-amber-400 transition-colors">
               <img
                 src="/icon_flutuante-96.webp"
                 width={96}
@@ -27,7 +27,7 @@ export default function NoticiasEstradaPage() {
             </div>
             <div className="flex flex-col">
               <span className="text-xl sm:text-2xl font-black tracking-tight text-white leading-none">
-                JobPago<span className="text-emerald-400">.</span>
+                JobPago<span className="text-amber-400">.</span>
               </span>
               <span className="text-[9px] font-mono font-bold tracking-wider text-slate-400 uppercase mt-0.5">
                 Renda &amp; Estrada
@@ -45,8 +45,8 @@ export default function NoticiasEstradaPage() {
       </header>
 
       <main className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-14 sm:py-20">
-        <span className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full glass-panel border border-emerald-500/30 text-emerald-300 text-[10px] sm:text-xs font-black tracking-widest uppercase">
-          <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
+        <span className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full glass-panel border border-amber-500/30 text-amber-300 text-[10px] sm:text-xs font-black tracking-widest uppercase">
+          <span className="w-1.5 h-1.5 rounded-full bg-amber-400 animate-pulse" />
           Expedição Angra → Fortaleza
         </span>
 
@@ -57,7 +57,7 @@ export default function NoticiasEstradaPage() {
         <p className="mt-5 text-sm sm:text-base text-slate-300 leading-relaxed">
           Atualizações reais da viagem, estabelecimentos recém-certificados e
           reconhecimento de quem apoiou a Expedição com uma{" "}
-          <Link href="/parceiros/planos" className="text-emerald-400 underline hover:text-emerald-300">
+          <Link href="/parceiros/planos" className="text-amber-400 underline hover:text-amber-300">
             contribuição PIX
           </Link>
           .
@@ -66,7 +66,7 @@ export default function NoticiasEstradaPage() {
         <div className="mt-12 flex flex-col gap-6">
           {NOTICIAS_ESTRADA.length === 0 ? (
             <div className="glass-card rounded-3xl p-10 sm:p-14 text-center flex flex-col items-center gap-4">
-              <div className="w-14 h-14 rounded-2xl bg-emerald-500/10 border border-emerald-500/30 flex items-center justify-center">
+              <div className="w-14 h-14 rounded-2xl bg-amber-500/10 border border-amber-500/30 flex items-center justify-center">
                 <Icon name="rocket" width={52} height={52} />
               </div>
               <h3 className="text-lg sm:text-xl font-black text-white">
@@ -80,7 +80,7 @@ export default function NoticiasEstradaPage() {
           ) : (
             NOTICIAS_ESTRADA.map((post) => (
               <article key={post.id} className="glass-card rounded-3xl p-6 sm:p-8">
-                <span className="text-[10px] font-mono font-bold text-emerald-400 uppercase tracking-widest">
+                <span className="text-[10px] font-mono font-bold text-amber-400 uppercase tracking-widest">
                   {post.data}
                 </span>
                 <h2 className="text-xl font-black text-white mt-1">{post.titulo}</h2>
@@ -98,13 +98,13 @@ export default function NoticiasEstradaPage() {
         <div className="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4">
           <p>© {new Date().getFullYear()} JobPago.com.br · Marketplace Passivo mantido por Allan Candido.</p>
           <div className="flex items-center gap-6 text-xs text-slate-400">
-            <Link href="/parceiros/planos" className="hover:text-emerald-400 transition-colors">
+            <Link href="/parceiros/planos" className="hover:text-amber-400 transition-colors">
               Seja Parceiro
             </Link>
-            <Link href="/certificados" className="hover:text-emerald-400 transition-colors">
+            <Link href="/certificados" className="hover:text-amber-400 transition-colors">
               Certificados
             </Link>
-            <a href="mailto:allan@jobpago.com.br" className="hover:text-emerald-400 transition-colors">
+            <a href="mailto:allan@jobpago.com.br" className="hover:text-amber-400 transition-colors">
               allan@jobpago.com.br
             </a>
           </div>

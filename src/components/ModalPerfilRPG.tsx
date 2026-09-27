@@ -11,14 +11,12 @@ export interface UserRPG {
   nextLevelXp: number;
   title: string;
   guild: "Nômades & Van Life" | "Devs & Magos da Tecnologia" | "Criadores & Mídia Digital" | "Prestadores & Alta Honra";
-  pixBalance: number;
-  btcAddress: string;
   honorScore: number; // Pontos de Alta Honra (Gratuidade & Apoio)
   honorTitle: string; // Ex: Paladino Nômade Rank S
   stats: {
     velocidade: number;
     confiabilidade: number;
-    sigilo: number;
+    hospitalidade: number;
   };
   badges: Array<{
     id: string;
@@ -44,9 +42,9 @@ export interface UserRPG {
 export const GUILD_DETAILS: Record<UserRPG["guild"], { icon: IconName; color: string; border: string; text: string; desc: string }> = {
   "Nômades & Van Life": {
     icon: "van",
-    color: "from-emerald-500 to-teal-400",
-    border: "border-emerald-500/40",
-    text: "text-emerald-400",
+    color: "from-amber-500 to-orange-400",
+    border: "border-amber-500/40",
+    text: "text-amber-400",
     desc: "Especialistas em infraestrutura de estrada, cargas 220V/32A, chuveiro quente e apoio para quem vive viajando.",
   },
   "Devs & Magos da Tecnologia": {
@@ -105,10 +103,10 @@ export default function ModalPerfilRPG({
         <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 border-b border-white/10 pb-6">
           <div className="flex items-center gap-4">
             <div className="relative">
-              <div className="w-16 h-16 rounded-2xl bg-gradient-to-tr from-emerald-500 via-teal-400 to-cyan-400 flex items-center justify-center text-black shadow-lg shadow-emerald-500/20">
+              <div className="w-16 h-16 rounded-2xl bg-gradient-to-tr from-amber-500 via-orange-400 to-sky-400 flex items-center justify-center text-black shadow-lg shadow-amber-500/20">
                 <Icon name="bolt" width={56} height={56} />
               </div>
-              <span className="absolute -bottom-2 -right-2 bg-black border border-emerald-400 text-emerald-400 font-extrabold text-[10px] px-2 py-0.5 rounded-full">
+              <span className="absolute -bottom-2 -right-2 bg-black border border-amber-400 text-amber-400 font-extrabold text-[10px] px-2 py-0.5 rounded-full">
                 Nv. {user.level}
               </span>
             </div>
@@ -129,7 +127,7 @@ export default function ModalPerfilRPG({
             <span className="text-lg font-black text-amber-300 flex items-center gap-1.5">
               <Icon name="shield" width={36} height={36} /> {user.honorScore} PTS
             </span>
-            <span className="text-[10px] text-emerald-400 font-bold">Anfitrião 100% Cortesia</span>
+            <span className="text-[10px] text-amber-400 font-bold">Anfitrião 100% Cortesia</span>
           </div>
         </div>
 
@@ -139,7 +137,7 @@ export default function ModalPerfilRPG({
             onClick={() => setActiveTab("perfil")}
             className={`flex-1 py-2.5 rounded-xl text-xs font-black transition-all ${
               activeTab === "perfil"
-                ? "bg-emerald-500 text-black shadow-lg"
+                ? "bg-amber-400 text-black shadow-lg"
                 : "text-zinc-400 hover:text-white"
             }`}
           >
@@ -149,7 +147,7 @@ export default function ModalPerfilRPG({
             onClick={() => setActiveTab("guildas")}
             className={`flex-1 py-2.5 rounded-xl text-xs font-black transition-all ${
               activeTab === "guildas"
-                ? "bg-emerald-500 text-black shadow-lg"
+                ? "bg-amber-400 text-black shadow-lg"
                 : "text-zinc-400 hover:text-white"
             }`}
           >
@@ -163,7 +161,7 @@ export default function ModalPerfilRPG({
                 : "text-amber-400 hover:text-amber-300"
             }`}
           >
-            Loot Vault & Recompensas
+            Cortesias & Benefícios
             <span className="w-2 h-2 rounded-full bg-amber-400 animate-ping absolute top-2 right-2"></span>
           </button>
         </div>
@@ -175,13 +173,13 @@ export default function ModalPerfilRPG({
             <div>
               <div className="flex items-center justify-between text-xs font-bold mb-1.5">
                 <span className="text-zinc-300">Progresso de Experiência (XP)</span>
-                <span className="text-emerald-400 font-mono">
+                <span className="text-amber-400 font-mono">
                   {user.xp} / {user.nextLevelXp} XP ({xpPercentage}%)
                 </span>
               </div>
               <div className="w-full h-3 bg-white/5 border border-white/10 rounded-full overflow-hidden p-0.5">
                 <div
-                  className="h-full bg-gradient-to-r from-emerald-500 via-teal-400 to-cyan-400 rounded-full transition-all duration-500"
+                  className="h-full bg-gradient-to-r from-amber-500 via-orange-400 to-sky-400 rounded-full transition-all duration-500"
                   style={{ width: `${xpPercentage}%` }}
                 ></div>
               </div>
@@ -190,7 +188,7 @@ export default function ModalPerfilRPG({
             {/* ATRIBUTOS */}
             <div>
               <span className="text-xs font-extrabold text-zinc-400 uppercase block mb-3">
-                Atributos de Combate & Serviço
+                Atributos na Comunidade & Estrada
               </span>
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
                 <div className="bg-black/40 border border-white/10 p-3.5 rounded-2xl">
@@ -205,21 +203,21 @@ export default function ModalPerfilRPG({
 
                 <div className="bg-black/40 border border-white/10 p-3.5 rounded-2xl">
                   <div className="flex items-center justify-between text-xs font-bold mb-1">
-                    <span className="text-emerald-400 flex items-center gap-1"><Icon name="shield" width={30} height={30} /> Confiabilidade</span>
+                    <span className="text-sky-400 flex items-center gap-1"><Icon name="shield" width={30} height={30} /> Confiabilidade</span>
                     <span className="text-white font-mono">{user.stats.confiabilidade}/100</span>
                   </div>
                   <div className="w-full h-1.5 bg-white/10 rounded-full overflow-hidden">
-                    <div className="h-full bg-emerald-400 rounded-full" style={{ width: `${user.stats.confiabilidade}%` }}></div>
+                    <div className="h-full bg-sky-400 rounded-full" style={{ width: `${user.stats.confiabilidade}%` }}></div>
                   </div>
                 </div>
 
                 <div className="bg-black/40 border border-white/10 p-3.5 rounded-2xl">
                   <div className="flex items-center justify-between text-xs font-bold mb-1">
-                    <span className="text-pink-400 flex items-center gap-1"><Icon name="lock" width={30} height={30} /> Sigilo Contratual</span>
-                    <span className="text-white font-mono">{user.stats.sigilo}/100</span>
+                    <span className="text-amber-400 flex items-center gap-1"><Icon name="handshake" width={30} height={30} /> Hospitalidade & Apoio</span>
+                    <span className="text-white font-mono">{user.stats.hospitalidade}/100</span>
                   </div>
                   <div className="w-full h-1.5 bg-white/10 rounded-full overflow-hidden">
-                    <div className="h-full bg-pink-400 rounded-full" style={{ width: `${user.stats.sigilo}%` }}></div>
+                    <div className="h-full bg-amber-400 rounded-full" style={{ width: `${user.stats.hospitalidade}%` }}></div>
                   </div>
                 </div>
               </div>
@@ -236,7 +234,7 @@ export default function ModalPerfilRPG({
                     key={b.id}
                     className={`p-3 rounded-2xl border flex flex-col items-center text-center transition-all ${
                       b.unlocked
-                        ? "bg-gradient-to-b from-white/10 to-white/5 border-emerald-500/40 text-white shadow-lg"
+                        ? "bg-gradient-to-b from-white/10 to-white/5 border-amber-500/40 text-white shadow-lg"
                         : "bg-black/30 border-white/5 text-zinc-600 opacity-50"
                     }`}
                   >
@@ -271,7 +269,7 @@ export default function ModalPerfilRPG({
                       }}
                       className={`p-3 rounded-xl border flex flex-col items-center text-center transition-all ${
                         isActive
-                          ? `bg-white/10 border-emerald-400 shadow-lg`
+                          ? `bg-white/10 border-amber-400 shadow-lg`
                           : `bg-black/40 border-white/10 hover:border-white/20 text-zinc-400`
                       }`}
                     >
@@ -299,9 +297,9 @@ export default function ModalPerfilRPG({
               <div className="flex items-center gap-2">
                 <Icon name="gift" width={48} height={48} className="text-amber-300" />
                 <div>
-                  <h4 className="text-sm font-black text-amber-300">Loot Vault & Benefícios Exclusivos</h4>
+                  <h4 className="text-sm font-black text-amber-300">Cortesias da Comunidade & Recompensas</h4>
                   <p className="text-xs text-zinc-300 mt-0.5">
-                    Resgate ingressos cortesia, passes de camping, aventuras guiadas e vagas em comboios de destinos.
+                    Benefícios e cortesias solidárias de anfitriões e parceiros verificados da expedição para membros de Alta Honra.
                   </p>
                 </div>
               </div>
@@ -316,7 +314,7 @@ export default function ModalPerfilRPG({
                     key={rew.id}
                     className={`rounded-2xl p-4 border transition-all flex flex-col justify-between ${
                       rew.claimed
-                        ? "bg-emerald-950/30 border-emerald-500/40 opacity-80"
+                        ? "bg-amber-950/30 border-amber-500/40 opacity-80"
                         : canUnlock
                         ? "bg-amber-950/30 border-amber-500/50 shadow-xl shadow-amber-500/10 hover:border-amber-400"
                         : "bg-black/40 border-white/10 opacity-60"
@@ -335,14 +333,14 @@ export default function ModalPerfilRPG({
 
                       <h4 className="text-sm font-bold text-white leading-snug">{rew.title}</h4>
                       <p className="text-[11px] text-zinc-400 mt-1 line-clamp-2">{rew.description}</p>
-                      <span className="text-[10px] font-bold text-emerald-400 mt-2 flex items-center gap-1">
+                      <span className="text-[10px] font-bold text-amber-400 mt-2 flex items-center gap-1">
                         <Icon name="pin" width={26} height={26} /> {rew.location}
                       </span>
                     </div>
 
                     <div className="mt-4 pt-3 border-t border-white/10">
                       {rew.claimed ? (
-                        <span className="w-full block text-center bg-emerald-500/20 text-emerald-300 font-extrabold text-xs py-2 rounded-xl border border-emerald-500/40">
+                        <span className="w-full block text-center bg-amber-500/20 text-amber-300 font-extrabold text-xs py-2 rounded-xl border border-amber-500/40">
                           Resgatado (Voucher Ativo)
                         </span>
                       ) : canUnlock ? (
@@ -350,7 +348,7 @@ export default function ModalPerfilRPG({
                           onClick={() => onClaimReward(rew.id)}
                           className="w-full bg-gradient-to-r from-amber-500 to-orange-400 text-black font-extrabold text-xs py-2 rounded-xl transition-all hover:scale-105 shadow-md shadow-amber-500/20 flex items-center justify-center gap-1.5"
                         >
-                          <Icon name="gift" width={32} height={32} /> Resgatar Benefício Gratuitamente
+                          <Icon name="gift" width={32} height={32} /> Resgatar Benefício da Comunidade
                         </button>
                       ) : (
                         <span className="w-full block text-center bg-white/5 text-zinc-500 font-bold text-xs py-2 rounded-xl border border-white/10 flex items-center justify-center gap-1.5">

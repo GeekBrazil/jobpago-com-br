@@ -117,11 +117,11 @@ export default function CadastroServicoLead({ onSuccess }: CadastroServicoLeadPr
 
   if (successData) {
     return (
-      <div className="glass-panel glass-emerald p-8 sm:p-14 rounded-3xl text-center max-w-2xl mx-auto shadow-2xl animate-fade-in border border-emerald-500/30">
-        <div className="w-16 h-16 rounded-2xl bg-emerald-500/20 border border-emerald-500/40 text-emerald-400 flex items-center justify-center mx-auto mb-6 shadow-[0_0_30px_rgba(16,185,129,0.3)]">
+      <div className="glass-panel glass-amalfi p-8 sm:p-14 rounded-3xl text-center max-w-2xl mx-auto shadow-2xl animate-fade-in border border-amber-500/30">
+        <div className="w-16 h-16 rounded-2xl bg-amber-500/20 border border-amber-500/40 text-amber-400 flex items-center justify-center mx-auto mb-6 shadow-[0_0_30px_rgba(245,158,11,0.3)]">
           <Icon name="check" width={56} height={56} />
         </div>
-        <span className="text-[11px] font-mono font-bold uppercase tracking-widest text-emerald-400">
+        <span className="text-[11px] font-mono font-bold uppercase tracking-widest text-amber-400">
           Despacho Protocolado
         </span>
         <h3 className="text-2xl sm:text-3xl font-black text-white mt-2 tracking-tight">
@@ -138,7 +138,7 @@ export default function CadastroServicoLead({ onSuccess }: CadastroServicoLeadPr
             href={successData.whatsappUrl}
             target="_blank"
             rel="noopener noreferrer"
-            className="btn-primary-emerald w-full sm:w-auto px-8 py-3.5 rounded-2xl text-xs sm:text-sm font-black flex items-center justify-center gap-2 cursor-pointer shadow-xl"
+            className="btn-primary-amalfi w-full sm:w-auto px-8 py-3.5 rounded-2xl text-xs sm:text-sm font-black flex items-center justify-center gap-2 cursor-pointer shadow-xl"
           >
             <Icon name="chat" width={34} height={34} />{" "}
             {isContratante ? "Abrir WhatsApp com Profissional & Contratante" : "Abrir WhatsApp com Contratante & Contratado"}
@@ -167,8 +167,8 @@ export default function CadastroServicoLead({ onSuccess }: CadastroServicoLeadPr
       {/* ── COLUNA ESQUERDA: DIRETRIZ EDITORIAL & PROPOSTA DE VALOR ── */}
       <div className="lg:col-span-5 flex flex-col gap-6 lg:sticky lg:top-28">
         <div>
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 text-[11px] font-mono font-bold tracking-wider uppercase mb-4">
-            <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span>
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-amber-500/10 border border-amber-500/30 text-amber-400 text-[11px] font-mono font-bold tracking-wider uppercase mb-4">
+            <span className="w-1.5 h-1.5 rounded-full bg-amber-400 animate-pulse"></span>
             Cadastro de Serviços · Despacho Direto
           </div>
           <h1 className="text-3xl sm:text-4xl font-black text-white tracking-tight leading-[1.15]">
@@ -182,7 +182,7 @@ export default function CadastroServicoLead({ onSuccess }: CadastroServicoLeadPr
         {/* TIMELINE EM 3 FASES */}
         <div className="flex flex-col gap-4 border-l border-white/10 pl-5 my-2">
           <div className="relative">
-            <span className="text-[10px] font-mono font-bold text-emerald-400 uppercase tracking-widest block">
+            <span className="text-[10px] font-mono font-bold text-amber-400 uppercase tracking-widest block">
               Fase 01
             </span>
             <h2 className="text-sm font-black text-white mt-0.5">Cadastro &amp; Validação</h2>
@@ -192,7 +192,7 @@ export default function CadastroServicoLead({ onSuccess }: CadastroServicoLeadPr
           </div>
 
           <div className="relative">
-            <span className="text-[10px] font-mono font-bold text-emerald-400 uppercase tracking-widest block">
+            <span className="text-[10px] font-mono font-bold text-amber-400 uppercase tracking-widest block">
               Fase 02
             </span>
             <h2 className="text-sm font-black text-white mt-0.5">Envio pelo JobPago</h2>
@@ -202,7 +202,7 @@ export default function CadastroServicoLead({ onSuccess }: CadastroServicoLeadPr
           </div>
 
           <div className="relative">
-            <span className="text-[10px] font-mono font-bold text-emerald-400 uppercase tracking-widest block">
+            <span className="text-[10px] font-mono font-bold text-amber-400 uppercase tracking-widest block">
               Fase 03
             </span>
             <h2 className="text-sm font-black text-white mt-0.5">PIX Instantâneo</h2>
@@ -214,7 +214,7 @@ export default function CadastroServicoLead({ onSuccess }: CadastroServicoLeadPr
 
         {/* GARANTIA LGPD */}
         <div className="p-4 rounded-2xl bg-white/[0.02] border border-white/5 flex items-start gap-3">
-          <Icon name="lock" width={40} height={40} className="text-emerald-400 shrink-0" />
+          <Icon name="lock" width={40} height={40} className="text-amber-400 shrink-0" />
           <div>
             <h3 className="text-xs font-bold text-white">Privacidade &amp; LGPD</h3>
             <p className="text-[11px] text-slate-400 mt-0.5 leading-relaxed">
@@ -233,7 +233,7 @@ export default function CadastroServicoLead({ onSuccess }: CadastroServicoLeadPr
             onClick={() => setTipo("prestador")}
             className={`flex-1 py-3 px-3 rounded-xl text-xs font-black transition-all cursor-pointer flex items-center justify-center gap-2 ${
               tipo === "prestador"
-                ? "bg-emerald-500 text-black shadow-lg shadow-emerald-500/25"
+                ? "bg-amber-500 text-black shadow-lg shadow-amber-500/25"
                 : "text-slate-400 hover:text-white"
             }`}
           >
@@ -244,7 +244,7 @@ export default function CadastroServicoLead({ onSuccess }: CadastroServicoLeadPr
             onClick={() => setTipo("contratante")}
             className={`flex-1 py-3 px-3 rounded-xl text-xs font-black transition-all cursor-pointer flex items-center justify-center gap-2 ${
               tipo === "contratante"
-                ? "bg-emerald-500 text-black shadow-lg shadow-emerald-500/25"
+                ? "bg-amber-500 text-black shadow-lg shadow-amber-500/25"
                 : "text-slate-400 hover:text-white"
             }`}
           >
@@ -261,7 +261,7 @@ export default function CadastroServicoLead({ onSuccess }: CadastroServicoLeadPr
         <form onSubmit={handleSubmit} className="flex flex-col gap-6">
           {/* IDENTIFICAÇÃO DO CONTRATADO */}
           <div className="flex flex-col gap-4">
-            <span className="text-[11px] font-mono font-bold uppercase tracking-wider text-emerald-400">
+            <span className="text-[11px] font-mono font-bold uppercase tracking-wider text-amber-400">
               {isContratante ? "01. Seus Dados de Contato (Contratante)" : "01. Quem Está Oferecendo o Serviço (Contratado)"}
             </span>
 
@@ -276,7 +276,7 @@ export default function CadastroServicoLead({ onSuccess }: CadastroServicoLeadPr
                 id="nome-contratado"
                 value={nomeContratado}
                 onChange={(e) => setNomeContratado(e.target.value)}
-                className="w-full bg-black/30 border border-white/10 rounded-xl px-4 py-3 text-sm text-white placeholder-slate-500 focus:outline-none focus:border-emerald-400 transition-colors"
+                className="w-full bg-black/30 border border-white/10 rounded-xl px-4 py-3 text-sm text-white placeholder-slate-500 focus:outline-none focus:border-amber-400 transition-colors"
               />
             </div>
 
@@ -292,7 +292,7 @@ export default function CadastroServicoLead({ onSuccess }: CadastroServicoLeadPr
                   id="whatsapp-contratado"
                 value={whatsappContratado}
                   onChange={handlePhoneChange}
-                  className="w-full bg-black/30 border border-white/10 rounded-xl px-4 py-3 text-sm text-white placeholder-slate-500 focus:outline-none focus:border-emerald-400 transition-colors font-mono"
+                  className="w-full bg-black/30 border border-white/10 rounded-xl px-4 py-3 text-sm text-white placeholder-slate-500 focus:outline-none focus:border-amber-400 transition-colors font-mono"
                 />
               </div>
 
@@ -307,7 +307,7 @@ export default function CadastroServicoLead({ onSuccess }: CadastroServicoLeadPr
                   id="email-contratado"
                 value={emailContratado}
                   onChange={(e) => setEmailContratado(e.target.value)}
-                  className="w-full bg-black/30 border border-white/10 rounded-xl px-4 py-3 text-sm text-white placeholder-slate-500 focus:outline-none focus:border-emerald-400 transition-colors font-mono"
+                  className="w-full bg-black/30 border border-white/10 rounded-xl px-4 py-3 text-sm text-white placeholder-slate-500 focus:outline-none focus:border-amber-400 transition-colors font-mono"
                 />
               </div>
             </div>
@@ -347,7 +347,7 @@ export default function CadastroServicoLead({ onSuccess }: CadastroServicoLeadPr
 
           {/* DETALHES DO SERVIÇO */}
           <div className="flex flex-col gap-4 pt-4 border-t border-white/5">
-            <span className="text-[11px] font-mono font-bold uppercase tracking-wider text-emerald-400">
+            <span className="text-[11px] font-mono font-bold uppercase tracking-wider text-amber-400">
               03. Especificações da Demanda
             </span>
 
@@ -366,7 +366,7 @@ export default function CadastroServicoLead({ onSuccess }: CadastroServicoLeadPr
                 id="titulo-servico"
                 value={tituloServico}
                 onChange={(e) => setTituloServico(e.target.value)}
-                className="w-full bg-black/30 border border-white/10 rounded-xl px-4 py-3 text-sm text-white placeholder-slate-500 focus:outline-none focus:border-emerald-400 transition-colors"
+                className="w-full bg-black/30 border border-white/10 rounded-xl px-4 py-3 text-sm text-white placeholder-slate-500 focus:outline-none focus:border-amber-400 transition-colors"
               />
             </div>
 
@@ -377,7 +377,7 @@ export default function CadastroServicoLead({ onSuccess }: CadastroServicoLeadPr
                   id="categoria-servico"
                   value={categoria}
                   onChange={(e) => setCategoria(e.target.value)}
-                  className="w-full bg-slate-900 border border-white/10 rounded-xl px-3 py-3 text-sm text-white focus:outline-none focus:border-emerald-400 cursor-pointer"
+                  className="w-full bg-slate-900 border border-white/10 rounded-xl px-3 py-3 text-sm text-white focus:outline-none focus:border-amber-400 cursor-pointer"
                 >
                   {CATEGORIAS_SERVICOS.map((c) => (
                     <option key={c.id} value={c.name}>
@@ -393,7 +393,7 @@ export default function CadastroServicoLead({ onSuccess }: CadastroServicoLeadPr
                   id="modalidade-servico"
                   value={modalidade}
                   onChange={(e) => setModalidade(e.target.value as "Remoto" | "Presencial")}
-                  className="w-full bg-slate-900 border border-white/10 rounded-xl px-3 py-3 text-sm text-white focus:outline-none focus:border-emerald-400 cursor-pointer"
+                  className="w-full bg-slate-900 border border-white/10 rounded-xl px-3 py-3 text-sm text-white focus:outline-none focus:border-amber-400 cursor-pointer"
                 >
                   <option value="Remoto">Remoto (Atendimento Online Nacional)</option>
                   <option value="Presencial">Presencial (Local / Estrada)</option>
@@ -413,7 +413,7 @@ export default function CadastroServicoLead({ onSuccess }: CadastroServicoLeadPr
                   id="cidade-atendimento"
                 value={cidade}
                   onChange={(e) => setCidade(e.target.value)}
-                  className="w-full bg-black/30 border border-white/10 rounded-xl px-4 py-3 text-sm text-white placeholder-slate-500 focus:outline-none focus:border-emerald-400 transition-colors"
+                  className="w-full bg-black/30 border border-white/10 rounded-xl px-4 py-3 text-sm text-white placeholder-slate-500 focus:outline-none focus:border-amber-400 transition-colors"
                 />
               </div>
             )}
@@ -448,7 +448,7 @@ export default function CadastroServicoLead({ onSuccess }: CadastroServicoLeadPr
                   id="orcamento"
                 value={valor}
                   onChange={(e) => setValor(e.target.value)}
-                  className="w-full bg-black/30 border border-white/10 rounded-xl px-4 py-3 text-sm text-white placeholder-slate-500 focus:outline-none focus:border-emerald-400 transition-colors font-mono"
+                  className="w-full bg-black/30 border border-white/10 rounded-xl px-4 py-3 text-sm text-white placeholder-slate-500 focus:outline-none focus:border-amber-400 transition-colors font-mono"
                 />
               </div>
             )}
@@ -463,28 +463,28 @@ export default function CadastroServicoLead({ onSuccess }: CadastroServicoLeadPr
                 placeholder="Descreva detalhes práticos, entregáveis e diferenciais do serviço..."
                 value={descricao}
                 onChange={(e) => setDescricao(e.target.value)}
-                className="w-full bg-black/30 border border-white/10 rounded-xl px-4 py-3 text-sm text-white placeholder-slate-500 focus:outline-none focus:border-emerald-400 transition-colors"
+                className="w-full bg-black/30 border border-white/10 rounded-xl px-4 py-3 text-sm text-white placeholder-slate-500 focus:outline-none focus:border-amber-400 transition-colors"
               />
             </div>
           </div>
 
           {/* CONSENTIMENTO LGPD */}
-          <div className="p-4 rounded-2xl bg-emerald-950/20 border border-emerald-500/20 flex items-start gap-3">
+          <div className="p-4 rounded-2xl bg-amber-950/20 border border-amber-500/20 flex items-start gap-3">
             <input
               id="lgpdConsentInput"
               type="checkbox"
               required
               checked={lgpdConsent}
               onChange={(e) => setLgpdConsent(e.target.checked)}
-              className="w-5 h-5 mt-0.5 accent-emerald-500 cursor-pointer shrink-0"
+              className="w-5 h-5 mt-0.5 accent-amber-500 cursor-pointer shrink-0"
             />
             <label htmlFor="lgpdConsentInput" className="text-[11px] text-slate-300 leading-relaxed cursor-pointer">
               <strong className="text-white font-bold">Consentimento LGPD (Lei nº 13.709/2018):</strong> Autorizo expressamente o JobPago a tratar meus dados de contato para a finalidade exclusiva de intermediação e despacho de serviços para os contratantes. Conheço a{" "}
-              <Link href="/privacidade" target="_blank" className="text-emerald-400 underline hover:text-emerald-300">
+              <Link href="/privacidade" target="_blank" className="text-amber-400 underline hover:text-amber-300">
                 Política de Privacidade
               </Link>{" "}
               e os{" "}
-              <Link href="/termos" target="_blank" className="text-emerald-400 underline hover:text-emerald-300">
+              <Link href="/termos" target="_blank" className="text-amber-400 underline hover:text-amber-300">
                 Termos de Uso
               </Link>.
             </label>
@@ -494,7 +494,7 @@ export default function CadastroServicoLead({ onSuccess }: CadastroServicoLeadPr
           <button
             type="submit"
             disabled={loading}
-            className="btn-primary-emerald w-full py-4 rounded-2xl text-xs sm:text-sm font-black uppercase tracking-wider cursor-pointer shadow-xl flex items-center justify-center gap-2 transition-all disabled:opacity-50"
+            className="btn-primary-amalfi w-full py-4 rounded-2xl text-xs sm:text-sm font-black uppercase tracking-wider cursor-pointer shadow-xl flex items-center justify-center gap-2 transition-all disabled:opacity-50"
           >
             {loading ? (
               <div className="w-5 h-5 rounded-full border-2 border-black border-t-transparent animate-spin"></div>

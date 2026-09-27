@@ -631,7 +631,7 @@ export default function MapaServicos({
         <button
           type="button"
           onClick={() => localizarRef.current?.()}
-          className="min-h-[44px] px-4 rounded-2xl bg-[#08080c]/90 backdrop-blur-md border border-emerald-500/30 text-xs font-bold text-emerald-300 hover:border-emerald-400 transition-colors"
+          className="min-h-[44px] px-4 rounded-2xl bg-[#08080c]/90 backdrop-blur-md border border-amber-500/30 text-xs font-bold text-amber-300 hover:border-amber-400 transition-colors"
         >
           Minha posição
         </button>
@@ -656,7 +656,7 @@ export default function MapaServicos({
       <div className="absolute top-4 left-4 z-[1000] flex flex-col gap-2 pointer-events-none">
         <div className="bg-[#08080c]/90 backdrop-blur-md border border-white/10 rounded-2xl p-3 shadow-xl pointer-events-auto">
           <div className="flex items-center gap-2">
-            <span className="w-3 h-3 rounded-full bg-emerald-400 animate-ping"></span>
+            <span className="w-3 h-3 rounded-full bg-amber-400 animate-ping"></span>
             <span className="text-xs font-bold text-white tracking-wide uppercase">
               Mapa de Serviços GPS
             </span>
@@ -682,7 +682,7 @@ export default function MapaServicos({
             <p className="text-sm font-extrabold text-white truncate">
               {activeDestination.title}
             </p>
-            <div className="flex items-center gap-4 mt-2 text-xs font-bold text-emerald-400">
+            <div className="flex items-center gap-4 mt-2 text-xs font-bold text-amber-400">
               <span className="flex items-center gap-1"><Icon name="pin" width={28} height={28} /> {routeInfo.distanceKm}</span>
               <span className="flex items-center gap-1"><Icon name="clock" width={28} height={28} /> ~{routeInfo.durationMin}</span>
             </div>
@@ -766,7 +766,7 @@ export default function MapaServicos({
       <div className="absolute bottom-4 left-4 z-[1000] hidden sm:flex items-center gap-2 bg-[#08080c]/90 backdrop-blur-md border border-white/10 rounded-2xl p-2.5 shadow-xl">
         <span className="text-[10px] font-bold text-zinc-400 uppercase px-1">Legenda:</span>
         <div className="flex items-center gap-1.5 text-[11px] text-zinc-300">
-          <span className="w-2.5 h-2.5 rounded-full bg-emerald-400"></span> Nômade & Infra
+          <span className="w-2.5 h-2.5 rounded-full bg-amber-400"></span> Nômade & Infra
         </div>
         <div className="flex items-center gap-1.5 text-[11px] text-zinc-300">
           <span className="w-2.5 h-2.5 rounded-full bg-cyan-400"></span> Tech & Devs

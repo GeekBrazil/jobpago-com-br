@@ -11,7 +11,6 @@ export const metadata: Metadata = {
 };
 
 const ACENTO = {
-  emerald: { borda: "border-emerald-500/30", texto: "text-emerald-300", chip: "bg-emerald-500/15 border-emerald-500/30 text-emerald-300" },
   amber: { borda: "border-amber-400/40", texto: "text-amber-300", chip: "bg-amber-500/15 border-amber-500/30 text-amber-300" },
   cyan: { borda: "border-cyan-500/30", texto: "text-cyan-300", chip: "bg-cyan-500/15 border-cyan-500/30 text-cyan-300" },
   slate: { borda: "border-white/12", texto: "text-slate-300", chip: "bg-white/5 border-white/15 text-slate-300" },
@@ -23,15 +22,15 @@ export default function PlanosParceiroPage() {
       <main className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-14 sm:py-20">
         <Link
           href="/"
-          className="text-xs font-black text-emerald-400 hover:underline uppercase tracking-widest inline-block mb-8"
+          className="text-xs font-black text-amber-400 hover:underline uppercase tracking-widest inline-block mb-8"
         >
           ← Voltar para o JobPago
         </Link>
 
         {/* ── ABERTURA ── */}
         <header className="max-w-3xl">
-          <span className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full glass-panel border border-emerald-500/30 text-emerald-300 text-[10px] sm:text-xs font-black tracking-widest uppercase">
-            <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
+          <span className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full glass-panel border border-amber-500/30 text-amber-300 text-[10px] sm:text-xs font-black tracking-widest uppercase">
+            <span className="w-1.5 h-1.5 rounded-full bg-amber-400 animate-pulse" />
             Angra dos Reis → Fortaleza
           </span>
 
@@ -126,7 +125,7 @@ export default function PlanosParceiroPage() {
                     href={linkWhatsapp(p)}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="mt-6 btn-primary-emerald text-sm px-5 py-3 rounded-2xl text-center font-bold min-h-[44px] flex items-center justify-center"
+                    className="mt-6 btn-primary-amalfi text-sm px-5 py-3 rounded-2xl text-center font-bold min-h-[44px] flex items-center justify-center"
                   >
                     {p.valor === null ? "Conversar sobre este nível" : "Quero este nível"}
                   </a>
@@ -150,7 +149,7 @@ export default function PlanosParceiroPage() {
           </div>
           <Link
             href="/noticias-estrada"
-            className="mt-4 inline-flex items-center gap-1.5 text-xs font-bold text-emerald-400 hover:underline"
+            className="mt-4 inline-flex items-center gap-1.5 text-xs font-bold text-amber-400 hover:underline"
           >
             Ver Notícias da Estrada →
           </Link>
@@ -170,7 +169,7 @@ export default function PlanosParceiroPage() {
             serviços anunciados na plataforma: ali o valor continua sendo{" "}
             <strong className="text-white">combinado e pago direto entre as partes</strong>,
             via PIX, sem comissão retida e sem custódia do JobPago. Ver os{" "}
-            <Link href="/termos" className="text-emerald-400 hover:underline font-medium">
+            <Link href="/termos" className="text-amber-400 hover:underline font-medium">
               Termos de Uso
             </Link>
             .
@@ -192,7 +191,7 @@ export default function PlanosParceiroPage() {
             )}`}
             target="_blank"
             rel="noopener noreferrer"
-            className="mt-7 btn-primary-emerald inline-flex items-center justify-center gap-2 text-sm px-7 py-3.5 rounded-2xl font-bold min-h-[44px]"
+            className="mt-7 btn-primary-amalfi inline-flex items-center justify-center gap-2 text-sm px-7 py-3.5 rounded-2xl font-bold min-h-[44px]"
           >
             Falar no WhatsApp
           </a>

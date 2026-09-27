@@ -19,7 +19,7 @@ export interface PlanoParceiro {
   entregaveis: string[];
   destaque?: boolean;
   /** Acento visual, seguindo as classes que já existem no site. */
-  tom: "emerald" | "amber" | "cyan" | "slate";
+  tom: "amber" | "cyan" | "slate";
 }
 
 export const PLANOS: PlanoParceiro[] = [
@@ -35,7 +35,7 @@ export const PLANOS: PlanoParceiro[] = [
       "Minisite básico no mapa da rede",
       "Menção nas redes durante a passagem pelo trecho",
     ],
-    tom: "emerald",
+    tom: "amber",
   },
   {
     id: "local",

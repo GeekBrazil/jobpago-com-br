@@ -42,12 +42,12 @@ export default async function ArticlePage(
   if (!article) notFound();
 
   return (
-    <div className="min-h-screen text-slate-100 selection:bg-emerald-500 selection:text-black">
+    <div className="min-h-screen text-slate-100 selection:bg-amber-500 selection:text-black">
       <header className="sticky top-0 z-40 glass-panel border-b border-white/5 backdrop-blur-xl">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
           <Link href="/blog" className="flex items-center gap-3">
             <span className="text-xl sm:text-2xl font-black text-white">
-              JobPago<span className="text-emerald-400">.</span>
+              JobPago<span className="text-amber-400">.</span>
             </span>
             <span className="text-xs text-slate-400 font-mono">/ blog</span>
           </Link>
@@ -63,7 +63,7 @@ export default async function ArticlePage(
 
       <main className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-16">
         <div className="flex items-center gap-2 mb-4">
-          <span className="text-xs font-bold px-3 py-1 rounded-full bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">
+          <span className="text-xs font-bold px-3 py-1 rounded-full bg-amber-500/10 text-amber-400 border border-amber-500/20">
             {article.category}
           </span>
           <span className="text-xs text-slate-500 font-mono">
@@ -98,7 +98,7 @@ export default async function ArticlePage(
           <Link href="/blog" className="text-xs font-bold text-slate-400 hover:text-white">
             ← Todos os artigos
           </Link>
-          <Link href="/parceiros/planos" className="text-xs font-bold px-4 py-2 rounded-xl bg-emerald-500 text-black">
+          <Link href="/parceiros/planos" className="text-xs font-bold px-4 py-2 rounded-xl bg-amber-500 text-black">
             Conhecer JobPago Pro →
           </Link>
         </div>

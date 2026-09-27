@@ -138,7 +138,7 @@ export function markdownToHtml(md: string): string {
     if (line.startsWith("### ")) { closeList(); htmlParts.push(`<h3 class=\"text-xl font-bold text-white mt-8 mb-3 tracking-tight\">${formatInline(line.slice(4))}</h3>`); continue; }
     if (line.startsWith("## ")) { closeList(); htmlParts.push(`<h2 class=\"text-2xl font-extrabold text-white mt-10 mb-4 tracking-tight border-b border-white/10 pb-2\">${formatInline(line.slice(3))}</h2>`); continue; }
     if (line.startsWith("# ")) { closeList(); htmlParts.push(`<h1 class=\"text-3xl font-extrabold text-white mt-12 mb-6 tracking-tight\">${formatInline(line.slice(2))}</h1>`); continue; }
-    if (line.startsWith("> ")) { closeList(); htmlParts.push(`<blockquote class=\"border-l-4 border-emerald-500 bg-white/[0.02] pl-4 py-2 my-4 italic text-slate-300\">${formatInline(line.slice(2))}</blockquote>`); continue; }
+    if (line.startsWith("> ")) { closeList(); htmlParts.push(`<blockquote class=\"border-l-4 border-amber-500 bg-white/[0.02] pl-4 py-2 my-4 italic text-slate-300\">${formatInline(line.slice(2))}</blockquote>`); continue; }
     if (line.startsWith("- ") || line.startsWith("* ")) {
       if (!inList || listType !== "ul") { closeList(); inList = true; listType = "ul"; htmlParts.push("<ul class=\"list-disc list-inside space-y-2 my-4 text-slate-300\">"); }
       htmlParts.push(`<li>${formatInline(line.slice(2))}</li>`);
@@ -161,8 +161,8 @@ export function markdownToHtml(md: string): string {
 function formatInline(text: string): string {
   return text
     .replace(/!\[([^\]]*)\]\(([^)]+)\)/g, '<img src="$2" alt="$1" class="rounded-xl my-4 max-w-full h-auto" />')
-    .replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2" target="_blank" rel="noopener noreferrer" class="text-emerald-400 hover:text-emerald-300 underline underline-offset-4 decoration-emerald-500/40">$1</a>')
+    .replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2" target="_blank" rel="noopener noreferrer" class="text-amber-400 hover:text-amber-300 underline underline-offset-4 decoration-amber-500/40">$1</a>')
     .replace(/\*\*([^*]+)\*\*/g, '<strong class="text-white font-semibold">$1</strong>')
     .replace(/\*([^*]+)\*/g, '<em class="italic text-slate-200">$1</em>')
-    .replace(/`([^`]+)`/g, '<code class="bg-white/10 px-1.5 py-0.5 rounded text-emerald-300 text-sm font-mono">$1</code>');
+    .replace(/`([^`]+)`/g, '<code class="bg-white/10 px-1.5 py-0.5 rounded text-amber-300 text-sm font-mono">$1</code>');
 }

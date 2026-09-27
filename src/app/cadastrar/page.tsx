@@ -48,7 +48,7 @@ function FormularioCadastro() {
     <div className="min-h-screen flex items-center justify-center px-4 py-12">
       <div className="w-full max-w-sm bg-[#0d1117] border border-white/10 rounded-2xl p-8">
         <Link href="/" className="text-xl font-black text-white block mb-8">
-          JobPago<span className="text-emerald-400">.</span>
+          JobPago<span className="text-amber-400">.</span>
         </Link>
 
         <h1 className="text-lg font-bold text-white mb-1">Criar conta</h1>
@@ -61,7 +61,7 @@ function FormularioCadastro() {
             placeholder="Nome"
             value={nome}
             onChange={(e) => setNome(e.target.value)}
-            className="bg-black/30 border border-white/10 rounded-xl px-4 py-2.5 text-sm text-white placeholder-slate-500 focus:outline-none focus:border-emerald-400/50"
+            className="bg-black/30 border border-white/10 rounded-xl px-4 py-2.5 text-sm text-white placeholder-slate-500 focus:outline-none focus:border-amber-400/50"
           />
           <input
             type="email"
@@ -69,7 +69,7 @@ function FormularioCadastro() {
             placeholder="E-mail"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
-            className="bg-black/30 border border-white/10 rounded-xl px-4 py-2.5 text-sm text-white placeholder-slate-500 focus:outline-none focus:border-emerald-400/50"
+            className="bg-black/30 border border-white/10 rounded-xl px-4 py-2.5 text-sm text-white placeholder-slate-500 focus:outline-none focus:border-amber-400/50"
           />
           <input
             type="tel"
@@ -77,7 +77,7 @@ function FormularioCadastro() {
             placeholder="WhatsApp (DDD + número)"
             value={telefone}
             onChange={(e) => setTelefone(e.target.value)}
-            className="bg-black/30 border border-white/10 rounded-xl px-4 py-2.5 text-sm text-white placeholder-slate-500 focus:outline-none focus:border-emerald-400/50"
+            className="bg-black/30 border border-white/10 rounded-xl px-4 py-2.5 text-sm text-white placeholder-slate-500 focus:outline-none focus:border-amber-400/50"
           />
           <input
             type="password"
@@ -86,13 +86,13 @@ function FormularioCadastro() {
             placeholder="Senha (mínimo 8 caracteres)"
             value={senha}
             onChange={(e) => setSenha(e.target.value)}
-            className="bg-black/30 border border-white/10 rounded-xl px-4 py-2.5 text-sm text-white placeholder-slate-500 focus:outline-none focus:border-emerald-400/50"
+            className="bg-black/30 border border-white/10 rounded-xl px-4 py-2.5 text-sm text-white placeholder-slate-500 focus:outline-none focus:border-amber-400/50"
           />
           {erro && <p className="text-xs text-red-400">{erro}</p>}
           <button
             type="submit"
             disabled={enviando}
-            className="bg-emerald-500 text-black font-black text-sm py-2.5 rounded-xl cursor-pointer disabled:opacity-50 mt-1"
+            className="bg-amber-500 text-black font-black text-sm py-2.5 rounded-xl cursor-pointer disabled:opacity-50 mt-1"
           >
             {enviando ? "Criando..." : "Criar conta"}
           </button>
@@ -100,7 +100,7 @@ function FormularioCadastro() {
 
         <p className="text-xs text-slate-400 mt-6 text-center">
           Já tem conta?{" "}
-          <Link href={`/entrar?callbackUrl=${encodeURIComponent(callbackUrl)}`} className="text-emerald-400 font-bold">
+          <Link href={`/entrar?callbackUrl=${encodeURIComponent(callbackUrl)}`} className="text-amber-400 font-bold">
             Entrar
           </Link>
         </p>

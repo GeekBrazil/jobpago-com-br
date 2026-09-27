@@ -15,7 +15,7 @@ export interface FaixaContribuicao {
   recompensa: string;
   /** Se true, o nome do apoiador entra em /noticias-estrada quando o Allan publicar. */
   publicacao: boolean;
-  tom: "slate" | "emerald" | "amber" | "cyan";
+  tom: "slate" | "amber" | "cyan";
 }
 
 export const FAIXAS_CONTRIBUICAO: FaixaContribuicao[] = [
@@ -33,7 +33,7 @@ export const FAIXAS_CONTRIBUICAO: FaixaContribuicao[] = [
     insignia: "Insígnia de Apoiador",
     recompensa: "Insígnia digital + menção em Notícias da Estrada",
     publicacao: true,
-    tom: "emerald",
+    tom: "amber",
   },
   {
     id: "honra",

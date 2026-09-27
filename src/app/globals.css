@@ -2,47 +2,38 @@
 @import "leaflet/dist/leaflet.css";
 
 :root {
-  --background: #07090e;
+  --background: #060913;
   --foreground: #f8fafc;
-  --accent-emerald: #10b981;
+  --accent-amalfi: #f59e0b;       /* Limoncello Dourado */
+  --accent-terracotta: #ea580c;   /* Terracotta Pôr do Sol */
+  --accent-azure: #0ea5e9;        /* Azul Tirreno / Capri */
   --accent-amber: #f59e0b;
 }
 
 body {
   position: relative;
-  background: #07090e;
+  background: #060913;
   color: var(--foreground);
   font-family: var(--font-sans), system-ui, -apple-system, sans-serif;
   overflow-x: hidden;
 }
 
-/* O glow radial precisa ficar fixo em relação à viewport (o efeito é ficar
-   "colado" no topo enquanto rola), mas "background-attachment: fixed" direto
-   no body quebra o compositing de qualquer backdrop-filter sobreposto — some
-   o fundo (fica branco ou preto sólido) ao rolar em qualquer header sticky
-   com blur, bug de compositing conhecido do Chromium. Um ::before fixo e
-   isolado (z-index -1) dá o mesmo efeito visual sem conflitar. */
+/* Fundo base translúcido que permite ao canvas de estrada nevada brilhar suavemente */
 body::before {
   content: "";
   position: fixed;
   inset: 0;
   z-index: -1;
-  background: radial-gradient(circle at 50% -10%, #121a2c 0%, #07090e 65%, #040609 100%);
+  background: radial-gradient(circle at 50% -10%, #0d1629 0%, #060913 75%, #03050a 100%);
+  opacity: 0.55;
+  pointer-events: none;
 }
 
-h1, h2, h3, button, .btn-primary-emerald, .btn-secondary-glass {
+h1, h2, h3, button, .btn-primary-amalfi, .btn-secondary-glass {
   font-family: var(--font-display), var(--font-sans), system-ui, sans-serif;
 }
 
-/* ── HERO TOPOGRAPHIC & COORDINATE GRID PATTERN ──
-   A máscara precisa valer só pro padrão de pontos decorativo, não pra
-   seção inteira — antes o mask-image estava direto em .hero-grid-pattern,
-   e como esse mesmo elemento é o <section> com TODO o conteúdo do hero
-   (headline, CTAs, cards, tribos, busca), tudo fora da elipse ia
-   desbotando pra transparente conforme descia a página. Isso criava um
-   "vazio preto" logo abaixo dos cards de exemplo — não era falta de
-   conteúdo, era o conteúdo real sendo mascarado. Mover pro ::before
-   isola o efeito só no papel de parede. */
+/* ── HERO TOPOGRAPHIC & COORDINATE GRID PATTERN ── */
 .hero-grid-pattern {
   position: relative;
 }
@@ -54,85 +45,87 @@ h1, h2, h3, button, .btn-primary-emerald, .btn-secondary-glass {
   z-index: 0;
   pointer-events: none;
   background-image:
-    radial-gradient(rgba(255, 255, 255, 0.08) 1px, transparent 1px),
-    linear-gradient(to right, rgba(255, 255, 255, 0.03) 1px, transparent 1px),
-    linear-gradient(to bottom, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+    radial-gradient(rgba(245, 158, 11, 0.08) 1px, transparent 1px),
+    linear-gradient(to right, rgba(255, 255, 255, 0.02) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
   background-size: 36px 36px;
   mask-image: radial-gradient(ellipse 70% 55% at 50% 30%, #000 60%, transparent 100%);
   -webkit-mask-image: radial-gradient(ellipse 70% 55% at 50% 30%, #000 60%, transparent 100%);
 }
 
-/* ── SUPERFÍCIES SÓLIDAS ──
-   Antes era glassmorphism (fundo quase transparente + blur), que se
-   misturava com o fundo escuro do body e virava "vazio". Fundo opaco e
-   claramente mais claro que o body resolve o contraste sem precisar de
-   blur nenhum. */
+/* ── SUPERFÍCIES COSTA AMALFITANA ── */
 .glass-panel {
-  background: #1a2130;
-  border: 1px solid rgba(255, 255, 255, 0.14);
-  box-shadow: 0 16px 40px -10px rgba(0, 0, 0, 0.6);
+  background: rgba(20, 27, 43, 0.88);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  box-shadow: 0 16px 40px -10px rgba(0, 0, 0, 0.65);
 }
 
 .glass-card {
-  background: #171d2a;
-  border: 1px solid rgba(255, 255, 255, 0.12);
+  background: rgba(17, 23, 37, 0.84);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
   transition: border-color 0.2s ease, transform 0.2s ease, background-color 0.2s ease;
 }
 
 .glass-card:hover {
-  background: #1c2333;
-  border-color: rgba(16, 185, 129, 0.45);
+  background: rgba(25, 34, 54, 0.92);
+  border-color: rgba(245, 158, 11, 0.5);
   transform: translateY(-2px);
   transition-duration: 0.28s;
   transition-timing-function: ease-out;
 }
 
-.glass-emerald {
-  border-color: rgba(16, 185, 129, 0.4) !important;
+.glass-amalfi {
+  border-color: rgba(245, 158, 11, 0.4) !important;
 }
 
 .glass-amber {
   border-color: rgba(245, 158, 11, 0.4) !important;
 }
 
-/* ── BOTÕES DE ALTA CONVERSÃO ── */
-.btn-primary-emerald {
-  background: linear-gradient(135deg, #10b981 0%, #059669 100%);
-  color: #03140c;
+/* ── BOTÕES DE ALTA CONVERSÃO COSTA AMALFITANA ── */
+.btn-primary-amalfi {
+  background: linear-gradient(135deg, #f59e0b 0%, #ea580c 100%);
+  color: #ffffff;
   font-weight: 800;
-  box-shadow: 0 4px 20px -2px rgba(16, 185, 129, 0.45), inset 0 1px 0 rgba(255, 255, 255, 0.3);
+  box-shadow: 0 4px 20px -2px rgba(234, 88, 12, 0.45), inset 0 1px 0 rgba(255, 255, 255, 0.3);
   transition: background-color 0.28s ease-out, box-shadow 0.28s ease-out, transform 0.28s ease-out;
 }
 
-.btn-primary-emerald:hover {
-  background: linear-gradient(135deg, #34d399 0%, #059669 100%);
-  box-shadow: 0 8px 28px -4px rgba(16, 185, 129, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.35);
+.btn-primary-amalfi:hover {
+  background: linear-gradient(135deg, #fbbf24 0%, #f97316 100%);
+  box-shadow: 0 8px 28px -4px rgba(245, 158, 11, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.35);
   transform: translateY(-2px);
 }
 
 .btn-secondary-glass {
-  background: #171c27;
-  border: 1px solid rgba(255, 255, 255, 0.14);
+  background: rgba(22, 28, 42, 0.85);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.15);
   color: #f8fafc;
   font-weight: 700;
-  box-shadow: 0 4px 16px -2px rgba(0, 0, 0, 0.3);
+  box-shadow: 0 4px 16px -2px rgba(0, 0, 0, 0.35);
   transition: background-color 0.28s ease-out, border-color 0.28s ease-out, transform 0.28s ease-out;
 }
 
 .btn-secondary-glass:hover {
-  background: #1c2230;
-  border-color: rgba(255, 255, 255, 0.25);
+  background: rgba(30, 39, 58, 0.95);
+  border-color: rgba(245, 158, 11, 0.35);
   transform: translateY(-2px);
 }
 
-/* User Location Pulsing Marker */
+/* Marcador Pulsante do Usuário (Terracotta & Amalfi Gold) */
 .user-pulse-marker {
   width: 22px;
   height: 22px;
-  background-color: #10b981;
+  background-color: #ea580c;
   border: 3px solid #ffffff;
   border-radius: 50%;
-  box-shadow: 0 0 20px #10b981;
+  box-shadow: 0 0 20px #ea580c;
   animation: userPulse 2s infinite;
 }
 
@@ -148,34 +141,34 @@ h1, h2, h3, button, .btn-primary-emerald, .btn-secondary-glass {
 @keyframes userPulse {
   0% {
     transform: scale(0.95);
-    box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.7);
+    box-shadow: 0 0 0 0 rgba(234, 88, 12, 0.7);
   }
   70% {
     transform: scale(1.1);
-    box-shadow: 0 0 0 16px rgba(16, 185, 129, 0);
+    box-shadow: 0 0 0 16px rgba(234, 88, 12, 0);
   }
   100% {
     transform: scale(0.95);
-    box-shadow: 0 0 0 0 rgba(16, 185, 129, 0);
+    box-shadow: 0 0 0 0 rgba(234, 88, 12, 0);
   }
 }
 
-/* Leaflet Overrides */
+/* Leaflet Overrides com Identidade Amalfi */
 .leaflet-container {
   width: 100%;
   height: 100%;
   border-radius: 1.5rem;
-  background: #080c14 !important;
+  background: #080c16 !important;
 }
 
 .leaflet-popup-content-wrapper {
-  background: #131822 !important;
+  background: #111827 !important;
   color: #fff !important;
-  border: 1px solid rgba(16, 185, 129, 0.3) !important;
+  border: 1px solid rgba(245, 158, 11, 0.35) !important;
   border-radius: 1.25rem !important;
-  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.6) !important;
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.65) !important;
 }
 
 .leaflet-popup-tip {
-  background: #131822 !important;
+  background: #111827 !important;
 }

@@ -35,11 +35,11 @@ export default function BlogPage() {
   const articles = getArticles();
 
   return (
-    <div className="min-h-screen text-slate-100 selection:bg-emerald-500 selection:text-black">
+    <div className="min-h-screen text-slate-100 selection:bg-amber-500 selection:text-black">
       <header className="sticky top-0 z-40 glass-panel border-b border-white/5 backdrop-blur-xl">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
           <Link href="/" className="flex items-center gap-3 group">
-            <div className="w-10 h-10 rounded-2xl bg-emerald-500/10 border border-emerald-500/30 flex items-center justify-center p-1.5 shadow-[0_0_20px_rgba(16,185,129,0.2)] group-hover:border-emerald-400 transition-colors">
+            <div className="w-10 h-10 rounded-2xl bg-amber-500/10 border border-amber-500/30 flex items-center justify-center p-1.5 shadow-[0_0_20px_rgba(245,158,11,0.25)] group-hover:border-amber-400 transition-colors">
               <img
                 src="/icon_flutuante-96.webp"
                 width={96}
@@ -50,7 +50,7 @@ export default function BlogPage() {
             </div>
             <div className="flex flex-col">
               <span className="text-xl sm:text-2xl font-black tracking-tight text-white leading-none">
-                JobPago<span className="text-emerald-400">.</span>
+                JobPago<span className="text-amber-400">.</span>
               </span>
               <span className="text-[9px] font-mono font-bold tracking-wider text-slate-400 uppercase mt-0.5">
                 Blog &amp; Estrada
@@ -71,8 +71,8 @@ export default function BlogPage() {
       <BlogAdminIngestion />
 
       <main className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-16">
-        <span className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full glass-panel border border-emerald-500/30 text-emerald-300 text-[10px] sm:text-xs font-black tracking-widest uppercase">
-          <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
+        <span className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full glass-panel border border-amber-500/30 text-amber-300 text-[10px] sm:text-xs font-black tracking-widest uppercase">
+          <span className="w-1.5 h-1.5 rounded-full bg-amber-400 animate-pulse" />
           Conteúdo Autoral &amp; Estrada
         </span>
 
@@ -89,7 +89,7 @@ export default function BlogPage() {
             <Link
               key={article.id}
               href={`/blog/${article.id}`}
-              className="group glass-card rounded-2xl p-6 border border-white/5 hover:border-emerald-500/40 transition-all flex flex-col justify-between"
+              className="group glass-card rounded-2xl p-6 border border-white/5 hover:border-amber-500/40 transition-all flex flex-col justify-between"
             >
               <div>
                 {article.coverImage && (
@@ -102,14 +102,14 @@ export default function BlogPage() {
                   </div>
                 )}
                 <div className="flex items-center gap-2 mb-2">
-                  <span className="text-[10px] font-bold px-2.5 py-0.5 rounded-full bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">
+                  <span className="text-[10px] font-bold px-2.5 py-0.5 rounded-full bg-amber-500/10 text-amber-400 border border-amber-500/20">
                     {article.category}
                   </span>
                   <span className="text-[11px] text-slate-500 font-mono">
                     {new Date(article.publishedAt).toLocaleDateString("pt-BR")}
                   </span>
                 </div>
-                <h3 className="text-lg font-bold text-white group-hover:text-emerald-300 transition-colors leading-snug">
+                <h3 className="text-lg font-bold text-white group-hover:text-amber-300 transition-colors leading-snug">
                   {article.title}
                 </h3>
                 <p className="mt-2 text-xs sm:text-sm text-slate-400 line-clamp-3 leading-relaxed">
@@ -117,7 +117,7 @@ export default function BlogPage() {
                 </p>
               </div>
 
-              <div className="mt-6 pt-4 border-t border-white/5 flex items-center justify-between text-xs font-bold text-emerald-400">
+              <div className="mt-6 pt-4 border-t border-white/5 flex items-center justify-between text-xs font-bold text-amber-400">
                 <span>Ler artigo completo</span>
                 <span className="group-hover:translate-x-1 transition-transform">→</span>
               </div>

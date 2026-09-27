@@ -4,6 +4,7 @@ import "./globals.css";
 import EventoVisita from "@/components/EventoVisita";
 import Script from "next/script";
 import AuthProvider from "@/components/AuthProvider";
+import EstradaNevadaScrollytelling from "@/components/EstradaNevadaScrollytelling";
 
 const fontDisplay = Bricolage_Grotesque({
   variable: "--font-display",
@@ -32,7 +33,7 @@ export const metadata: Metadata = {
 };
 
 export const viewport: Viewport = {
-  themeColor: "#07090e",
+  themeColor: "#060913",
   width: "device-width",
   initialScale: 1,
   viewportFit: "cover",
@@ -48,13 +49,16 @@ export default function RootLayout({
       lang="pt-BR"
       className={`${fontDisplay.variable} ${fontSans.variable} h-full antialiased dark`}
     >
-      <body className="min-h-full flex flex-col">
-        <AuthProvider>
-          {children}
-          <EventoVisita />
-          {/* chat de atendimento — widget único servido pelo allancandido.com (substitui o Dify) */}
-          <Script src="https://allancandido.com/chat/widget.js" data-site="jobpago" strategy="lazyOnload" />
-        </AuthProvider>
+      <body className="min-h-full flex flex-col relative">
+        <EstradaNevadaScrollytelling />
+        <div className="relative z-10 flex flex-col min-h-full">
+          <AuthProvider>
+            {children}
+            <EventoVisita />
+            {/* chat de atendimento — widget único servido pelo allancandido.com (substitui o Dify) */}
+            <Script src="https://allancandido.com/chat/widget.js" data-site="jobpago" strategy="lazyOnload" />
+          </AuthProvider>
+        </div>
       </body>
     </html>
   );
