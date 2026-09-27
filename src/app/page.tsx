@@ -799,14 +799,32 @@ export default function Home() {
           </p>
         </div>
 
-        {/* ── MOLDURA 3D PANORÂMICA LIMPA (SEM SOBREPOSIÇÕES PARA VISÃO TOTAL DA LOJINHA) ── */}
-        <div className="relative w-full rounded-3xl overflow-hidden border border-amber-500/20 shadow-[0_24px_70px_-15px_rgba(0,0,0,0.9)] bg-slate-950/70 group">
-          <img
-            src="/images/conveniencia-motorhome-estrada.webp"
-            alt="Lojinha de conveniência frontal à beira da estrada nevada com motorhome estacionado de lado e viajantes jantando ao ar livre"
-            className="w-full h-auto object-cover max-h-[760px] block transition-transform duration-700 ease-out group-hover:scale-[1.01]"
-            loading="lazy"
-          />
+        {/* ── ÁREA DE CONTEMPLAÇÃO DESOBSTRUÍDA: VISÃO TOTAL DO CENÁRIO 3D NO FUNDO ── */}
+        <div className="relative w-full rounded-3xl border border-amber-500/30 min-h-[560px] sm:min-h-[720px] flex flex-col justify-between p-6 sm:p-8 overflow-hidden bg-transparent shadow-[0_24px_70px_-15px_rgba(0,0,0,0.9)] my-10 pointer-events-none">
+          {/* Marcadores de telemetria nos cantos para efeito de visor panorâmico Creative Lab */}
+          <div className="flex items-center justify-between w-full">
+            <span className="text-[11px] font-mono font-bold tracking-wider text-amber-400 bg-slate-950/80 border border-amber-500/40 px-3.5 py-1.5 rounded-full backdrop-blur-md">
+              ● CENÁRIO 3D EM TEMPO REAL · REFÚGIO DA ESTRADA
+            </span>
+            <span className="text-[11px] font-mono text-slate-300 bg-slate-950/80 border border-white/10 px-3 py-1.5 rounded-full backdrop-blur-md hidden sm:block">
+              220V · Água Potável · Gás · Starlink · Pernoite Seguro
+            </span>
+          </div>
+
+          {/* Espaço em branco central 100% desobstruído para contemplação direta da lojinha, motorhome e jantar */}
+          <div className="flex-1" />
+
+          {/* Barra inferior de identificação panorâmica */}
+          <div className="flex items-center justify-between text-xs text-slate-300 bg-slate-950/80 border border-white/10 p-3 sm:px-5 sm:py-2.5 rounded-2xl backdrop-blur-md w-full">
+            <div className="flex items-center gap-2">
+              <span className="w-2 h-2 rounded-full bg-amber-400 animate-pulse" />
+              <span className="font-bold text-white">Lojinha de Conveniência & Varanda Colonial</span>
+              <span className="text-slate-400 hidden md:inline">· Motorhome Lateral com Toldo Iluminado & Jantar ao Ar Livre</span>
+            </div>
+            <span className="text-[10px] sm:text-xs text-amber-300 font-mono font-bold">
+              Vista Frontal da Rodovia
+            </span>
+          </div>
         </div>
 
         {/* ── COMODIDADES ESSENCIAIS QUE TODO VIAJANTE PRECISA NA ESTRADA ── */}
