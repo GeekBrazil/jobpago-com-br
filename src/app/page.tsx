@@ -371,6 +371,9 @@ export default function Home() {
             <a href="#guildas-leaderboard" className="hover:text-amber-300 transition-colors text-amber-400/90 flex items-center gap-1">
               <span>Alta Honra</span>
             </a>
+            <a href="#refugio-estrada" className="hover:text-amber-400 transition-colors">
+              Refúgio & Posto
+            </a>
           </nav>
 
           {/* AÇÕES DIREITAS: PERFIL RPG + BOTÃO ANUNCIAR */}
@@ -775,6 +778,166 @@ export default function Home() {
                 </div>
               </div>
             ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ── SEÇÃO 5: REFÚGIO DA ESTRADA: CONVENIÊNCIA, MOTORHOME & PONTO DE APOIO NÔMADE ── */}
+      <section id="refugio-estrada" className="pt-24 sm:pt-32 pb-32 sm:pb-40 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
+        {/* Espaço em branco e respiro antes da visão da lojinha */}
+        <div className="text-center max-w-3xl mx-auto mb-10 sm:mb-14">
+          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-amber-500/10 border border-amber-500/30 text-amber-300 text-xs font-bold uppercase tracking-widest mb-4">
+            <Icon name="sparkle" width={18} height={18} className="text-amber-400" />
+            <span>Ponto de Apoio Nômade & Convivência na Rota</span>
+          </div>
+          <h2 className="text-3xl sm:text-5xl font-black text-white tracking-tight leading-tight">
+            O Refúgio da Estrada: <span className="text-amber-400">Conveniência & Pernoite</span>
+          </h2>
+          <p className="mt-4 text-slate-300 text-sm sm:text-base leading-relaxed">
+            Ao fim da jornada pela rota nevada, o refúgio perfeito à beira da pista para recarregar as energias,
+            abastecer o motorhome e compartilhar um jantar acolhedor ao redor de boas histórias.
+          </p>
+        </div>
+
+        {/* ── MOLDURA 3D PANORÂMICA LIMPA (SEM SOBREPOSIÇÕES PARA VISÃO TOTAL DA LOJINHA) ── */}
+        <div className="relative w-full rounded-3xl overflow-hidden border border-amber-500/20 shadow-[0_24px_70px_-15px_rgba(0,0,0,0.9)] bg-slate-950/70 group">
+          <img
+            src="/images/conveniencia-motorhome-estrada.webp"
+            alt="Lojinha de conveniência frontal à beira da estrada nevada com motorhome estacionado de lado e viajantes jantando ao ar livre"
+            className="w-full h-auto object-cover max-h-[760px] block transition-transform duration-700 ease-out group-hover:scale-[1.01]"
+            loading="lazy"
+          />
+        </div>
+
+        {/* ── COMODIDADES ESSENCIAIS QUE TODO VIAJANTE PRECISA NA ESTRADA ── */}
+        <div className="mt-14 sm:mt-16">
+          <div className="text-center mb-8">
+            <h3 className="text-xl sm:text-2xl font-black text-white">
+              Estrutura Completa para quem vive & trabalha na Rodovia
+            </h3>
+            <p className="text-xs sm:text-sm text-slate-400 mt-1">
+              Todos os recursos indispensáveis para viajantes solo, motorhomes e nômades digitais.
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+            {/* 1. Energia 220V / 32A */}
+            <div className="glass-card p-6 rounded-2xl border border-amber-400/20 flex flex-col justify-between hover:border-amber-400/40 transition-colors">
+              <div>
+                <div className="w-12 h-12 rounded-xl bg-amber-500/10 border border-amber-500/30 flex items-center justify-center text-amber-400 mb-4">
+                  <Icon name="bolt" width={32} height={32} />
+                </div>
+                <h4 className="text-base font-black text-white mb-2">Tomada Industrial 220V / 32A</h4>
+                <p className="text-xs text-slate-300 leading-relaxed">
+                  Pontos de recarga contínua com aterramento elétrico seguro para baterias LiFePO4, inversores senoidais e climatizadores de motorhomes e vans.
+                </p>
+              </div>
+              <div className="mt-5 pt-3 border-t border-white/10 flex items-center justify-between text-[11px] text-amber-300 font-mono">
+                <span>Carga Contínua</span>
+                <span className="bg-amber-950/60 border border-amber-500/30 px-2 py-0.5 rounded">32A Plug CEE</span>
+              </div>
+            </div>
+
+            {/* 2. Água Potável & Despejo Ecológico */}
+            <div className="glass-card p-6 rounded-2xl border border-sky-400/20 flex flex-col justify-between hover:border-sky-400/40 transition-colors">
+              <div>
+                <div className="w-12 h-12 rounded-xl bg-sky-500/10 border border-sky-500/30 flex items-center justify-center text-sky-400 mb-4">
+                  <Icon name="water" width={32} height={32} />
+                </div>
+                <h4 className="text-base font-black text-white mb-2">Água Potável & Descarte Ecológico</h4>
+                <p className="text-xs text-slate-300 leading-relaxed">
+                  Bica pressurizada de água filtrada para reabastecimento de caixas d&apos;água e estação homologada para descarte de águas cinzas e negras.
+                </p>
+              </div>
+              <div className="mt-5 pt-3 border-t border-white/10 flex items-center justify-between text-[11px] text-sky-300 font-mono">
+                <span>Pressão Alta</span>
+                <span className="bg-sky-950/60 border border-sky-500/30 px-2 py-0.5 rounded">Despejo Seguro</span>
+              </div>
+            </div>
+
+            {/* 3. Conectividade Starlink */}
+            <div className="glass-card p-6 rounded-2xl border border-amber-400/20 flex flex-col justify-between hover:border-amber-400/40 transition-colors">
+              <div>
+                <div className="w-12 h-12 rounded-xl bg-amber-500/10 border border-amber-500/30 flex items-center justify-center text-amber-400 mb-4">
+                  <Icon name="wifi" width={32} height={32} />
+                </div>
+                <h4 className="text-base font-black text-white mb-2">Wi-Fi Starlink 300 Mbps</h4>
+                <p className="text-xs text-slate-300 leading-relaxed">
+                  Conexão via satélite de ultra velocidade e baixíssima latência. Cobertura total no pátio e nas mesas de jantar para chamadas e deploy remoto.
+                </p>
+              </div>
+              <div className="mt-5 pt-3 border-t border-white/10 flex items-center justify-between text-[11px] text-amber-300 font-mono">
+                <span>Baixa Latência</span>
+                <span className="bg-amber-950/60 border border-amber-500/30 px-2 py-0.5 rounded">300 Mbps Satélite</span>
+              </div>
+            </div>
+
+            {/* 4. Gás & Oficina Rápida */}
+            <div className="glass-card p-6 rounded-2xl border border-amber-400/20 flex flex-col justify-between hover:border-amber-400/40 transition-colors">
+              <div>
+                <div className="w-12 h-12 rounded-xl bg-amber-500/10 border border-amber-500/30 flex items-center justify-center text-amber-400 mb-4">
+                  <Icon name="wrench" width={32} height={32} />
+                </div>
+                <h4 className="text-base font-black text-white mb-2">Gás P13/P20 & Calibragem Pesada</h4>
+                <p className="text-xs text-slate-300 leading-relaxed">
+                  Recarga e troca de botijões de gás para cozinha e calefação, manômetro digital até 120 PSI para pneus de carga e bancada de ferramentas.
+                </p>
+              </div>
+              <div className="mt-5 pt-3 border-t border-white/10 flex items-center justify-between text-[11px] text-amber-300 font-mono">
+                <span>Até 120 PSI</span>
+                <span className="bg-amber-950/60 border border-amber-500/30 px-2 py-0.5 rounded">Gás P13 / P20</span>
+              </div>
+            </div>
+
+            {/* 5. Mercearia 24h & Café Quente */}
+            <div className="glass-card p-6 rounded-2xl border border-amber-400/20 flex flex-col justify-between hover:border-amber-400/40 transition-colors">
+              <div>
+                <div className="w-12 h-12 rounded-xl bg-amber-500/10 border border-amber-500/30 flex items-center justify-center text-amber-400 mb-4">
+                  <Icon name="coffee" width={32} height={32} />
+                </div>
+                <h4 className="text-base font-black text-white mb-2">Empório 24h & Café Colonial</h4>
+                <p className="text-xs text-slate-300 leading-relaxed">
+                  Conveniência com café artesanal fresco, pães quentes, refeições práticas de estrada, artigos de higiene pessoal e mantimentos não perecíveis.
+                </p>
+              </div>
+              <div className="mt-5 pt-3 border-t border-white/10 flex items-center justify-between text-[11px] text-amber-300 font-mono">
+                <span>Aberto 24h</span>
+                <span className="bg-amber-950/60 border border-amber-500/30 px-2 py-0.5 rounded">Café & Mantimentos</span>
+              </div>
+            </div>
+
+            {/* 6. Pátio Nômade & Jantar Sob as Estrelas */}
+            <div className="glass-card p-6 rounded-2xl border border-amber-400/20 flex flex-col justify-between hover:border-amber-400/40 transition-colors">
+              <div>
+                <div className="w-12 h-12 rounded-xl bg-amber-500/10 border border-amber-500/30 flex items-center justify-center text-amber-400 mb-4">
+                  <Icon name="van" width={32} height={32} />
+                </div>
+                <h4 className="text-base font-black text-white mb-2">Pátio Nômade & Jantar Coletivo</h4>
+                <p className="text-xs text-slate-300 leading-relaxed">
+                  Estacionamento lateral nivelado para motorhomes com toldo aberto, mesas comunitárias ao ar livre, iluminação calorosa e fogueira de confraternização.
+                </p>
+              </div>
+              <div className="mt-5 pt-3 border-t border-white/10 flex items-center justify-between text-[11px] text-amber-300 font-mono">
+                <span>Pernoite Seguro</span>
+                <span className="bg-amber-950/60 border border-amber-500/30 px-2 py-0.5 rounded">Comunidade & Mesa</span>
+              </div>
+            </div>
+          </div>
+
+          {/* Botões de Ação */}
+          <div className="mt-12 flex flex-col sm:flex-row items-center justify-center gap-4">
+            <a
+              href="#mapa-gps"
+              className="btn-primary-amalfi px-8 py-3.5 rounded-2xl text-xs sm:text-sm font-black uppercase tracking-wider flex items-center gap-2"
+            >
+              <Icon name="compass" width={22} height={22} /> Ver Postos no Mapa GPS
+            </a>
+            <Link
+              href="/cadastrar-servico"
+              className="btn-secondary-glass px-8 py-3.5 rounded-2xl text-xs sm:text-sm font-bold text-white flex items-center gap-2"
+            >
+              <Icon name="pin" width={20} height={20} /> Cadastrar Novo Ponto de Apoio
+            </Link>
           </div>
         </div>
       </section>
