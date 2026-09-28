@@ -142,34 +142,43 @@ export default async function RelatorioCidadePage({ params }: Props) {
           </section>
         )}
 
-        {/* COMPRAS PÚBLICAS */}
-        {r.compras_pequenas.length > 0 && (
+        {/* COMPRAS PÚBLICAS — o detalhe é pago (allancandido.com); aqui só a pergunta e o tamanho */}
+        {r.compras_abertas > 0 && (
           <section className="mt-16" aria-labelledby="compras">
-            <h2 id="compras" className="text-2xl sm:text-3xl font-black">A prefeitura e os órgãos da cidade estão comprando</h2>
+            <h2 id="compras" className="text-2xl sm:text-3xl font-black">
+              Você sabia o que a prefeitura de {cidade} está comprando agora?
+            </h2>
             <p className="mt-2 text-slate-300 max-w-2xl">
-              Compras abertas de até R$ 300 mil — o tamanho que um pequeno negócio consegue atender.
+              Há <strong className="text-white">{n(r.compras_abertas)} compras públicas abertas</strong> na cidade
+              {r.compras_pequenas.length > 0 ? <>, incluindo compras de até R$ 300 mil — tamanho que um pequeno negócio consegue atender</> : null}.
+              Quem sabe primeiro, vende primeiro.
             </p>
-            <ul className="mt-6 grid gap-3">
-              {r.compras_pequenas.map((c, i) => (
-                <li key={i} className="glass-panel rounded-2xl p-5 flex flex-col sm:flex-row sm:items-center gap-3 justify-between">
-                  <div className="min-w-0">
-                    <p className="text-white font-bold line-clamp-2">{c.objeto}</p>
-                    <p className="mt-1 text-xs text-slate-400">
-                      {c.orgao_nome} · até {dataBR(c.data_encerramento)}
-                      {c.modalidade_nome ? ` · ${c.modalidade_nome}` : ""}
-                    </p>
+            <div className="mt-6 relative glass-panel rounded-3xl p-5 overflow-hidden" aria-hidden>
+              {[0, 1, 2].map((i) => (
+                <div key={i} className="flex items-center justify-between gap-4 py-3 border-b border-white/5 last:border-0 blur-[3px] select-none">
+                  <div className="space-y-2 w-2/3">
+                    <div className="h-3 rounded bg-white/20 w-full" />
+                    <div className="h-2.5 rounded bg-white/10 w-1/2" />
                   </div>
-                  <div className="flex items-center gap-4 shrink-0">
-                    <span className="text-lg font-black text-amber-300 tabular-nums">{brl.format(c.valor_estimado)}</span>
-                    {c.url_pncp && (
-                      <a href={c.url_pncp} target="_blank" rel="noopener noreferrer" className="text-xs font-bold text-slate-300 underline hover:text-amber-400">
-                        Ver edital
-                      </a>
-                    )}
-                  </div>
-                </li>
+                  <div className="h-5 w-24 rounded bg-amber-400/40" />
+                </div>
               ))}
-            </ul>
+            </div>
+            <div className="mt-5 flex flex-wrap gap-3">
+              <a
+                href={`https://allancandido.com/pt/insights/${ibge}?utm_source=jobpago&utm_medium=cidade&utm_campaign=compras`}
+                className="btn-primary-amalfi rounded-2xl px-6 py-3 text-sm font-black"
+              >
+                Ver o relatório
+              </a>
+              <a
+                href="https://allancandido.com/pt/assinar?utm_source=jobpago&utm_medium=cidade&utm_campaign=compras"
+                className="btn-secondary-glass rounded-2xl px-6 py-3 text-sm font-bold"
+              >
+                Receber avisos por e-mail
+              </a>
+            </div>
+            <p className="mt-3 text-xs text-slate-400">Objeto, órgão, valor, prazo e edital de cada compra ficam no relatório de Allan Candido — inteligência de dados públicos.</p>
           </section>
         )}
 

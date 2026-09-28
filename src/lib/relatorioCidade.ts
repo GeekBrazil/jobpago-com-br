@@ -87,13 +87,21 @@ export const nomeSetor = (c: string) => SETORES[c]?.nome ?? c.replace(/_/g, " ")
 const MESES = ["jan", "fev", "mar", "abr", "mai", "jun", "jul", "ago", "set", "out", "nov", "dez"];
 export const competencia = (c: number) => `${MESES[(c % 100) - 1]}/${Math.floor(c / 100)}`;
 
+/* Paradas principais da Expedição JobPago (Paraty → Fortaleza, pelo litoral). */
 export const CIDADES_DESTAQUE = [
-  { ibge: "3300100", nome: "Angra dos Reis", uf: "RJ" },
   { ibge: "3303807", nome: "Paraty", uf: "RJ" },
-  { ibge: "3302601", nome: "Mangaratiba", uf: "RJ" },
-  { ibge: "2925501", nome: "Prado", uf: "BA" },
+  { ibge: "3300100", nome: "Angra dos Reis", uf: "RJ" },
   { ibge: "3304557", nome: "Rio de Janeiro", uf: "RJ" },
-  { ibge: "3550308", nome: "São Paulo", uf: "SP" },
+  { ibge: "3301009", nome: "Campos dos Goytacazes", uf: "RJ" },
+  { ibge: "3205309", nome: "Vitória", uf: "ES" },
+  { ibge: "2925501", nome: "Prado", uf: "BA" },
+  { ibge: "2925303", nome: "Porto Seguro", uf: "BA" },
+  { ibge: "2913606", nome: "Ilhéus", uf: "BA" },
   { ibge: "2927408", nome: "Salvador", uf: "BA" },
-  { ibge: "3106200", nome: "Belo Horizonte", uf: "MG" },
+  { ibge: "2800308", nome: "Aracaju", uf: "SE" },
+  { ibge: "2704302", nome: "Maceió", uf: "AL" },
+  { ibge: "2611606", nome: "Recife", uf: "PE" },
+  { ibge: "2507507", nome: "João Pessoa", uf: "PB" },
+  { ibge: "2408102", nome: "Natal", uf: "RN" },
+  { ibge: "2304400", nome: "Fortaleza", uf: "CE" },
 ];

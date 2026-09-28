@@ -45,7 +45,7 @@ esta regra e compila na Vercel normalmente.
   7. 🎨 **Design & Mídia**: Identidade Visual & Social.
 - **Critério pra categoria caber no escopo**: tem que servir quem trabalha/vive na estrada — exigir um ativo ou vantagem de nômade (van, mobilidade, trabalho remoto), não só coincidir geograficamente com a região onde o Allan mora. Foi esse critério que tirou "Reformas & Reparos" em 2026-09-18: a descrição tinha genericado pra "Eletricistas & Manutenção" (a tribo original, ainda mais antiga, era "Manutenção em trânsito") e a única vaga cadastrada era conserto elétrico residencial comum — nenhuma relação com estrada, van ou trabalho remoto. Categoria e vaga de exemplo removidas juntas.
 
-## Expedição JobPago (Angra dos Reis → Fortaleza)
+## Expedição JobPago (Paraty → Fortaleza, pelo litoral — trajeto trocado em 2026-09-28)
 
 Viagem real que o Allan vai fazer, visitando estabelecimentos (postos, pousadas,
 camping, oficinas) que pedem selo de verificação. Peças já construídas (18/09/2026),
@@ -76,6 +76,12 @@ todas com fonte única em `src/data/`:
   de auditoria (Claude Docs, "O Que Falta na Estrada"). Primeiro contato em
   massa com esses CNPJs **não está automatizado de propósito** — precisa de
   lista de municípios da rota + aprovação da mensagem antes de qualquer disparo.
+
+## Dados públicos na JobPago (2026-09-28)
+
+- `/cidade` e `/cidade/[ibge]` — relatório da cidade: empresas abertas por setor (Receita), salário de entrada por setor (Novo CAGED) e quantas compras públicas estão abertas. O **detalhe das compras é pago**: a página mostra só a pergunta e a contagem, com botão para o relatório/assinatura no allancandido.com. Dados vêm da API pncp-etl (`/relatorio-cidade/{ibge}`), envs `PNCP_API_URL` e `PNCP_API_KEY` no Coolify.
+- Home: seção "Quanto se ganha de verdade fazendo X em {cidade}?" (`RendaNaCidade.tsx`, `/api/renda`), começa em Paraty.
+- `/expedicao` — mapa do roteiro (Leaflet): pista duplicada/simples e acostamento confirmado (OpenStreetMap), pedágios federais (ANTT, sem tarifa; estaduais como a BA-099 não entram), 15 paradas e 155 cidades no caminho com link para o relatório. Dados em `src/data/expedicao-rota.json`, gerados por `scripts/expedicao/` (ver README lá).
 
 ## UX do mapa em touch (2026-09-18)
 

@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import RendaNaCidade from "@/components/RendaNaCidade";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useSession } from "next-auth/react";
@@ -359,6 +360,9 @@ export default function Home() {
             <Link href="/cidade" className="hover:text-amber-400 transition-colors">
               Sua Cidade
             </Link>
+            <Link href="/expedicao" className="hover:text-amber-400 transition-colors">
+              Expedição
+            </Link>
             <a href="#mapa-gps" className="hover:text-amber-400 transition-colors">
               Mapa GPS
             </a>
@@ -484,6 +488,9 @@ export default function Home() {
       <CarrosselAnuncios jobs={jobs} onSelect={setSelectedJob} />
 
       {/* ── SEÇÃO 1: MAPA GPS DE SERVIÇOS & ROTAS ── */}
+      {/* renda com número oficial (CAGED) — o oposto da promessa de renda fácil */}
+      <RendaNaCidade />
+
       <section id="mapa-gps" className="py-10 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
         <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4 mb-6">
           <div>
