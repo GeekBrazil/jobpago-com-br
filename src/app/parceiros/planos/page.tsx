@@ -6,7 +6,7 @@ import ReguaContribuicao from "@/components/ReguaContribuicao";
 export const metadata: Metadata = {
   title: "Parceiros da Expedição · JobPago.com.br",
   description:
-    "Quatro formas de fazer parte da Expedição JobPago, de Angra dos Reis a Fortaleza: permuta, parceiro local, patrocínio regional e master. Selo verificado em campo, com data.",
+    "Quatro formas de fazer parte da Expedição JobPago, de Paraty a Fortaleza: permuta, parceiro local, patrocínio regional e master. Selo verificado em campo, com data.",
   robots: { index: true, follow: true },
 };
 
@@ -31,7 +31,7 @@ export default function PlanosParceiroPage() {
         <header className="max-w-3xl">
           <span className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full glass-panel border border-amber-500/30 text-amber-300 text-[10px] sm:text-xs font-black tracking-widest uppercase">
             <span className="w-1.5 h-1.5 rounded-full bg-amber-400 animate-pulse" />
-            Angra dos Reis → Fortaleza
+            Paraty → Fortaleza
           </span>
 
           <h1 className="mt-6 text-3xl sm:text-5xl font-black text-white leading-[1.12]">
@@ -179,7 +179,7 @@ export default function PlanosParceiroPage() {
         {/* ── FECHO ── */}
         <section className="mt-14 text-center">
           <h2 className="text-xl sm:text-2xl font-black text-white">
-            Está na rota entre Angra e Fortaleza?
+            Está na rota entre Paraty e Fortaleza?
           </h2>
           <p className="mt-3 text-sm text-slate-300 max-w-xl mx-auto leading-relaxed">
             Me chama no WhatsApp com o nome do estabelecimento e a cidade. Se estiver

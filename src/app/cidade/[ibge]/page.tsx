@@ -200,7 +200,7 @@ export default async function RelatorioCidadePage({ params }: Props) {
             <h2 className="mt-2 text-2xl font-black">Trabalho de verdade, pago por Pix</h2>
             <p className="mt-2 text-slate-300">Os negócios que abriram aqui precisam de gente. Diga o que você sabe fazer e de onde você trabalha.</p>
             <div className="mt-5 flex flex-wrap gap-3">
-              <Link href="/cadastrar-servico" className="btn-primary-amalfi rounded-2xl px-6 py-3 text-sm font-black">Quero fazer tarefas</Link>
+              <Link href="/disponibilidade" className="btn-primary-amalfi rounded-2xl px-6 py-3 text-sm font-black">Cadastrar minha disponibilidade</Link>
               <a href={zap(`Quero renda. Estou em ${cidade} (${m.uf}) ou atendo a cidade.`)} target="_blank" rel="noopener noreferrer" className="btn-secondary-glass rounded-2xl px-6 py-3 text-sm font-bold">
                 WhatsApp
               </a>

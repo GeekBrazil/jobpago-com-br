@@ -6,7 +6,7 @@ import { NOTICIAS_ESTRADA } from "@/data/apoiadores";
 export const metadata: Metadata = {
   title: "Notícias da Estrada · JobPago.com.br",
   description:
-    "Atualizações da Expedição JobPago e reconhecimento de quem apoia — Angra dos Reis → Fortaleza.",
+    "Atualizações da Expedição JobPago e reconhecimento de quem apoia — Paraty → Fortaleza.",
   robots: { index: true, follow: true },
 };
 
@@ -47,7 +47,7 @@ export default function NoticiasEstradaPage() {
       <main className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-14 sm:py-20">
         <span className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full glass-panel border border-amber-500/30 text-amber-300 text-[10px] sm:text-xs font-black tracking-widest uppercase">
           <span className="w-1.5 h-1.5 rounded-full bg-amber-400 animate-pulse" />
-          Expedição Angra → Fortaleza
+          Expedição Paraty → Fortaleza
         </span>
 
         <h1 className="mt-6 text-3xl sm:text-5xl font-black text-white leading-[1.12]">

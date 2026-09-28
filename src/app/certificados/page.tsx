@@ -6,7 +6,7 @@ import CertificadosLista from "@/components/CertificadosLista";
 export const metadata: Metadata = {
   title: "Estabelecimentos Certificados · JobPago.com.br",
   description:
-    "Postos, pousadas e campings visitados e verificados pessoalmente na Expedição JobPago Angra dos Reis → Fortaleza.",
+    "Postos, pousadas e campings visitados e verificados pessoalmente na Expedição JobPago Paraty → Fortaleza.",
   robots: { index: true, follow: true },
 };
 

@@ -3,14 +3,11 @@
 import { useEffect, useState } from "react";
 import RendaNaCidade from "@/components/RendaNaCidade";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
-import { useSession } from "next-auth/react";
 import dynamic from "next/dynamic";
 import type { MapPoint } from "@/components/MapaServicos";
 import ModalPerfilRPG, { UserRPG, GUILD_DETAILS } from "@/components/ModalPerfilRPG";
 import { FILTROS } from "@/data/categorias";
 import { Icon } from "@/components/Icons";
-import CarrosselAnuncios from "@/components/CarrosselAnuncios";
 
 const MapaServicos = dynamic(() => import("@/components/MapaServicos"), {
   ssr: false,
@@ -101,7 +98,7 @@ const DEFAULT_RPG_USER: UserRPG = {
       id: "r4",
       category: "Comboio",
       icon: "tractor",
-      title: "Vaga no Comboio da Expedição Angra → Fortaleza",
+      title: "Vaga no Comboio da Expedição Paraty → Fortaleza",
       location: "Rota Litorânea (RJ -> BA -> CE)",
       requiredLevel: 15,
       requiredHonor: 300,
@@ -142,36 +139,9 @@ const REGRAS_HONRA = [
 const CATEGORIES = FILTROS;
 
 export default function Home() {
-  const router = useRouter();
-  const { data: session, status: sessionStatus } = useSession();
   const [jobs, setJobs] = useState<Job[]>([]);
-  const [isLoadingJobs, setIsLoadingJobs] = useState(true);
   const [selectedCategory, setSelectedCategory] = useState("Todas");
-  const [filterType, setFilterType] = useState<"all" | "pix" | "remote" | "local" | "honor">("all");
-  const [searchQuery, setSearchQuery] = useState("");
-  const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedJob, setSelectedJob] = useState<Job | null>(null);
-
-  // Volta do /entrar já logado e reabre o formulário de anúncio sozinho —
-  // sem isso o clique original em "+ Anunciar Vaga" se perderia no redirect.
-  useEffect(() => {
-    if (sessionStatus !== "authenticated") return;
-    const params = new URLSearchParams(window.location.search);
-    if (params.get("anunciar") === "1") {
-      setIsModalOpen(true);
-      params.delete("anunciar");
-      const query = params.toString();
-      window.history.replaceState(null, "", query ? `/?${query}` : "/");
-    }
-  }, [sessionStatus]);
-
-  function abrirAnunciarVaga() {
-    if (sessionStatus !== "authenticated") {
-      router.push("/entrar?callbackUrl=" + encodeURIComponent("/?anunciar=1"));
-      return;
-    }
-    setIsModalOpen(true);
-  }
 
   // User State & RPG Modals
   const [user, setUser] = useState<UserRPG | null>(null);
@@ -179,14 +149,6 @@ export default function Home() {
   const [toastMessage, setToastMessage] = useState<string | null>(null);
 
   // Form Vaga Nova
-  const [newTitle, setNewTitle] = useState("");
-  const [newCategory, setNewCategory] = useState("Nômade & Infra");
-  const [newBudget, setNewBudget] = useState("");
-  const [newLocation, setNewLocation] = useState("");
-  const [newType, setNewType] = useState<"Remoto" | "Presencial">("Presencial");
-  const [newDescription, setNewDescription] = useState("");
-  const [newClientName, setNewClientName] = useState("");
-  const [isFreeService, setIsFreeService] = useState(false);
 
   const fetchJobs = async () => {
     try {
@@ -197,8 +159,6 @@ export default function Home() {
       }
     } catch (err) {
       console.error("Erro ao buscar vagas em tempo real:", err);
-    } finally {
-      setIsLoadingJobs(false);
     }
   };
 
@@ -224,100 +184,8 @@ export default function Home() {
     setTimeout(() => setToastMessage(null), 4000);
   };
 
-  const addXpAndHonor = (xpAmount: number, honorAmount: number, reason: string) => {
-    if (!user) return;
-
-    let newXp = user.xp + xpAmount;
-    let newHonor = user.honorScore + honorAmount;
-    let newLevel = user.level;
-    let nextXp = user.nextLevelXp;
-
-    if (newXp >= nextXp) {
-      newLevel += 1;
-      nextXp = Math.round(nextXp * 1.4);
-      showToast(`Parabéns! Você subiu para o Nível ${newLevel}!`);
-    } else {
-      showToast(`+${xpAmount} XP | +${honorAmount} PTS de Alta Honra por: ${reason}`);
-    }
-
-    const updated = {
-      ...user,
-      xp: newXp,
-      level: newLevel,
-      nextLevelXp: nextXp,
-      honorScore: newHonor,
-    };
-    setUser(updated);
-    localStorage.setItem("jobpago_rpg_user", JSON.stringify(updated));
-  };
-
-  const handleCreateJob = async (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!newTitle) return;
-
-    const budgetVal = isFreeService ? 0 : Number(newBudget || 0);
-    const client = newClientName || user?.name || "Allan C. (Nômade VIP)";
-
-    const payload = {
-      title: isFreeService ? `[CORTESIA 0800] ${newTitle}` : newTitle,
-      category: newCategory,
-      budget: budgetVal,
-      location: newLocation || "Angra dos Reis, RJ",
-      type: newType,
-      description: newDescription || "Serviço cadastrado na guilda.",
-      clientName: client,
-      whatsapp: "5524993326966",
-      isFreeHonor: isFreeService,
-    };
-
-    try {
-      const res = await fetch("/api/jobs", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(payload),
-      });
-
-      const data = await res.json();
-      if (data.success && data.job) {
-        setJobs([data.job, ...jobs]);
-        setIsModalOpen(false);
-
-        if (isFreeService) {
-          addXpAndHonor(200, 50, "Oferecer Serviço 100% Gratuito (Alta Honra)");
-        } else {
-          addXpAndHonor(150, 10, "Publicar Serviço na Guilda");
-        }
-
-        setNewTitle("");
-        setNewBudget("");
-        setNewDescription("");
-        setNewLocation("");
-        setIsFreeService(false);
-      }
-    } catch (err) {
-      console.error("Erro ao enviar vaga:", err);
-      showToast("Erro ao publicar vaga. Tente novamente.");
-    }
-  };
-
   const publicJobs = jobs;
 
-  const filteredJobs = publicJobs.filter((job) => {
-    const matchesCategory = selectedCategory === "Todas" || job.category === selectedCategory;
-    const matchesSearch =
-      job.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      job.description.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      job.location.toLowerCase().includes(searchQuery.toLowerCase());
-
-    if (!matchesCategory || !matchesSearch) return false;
-
-    if (filterType === "pix") return job.isPixImmediate;
-    if (filterType === "remote") return job.type === "Remoto";
-    if (filterType === "local") return job.type === "Presencial";
-    if (filterType === "honor") return job.isFreeHonor || job.budget === 0;
-
-    return true;
-  });
 
   return (
     <div className="min-h-screen text-slate-100 selection:bg-amber-500 selection:text-black">
@@ -369,9 +237,6 @@ export default function Home() {
             <a href="#nomade-space" className="hover:text-amber-400 transition-colors">
               Infra Nômade
             </a>
-            <a href="#vagas" className="hover:text-amber-400 transition-colors">
-              Vagas & Serviços
-            </a>
             <Link href="/cadastrar-servico" className="hover:text-amber-400 transition-colors text-amber-400/90 flex items-center gap-1">
               <span>+ Oferecer ou Contratar</span>
             </Link>
@@ -410,15 +275,14 @@ export default function Home() {
               </button>
             )}
 
-            <button
-              onClick={abrirAnunciarVaga}
+            <Link
+              href="/disponibilidade"
               className="btn-primary-amalfi text-xs sm:text-base px-3 sm:px-6 py-2 sm:py-3 rounded-2xl shrink-0 cursor-pointer whitespace-nowrap"
             >
-              {/* No celular o rotulo encurta: o header somava 432px em 388 e
-                  este botao — o CTA primario — era o que ficava cortado. */}
-              <span className="sm:hidden">+ Vaga</span>
-              <span className="hidden sm:inline">+ Anunciar Vaga</span>
-            </button>
+              {/* rótulo curto no celular: o header não cabe em 388px com o texto longo */}
+              <span className="sm:hidden">Disponível</span>
+              <span className="hidden sm:inline">Estou disponível</span>
+            </Link>
           </div>
         </div>
       </header>
@@ -443,49 +307,33 @@ export default function Home() {
             De devs e criadores remotos a caminhoneiros, motorhomes e vans: quem trabalha e quem vive na estrada, no mesmo lugar. PIX combinado direto entre as partes, sem taxa de intermediação.
           </p>
 
-          {/* DUPLO CTA DE ALTA CONVERSÃO */}
-          <div className="mt-8 flex flex-col sm:flex-row items-center justify-center gap-3.5 max-w-md mx-auto">
-            <a
-              href="#mapa-gps"
-              className="btn-primary-amalfi w-full sm:w-auto px-7 py-3.5 rounded-2xl flex items-center justify-center gap-2.5 text-sm sm:text-base font-black shadow-lg cursor-pointer"
-            >
-              <Icon name="compass" width={36} height={36} /> Explorar Mapa & Serviços
-            </a>
-
-            <Link
-              href="/cadastrar-servico"
-              className="btn-secondary-glass w-full sm:w-auto px-7 py-3.5 rounded-2xl flex items-center justify-center gap-2 text-sm sm:text-base font-bold cursor-pointer"
-            >
-              <Icon name="handshake" width={36} height={36} /> Oferecer ou Contratar
-            </Link>
-          </div>
-
-          {/* BARRA DE BUSCA RÁPIDA */}
-          <div className="mt-10 max-w-xl mx-auto">
-            <div className="relative glass-panel rounded-2xl p-2 flex items-center border border-white/10 shadow-2xl focus-within:border-amber-400/50 transition-colors">
-              <Icon name="search" width={36} height={36} className="text-slate-400 ml-3 mr-2 shrink-0" />
-              <input
-                type="text"
-                placeholder="Buscar vagas, cidades ou categorias (ex: Chuveiro, Paraty, Dev, IA)..."
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                className="w-full bg-transparent border-none text-white text-xs sm:text-sm focus:outline-none placeholder-slate-400"
-              />
-              {searchQuery && (
-                <button
-                  onClick={() => setSearchQuery("")}
-                  className="text-slate-400 hover:text-white px-2 cursor-pointer"
-                >
-                  <Icon name="close" width={30} height={30} />
-                </button>
-              )}
+          {/* OS DOIS PÚBLICOS: quem paga (negócio) e quem faz (renda) */}
+          <div className="mt-10 grid gap-4 sm:grid-cols-2 text-left">
+            <div className="glass-panel rounded-3xl p-6 sm:p-7 border border-amber-500/25">
+              <p className="text-[11px] font-mono font-bold uppercase tracking-widest text-amber-400">Tenho um negócio</p>
+              <h2 className="mt-2 text-xl sm:text-2xl font-black text-white">Mais clientes no bairro e na estrada</h2>
+              <p className="mt-2 text-sm text-slate-300 leading-relaxed">
+                Diga a tarefa (fotos, Instagram, cardápio, frete, atendimento) e encontre quem faz, com Pix direto. Ganhe o selo de estabelecimento verificado.
+              </p>
+              <div className="mt-5 flex flex-wrap gap-3">
+                <Link href="/cadastrar-servico?tipo=contratante" className="btn-primary-amalfi rounded-2xl px-5 py-3 text-sm font-black">Publicar uma tarefa</Link>
+                <Link href="/cidade" className="btn-secondary-glass rounded-2xl px-5 py-3 text-sm font-bold">Relatório da minha cidade</Link>
+              </div>
+            </div>
+            <div className="glass-panel rounded-3xl p-6 sm:p-7">
+              <p className="text-[11px] font-mono font-bold uppercase tracking-widest text-amber-400">Quero renda</p>
+              <h2 className="mt-2 text-xl sm:text-2xl font-black text-white">Trabalho de verdade, pago por Pix</h2>
+              <p className="mt-2 text-sm text-slate-300 leading-relaxed">
+                Conte o que você sabe fazer e de onde trabalha — da cidade, remoto ou na estrada. Quando um negócio precisar, você é chamado.
+              </p>
+              <div className="mt-5 flex flex-wrap gap-3">
+                <Link href="/disponibilidade" className="btn-primary-amalfi rounded-2xl px-5 py-3 text-sm font-black">Cadastrar minha disponibilidade</Link>
+                <a href="#renda-na-cidade" className="btn-secondary-glass rounded-2xl px-5 py-3 text-sm font-bold">Quanto se paga</a>
+              </div>
             </div>
           </div>
         </div>
       </section>
-
-      {/* ── CARROSSEL DE ANÚNCIOS: FAIXA CONTÍNUA DE UMA PONTA A OUTRA DA JANELA ── */}
-      <CarrosselAnuncios jobs={jobs} onSelect={setSelectedJob} />
 
       {/* ── SEÇÃO 1: MAPA GPS DE SERVIÇOS & ROTAS ── */}
       {/* renda com número oficial (CAGED) — o oposto da promessa de renda fácil */}
@@ -593,155 +441,6 @@ export default function Home() {
             </div>
           </div>
         </div>
-      </section>
-
-      {/* ── SEÇÃO 3: FEED DE VAGAS & SERVIÇOS ── */}
-      <section id="vagas" className="py-10 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
-        <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4 mb-8">
-          <div>
-            <h2 className="text-2xl sm:text-3xl font-black text-white">Oportunidades & Serviços Disponíveis</h2>
-            <p className="text-xs text-slate-400 mt-1 font-mono">
-              {isLoadingJobs ? "Atualizando feed em tempo real..." : `Exibindo ${filteredJobs.length} resultados atualizados`}
-            </p>
-          </div>
-
-          {/* FILTRO TIPO */}
-          <div className="flex flex-wrap items-center gap-1.5 glass-panel p-1.5 rounded-2xl">
-            <button
-              onClick={() => setFilterType("all")}
-              className={`px-3 py-1.5 rounded-xl text-xs font-black transition-all cursor-pointer ${
-                filterType === "all" ? "bg-amber-500 text-black shadow-lg" : "text-slate-300 hover:text-white"
-              }`}
-            >
-              Todos
-            </button>
-            <button
-              onClick={() => setFilterType("honor")}
-              className={`px-3 py-1.5 rounded-xl text-xs font-black transition-all cursor-pointer flex items-center gap-1.5 ${
-                filterType === "honor" ? "bg-amber-400 text-black shadow-lg" : "text-amber-400 hover:text-amber-300"
-              }`}
-            >
-              <Icon name="shield" width={30} height={30} /> Gratuitos (Alta Honra)
-            </button>
-            <button
-              onClick={() => setFilterType("pix")}
-              className={`px-3 py-1.5 rounded-xl text-xs font-black transition-all cursor-pointer flex items-center gap-1.5 ${
-                filterType === "pix" ? "bg-amber-500 text-black shadow-lg" : "text-slate-300 hover:text-white"
-              }`}
-            >
-              <Icon name="bolt" width={30} height={30} /> PIX Direto
-            </button>
-            <button
-              onClick={() => setFilterType("local")}
-              className={`px-3 py-1.5 rounded-xl text-xs font-black transition-all cursor-pointer flex items-center gap-1.5 ${
-                filterType === "local" ? "bg-amber-500 text-black shadow-lg" : "text-slate-300 hover:text-white"
-              }`}
-            >
-              <Icon name="pin" width={30} height={30} /> Presenciais
-            </button>
-          </div>
-        </div>
-
-        {/* LISTA DE CARDS */}
-        {filteredJobs.length === 0 && !isLoadingJobs ? (
-          <div className="glass-card rounded-3xl p-10 sm:p-14 text-center flex flex-col items-center gap-4">
-            <div className="w-14 h-14 rounded-2xl bg-amber-500/10 border border-amber-500/30 flex items-center justify-center">
-              <Icon name="compass" width={52} height={52} />
-            </div>
-            <h3 className="text-lg sm:text-xl font-black text-white">
-              Ainda não tem oportunidade publicada em {selectedCategory}
-            </h3>
-            <p className="text-sm text-slate-400 max-w-md">
-              Seja o primeiro a publicar uma vaga nessa categoria, ou cadastre sua demanda que a gente busca alguém pra você na rede.
-            </p>
-            <div className="flex flex-col sm:flex-row gap-3 mt-2">
-              <button onClick={abrirAnunciarVaga} className="btn-primary-amalfi px-6 py-3 rounded-2xl text-sm font-black cursor-pointer">
-                + Publicar Oportunidade
-              </button>
-              <Link href="/cadastrar-servico" className="btn-secondary-glass px-6 py-3 rounded-2xl text-sm font-bold cursor-pointer">
-                Cadastrar Minha Demanda
-              </Link>
-            </div>
-          </div>
-        ) : (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
-          {filteredJobs.map((job) => {
-            const isNomad = job.category.includes("Nômade");
-            const isFree = job.budget === 0 || job.isFreeHonor;
-
-            return (
-              <div
-                key={job.id}
-                onClick={() => setSelectedJob(job)}
-                className={`glass-card rounded-3xl p-6 cursor-pointer relative flex flex-col justify-between ${
-                  isFree ? "glass-amber" : isNomad ? "glass-amalfi" : ""
-                }`}
-              >
-                <div>
-                  <div className="flex items-center justify-between gap-2 mb-3">
-                    <div className="flex items-center gap-1.5">
-                      <span className="text-xs font-black px-2.5 py-1 rounded-xl bg-white/5 text-amber-300 border border-white/10">
-                        {job.category}
-                      </span>
-                      {job.isVerifiedPartner && (
-                        <span
-                          title="Estabelecimento visitado e verificado pelo JobPago"
-                          className="text-[10px] font-black px-2 py-1 rounded-xl bg-amber-500/15 text-amber-300 border border-amber-500/30 flex items-center gap-1"
-                        >
-                          <Icon name="shield" width={26} height={26} /> Verificado
-                        </span>
-                      )}
-                    </div>
-                    <span className="text-[10px] text-slate-400 font-mono">{job.postedAgo}</span>
-                  </div>
-
-                  <h3 className="text-lg font-black text-white leading-snug mb-2 group-hover:text-amber-300 transition-colors">
-                    {job.title}
-                  </h3>
-
-                  <p className="text-xs text-slate-300 line-clamp-3 mb-4 leading-relaxed font-normal">
-                    {job.description}
-                  </p>
-
-                  {job.nomadFeatures && (
-                    <div className="flex flex-wrap gap-1.5 mb-4">
-                      {job.nomadFeatures.map((f, i) => (
-                        <span key={i} className="text-[10px] bg-amber-950/40 border border-amber-500/20 text-amber-300 px-2 py-0.5 rounded-md">
-                          {f}
-                        </span>
-                      ))}
-                    </div>
-                  )}
-                </div>
-
-                <div className="pt-4 border-t border-white/10">
-                  <div className="flex items-center justify-between mb-3">
-                    <div>
-                      <span className="text-[9px] text-slate-400 block uppercase font-mono">Valor Combinado</span>
-                      <span className={`text-lg font-black flex items-center gap-1.5 ${isFree ? "text-amber-400" : "text-amber-400"}`}>
-                        {isFree ? (<><Icon name="shield" width={36} height={36} /> 100% CORTESIA</>) : `R$ ${job.budget.toLocaleString("pt-BR")}`}
-                      </span>
-                    </div>
-
-                    <div className="flex items-center gap-1">
-                      {job.isPixImmediate && (
-                        <span className="text-[11px] font-black bg-amber-500/15 text-amber-300 border border-amber-500/30 px-2 py-0.5 rounded-lg flex items-center gap-1 font-mono">
-                          <Icon name="bolt" width={26} height={26} /> PIX Direto
-                        </span>
-                      )}
-                    </div>
-                  </div>
-
-                  <div className="flex items-center justify-between text-xs text-slate-400 pt-2 border-t border-white/5">
-                    <span className="truncate max-w-[170px] flex items-center gap-1"><Icon name="pin" width={28} height={28} className="shrink-0" /> {job.location}</span>
-                    <span className="text-amber-400 font-bold shrink-0">Ver Detalhes →</span>
-                  </div>
-                </div>
-              </div>
-            );
-          })}
-        </div>
-        )}
       </section>
 
       {/* ── SEÇÃO 4: SISTEMA DE ALTA HONRA & REPUTAÇÃO ── */}
@@ -1035,140 +734,6 @@ export default function Home() {
             >
               <Icon name="chat" width={36} height={36} /> Entrar em Contato Direto via WhatsApp
             </button>
-          </div>
-        </div>
-      )}
-
-      {/* ── MODAL PUBLICAR VAGA ── */}
-      {isModalOpen && (
-        <div className="fixed inset-0 z-50 bg-black/80 backdrop-blur-xl flex items-center justify-center p-4">
-          <div className="w-full max-w-xl glass-panel border border-white/20 rounded-3xl p-6 sm:p-8 relative shadow-2xl max-h-[90vh] overflow-y-auto">
-            <button
-              onClick={() => setIsModalOpen(false)}
-              className="absolute top-5 right-5 text-slate-400 hover:text-white bg-white/5 w-8 h-8 rounded-full flex items-center justify-center cursor-pointer"
-            >
-              <Icon name="close" width={34} height={34} />
-            </button>
-
-            <h3 className="text-2xl font-black text-white">+ Publicar Nova Oportunidade</h3>
-            <p className="text-xs text-slate-300 mt-1">Sua oportunidade aparecerá instantaneamente no mapa e lhe renderá XP e Honra</p>
-
-            <form onSubmit={handleCreateJob} className="mt-6 flex flex-col gap-4">
-              {/* OPÇÃO DE SERVIÇO CORTESIA 0800 */}
-              <div className="glass-card border border-amber-400/40 p-3 rounded-2xl flex items-center justify-between">
-                <div>
-                  <span className="text-xs font-black text-amber-300 flex items-center gap-1.5">
-                    <Icon name="shield" width={30} height={30} /> Ponto de Apoio / Cortesia 0800 (Alta Honra)
-                  </span>
-                  <span className="text-[10px] text-slate-300 block">
-                    Ganhe +50 PTS de Alta Honra ao doar apoio para nômades na estrada.
-                  </span>
-                </div>
-                <input
-                  type="checkbox"
-                  checked={isFreeService}
-                  onChange={(e) => setIsFreeService(e.target.checked)}
-                  className="w-5 h-5 accent-amber-400 cursor-pointer"
-                />
-              </div>
-
-              <div>
-                <label className="text-xs font-extrabold text-slate-300 block mb-1">Título da Vaga / Serviço</label>
-                <input
-                  type="text"
-                  required
-                  placeholder="Ex: Chuveiro Quente Cortesia ou Tomada 220V Grátis"
-                  value={newTitle}
-                  onChange={(e) => setNewTitle(e.target.value)}
-                  className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:border-amber-400"
-                />
-              </div>
-
-              <div className="grid grid-cols-2 gap-4">
-                <div>
-                  <label className="text-xs font-extrabold text-slate-300 block mb-1">Categoria</label>
-                  <select
-                    value={newCategory}
-                    onChange={(e) => setNewCategory(e.target.value)}
-                    className="w-full bg-slate-900 border border-white/10 rounded-xl px-3 py-3 text-sm text-white focus:outline-none focus:border-amber-400"
-                  >
-                    {CATEGORIES.filter((c) => c.name !== "Todas").map((c) => (
-                      <option key={c.name} value={c.name}>
-                        {c.name}
-                      </option>
-                    ))}
-                  </select>
-                </div>
-
-                {!isFreeService && (
-                  <div>
-                    <label className="text-xs font-extrabold text-slate-300 block mb-1">Orçamento (R$)</label>
-                    <input
-                      type="number"
-                      required={!isFreeService}
-                      placeholder="Ex: 150"
-                      value={newBudget}
-                      onChange={(e) => setNewBudget(e.target.value)}
-                      className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:border-amber-400 font-mono"
-                    />
-                  </div>
-                )}
-              </div>
-
-              <div className="grid grid-cols-2 gap-4">
-                <div>
-                  <label className="text-xs font-extrabold text-slate-300 block mb-1">Modalidade</label>
-                  <select
-                    value={newType}
-                    onChange={(e) => setNewType(e.target.value as "Remoto" | "Presencial")}
-                    className="w-full bg-slate-900 border border-white/10 rounded-xl px-3 py-3 text-sm text-white focus:outline-none focus:border-amber-400"
-                  >
-                    <option value="Presencial">Presencial</option>
-                    <option value="Remoto">Remoto</option>
-                  </select>
-                </div>
-
-                <div>
-                  <label className="text-xs font-extrabold text-slate-300 block mb-1">Cidade / Estado</label>
-                  <input
-                    type="text"
-                    placeholder="Ex: Angra dos Reis, RJ"
-                    value={newLocation}
-                    onChange={(e) => setNewLocation(e.target.value)}
-                    className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:border-amber-400"
-                  />
-                </div>
-              </div>
-
-              <div>
-                <label className="text-xs font-extrabold text-slate-300 block mb-1">Descrição do Serviço & Comodidades</label>
-                <textarea
-                  rows={3}
-                  placeholder="Detalhe se há tomadas 220V, Wi-Fi, chuveiro aquecido, ferramentas..."
-                  value={newDescription}
-                  onChange={(e) => setNewDescription(e.target.value)}
-                  className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:border-amber-400"
-                />
-              </div>
-
-              <div>
-                <label className="text-xs font-extrabold text-slate-300 block mb-1">Seu Nome / Contratante</label>
-                <input
-                  type="text"
-                  placeholder={user ? user.name : "Ex: Allan C. (Nômade VIP)"}
-                  value={newClientName}
-                  onChange={(e) => setNewClientName(e.target.value)}
-                  className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:border-amber-400"
-                />
-              </div>
-
-              <button
-                type="submit"
-                className="btn-primary-amalfi mt-2 py-4 rounded-2xl text-sm font-black uppercase tracking-wider cursor-pointer flex items-center justify-center gap-2"
-              >
-                <Icon name="rocket" width={36} height={36} /> Publicar no Mapa em Tempo Real
-              </button>
-            </form>
           </div>
         </div>
       )}

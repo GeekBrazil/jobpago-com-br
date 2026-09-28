@@ -42,7 +42,7 @@ export default function CertificadosLista() {
             Nenhum estabelecimento certificado ainda
           </h3>
           <p className="text-sm text-slate-400 max-w-md">
-            A Expedição Angra dos Reis → Fortaleza está começando. Os
+            A Expedição Paraty → Fortaleza está começando. Os
             primeiros selos aparecem aqui assim que o Allan visitar e testar
             o local pessoalmente.
           </p>
