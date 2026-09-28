@@ -59,7 +59,7 @@ export default function RendaNaCidade({ ibgeInicial = "3303807" }: { ibgeInicial
             id="renda-setor"
             value={secao}
             onChange={(e) => setSecao(e.target.value)}
-            className="block sm:inline w-full sm:w-auto my-1 bg-transparent border-b-2 border-amber-400 text-amber-300 font-black focus:outline-none text-2xl sm:text-5xl whitespace-normal"
+            className="block sm:inline w-full sm:w-auto my-1 bg-transparent border-b-2 border-amber-400 text-amber-300 font-black focus:outline-none text-lg sm:text-5xl pr-6"
           >
             {(dados?.setores ?? []).map((s) => (
               <option key={s.secao} value={s.secao} className="bg-slate-900 text-base">{s.setor.toLowerCase()}</option>
