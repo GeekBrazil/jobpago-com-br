@@ -5,7 +5,7 @@ import MapaRotaCliente from "./MapaRotaCliente";
 import rota from "@/data/expedicao-rota.json";
 
 export const metadata: Metadata = {
-  title: "Expedição JobPago: Paraty → Fortaleza pelo litoral · rodovias, pedágios e acostamento",
+  title: "Expedição JobPago nº 01 — travessia de reconhecimento, Paraty → Fortaleza",
   description:
     "O roteiro da Expedição JobPago: 15 paradas, rodovias, praças de pedágio (ANTT) e onde há acostamento informado — pensado para quem vai de carro, de carona ou a pé.",
   alternates: { canonical: "https://jobpago.com.br/expedicao" },
@@ -44,8 +44,14 @@ export default function ExpedicaoPage() {
           ))}
         </section>
 
-        <section className="mt-10" aria-labelledby="mapa">
-          <h2 id="mapa" className="sr-only">Mapa</h2>
+        <section className="mt-12" aria-labelledby="mapa">
+          <div className="mb-5 flex items-baseline gap-4">
+            <span className="font-mono text-xs font-bold uppercase tracking-[0.3em] text-amber-400 shrink-0">Nº 01</span>
+            <div>
+              <h2 id="mapa" className="text-2xl sm:text-3xl font-black tracking-tight">Travessia de reconhecimento</h2>
+              <p className="mt-1 text-sm text-slate-400">A primeira viagem abre o caminho: visitar, verificar e mapear cada ponto de apoio antes de convidar a estrada inteira.</p>
+            </div>
+          </div>
           <MapaRotaCliente
             geometria={rota.geometria as [number, number][]}
             acostamento={rota.acostamento}
