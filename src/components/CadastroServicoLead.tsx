@@ -6,13 +6,14 @@ import Link from "next/link";
 import { Icon } from "@/components/Icons";
 
 interface CadastroServicoLeadProps {
+  tipoInicial?: "prestador" | "contratante";
   onSuccess?: () => void;
 }
 
 const CATEGORIAS_SERVICOS = CATEGORIAS.map((c) => ({ id: c.id, name: c.nome, icon: c.icone }));
 
-export default function CadastroServicoLead({ onSuccess }: CadastroServicoLeadProps) {
-  const [tipo, setTipo] = useState<"prestador" | "contratante">("prestador");
+export default function CadastroServicoLead({ onSuccess, tipoInicial = "prestador" }: CadastroServicoLeadProps) {
+  const [tipo, setTipo] = useState<"prestador" | "contratante">(tipoInicial);
   const isContratante = tipo === "contratante";
   const [nomeContratado, setNomeContratado] = useState("");
   const [whatsappContratado, setWhatsappContratado] = useState("");

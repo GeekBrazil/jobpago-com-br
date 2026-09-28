@@ -356,6 +356,9 @@ export default function Home() {
             <Link href="/como-funciona" className="hover:text-amber-400 transition-colors">
               Como Funciona
             </Link>
+            <Link href="/cidade" className="hover:text-amber-400 transition-colors">
+              Sua Cidade
+            </Link>
             <a href="#mapa-gps" className="hover:text-amber-400 transition-colors">
               Mapa GPS
             </a>
@@ -1195,6 +1198,9 @@ export default function Home() {
           <div className="flex items-center gap-6 text-xs text-slate-400">
             <Link href="/como-funciona" className="hover:text-amber-400 transition-colors">
               Como Funciona
+            </Link>
+            <Link href="/cidade" className="hover:text-amber-400 transition-colors">
+              Relatório da cidade
             </Link>
             <Link href="/termos" className="hover:text-amber-400 transition-colors">
               Termos de Uso
