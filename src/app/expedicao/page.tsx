@@ -61,7 +61,7 @@ export default function ExpedicaoPage() {
             <span><span className="inline-block w-3 h-3 rounded-full bg-amber-400 align-middle mr-2" />pedágio</span>
             <span><span className="inline-block w-3 h-3 rounded-full bg-slate-50 align-middle mr-2" />parada</span>
           </div>
-          <p className="mt-2 text-xs text-slate-400">No celular, arraste o mapa com dois dedos.</p>
+          <p className="mt-2 text-xs text-slate-400">No celular, a página rola normalmente; para aproximar o mapa, use dois dedos.</p>
         </section>
 
         {/* CARONA E A PÉ */}

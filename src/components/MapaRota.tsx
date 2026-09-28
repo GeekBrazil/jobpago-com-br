@@ -63,5 +63,5 @@ export default function MapaRota({
     return () => { mapa.remove(); };
   }, [geometria, acostamento, pista, pedagios, paradas]);
 
-  return <div ref={ref} className="w-full h-[520px] sm:h-[640px] rounded-3xl overflow-hidden border border-white/10" role="region" aria-label="Mapa do roteiro Paraty a Fortaleza" />;
+  return <div ref={ref} style={{ height: "min(72vh, 640px)", minHeight: 420 }} className="w-full rounded-3xl overflow-hidden border border-white/10" role="region" aria-label="Mapa do roteiro Paraty a Fortaleza" />;
 }
