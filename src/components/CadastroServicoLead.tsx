@@ -101,6 +101,12 @@ export default function CadastroServicoLead({ onSuccess }: CadastroServicoLeadPr
       }
 
       setSuccessData({ whatsappUrl: data.whatsappUrl });
+      // central de prospecção (r.js): prestador = quer renda; contratante = negócio
+      (window as unknown as { acLead?: (d: object) => void }).acLead?.({
+        nome: nomeContratado,
+        contato: whatsappContratado,
+        seg: tipo === "prestador" ? "renda" : "negocio",
+      });
       if (onSuccess) onSuccess();
 
       // Dispara abertura em nova janela com a mensagem estruturada
@@ -136,6 +142,7 @@ export default function CadastroServicoLead({ onSuccess }: CadastroServicoLeadPr
         <div className="mt-8 flex flex-col sm:flex-row items-center justify-center gap-3">
           <a
             href={successData.whatsappUrl}
+            data-direto
             target="_blank"
             rel="noopener noreferrer"
             className="btn-primary-amalfi w-full sm:w-auto px-8 py-3.5 rounded-2xl text-xs sm:text-sm font-black flex items-center justify-center gap-2 cursor-pointer shadow-xl"

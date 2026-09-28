@@ -1015,10 +1015,11 @@ export default function Home() {
 
             <button
               onClick={() => {
-                window.open(
-                  `https://wa.me/${selectedJob.whatsapp}?text=Olá,%20tenho%20interesse%20no%20serviço:%20${encodeURIComponent(selectedJob.title)}`,
-                  "_blank"
-                );
+                const url = `https://wa.me/${selectedJob.whatsapp}?text=Olá,%20tenho%20interesse%20no%20serviço:%20${encodeURIComponent(selectedJob.title)}`;
+                // passo de 1 toque (r.js) antes do WhatsApp; sem o script, abre direto
+                const passo = (window as unknown as { acWhats?: (u: string) => void }).acWhats;
+                if (passo) passo(url);
+                else window.open(url, "_blank");
               }}
               className="btn-primary-amalfi w-full py-4 rounded-2xl text-sm font-black flex items-center justify-center gap-2 cursor-pointer"
             >

@@ -113,7 +113,7 @@ export async function POST(req: Request) {
     const cleanPhone = body.whatsappContratado.replace(/\D/g, "");
     if (cleanPhone.length < 10 || cleanPhone.length > 11) {
       return NextResponse.json(
-        { success: false, error: "WhatsApp inválido. Informe DDD + número (ex: 24 99332-6966)." },
+        { success: false, error: "WhatsApp inválido. Informe DDD + número (ex: 24 99999-9999)." },
         { status: 400 }
       );
     }

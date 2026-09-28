@@ -1,7 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import { Bricolage_Grotesque, Plus_Jakarta_Sans } from "next/font/google";
 import "./globals.css";
-import EventoVisita from "@/components/EventoVisita";
 import Script from "next/script";
 import AuthProvider from "@/components/AuthProvider";
 import EstradaNevadaScrollytelling from "@/components/EstradaNevadaScrollytelling";
@@ -54,7 +53,8 @@ export default function RootLayout({
         <div className="relative z-10 flex flex-col min-h-full">
           <AuthProvider>
             {children}
-            <EventoVisita />
+            {/* rastreio próprio + passo de 1 toque antes do WhatsApp — arquivo único servido pelo allancandido.com */}
+            <Script src="https://allancandido.com/r.js" data-site="jobpago" data-cor="#F59E0B" strategy="afterInteractive" />
             {/* chat de atendimento — widget único servido pelo allancandido.com (substitui o Dify) */}
             <Script src="https://allancandido.com/chat/widget.js" data-site="jobpago" strategy="lazyOnload" />
           </AuthProvider>
