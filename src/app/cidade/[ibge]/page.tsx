@@ -166,19 +166,19 @@ export default async function RelatorioCidadePage({ params }: Props) {
             </div>
             <div className="mt-5 flex flex-wrap gap-3">
               <a
-                href={`https://allancandido.com/pt/insights/${ibge}?utm_source=jobpago&utm_medium=cidade&utm_campaign=compras`}
+                href={`https://allancandido.com/compras-publicas?cidade=${ibge}&utm_source=jobpago&utm_medium=cidade&utm_campaign=compras`}
                 className="btn-primary-amalfi rounded-2xl px-6 py-3 text-sm font-black"
               >
-                Ver o relatório
+                Ver o relatório de compras
               </a>
               <a
-                href="https://allancandido.com/pt/assinar?utm_source=jobpago&utm_medium=cidade&utm_campaign=compras"
+                href={`https://allancandido.com/insights/${ibge}?utm_source=jobpago&utm_medium=cidade&utm_campaign=raiox`}
                 className="btn-secondary-glass rounded-2xl px-6 py-3 text-sm font-bold"
               >
-                Receber avisos por e-mail
+                Raio-X da cidade
               </a>
             </div>
-            <p className="mt-3 text-xs text-slate-400">Objeto, órgão, valor, prazo e edital de cada compra ficam no relatório de Allan Candido — inteligência de dados públicos.</p>
+            <p className="mt-3 text-xs text-slate-400">Objeto, órgão, valor, prazo e edital de cada compra, com aviso por e-mail: R$ 79,90 por ano no Allan Candido — inteligência de dados públicos.</p>
           </section>
         )}
 

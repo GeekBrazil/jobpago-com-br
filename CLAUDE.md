@@ -79,7 +79,7 @@ todas com fonte única em `src/data/`:
 
 ## Dados públicos na JobPago (2026-09-28)
 
-- `/cidade` e `/cidade/[ibge]` — relatório da cidade: empresas abertas por setor (Receita), salário de entrada por setor (Novo CAGED) e quantas compras públicas estão abertas. O **detalhe das compras é pago**: a página mostra só a pergunta e a contagem, com botão para o relatório/assinatura no allancandido.com. Dados vêm da API pncp-etl (`/relatorio-cidade/{ibge}`), envs `PNCP_API_URL` e `PNCP_API_KEY` no Coolify.
+- `/cidade` e `/cidade/[ibge]` — relatório da cidade: empresas abertas por setor (Receita), salário de entrada por setor (Novo CAGED) e quantas compras públicas estão abertas. O **detalhe das compras é pago**: a página mostra só a pergunta e a contagem, com botão para `allancandido.com/compras-publicas?cidade={ibge}` (plano de R$ 79,90/ano). Dados vêm da API pncp-etl (`/relatorio-cidade/{ibge}`), envs `PNCP_API_URL` e `PNCP_API_KEY` no Coolify.
 - Home: seção "Quanto se ganha de verdade fazendo X em {cidade}?" (`RendaNaCidade.tsx`, `/api/renda`), começa em Paraty.
 - `/expedicao` — mapa do roteiro (Leaflet): pista duplicada/simples e acostamento confirmado (OpenStreetMap), pedágios federais (ANTT, sem tarifa; estaduais como a BA-099 não entram), 15 paradas e 155 cidades no caminho com link para o relatório. Dados em `src/data/expedicao-rota.json`, gerados por `scripts/expedicao/` (ver README lá).
 
