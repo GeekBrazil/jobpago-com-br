@@ -4,9 +4,9 @@ import { Icon } from "@/components/Icons";
 import CertificadosLista from "@/components/CertificadosLista";
 
 export const metadata: Metadata = {
-  title: "Estabelecimentos Certificados · JobPago.com.br",
+  title: "Refúgios da Estrada e estabelecimentos verificados · JobPago.com.br",
   description:
-    "Postos, pousadas e campings visitados e verificados pessoalmente na Expedição JobPago Paraty → Fortaleza.",
+    "Refúgios da Estrada (camping, hostel, pousada, hotel) e postos visitados e verificados pessoalmente na Expedição JobPago Paraty → Fortaleza.",
   robots: { index: true, follow: true },
 };
 
@@ -53,13 +53,14 @@ export default function CertificadosPage() {
           </span>
 
           <h1 className="mt-6 text-3xl sm:text-5xl font-black text-white leading-[1.12]">
-            Estabelecimentos Certificados
+            Refúgios da Estrada e lugares verificados
           </h1>
 
           <p className="mt-5 text-sm sm:text-base text-slate-300 leading-relaxed">
             Não é adesivo comprado. O selo diz que alguém da JobPago esteve no
             local, testou a estrutura de verdade — chuveiro, tomada, Wi-Fi,
-            pátio — e anotou a data. Se a estrutura mudar, o selo cai. Cada
+            pátio — e anotou a data. Onde dormimos e recomendamos para passar a
+            noite (camping, hostel, pousada, hotel) leva o nome de Refúgio da Estrada. Se a estrutura mudar, o selo cai. Cada
             pin âmbar no mapa da home é um lugar assim.
           </p>
         </div>

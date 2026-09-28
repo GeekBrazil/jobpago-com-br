@@ -244,7 +244,7 @@ export default function Home() {
               <span>Alta Honra</span>
             </a>
             <a href="#refugio-estrada" className="hover:text-amber-400 transition-colors">
-              Refúgio & Posto
+              Refúgios
             </a>
           </nav>
 
@@ -491,179 +491,78 @@ export default function Home() {
         </div>
       </section>
 
-      {/* ── SEÇÃO 5: REFÚGIO DA ESTRADA: CONVENIÊNCIA, MOTORHOME & PONTO DE APOIO NÔMADE ── */}
+      {/* ── SEÇÃO 5: REFÚGIO DA ESTRADA — selo de lugar verificado para dormir ── */}
       <section id="refugio-estrada" className="pt-24 sm:pt-32 pb-32 sm:pb-40 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
-        {/* Espaço em branco e respiro antes da visão da lojinha */}
         <div className="text-center max-w-3xl mx-auto mb-10 sm:mb-14">
           <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-amber-500/10 border border-amber-500/30 text-amber-300 text-xs font-bold uppercase tracking-widest mb-4">
-            <Icon name="sparkle" width={18} height={18} className="text-amber-400" />
-            <span>Ponto de Apoio Nômade & Convivência na Rota</span>
+            <Icon name="shield" width={18} height={18} className="text-amber-400" />
+            <span>Selo JobPago · lugar verificado para dormir</span>
           </div>
           <h2 className="text-3xl sm:text-5xl font-black text-white tracking-tight leading-tight">
-            O Refúgio da Estrada: <span className="text-amber-400">Conveniência & Pernoite</span>
+            Refúgio da Estrada
           </h2>
           <p className="mt-4 text-slate-300 text-sm sm:text-base leading-relaxed">
-            Ao fim da jornada pela rota nevada, o refúgio perfeito à beira da pista para recarregar as energias,
-            abastecer o motorhome e compartilhar um jantar acolhedor ao redor de boas histórias.
+            Camping, hostel, pousada, hotel ou pátio para motorhome onde a gente passou a noite, conferiu e recomenda.
+            Não é anúncio: só recebe o selo quem foi visitado pessoalmente na Expedição.
           </p>
         </div>
 
-        {/* ── ÁREA DE CONTEMPLAÇÃO DESOBSTRUÍDA: VISÃO TOTAL DO CENÁRIO 3D NO FUNDO ── */}
-        <div className="relative w-full rounded-3xl border border-amber-500/30 min-h-[560px] sm:min-h-[720px] flex flex-col justify-between p-6 sm:p-8 overflow-hidden bg-transparent shadow-[0_24px_70px_-15px_rgba(0,0,0,0.9)] my-10 pointer-events-none">
-          {/* Marcadores de telemetria nos cantos para efeito de visor panorâmico Creative Lab */}
+        {/* janela para o cenário 3D do fundo — ilustração, não um lugar real */}
+        <div className="relative w-full rounded-3xl border border-amber-500/30 min-h-[520px] sm:min-h-[680px] flex flex-col justify-between p-6 sm:p-8 overflow-hidden bg-transparent shadow-[0_24px_70px_-15px_rgba(0,0,0,0.9)] my-10 pointer-events-none">
           <div className="flex items-center justify-between w-full">
             <span className="text-[11px] font-mono font-bold tracking-wider text-amber-400 bg-slate-950/80 border border-amber-500/40 px-3.5 py-1.5 rounded-full backdrop-blur-md">
-              ● CENÁRIO 3D EM TEMPO REAL · REFÚGIO DA ESTRADA
-            </span>
-            <span className="text-[11px] font-mono text-slate-300 bg-slate-950/80 border border-white/10 px-3 py-1.5 rounded-full backdrop-blur-md hidden sm:block">
-              220V · Água Potável · Gás · Starlink · Pernoite Seguro
+              ILUSTRAÇÃO · COMO É UM REFÚGIO DA ESTRADA
             </span>
           </div>
-
-          {/* Espaço em branco central 100% desobstruído para contemplação direta da lojinha, motorhome e jantar */}
           <div className="flex-1" />
-
-          {/* Barra inferior de identificação panorâmica */}
-          <div className="flex items-center justify-between text-xs text-slate-300 bg-slate-950/80 border border-white/10 p-3 sm:px-5 sm:py-2.5 rounded-2xl backdrop-blur-md w-full">
-            <div className="flex items-center gap-2">
-              <span className="w-2 h-2 rounded-full bg-amber-400 animate-pulse" />
-              <span className="font-bold text-white">Lojinha de Conveniência & Varanda Colonial</span>
-              <span className="text-slate-400 hidden md:inline">· Motorhome Lateral com Toldo Iluminado & Jantar ao Ar Livre</span>
-            </div>
-            <span className="text-[10px] sm:text-xs text-amber-300 font-mono font-bold">
-              Vista Frontal da Rodovia
-            </span>
+          <div className="text-xs text-slate-300 bg-slate-950/80 border border-white/10 p-3 sm:px-5 sm:py-2.5 rounded-2xl backdrop-blur-md w-full">
+            <span className="font-bold text-white">Os primeiros refúgios serão verificados na Expedição nº 01</span>
+            <span className="text-slate-400"> · Paraty → Fortaleza, pelo litoral</span>
           </div>
         </div>
 
-        {/* ── COMODIDADES ESSENCIAIS QUE TODO VIAJANTE PRECISA NA ESTRADA ── */}
+        {/* O QUE CONFERIMOS PARA DAR O SELO */}
         <div className="mt-14 sm:mt-16">
           <div className="text-center mb-8">
-            <h3 className="text-xl sm:text-2xl font-black text-white">
-              Estrutura Completa para quem vive & trabalha na Rodovia
-            </h3>
+            <h3 className="text-xl sm:text-2xl font-black text-white">O que conferimos antes de dar o selo</h3>
             <p className="text-xs sm:text-sm text-slate-400 mt-1">
-              Todos os recursos indispensáveis para viajantes solo, motorhomes e nômades digitais.
+              Dormimos lá. O que está no selo é o que encontramos — não o que o lugar diz de si.
             </p>
           </div>
-
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
-            {/* 1. Energia 220V / 32A */}
-            <div className="glass-card p-6 rounded-2xl border border-amber-400/20 flex flex-col justify-between hover:border-amber-400/40 transition-colors">
-              <div>
+            {([
+              ["lock", "Noite segura", "Portão, recepção ou vigia; onde deixar o carro, a moto ou o motorhome sem susto."],
+              ["shower", "Banho quente e banheiro limpo", "Conferido na hora de usar, não pela foto."],
+              ["plug", "Energia", "Tomada para carregar celular e notebook; ponto 220V para motorhome e van, quando houver — anotamos a amperagem."],
+              ["wifi", "Internet que funciona", "Medimos a velocidade no quarto ou na área comum, para quem trabalha remoto."],
+              ["water", "Água e cozinha", "Água potável; cozinha ou refeição por perto; descarte para motorhome, quando houver."],
+              ["ticket", "Preço claro", "Anotamos quanto custou a noite e o que estava incluído — sem letra miúda."],
+            ] as const).map(([icone, titulo, texto]) => (
+              <div key={titulo} className="glass-card p-6 rounded-2xl border border-amber-400/20">
                 <div className="w-12 h-12 rounded-xl bg-amber-500/10 border border-amber-500/30 flex items-center justify-center text-amber-400 mb-4">
-                  <Icon name="bolt" width={32} height={32} />
+                  <Icon name={icone} width={32} height={32} />
                 </div>
-                <h4 className="text-base font-black text-white mb-2">Tomada Industrial 220V / 32A</h4>
-                <p className="text-xs text-slate-300 leading-relaxed">
-                  Pontos de recarga contínua com aterramento elétrico seguro para baterias LiFePO4, inversores senoidais e climatizadores de motorhomes e vans.
-                </p>
+                <h4 className="text-base font-black text-white mb-2">{titulo}</h4>
+                <p className="text-xs text-slate-300 leading-relaxed">{texto}</p>
               </div>
-              <div className="mt-5 pt-3 border-t border-white/10 flex items-center justify-between text-[11px] text-amber-300 font-mono">
-                <span>Carga Contínua</span>
-                <span className="bg-amber-950/60 border border-amber-500/30 px-2 py-0.5 rounded">32A Plug CEE</span>
-              </div>
-            </div>
-
-            {/* 2. Água Potável & Despejo Ecológico */}
-            <div className="glass-card p-6 rounded-2xl border border-sky-400/20 flex flex-col justify-between hover:border-sky-400/40 transition-colors">
-              <div>
-                <div className="w-12 h-12 rounded-xl bg-sky-500/10 border border-sky-500/30 flex items-center justify-center text-sky-400 mb-4">
-                  <Icon name="water" width={32} height={32} />
-                </div>
-                <h4 className="text-base font-black text-white mb-2">Água Potável & Descarte Ecológico</h4>
-                <p className="text-xs text-slate-300 leading-relaxed">
-                  Bica pressurizada de água filtrada para reabastecimento de caixas d&apos;água e estação homologada para descarte de águas cinzas e negras.
-                </p>
-              </div>
-              <div className="mt-5 pt-3 border-t border-white/10 flex items-center justify-between text-[11px] text-sky-300 font-mono">
-                <span>Pressão Alta</span>
-                <span className="bg-sky-950/60 border border-sky-500/30 px-2 py-0.5 rounded">Despejo Seguro</span>
-              </div>
-            </div>
-
-            {/* 3. Conectividade Starlink */}
-            <div className="glass-card p-6 rounded-2xl border border-amber-400/20 flex flex-col justify-between hover:border-amber-400/40 transition-colors">
-              <div>
-                <div className="w-12 h-12 rounded-xl bg-amber-500/10 border border-amber-500/30 flex items-center justify-center text-amber-400 mb-4">
-                  <Icon name="wifi" width={32} height={32} />
-                </div>
-                <h4 className="text-base font-black text-white mb-2">Wi-Fi Starlink 300 Mbps</h4>
-                <p className="text-xs text-slate-300 leading-relaxed">
-                  Conexão via satélite de ultra velocidade e baixíssima latência. Cobertura total no pátio e nas mesas de jantar para chamadas e deploy remoto.
-                </p>
-              </div>
-              <div className="mt-5 pt-3 border-t border-white/10 flex items-center justify-between text-[11px] text-amber-300 font-mono">
-                <span>Baixa Latência</span>
-                <span className="bg-amber-950/60 border border-amber-500/30 px-2 py-0.5 rounded">300 Mbps Satélite</span>
-              </div>
-            </div>
-
-            {/* 4. Gás & Oficina Rápida */}
-            <div className="glass-card p-6 rounded-2xl border border-amber-400/20 flex flex-col justify-between hover:border-amber-400/40 transition-colors">
-              <div>
-                <div className="w-12 h-12 rounded-xl bg-amber-500/10 border border-amber-500/30 flex items-center justify-center text-amber-400 mb-4">
-                  <Icon name="wrench" width={32} height={32} />
-                </div>
-                <h4 className="text-base font-black text-white mb-2">Gás P13/P20 & Calibragem Pesada</h4>
-                <p className="text-xs text-slate-300 leading-relaxed">
-                  Recarga e troca de botijões de gás para cozinha e calefação, manômetro digital até 120 PSI para pneus de carga e bancada de ferramentas.
-                </p>
-              </div>
-              <div className="mt-5 pt-3 border-t border-white/10 flex items-center justify-between text-[11px] text-amber-300 font-mono">
-                <span>Até 120 PSI</span>
-                <span className="bg-amber-950/60 border border-amber-500/30 px-2 py-0.5 rounded">Gás P13 / P20</span>
-              </div>
-            </div>
-
-            {/* 5. Mercearia 24h & Café Quente */}
-            <div className="glass-card p-6 rounded-2xl border border-amber-400/20 flex flex-col justify-between hover:border-amber-400/40 transition-colors">
-              <div>
-                <div className="w-12 h-12 rounded-xl bg-amber-500/10 border border-amber-500/30 flex items-center justify-center text-amber-400 mb-4">
-                  <Icon name="coffee" width={32} height={32} />
-                </div>
-                <h4 className="text-base font-black text-white mb-2">Empório 24h & Café Colonial</h4>
-                <p className="text-xs text-slate-300 leading-relaxed">
-                  Conveniência com café artesanal fresco, pães quentes, refeições práticas de estrada, artigos de higiene pessoal e mantimentos não perecíveis.
-                </p>
-              </div>
-              <div className="mt-5 pt-3 border-t border-white/10 flex items-center justify-between text-[11px] text-amber-300 font-mono">
-                <span>Aberto 24h</span>
-                <span className="bg-amber-950/60 border border-amber-500/30 px-2 py-0.5 rounded">Café & Mantimentos</span>
-              </div>
-            </div>
-
-            {/* 6. Pátio Nômade & Jantar Sob as Estrelas */}
-            <div className="glass-card p-6 rounded-2xl border border-amber-400/20 flex flex-col justify-between hover:border-amber-400/40 transition-colors">
-              <div>
-                <div className="w-12 h-12 rounded-xl bg-amber-500/10 border border-amber-500/30 flex items-center justify-center text-amber-400 mb-4">
-                  <Icon name="van" width={32} height={32} />
-                </div>
-                <h4 className="text-base font-black text-white mb-2">Pátio Nômade & Jantar Coletivo</h4>
-                <p className="text-xs text-slate-300 leading-relaxed">
-                  Estacionamento lateral nivelado para motorhomes com toldo aberto, mesas comunitárias ao ar livre, iluminação calorosa e fogueira de confraternização.
-                </p>
-              </div>
-              <div className="mt-5 pt-3 border-t border-white/10 flex items-center justify-between text-[11px] text-amber-300 font-mono">
-                <span>Pernoite Seguro</span>
-                <span className="bg-amber-950/60 border border-amber-500/30 px-2 py-0.5 rounded">Comunidade & Mesa</span>
-              </div>
-            </div>
+            ))}
           </div>
+          <p className="mt-6 text-center text-xs text-slate-400">
+            Vale para camping, hostel, pousada, hotel e pátio de posto com pernoite. Cada refúgio mostra o que tem — e o que não tem.
+          </p>
 
-          {/* Botões de Ação */}
-          <div className="mt-12 flex flex-col sm:flex-row items-center justify-center gap-4">
-            <a
-              href="#mapa-gps"
+          <div className="mt-10 flex flex-col sm:flex-row items-center justify-center gap-4">
+            <Link
+              href="/certificados"
               className="btn-primary-amalfi px-8 py-3.5 rounded-2xl text-xs sm:text-sm font-black uppercase tracking-wider flex items-center gap-2"
             >
-              <Icon name="compass" width={22} height={22} /> Ver Postos no Mapa GPS
-            </a>
+              <Icon name="tent" width={22} height={22} /> Ver refúgios verificados
+            </Link>
             <Link
-              href="/cadastrar-servico"
+              href="/parceiros/planos"
               className="btn-secondary-glass px-8 py-3.5 rounded-2xl text-xs sm:text-sm font-bold text-white flex items-center gap-2"
             >
-              <Icon name="pin" width={20} height={20} /> Cadastrar Novo Ponto de Apoio
+              <Icon name="pin" width={20} height={20} /> Tenho um lugar na rota: quero a visita
             </Link>
           </div>
         </div>

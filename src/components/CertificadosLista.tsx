@@ -39,7 +39,7 @@ export default function CertificadosLista() {
             <Icon name="shield" width={52} height={52} className="text-amber-300" />
           </div>
           <h3 className="text-lg sm:text-xl font-black text-white">
-            Nenhum estabelecimento certificado ainda
+            Nenhum refúgio ou estabelecimento verificado ainda
           </h3>
           <p className="text-sm text-slate-400 max-w-md">
             A Expedição Paraty → Fortaleza está começando. Os
