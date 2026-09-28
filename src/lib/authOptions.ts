@@ -22,6 +22,9 @@ async function ensureUsuariosTable() {
 }
 
 export const { handlers, auth, signIn, signOut } = NextAuth({
+  // atrás do Traefik (Coolify) o host interno é 0.0.0.0:3000; sem isto o Auth.js
+  // recusa toda chamada com UntrustedHost (500 em /api/auth/session)
+  trustHost: true,
   session: { strategy: "jwt" },
   pages: { signIn: "/entrar" },
   providers: [
