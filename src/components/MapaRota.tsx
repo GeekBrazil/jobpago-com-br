@@ -36,9 +36,13 @@ export default function MapaRota({
     if (!ref.current) return;
     const toque = window.matchMedia("(pointer: coarse)").matches;
     const mapa = L.map(ref.current, { zoomControl: true, dragging: !toque, scrollWheelZoom: false, attributionControl: true });
-    L.tileLayer("https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png", {
-      attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> &copy; CARTO',
-      maxZoom: 18,
+    // mesmos blocos do mapa da home (ArcGIS, sem chave)
+    L.tileLayer("https://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Dark_Gray_Base/MapServer/tile/{z}/{y}/{x}", {
+      attribution: "Esri, HERE, Garmin, &copy; OpenStreetMap",
+      maxZoom: 16,
+    }).addTo(mapa);
+    L.tileLayer("https://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Dark_Gray_Reference/MapServer/tile/{z}/{y}/{x}", {
+      maxZoom: 16,
     }).addTo(mapa);
 
     // base: pista duplicada/simples; por cima, só os trechos com acostamento confirmado no OSM
