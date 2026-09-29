@@ -89,6 +89,12 @@ todas com fonte única em `src/data/`:
 - **Refúgio da Estrada** = selo de lugar verificado para dormir. Candidatura em `/refugio` → tabela `refugios` (banco `jobpago`) → o Allan aprova na aba Refúgios da Central de Prospecção (`~/central-prospeccao`) → `/api/refugios` (GET) lista só os verificados, sem contato, e `/certificados` mostra.
 - **Alta Honra** = como o estabelecimento apoia a expedição (`src/data/honra.ts`): Ouro (dinheiro + permuta), Prata (dinheiro), Bronze (permuta), Verificado (só a visita). **O selo de verificado nunca é vendido.**
 
+## Viajante, contribuições e cards (2026-09-29)
+
+- `/viajante` (painel), `/viajante/contribuir?tipo=`, `/viajante/questionario` — PT/ES/EN (`src/lib/textosEstrada.ts`). Reputação em `contribuicoes` (banco `jobpago`), regras em `src/lib/reputacao.ts`; pontos só quando o Allan confirma na aba Contribuições da Central. Foto de fachada: GPS do celular com aviso antes; a foto passa por `allancandido.com/api/pontos-fotograficos`.
+- Cards em `/card/{cidade|refugio|expedicao}/…?formato=feed|story|link` (`src/lib/cards.tsx`): só de dado real, nunca texto livre.
+- Próximas fases (indicação com comissão, comboio, expedições dos viajantes com patrocínio): vault `execucoes/2026-09-29-estrada-jobpago-viajante.md`.
+
 ## UX do mapa em touch (2026-09-18)
 
 - **Mapa não prende mais o scroll da página no celular**: `dragging` do
