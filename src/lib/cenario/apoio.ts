@@ -188,6 +188,7 @@ export function criarApoio(T: number, leve: boolean) {
   const sombra = (w: number, d: number, x: number, z: number, pai: THREE.Object3D = grupo, forca = 1) => {
     const m = add(new THREE.PlaneGeometry(w, d).rotateX(-Math.PI / 2), new THREE.MeshBasicMaterial({ map: sombraTx, transparent: true, depthWrite: false, opacity: forca }), x, 0.04, z, pai);
     m.renderOrder = 1;
+    m.name = "sombra";
     return m;
   };
 
@@ -265,8 +266,9 @@ export function criarApoio(T: number, leve: boolean) {
       g.fillStyle = "#fbbf24"; g.fillText(n, 64, 200 + i * 110);
     });
   });
-  add(rb(1.4, 6, 0.5, 0.1), [std(0xf4f2ec, 0.5), std(0xf4f2ec, 0.5), std(0xf4f2ec, 0.5), std(0xf4f2ec, 0.5),
-    new THREE.MeshBasicMaterial({ map: txTotem, color: brilho(0xffffff, 1.1) }), new THREE.MeshBasicMaterial({ map: txTotem, color: brilho(0xffffff, 1.1) })], 19.5, 3, -8).rotation.y = Math.PI / 2;
+  const totem = add(rb(1.4, 6, 0.5, 0.1), [std(0xf4f2ec, 0.5), std(0xf4f2ec, 0.5), std(0xf4f2ec, 0.5), std(0xf4f2ec, 0.5),
+    new THREE.MeshBasicMaterial({ map: txTotem, color: brilho(0xffffff, 1.1) }), new THREE.MeshBasicMaterial({ map: txTotem, color: brilho(0xffffff, 1.1) })], 19.5, 3, -8);
+  totem.rotation.y = Math.PI / 2;
 
   /* ══════════ LOJA DE CONVENIÊNCIA ══════════ */
   const loja = new THREE.Group(); loja.position.set(-4, 0, -2); grupo.add(loja);
@@ -503,9 +505,15 @@ export function criarApoio(T: number, leve: boolean) {
   const luzLoja = new THREE.PointLight(0xffe2b0, 0, 14, 1.5);
   luzLoja.position.set(1.5, 2.5, -2); grupo.add(luzLoja);
 
+  /* luzes vindas dos modelos do Blender (materiais "luz_*"): base guardada em userData */
+  const luzesModelo: THREE.MeshStandardMaterial[] = [];
   function atualizar(acesas: number) {
+    for (const m of luzesModelo) {
+      const base = m.userData.base as number;
+      m.emissiveIntensity = base * (m.name === "luz_janela" ? 0.12 + 0.88 * acesas : 0.3 + 0.7 * acesas);
+    }
     luzVaral.intensity = 10 * acesas;
-    luzCob.intensity = 26 * acesas;
+    luzCob.intensity = 16 * acesas;
     luzLoja.intensity = 18 * acesas;
     vidroCasa.emissiveIntensity = 0.15 + 0.85 * acesas;
     for (const m of luzesQuentes) {
@@ -514,5 +522,5 @@ export function criarApoio(T: number, leve: boolean) {
     }
   }
   atualizar(0);
-  return { grupo, atualizar, mh, loja, mesa, cadeiras, patioMat, paredeMat, larguraMH: L };
+  return { grupo, atualizar, mh, loja, mesa, cadeiras, patioMat, paredeMat, larguraMH: L, cob, totem, luzesModelo };
 }

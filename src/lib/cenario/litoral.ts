@@ -459,7 +459,7 @@ export function iniciarCenario(canvas: HTMLCanvasElement, op: OpcoesCenario) {
   if (!leve) {
     composer = new EffectComposer(renderer);
     composer.addPass(new RenderPass(cena, camera));
-    bloom = new UnrealBloomPass(new THREE.Vector2(256, 256), 0.55, 0.5, 0.92);
+    bloom = new UnrealBloomPass(new THREE.Vector2(256, 256), 0.4, 0.35, 1.05);
     composer.addPass(bloom);
     composer.addPass(new OutputPass());
   }
