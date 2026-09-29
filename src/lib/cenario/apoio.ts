@@ -499,10 +499,10 @@ export function criarApoio(T: number, leve: boolean) {
 
   /* luzes que acendem com a noite */
   const luzVaral = new THREE.PointLight(0xffa850, 0, 12, 1.6);
-  luzVaral.position.set(-(L / 2 + 1.6), 1.9, -0.9); mh.add(luzVaral);
-  const luzCob = new THREE.PointLight(0xfff0d0, 0, 26, 1.3);
-  luzCob.position.set(9.5, 4.8, 0); grupo.add(luzCob);
-  const luzLoja = new THREE.PointLight(0xffe2b0, 0, 14, 1.5);
+  luzVaral.position.set(-(L / 2 + 2.3), 2.0, -0.9); mh.add(luzVaral);
+  const luzCob = new THREE.PointLight(0xffd890, 0, 26, 1.3);
+  luzCob.position.set(9.5, 7.0, 0); grupo.add(luzCob);
+  const luzLoja = new THREE.PointLight(0xffcf7a, 0, 14, 1.5);
   luzLoja.position.set(1.5, 2.5, -2); grupo.add(luzLoja);
 
   /* luzes vindas dos modelos do Blender (materiais "luz_*"): base guardada em userData */
@@ -512,7 +512,7 @@ export function criarApoio(T: number, leve: boolean) {
       const base = m.userData.base as number;
       m.emissiveIntensity = base * (m.name === "luz_janela" ? 0.12 + 0.88 * acesas : 0.3 + 0.7 * acesas);
     }
-    luzVaral.intensity = 10 * acesas;
+    luzVaral.intensity = 3.5 * acesas;
     luzCob.intensity = 16 * acesas;
     luzLoja.intensity = 18 * acesas;
     vidroCasa.emissiveIntensity = 0.15 + 0.85 * acesas;

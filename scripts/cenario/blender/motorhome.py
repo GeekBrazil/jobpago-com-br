@@ -26,11 +26,11 @@ borracha = mat("borracha", srgb("#111111"), 0.0, 0.92)
 cromado = mat("cromado", srgb("#d9dde2"), 1.0, 0.16)
 aro = mat("aro", srgb("#b9bfc7"), 0.9, 0.28)
 vidro = mat("vidro", srgb("#0b1015"), 0.7, 0.05)
-janela = mat("luz_janela", srgb("#17120d"), 0.3, 0.08, emissao=srgb("#ffb060"), forca=0.5)
+janela = mat("luz_janela", srgb("#17120d"), 0.3, 0.08, emissao=srgb("#ffa640"), forca=0.5)
 farol = mat("luz_farol", srgb("#eef2f6"), 0.0, 0.1, emissao=srgb("#fff3dc"), forca=2.0)
 lanterna = mat("luz_lanterna", srgb("#7a0000"), 0.0, 0.2, emissao=srgb("#ff2020"), forca=2.0)
 ambar = mat("luz_ambar", srgb("#9a4a05"), 0.0, 0.2, emissao=srgb("#ffa000"), forca=1.5)
-varal = mat("luz_varal", srgb("#ffe2b0"), 0.0, 0.3, emissao=srgb("#ffc070"), forca=6.0)
+varal = mat("luz_varal", srgb("#ffd88a"), 0.0, 0.3, emissao=srgb("#ffb347"), forca=8.0)
 decal = mat("decalque", (1, 1, 1), 0.0, 0.3, imagem=tex("decal"))
 lona = mat("lona_toldo", (1, 1, 1), 0.0, 0.85, imagem=tex("toldo"))
 laranja = mat("lona_laranja", srgb("#c96a2b"), 0.0, 0.85)
@@ -197,14 +197,11 @@ for fr in (FR0 + 0.1, FR1 - 0.1):
     tubo("braco_toldo", [(X_PAREDE + 0.05, 1.05, fr), (X_BARRA + 0.6, UP_BARRA - 0.25, fr), (X_BARRA, UP_BARRA, fr)], 0.02, aro)
     cilindro("pe_toldo", 0.022, UP_BARRA, (X_BARRA, UP_BARRA / 2, fr), "up", aro, lados=10)
     cilindro("sapata", 0.08, 0.02, (X_BARRA, 0.01, fr), "up", aro, lados=12)
-fios = []
-for k in range(15):
-    t = k / 14
-    fr = FR0 + 0.15 + t * (FR1 - FR0 - 0.3)
-    up = UP_BARRA - 0.2 - math.sin(t * math.pi) * 0.22
-    fios.append((X_BARRA - 0.02, up, fr))
-    esfera("lampada", 0.055, (X_BARRA - 0.02, up - 0.07, fr), varal, sub=1)
-tubo("fio_varal", fios, 0.006, plastico)
+# só duas lâmpadas, uma em cada ponta do toldo, penduradas num fio curto
+for fr in (FR0 + 0.12, FR1 - 0.12):
+    tubo("fio_lampada", [(X_BARRA - 0.02, UP_BARRA - 0.02, fr), (X_BARRA - 0.02, UP_BARRA - 0.14, fr), (X_BARRA - 0.02, UP_BARRA - 0.26, fr)], 0.006, plastico)
+    cilindro("bocal", 0.03, 0.06, (X_BARRA - 0.02, UP_BARRA - 0.29, fr), "up", plastico, lados=12)
+    esfera("lampada", 0.075, (X_BARRA - 0.02, UP_BARRA - 0.39, fr), varal, sub=2)
 
 # junta tudo por material (menos nós no GLB)
 por_mat = {}

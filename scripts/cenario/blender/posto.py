@@ -41,9 +41,9 @@ zebra = mat("zebrada", (1, 1, 1), 0.0, 0.6, imagem=tex("zebra"))
 bomba_face = mat("bomba_frente", (1, 1, 1), 0.0, 0.35, imagem=tex("bomba"))
 produtos = mat("produtos", (1, 1, 1), 0.0, 0.6, imagem=tex("produtos"))
 gelo = mat("gelo", (1, 1, 1), 0.0, 0.4, imagem=tex("gelo"))
-led = mat("luz_led", srgb("#fff4dc"), 0.0, 0.3, emissao=srgb("#fff4dc"), forca=4.0)
-teto_luz = mat("luz_teto", srgb("#fff1d6"), 0.0, 0.3, emissao=srgb("#fff1d6"), forca=2.5)
-spot = mat("luz_spot", srgb("#ffe2b0"), 0.0, 0.3, emissao=srgb("#ffe2b0"), forca=6.0)
+led = mat("luz_led", srgb("#ffe6a8"), 0.0, 0.3, emissao=srgb("#ffd98a"), forca=4.0)
+teto_luz = mat("luz_teto", srgb("#ffe2a0"), 0.0, 0.3, emissao=srgb("#ffd88a"), forca=2.5)
+spot = mat("luz_spot", srgb("#ffd27a"), 0.0, 0.3, emissao=srgb("#ffc25a"), forca=6.0)
 geladeira = mat("luz_geladeira", (1, 1, 1), 0.0, 0.3, emissao=(1, 1, 1), forca=1.6, imagem=tex("geladeira"))
 letreiro = mat("luz_letreiro", (1, 1, 1), 0.0, 0.4, emissao=(1, 1, 1), forca=1.4, imagem=tex("letreiro_fundo"))
 totem_m = mat("luz_totem", (1, 1, 1), 0.0, 0.4, emissao=(1, 1, 1), forca=1.2, imagem=tex("totem"))
@@ -53,22 +53,23 @@ letra2 = mat("letras_vinho", srgb("#7c2d12"), 0.0, 0.5)
 
 # ══════════════ COBERTURA DAS BOMBAS ══════════════
 CX, CZ = 9.5, 0.0
-caixa("cobertura", 15.5, 1.0, 9.5, (CX, 6.05, CZ), branco, bevel=0.06)
+H = 7.6  # altura livre da cobertura (mais alta para a loja aparecer atrás)
+caixa("cobertura", 15.5, 1.0, 9.5, (CX, H + 0.55, CZ), branco, bevel=0.06)
 for z in (-1, 1):
-    plano("faixa", 15.6, 1.1, (CX, 6.05, CZ + z * 4.81), "frente", fascia)
+    plano("faixa", 15.6, 1.1, (CX, H + 0.55, CZ + z * 4.81), "frente", fascia)
 for x in (-1, 1):
-    plano("faixa", 9.6, 1.1, (CX + x * 7.81, 6.05, CZ), "x", fascia)
-forro = plano("forro", 15.2, 9.2, (CX, 5.53, CZ), "up", cinza)
+    plano("faixa", 9.6, 1.1, (CX + x * 7.81, H + 0.55, CZ), "x", fascia)
+forro = plano("forro", 15.2, 9.2, (CX, H + 0.03, CZ), "up", cinza)
 forro.rotation_euler = (math.pi, 0, 0)
 for i in range(5):
     for j in range(3):
-        caixa("painel_led", 1.6, 0.05, 0.9, (CX - 6 + i * 3, 5.5, CZ - 3 + j * 3), led, bevel=0.01)
+        caixa("painel_led", 1.6, 0.05, 0.9, (CX - 6 + i * 3, H, CZ - 3 + j * 3), led, bevel=0.01)
 for cx in (-4.2, 4.2):
     for cz in (-2.4, 2.4):
-        caixa("coluna", 0.55, 5.5, 0.55, (CX + cx, 2.75, CZ + cz), branco, bevel=0.06)
+        caixa("coluna", 0.55, H, 0.55, (CX + cx, H / 2, CZ + cz), branco, bevel=0.06)
         caixa("coluna_base", 0.66, 0.85, 0.66, (CX + cx, 0.425, CZ + cz), amarelo, bevel=0.05)
-        caixa("coluna_topo", 0.75, 0.25, 0.75, (CX + cx, 5.4, CZ + cz), branco, bevel=0.05)
-tubo("calha", [(CX + 4.45, 5.5, CZ + 2.4), (CX + 4.5, 3.0, CZ + 2.4), (CX + 4.5, 0.1, CZ + 2.55)], 0.05, cinza)
+        caixa("coluna_topo", 0.75, 0.25, 0.75, (CX + cx, H - 0.1, CZ + cz), branco, bevel=0.05)
+tubo("calha", [(CX + 4.45, H, CZ + 2.4), (CX + 4.5, H / 2, CZ + 2.4), (CX + 4.5, 0.1, CZ + 2.55)], 0.05, cinza)
 
 # ilhas, bombas, mangueiras, frades, extintor
 for iz in (-2.4, 2.4):

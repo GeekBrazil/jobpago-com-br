@@ -123,7 +123,8 @@ export function iniciarCenario(canvas: HTMLCanvasElement, op: OpcoesCenario) {
   renderer.outputColorSpace = THREE.SRGBColorSpace;
 
   const cena = new THREE.Scene();
-  const neblina = new THREE.FogExp2(0xe8a270, 0.0028);
+  // névoa só para esconder o fim do terreno lá longe (pedido: sem névoa na cena)
+  const neblina = new THREE.FogExp2(0xe8a270, 0.0011);
   cena.fog = neblina;
   const camera = new THREE.PerspectiveCamera(50, 1, 0.3, 3000);
 
@@ -470,11 +471,12 @@ export function iniciarCenario(canvas: HTMLCanvasElement, op: OpcoesCenario) {
   {
     // enquadramento final: da estrada, um pouco antes, olhando o posto e o motorhome
     // mais perto: o motorhome em primeiro plano e a conveniência atrás
-    fimPos.copy(POSTO).add(new THREE.Vector3(9.5, 2.3, 23));
-    fimOlhar.copy(POSTO).add(new THREE.Vector3(-0.5, 1.7, 8.5));
+    // perto: o motorhome ocupa metade da tela, a loja aparece atrás
+    fimPos.copy(POSTO).add(new THREE.Vector3(7.5, 1.9, 19.5));
+    fimOlhar.copy(POSTO).add(new THREE.Vector3(-1.8, 1.5, 12.5));
     // tela em pé: mais recuado e mirando entre o motorhome e a loja
-    fimPosV.copy(POSTO).add(new THREE.Vector3(15, 3.2, 34));
-    fimOlharV.copy(POSTO).add(new THREE.Vector3(-1.5, 2.4, 9));
+    fimPosV.copy(POSTO).add(new THREE.Vector3(9, 2.3, 25));
+    fimOlharV.copy(POSTO).add(new THREE.Vector3(-1.6, 1.6, 13.2));
   }
   function posicaoCamera(prog: number, destino: THREE.Vector3, visada: THREE.Vector3) {
     const ida = Math.min(1, prog / 0.8);
@@ -529,15 +531,16 @@ export function iniciarCenario(canvas: HTMLCanvasElement, op: OpcoesCenario) {
     ceu.position.copy(camPos);
 
     // a tarde vira noite com a rolagem; as luzes acendem
-    const noite = suave(0.25, 0.9, atual);
+    // termina em golden hour (sol baixo e dourado), não em noite fechada
+    const noite = suave(0.25, 0.9, atual) * 0.35;
     ceuMat.uniforms.uNoite.value = noite;
     marMat.uniforms.uNoite.value = noite;
     marMat.uniforms.uTempo.value = tempo;
     espMat.uniforms.uNoite.value = noite;
     espMat.uniforms.uTempo.value = tempo;
-    estrelasMat.opacity = suave(0.55, 1, atual) * 0.9;
+    estrelasMat.opacity = 0;
     neblina.color.setRGB(0.93 - 0.8 * noite, 0.6 - 0.52 * noite, 0.4 - 0.29 * noite);
-    neblina.density = 0.0028 - 0.0008 * noite;
+    neblina.density = 0.0011;
     hemi.intensity = 1.4 - 0.95 * noite;
     cena.environmentIntensity = 0.6 - 0.4 * noite;
     luzSol.intensity = 2.6 * (1 - noite);
