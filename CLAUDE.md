@@ -93,7 +93,8 @@ todas com fonte única em `src/data/`:
 
 - `/viajante` (painel), `/viajante/contribuir?tipo=`, `/viajante/questionario` — PT/ES/EN (`src/lib/textosEstrada.ts`). Reputação em `contribuicoes` (banco `jobpago`), regras em `src/lib/reputacao.ts`; pontos só quando o Allan confirma na aba Contribuições da Central. Foto de fachada: GPS do celular com aviso antes; a foto passa por `allancandido.com/api/pontos-fotograficos`.
 - Cards em `/card/{cidade|refugio|expedicao}/…?formato=feed|story|link` (`src/lib/cards.tsx`): só de dado real, nunca texto livre.
-- Próximas fases (indicação com comissão, comboio, expedições dos viajantes com patrocínio): vault `execucoes/2026-09-29-estrada-jobpago-viajante.md`.
+- **Indicação** (fase 2): `/i/{código}` guarda o 1º código por 60 dias (`src/lib/indicacaoCliente.ts`); `IndicacaoNoWhats` põe "Indicação: CÓDIGO" em todo wa.me do Allan (com `encodeURIComponent` — `searchParams.set` trocaria espaço por +); `/viajante/indicar`; regras em `src/lib/indicacao.ts` (50% 1ª mensalidade / 15% anual, 30 dias, só planos JobPago). Comissões e comboio controlados na aba Indicações da Central.
+- Fase 3 (expedições dos viajantes com patrocínio): vault `execucoes/2026-09-29-estrada-jobpago-viajante.md`.
 
 ## UX do mapa em touch (2026-09-18)
 
