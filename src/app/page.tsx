@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import RendaNaCidade from "@/components/RendaNaCidade";
+import { NIVEIS_HONRA } from "@/data/honra";
 import Link from "next/link";
 import dynamic from "next/dynamic";
 import type { MapPoint } from "@/components/MapaServicos";
@@ -87,32 +88,6 @@ const DEFAULT_RPG_USER: UserRPG = {
   ],
 };
 
-const REGRAS_HONRA = [
-  {
-    id: "gratuito",
-    icon: "shield" as const,
-    xp: "+200 XP",
-    honra: "+50 PTS",
-    title: "Apoio de cortesia",
-    desc: "Ajudar de graça quem está na estrada — chuveiro, tomada, recarga, mentoria —, confirmado por quem recebeu.",
-  },
-  {
-    id: "tarefa",
-    icon: "bolt" as const,
-    xp: "+150 XP",
-    honra: "+10 PTS",
-    title: "Tarefa concluída e paga",
-    desc: "Cada tarefa fechada pela JobPago e confirmada pelas duas partes.",
-  },
-  {
-    id: "nivel",
-    icon: "medal" as const,
-    xp: "×1,4",
-    honra: "por nível",
-    title: "Progressão meritocrática",
-    desc: "A meta de XP do próximo nível sobe 40% a cada subida — nível alto é fruto de reputação real.",
-  },
-];
 
 const CATEGORIES = FILTROS;
 
@@ -230,6 +205,7 @@ export default function Home() {
 
           {/* AÇÕES DIREITAS: PERFIL RPG + BOTÃO ANUNCIAR */}
           <div className="flex items-center gap-2.5 sm:gap-3">
+
             {user && (
               <button
                 onClick={() => setIsRpgModalOpen(true)}
@@ -375,10 +351,11 @@ export default function Home() {
               Viajando de motorhome, campervan ou trabalhando remoto na estrada? Chuveiro quente, tomada 220V, internet e pernoite seguro entram no mapa conforme a Expedição nº 01 visita e verifica cada lugar.
             </p>
             <p className="text-sm text-slate-400 mt-2 leading-relaxed">
-              Dono de posto, pousada ou camping na rota? Peça a visita e vire{" "}
-              <Link href="/parceiros/planos" className="text-amber-400 underline hover:text-amber-300">
-                parceiro verificado
+              Dono de posto, pousada ou camping na rota?{" "}
+              <Link href="/refugio" className="text-amber-400 underline hover:text-amber-300">
+                Peça a visita
               </Link>{" "}
+              e vire parceiro verificado
               — ou Refúgio da Estrada, se tiver onde dormir.
             </p>
 
@@ -429,44 +406,33 @@ export default function Home() {
           <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4 mb-8">
             <div>
               <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-amber-400/15 text-amber-300 border border-amber-400/30 text-xs font-black uppercase tracking-wider">
-                <Icon name="shield" width={30} height={30} /> Gamificação Comunitária & Reputação
+                <Icon name="shield" width={30} height={30} /> Selo do estabelecimento
               </div>
               <h2 className="text-2xl sm:text-4xl font-black text-white mt-2">
-                Como Funciona a Alta Honra
+                Alta Honra: como o lugar apoia a estrada
               </h2>
               <p className="text-xs sm:text-sm text-slate-300 mt-1 max-w-2xl">
-                A reputação começa a contar com as primeiras tarefas fechadas e os primeiros Refúgios da Estrada verificados na Expedição nº 01. Até lá, todo mundo começa do zero — inclusive nós.
+                O selo de verificado não se compra: só entra quem passou na visita. A Honra mostra, identificada no selo, quanto o lugar apoia a expedição — dinheiro e permuta no topo, depois só dinheiro, depois só permuta.
               </p>
             </div>
 
-            {user && (
-              <button
-                onClick={() => setIsRpgModalOpen(true)}
-                className="bg-amber-400 hover:bg-amber-300 text-black font-black text-xs sm:text-sm px-6 py-3 rounded-2xl shadow-xl transition-all hover:scale-105 shrink-0 cursor-pointer flex items-center gap-2"
-              >
-                <Icon name="gift" width={34} height={34} /> Painel de Alta Honra & Benefícios
-              </button>
-            )}
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
-            {REGRAS_HONRA.map((regra) => (
-              <div key={regra.id} className="glass-card p-6 rounded-2xl border border-amber-400/20 flex flex-col justify-between">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
+            {NIVEIS_HONRA.map((n) => (
+              <div key={n.id} className="glass-card p-6 rounded-2xl border border-amber-400/20 flex flex-col justify-between">
                 <div>
-                  <Icon name={regra.icon} width={64} height={64} className="mb-3 text-amber-300" />
-                  <h3 className="text-lg font-black text-white mb-1">{regra.title}</h3>
-                  <p className="text-xs text-slate-300 leading-relaxed font-normal">{regra.desc}</p>
+                  <span className={`inline-block text-xs font-black px-3 py-1 rounded-full border ${n.cor}`}>{n.nome}</span>
+                  <p className="mt-3 text-sm font-bold text-white">{n.como}</p>
+                  <p className="mt-1 text-xs text-slate-300 leading-relaxed">{n.desc}</p>
                 </div>
-                <div className="mt-6 pt-4 border-t border-white/10 flex items-center justify-between">
-                  <span className="text-xs font-black text-amber-300 bg-amber-950/60 border border-amber-500/30 px-2.5 py-1 rounded-lg font-mono">
-                    {regra.xp}
-                  </span>
-                  <span className="text-xs font-black text-amber-300 bg-amber-950/60 border border-amber-400/30 px-2.5 py-1 rounded-lg font-mono">
-                    {regra.honra}
-                  </span>
-                </div>
+                <p className="mt-4 pt-3 border-t border-white/10 text-[11px] text-amber-200/90 leading-relaxed">{n.ganha}</p>
               </div>
             ))}
+          </div>
+          <div className="mt-8 flex flex-col sm:flex-row items-center justify-center gap-3">
+            <Link href="/refugio" className="btn-primary-amalfi px-7 py-3 rounded-2xl text-sm font-black">Pedir a visita da Expedição</Link>
+            <Link href="/parceiros/planos" className="btn-secondary-glass px-7 py-3 rounded-2xl text-sm font-bold">Ver planos de parceiro</Link>
           </div>
         </div>
       </section>
@@ -539,7 +505,7 @@ export default function Home() {
               <Icon name="tent" width={22} height={22} /> Ver refúgios verificados
             </Link>
             <Link
-              href="/parceiros/planos"
+              href="/refugio"
               className="btn-secondary-glass px-8 py-3.5 rounded-2xl text-xs sm:text-sm font-bold text-white flex items-center gap-2"
             >
               <Icon name="pin" width={20} height={20} /> Tenho um lugar na rota: quero a visita

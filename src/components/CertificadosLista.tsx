@@ -3,34 +3,30 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { Icon } from "@/components/Icons";
-import type { Job } from "@/app/page";
-import { WHATSAPP } from "@/data/planos-parceiro";
+import { honra, OFERECE, TIPOS_REFUGIO } from "@/data/honra";
 
-const PEDIR_SELO_URL = `https://wa.me/${WHATSAPP}?text=${encodeURIComponent(
-  "Olá Allan! Tenho um estabelecimento na rota e quero pedir o Selo JobPago Verificado."
-)}`;
+interface Refugio { id: number; nome: string; tipo: string; cidade: string; uf: string; oferece: string[]; preco_noite: string | null; honra: string | null; verificado_em: string | null }
+const NOME_TIPO = Object.fromEntries(TIPOS_REFUGIO) as Record<string, string>;
+const NOME_OFERECE = Object.fromEntries(OFERECE) as Record<string, string>;
 
 export default function CertificadosLista() {
-  const [jobs, setJobs] = useState<Job[]>([]);
+  const [certificados, setCertificados] = useState<Refugio[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    fetch("/api/jobs")
+    fetch("/api/refugios")
       .then((res) => res.json())
-      .then((data) => {
-        if (data.success) setJobs(data.jobs);
-      })
+      .then((data) => setCertificados(data.refugios ?? []))
+      .catch(() => {})
       .finally(() => setLoading(false));
   }, []);
-
-  const certificados = jobs.filter((j) => j.isVerifiedPartner);
 
   return (
     <section className="mt-16">
       <h2 className="text-xl sm:text-2xl font-black text-white">
         {loading
           ? "Carregando..."
-          : `${certificados.length} estabelecimento${certificados.length === 1 ? "" : "s"} certificado${certificados.length === 1 ? "" : "s"}`}
+          : `${certificados.length} ${certificados.length === 1 ? "lugar verificado" : "lugares verificados"}`}
       </h2>
 
       {!loading && certificados.length === 0 && (
@@ -51,25 +47,29 @@ export default function CertificadosLista() {
 
       {!loading && certificados.length > 0 && (
         <div className="mt-6 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
-          {certificados.map((job) => (
-            <div key={job.id} className="glass-card glass-amber rounded-3xl p-6 flex flex-col justify-between">
-              <div>
-                <div className="flex items-center gap-1.5 mb-3">
-                  <span className="text-[10px] font-black px-2 py-1 rounded-xl bg-amber-500/15 text-amber-300 border border-amber-500/30 flex items-center gap-1">
-                    <Icon name="shield" width={26} height={26} /> Verificado
-                  </span>
-                  <span className="text-xs font-black px-2.5 py-1 rounded-xl bg-white/5 text-amber-300 border border-white/10">
-                    {job.category}
-                  </span>
+          {certificados.map((r) => {
+            const h = honra(r.honra);
+            return (
+              <div key={r.id} className="glass-card glass-amber rounded-3xl p-6 flex flex-col justify-between">
+                <div>
+                  <div className="flex flex-wrap items-center gap-1.5 mb-3">
+                    <span className="text-[10px] font-black px-2 py-1 rounded-xl bg-amber-500/15 text-amber-300 border border-amber-500/30 flex items-center gap-1">
+                      <Icon name="shield" width={26} height={26} /> Refúgio verificado
+                    </span>
+                    <span className={`text-[10px] font-black px-2 py-1 rounded-xl border ${h.cor}`}>{h.nome}</span>
+                  </div>
+                  <h3 className="text-base font-black text-white leading-snug">{r.nome}</h3>
+                  <p className="text-xs text-slate-400 mt-1">{NOME_TIPO[r.tipo] ?? r.tipo}{r.preco_noite ? ` · noite ${r.preco_noite}` : ""}</p>
+                  {r.oferece?.length > 0 && (
+                    <p className="text-xs text-slate-300 leading-relaxed mt-3">{r.oferece.map((o) => NOME_OFERECE[o] ?? o).join(" · ")}</p>
+                  )}
                 </div>
-                <h3 className="text-base font-black text-white leading-snug mb-2">{job.title}</h3>
-                <p className="text-xs text-slate-300 leading-relaxed">{job.description}</p>
+                <span className="text-xs text-slate-400 flex items-center gap-1 mt-4">
+                  <Icon name="pin" width={28} height={28} /> {r.cidade} · {r.uf}{r.verificado_em ? ` · visitado em ${r.verificado_em}` : ""}
+                </span>
               </div>
-              <span className="text-xs text-slate-400 flex items-center gap-1 mt-4">
-                <Icon name="pin" width={28} height={28} /> {job.location}
-              </span>
-            </div>
-          ))}
+            );
+          })}
         </div>
       )}
 
@@ -80,20 +80,18 @@ export default function CertificadosLista() {
             <Icon name="shield" width={40} height={40} className="text-amber-300" /> Seu estabelecimento na rota?
           </h3>
           <p className="mt-2 text-sm text-slate-300 leading-relaxed max-w-lg">
-            Posto, pousada, camping ou oficina. Peça o Selo JobPago
-            Verificado — o Allan visita, testa a estrutura e, se aprovar,
-            você entra nesta lista com data e QR code no local.
+            Camping, hostel, pousada, hotel ou pátio para motorhome. Peça a
+            visita — a gente passa a noite, confere a estrutura e, se aprovar,
+            você entra nesta lista com a data e o QR code no local.
           </p>
         </div>
         <div className="flex flex-col sm:flex-row gap-3 shrink-0 w-full sm:w-auto">
-          <a
-            href={PEDIR_SELO_URL}
-            target="_blank"
-            rel="noopener noreferrer"
+          <Link
+            href="/refugio"
             className="btn-primary-amalfi px-6 py-3 rounded-2xl text-sm font-black cursor-pointer flex items-center justify-center gap-2 whitespace-nowrap"
           >
-            <Icon name="chat" width={34} height={34} /> Pedir Meu Selo
-          </a>
+            <Icon name="tent" width={34} height={34} /> Pedir a visita
+          </Link>
           <Link
             href="/parceiros/planos"
             className="btn-secondary-glass px-6 py-3 rounded-2xl text-sm font-bold cursor-pointer flex items-center justify-center whitespace-nowrap"

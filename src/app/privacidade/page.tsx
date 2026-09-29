@@ -38,6 +38,7 @@ export default function PrivacidadePage() {
             <h2 className="text-lg font-bold text-white mb-2">2. Dados Coletados e Finalidade</h2>
             <ul className="list-disc pl-5 space-y-2">
               <li><strong>Cadastro de disponibilidade</strong> (quem busca renda): nome, WhatsApp, e-mail opcional, cidade e UF (ou &quot;na estrada&quot;), áreas de atuação, modo e horário. Finalidade: chamar a pessoa quando um negócio publicar tarefa compatível. Não é exibido publicamente.</li>
+              <li><strong>Candidatura a Refúgio da Estrada</strong> (camping, hostel, pousada, hotel, pátio): nome e tipo do lugar, cidade, o que oferece, preço da noite, forma de apoio à expedição, nome do responsável, WhatsApp, e-mail e site opcionais. Finalidade: combinar a visita. Só nome, tipo, cidade, estrutura, preço e nível de Honra dos lugares <em>verificados</em> ficam públicos.</li>
               <li><strong>Cadastro de tarefa ou serviço</strong>: nome, WhatsApp, e-mail e descrição. Finalidade: encaminhar o pedido pelo WhatsApp a quem combina com ele.</li>
               <li><strong>Botão de WhatsApp</strong>: antes de abrir a conversa, a pessoa escolhe o assunto (ex.: &quot;Sou negócio&quot;, &quot;Quero renda&quot;) e pode informar o nome. Finalidade: direcionar o atendimento.</li>
               <li><strong>Navegação</strong>: páginas vistas, tempo na página, rolagem, cliques e de onde veio a visita (ex.: Instagram, Google). Sem cookie e sem guardar o endereço IP; o navegador recebe um identificador aleatório. Finalidade: medir e melhorar o site.</li>

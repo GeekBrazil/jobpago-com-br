@@ -168,7 +168,7 @@ export default function ExpedicaoPage() {
             Traçado: OSRM sobre OpenStreetMap. Acostamento e tipo de pista: OpenStreetMap (colaborativo, extrato Geofabrik).
             Pedágios: Agência Nacional de Transportes Terrestres. Gerado em {rota.gerado_em}.
           </p>
-          <p><Link href="/parceiros/planos" className="underline hover:text-amber-400">Seu negócio está no caminho? Veja como ganhar o selo →</Link></p>
+          <p><Link href="/refugio" className="underline hover:text-amber-400">Tem onde dormir no caminho? Peça a visita e seja um Refúgio da Estrada →</Link></p>
         </footer>
       </main>
     </div>
