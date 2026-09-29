@@ -18,7 +18,7 @@ export default async function ExpedicoesPage() {
       <CidadeTopo />
       <main className="max-w-5xl mx-auto px-4 sm:px-6 py-12 sm:py-16">
         <p className="text-xs font-mono font-bold uppercase tracking-widest text-amber-400">Expedições</p>
-        <h1 className="mt-3 text-4xl sm:text-5xl font-black tracking-tight">Quem está na estrada agora</h1>
+        <h1 className="mt-3 text-4xl sm:text-5xl font-black tracking-tight">Quem está cruzando o Brasil</h1>
         <p className="mt-4 text-lg text-slate-300 max-w-2xl">Viajantes cruzando o Brasil — e como a sua empresa pode patrocinar. O patrocínio passa pela JobPago e 85% vão direto para o viajante.</p>
         <div className="mt-10 grid gap-4 sm:grid-cols-2">
           <Link href="/expedicao" className="glass-panel rounded-3xl p-6 border border-amber-400/40 hover:border-amber-400">
