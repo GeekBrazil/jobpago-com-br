@@ -12,6 +12,7 @@ import { RenderPass } from "three/examples/jsm/postprocessing/RenderPass.js";
 import { UnrealBloomPass } from "three/examples/jsm/postprocessing/UnrealBloomPass.js";
 import { OutputPass } from "three/examples/jsm/postprocessing/OutputPass.js";
 import * as TX from "./texturas";
+import { criarApoio } from "./apoio";
 
 export interface OpcoesCenario {
   /** celular / aparelho modesto: menos geometria, sem bloom, 30 fps */
@@ -146,6 +147,17 @@ export function iniciarCenario(canvas: HTMLCanvasElement, op: OpcoesCenario) {
   });
   const ceu = new THREE.Mesh(new THREE.SphereGeometry(1500, 32, 16), ceuMat);
   cena.add(ceu);
+  {
+    // mapa de ambiente tirado do próprio céu (entardecer), para o vidro e a pintura refletirem
+    const pm = new THREE.PMREMGenerator(renderer);
+    const envCena = new THREE.Scene();
+    const envMat = ceuMat.clone();
+    envMat.uniforms.uNoite.value = 0.35;
+    envCena.add(new THREE.Mesh(new THREE.SphereGeometry(50, 32, 16), envMat));
+    cena.environment = pm.fromScene(envCena, 0, 0.1, 200).texture;
+    cena.environmentIntensity = 0.6;
+    pm.dispose();
+  }
 
   /* estrelas que aparecem com a noite */
   const nEstrelas = leve ? 400 : 900;
@@ -415,94 +427,10 @@ export function iniciarCenario(canvas: HTMLCanvasElement, op: OpcoesCenario) {
   }
   cena.add(postes, lampadas);
 
-  /* o ponto de apoio: conveniência com cobertura, bombas, motorhome com toldo e varal de luz */
-  const apoio = new THREE.Group();
-  apoio.position.copy(POSTO);
-  const lambert = (hex: number) => new THREE.MeshLambertMaterial({ color: hex });
-  // cobertura das bombas
-  const cobertura = new THREE.Mesh(new THREE.BoxGeometry(15, 0.7, 9), lambert(0xf1ede4));
-  cobertura.position.set(9, 5.6, 0);
-  const faixa = new THREE.Mesh(new THREE.BoxGeometry(15.1, 0.35, 9.1), new THREE.MeshBasicMaterial({ color: brilho(0xf59e0b, 1.6) }));
-  faixa.position.set(9, 5.9, 0);
-  const tetoLuz = new THREE.Mesh(new THREE.PlaneGeometry(14, 8), new THREE.MeshBasicMaterial({ color: brilho(0xfff1d6, 1.5) }));
-  tetoLuz.rotation.x = Math.PI / 2; tetoLuz.position.set(9, 5.24, 0);
-  apoio.add(cobertura, faixa, tetoLuz);
-  for (const [cx, cz] of [[3, -3], [15, -3], [3, 3], [15, 3]]) {
-    const col = new THREE.Mesh(new THREE.BoxGeometry(0.4, 5.3, 0.4), lambert(0xd9d4c8));
-    col.position.set(cx, 2.65, cz); apoio.add(col);
-  }
-  for (const bz of [-1.5, 1.5]) {
-    const bomba = new THREE.Mesh(new THREE.BoxGeometry(0.8, 1.7, 0.5), lambert(0xc2410c));
-    bomba.position.set(9, 0.85, bz); apoio.add(bomba);
-  }
-  // loja
-  const txReboco = TX.reboco(T, [236, 226, 206]);
-  const loja = new THREE.Mesh(new THREE.BoxGeometry(8, 4.2, 12), new THREE.MeshLambertMaterial({ map: txReboco }));
-  loja.position.set(-4, 2.1, -2);
-  const vitrine = new THREE.Mesh(new THREE.PlaneGeometry(10, 2.4), new THREE.MeshBasicMaterial({ color: brilho(0xffd49a, 1.2) }));
-  vitrine.rotation.y = Math.PI / 2; vitrine.position.set(0.02, 1.6, -2);
-  const txTelha = TX.telha(T);
-  txTelha.cor.repeat.set(2, 3); txTelha.normal.repeat.set(2, 3);
-  const telhado = new THREE.Mesh(new THREE.BoxGeometry(9, 0.4, 13), new THREE.MeshLambertMaterial({ map: txTelha.cor, normalMap: txTelha.normal }));
-  telhado.position.set(-4, 4.4, -2);
-  const letreiro = new THREE.Mesh(
-    new THREE.PlaneGeometry(9, 2.2),
-    new THREE.MeshBasicMaterial({ map: texturaLetreiro([{ texto: "CONVENIÊNCIA", tam: 58, cor: "#1a1206" }, { texto: "PONTO DE APOIO", tam: 30, cor: "#7c2d12" }], "#fbbf24"), color: brilho(0xffffff, 1.35) }),
-  );
-  letreiro.rotation.y = Math.PI / 2; letreiro.position.set(-1.5, 7.9, -4.5);
-  const hasteL = new THREE.Mesh(new THREE.BoxGeometry(0.2, 3.4, 0.2), lambert(0x3a3d42));
-  hasteL.position.set(-1.6, 5.5, -4.5);
-  apoio.add(loja, vitrine, telhado, hasteL, letreiro);
-  // motorhome estacionado de lado, com toldo listrado e varal de lâmpadas
-  const mh = new THREE.Group();
-  // girado 180°: o lado do toldo fica virado para a estrada (e para a câmera)
-  mh.position.set(-2, 0, 13); mh.rotation.y = Math.PI - 0.12;
-  // lataria com faixa só nas laterais (faces ±x); teto e pontas lisos
-  const txLat = TX.lataria(T), liso = lambert(0xf1eee6), lat = new THREE.MeshLambertMaterial({ map: txLat });
-  const corpo = new THREE.Mesh(new THREE.BoxGeometry(2.5, 2.9, 7.2), [lat, lat, liso, liso, liso, liso]);
-  corpo.position.set(0, 1.95, 0);
-  const cabine = new THREE.Mesh(new THREE.BoxGeometry(2.4, 1.6, 1.6), lambert(0xf4f1ea));
-  cabine.position.set(0, 1.35, 4.3);
-  const parabrisa = new THREE.Mesh(new THREE.PlaneGeometry(2.1, 0.8), lambert(0x1e293b));
-  parabrisa.position.set(0, 1.75, 5.11);
-  mh.add(corpo, cabine, parabrisa);
-  for (const [jz, jw] of [[-2, 1.6], [0.6, 1.2]]) {
-    const jan = new THREE.Mesh(new THREE.PlaneGeometry(jw, 0.8), new THREE.MeshBasicMaterial({ color: brilho(0xffc47a, 1.1) }));
-    jan.rotation.y = -Math.PI / 2; jan.position.set(-1.26, 2.3, jz); mh.add(jan);
-  }
-  for (const rz of [-2.4, 2.2, 4.3]) {
-    const roda = new THREE.Mesh(new THREE.CylinderGeometry(0.45, 0.45, 2.6, 12).rotateZ(Math.PI / 2), lambert(0x111111));
-    roda.position.set(0, 0.45, rz); mh.add(roda);
-  }
-  const toldo = new THREE.Mesh(new THREE.PlaneGeometry(2.6, 5.5), new THREE.MeshLambertMaterial({ map: texturaToldo(), side: THREE.DoubleSide }));
-  toldo.rotation.set(0, 0, 0); toldo.rotation.order = "YXZ";
-  toldo.rotation.y = Math.PI / 2; toldo.rotation.x = -Math.PI / 2 + 0.22;
-  toldo.position.set(-2.5, 3.05, -0.6);
-  mh.add(toldo);
-  const mesa = new THREE.Mesh(new THREE.CylinderGeometry(0.55, 0.55, 0.08, 14), lambert(0x9a6b3f));
-  mesa.position.set(-3, 0.75, -0.6);
-  const pe_ = new THREE.Mesh(new THREE.CylinderGeometry(0.05, 0.05, 0.75, 6), lambert(0x333333));
-  pe_.position.set(-3, 0.37, -0.6);
-  mh.add(mesa, pe_);
-  for (const cz of [-1.5, 0.3]) {
-    const cad = new THREE.Mesh(new THREE.BoxGeometry(0.5, 0.9, 0.5), lambert(0x1d4ed8));
-    cad.position.set(-3.1, 0.45, cz); mh.add(cad);
-  }
-  const lampVaral = new THREE.MeshBasicMaterial({ color: brilho(0xffc070, 4) });
-  for (let i = 0; i < 11; i++) {
-    const t = i / 10, z = -3.3 + t * 5.4;
-    const y = 3.0 - Math.sin(t * Math.PI) * 0.35;
-    const b = new THREE.Mesh(new THREE.SphereGeometry(0.07, 6, 4), lampVaral);
-    b.position.set(-3.8, y, z); mh.add(b);
-  }
-  const luzVaral = new THREE.PointLight(0xffa850, 0, 16, 1.6);
-  luzVaral.position.set(-3, 2.4, -0.6);
-  mh.add(luzVaral);
-  apoio.add(mh);
-  const luzPosto = new THREE.PointLight(0xffe0b0, 0, 30, 1.4);
-  luzPosto.position.set(9, 4.5, 0);
-  apoio.add(luzPosto);
-  cena.add(apoio);
+  /* o ponto de apoio (src/lib/cenario/apoio.ts): posto, conveniência e motorhome com toldo */
+  const apoio = criarApoio(T, leve);
+  apoio.grupo.position.copy(POSTO);
+  cena.add(apoio.grupo);
 
   /* poeira dourada no ar (só com movimento liberado) */
   let poeira: THREE.Points | null = null;
@@ -528,12 +456,15 @@ export function iniciarCenario(canvas: HTMLCanvasElement, op: OpcoesCenario) {
 
   /* câmera presa à rolagem */
   const alvoCam = new THREE.Vector3(), olhar = new THREE.Vector3(), camPos = new THREE.Vector3(), camOlhar = new THREE.Vector3();
-  const fimPos = new THREE.Vector3(), fimOlhar = new THREE.Vector3();
+  const fimPos = new THREE.Vector3(), fimOlhar = new THREE.Vector3(), fimPosV = new THREE.Vector3(), fimOlharV = new THREE.Vector3();
   {
     // enquadramento final: da estrada, um pouco antes, olhando o posto e o motorhome
-    const z = Z_POSTO + 30;
-    fimPos.set(estradaX(z) + 2, ALT_ESTRADA + 3.6, z);
-    fimOlhar.copy(POSTO).add(new THREE.Vector3(3, 2.4, 5));
+    // mais perto: o motorhome em primeiro plano e a conveniência atrás
+    fimPos.copy(POSTO).add(new THREE.Vector3(13, 2.6, 27));
+    fimOlhar.copy(POSTO).add(new THREE.Vector3(1, 2.2, 6));
+    // tela em pé: mais recuado e mirando entre o motorhome e a loja
+    fimPosV.copy(POSTO).add(new THREE.Vector3(15, 3.2, 34));
+    fimOlharV.copy(POSTO).add(new THREE.Vector3(-1.5, 2.4, 9));
   }
   function posicaoCamera(prog: number, destino: THREE.Vector3, visada: THREE.Vector3) {
     const ida = Math.min(1, prog / 0.8);
@@ -544,8 +475,9 @@ export function iniciarCenario(canvas: HTMLCanvasElement, op: OpcoesCenario) {
     destino.set(p.x + 1.4, p.y + 3.1 + Math.sin(prog * 12) * 0.05, p.z);
     visada.set(a.x + 3, a.y + 1.6, a.z);
     const k = suave(0.62, 0.84, prog);
-    destino.lerp(fimPos, k);
-    visada.lerp(fimOlhar, k);
+    const empe = camera.aspect < 0.8;
+    destino.lerp(empe ? fimPosV : fimPos, k);
+    visada.lerp(empe ? fimOlharV : fimOlhar, k);
   }
 
   let largura = 0, altura_ = 0;
@@ -597,12 +529,11 @@ export function iniciarCenario(canvas: HTMLCanvasElement, op: OpcoesCenario) {
     neblina.color.setRGB(0.93 - 0.8 * noite, 0.6 - 0.52 * noite, 0.4 - 0.29 * noite);
     neblina.density = 0.0028 - 0.0008 * noite;
     hemi.intensity = 1.4 - 0.95 * noite;
+    cena.environmentIntensity = 0.6 - 0.4 * noite;
     luzSol.intensity = 2.6 * (1 - noite);
     const acesas = suave(0.35, 0.75, atual);
-    luzVaral.intensity = 14 * acesas;
-    luzPosto.intensity = 45 * acesas;
+    apoio.atualizar(acesas);
     lampMat.color.copy(brilho(0xffb35c, 0.4 + 2.6 * acesas));
-    lampVaral.color.copy(brilho(0xffc070, 0.5 + 1.8 * acesas));
     if (poeira) {
       poeira.position.set(camPos.x, camPos.y - 3, camPos.z);
       poeira.rotation.y = tempo * 0.02;
