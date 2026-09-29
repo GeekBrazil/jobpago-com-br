@@ -3,6 +3,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import CidadeTopo from "../CidadeTopo";
 import { relatorioCidade, SETORES, nomeSetor, competencia } from "@/lib/relatorioCidade";
+import Compartilhar from "@/components/Compartilhar";
 
 export const revalidate = 86400;
 
@@ -208,6 +209,8 @@ export default async function RelatorioCidadePage({ params }: Props) {
             </div>
           </div>
         </section>
+
+        <Compartilhar card={`/card/cidade/${ibge}`} titulo={`${cidade}: quem está abrindo negócio`} link={`https://jobpago.com.br/cidade/${ibge}`} />
 
         <footer className="mt-14 border-t border-white/10 pt-6 text-xs text-slate-400 space-y-1">
           <p>

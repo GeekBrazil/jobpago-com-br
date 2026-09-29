@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import CidadeTopo from "../cidade/CidadeTopo";
 import MapaRotaCliente from "./MapaRotaCliente";
+import Compartilhar from "@/components/Compartilhar";
 import rota from "@/data/expedicao-rota.json";
 
 export const metadata: Metadata = {
@@ -100,10 +101,11 @@ export default function ExpedicaoPage() {
             {rota.paradas.map((p, i) => {
               const leg = i > 0 ? rota.legs[i - 1] : null;
               return (
-                <li key={p.nome} className="glass-panel rounded-2xl p-4 flex items-center justify-between gap-3">
+                <li key={p.nome} className="glass-panel rounded-2xl p-4 flex items-start justify-between gap-3">
                   <div>
                     <p className="font-bold text-white"><span className="text-amber-400 font-mono mr-2">{String(i + 1).padStart(2, "0")}</span>{p.nome} · {p.uf}</p>
                     {leg && <p className="text-xs text-slate-400 mt-1">{nf.format(leg.km)} km desde a parada anterior · {String(leg.horas).replace(".", ",")} h de carro</p>}
+                    <Compartilhar compacto card={`/card/expedicao/${i + 1}`} titulo={`Expedição JobPago · parada ${i + 1}: ${p.nome}`} link="https://jobpago.com.br/expedicao" />
                   </div>
                   {p.ibge && <Link href={`/cidade/${p.ibge}`} className="text-xs font-bold text-amber-300 hover:underline shrink-0">Relatório →</Link>}
                 </li>

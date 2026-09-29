@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 import { Icon } from "@/components/Icons";
 import { honra, OFERECE, TIPOS_REFUGIO } from "@/data/honra";
+import Compartilhar from "@/components/Compartilhar";
 
 interface Refugio { id: number; nome: string; tipo: string; cidade: string; uf: string; oferece: string[]; preco_noite: string | null; honra: string | null; verificado_em: string | null }
 const NOME_TIPO = Object.fromEntries(TIPOS_REFUGIO) as Record<string, string>;
@@ -67,6 +68,7 @@ export default function CertificadosLista() {
                 <span className="text-xs text-slate-400 flex items-center gap-1 mt-4">
                   <Icon name="pin" width={28} height={28} /> {r.cidade} · {r.uf}{r.verificado_em ? ` · visitado em ${r.verificado_em}` : ""}
                 </span>
+                <Compartilhar compacto card={`/card/refugio/${r.id}`} titulo={`${r.nome}: Refúgio da Estrada verificado`} link="https://jobpago.com.br/certificados" />
               </div>
             );
           })}
