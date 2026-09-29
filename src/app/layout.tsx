@@ -4,6 +4,9 @@ import "./globals.css";
 import Script from "next/script";
 import AuthProvider from "@/components/AuthProvider";
 import IndicacaoNoWhats from "@/components/IndicacaoNoWhats";
+import IdiomaProvider from "@/components/IdiomaProvider";
+import IdiomaFlutuante from "@/components/IdiomaFlutuante";
+import { idiomaServidor } from "@/lib/idiomaServidor";
 import EstradaNevadaScrollytelling from "@/components/EstradaNevadaScrollytelling";
 
 const fontDisplay = Bricolage_Grotesque({
@@ -39,21 +42,25 @@ export const viewport: Viewport = {
   viewportFit: "cover",
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const idioma = await idiomaServidor();
   return (
     <html
-      lang="pt-BR"
+      lang={idioma === "pt" ? "pt-BR" : idioma}
       className={`${fontDisplay.variable} ${fontSans.variable} h-full antialiased dark`}
     >
       <body className="min-h-full flex flex-col relative">
         <EstradaNevadaScrollytelling />
         <div className="relative z-10 flex flex-col min-h-full">
           <AuthProvider>
-            {children}
+            <IdiomaProvider inicial={idioma}>
+              {children}
+              <IdiomaFlutuante />
+            </IdiomaProvider>
             <IndicacaoNoWhats />
             {/* rastreio próprio + passo de 1 toque antes do WhatsApp — arquivo único servido pelo allancandido.com */}
             <Script src="https://allancandido.com/r.js" data-site="jobpago" data-cor="#F59E0B" strategy="afterInteractive" />
