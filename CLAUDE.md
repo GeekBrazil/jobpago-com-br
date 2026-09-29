@@ -84,6 +84,11 @@ todas com fonte única em `src/data/`:
 - Home: seção "Quanto se ganha de verdade fazendo X em {cidade}?" (`RendaNaCidade.tsx`, `/api/renda`), começa em Paraty.
 - `/expedicao` — mapa do roteiro (Leaflet): pista duplicada/simples e acostamento confirmado (OpenStreetMap), pedágios federais (ANTT, sem tarifa; estaduais como a BA-099 não entram), 15 paradas e 155 cidades no caminho com link para o relatório. Dados em `src/data/expedicao-rota.json`, gerados por `scripts/expedicao/` (ver README lá).
 
+## Refúgio da Estrada e Alta Honra (2026-09-29)
+
+- **Refúgio da Estrada** = selo de lugar verificado para dormir. Candidatura em `/refugio` → tabela `refugios` (banco `jobpago`) → o Allan aprova na aba Refúgios da Central de Prospecção (`~/central-prospeccao`) → `/api/refugios` (GET) lista só os verificados, sem contato, e `/certificados` mostra.
+- **Alta Honra** = como o estabelecimento apoia a expedição (`src/data/honra.ts`): Ouro (dinheiro + permuta), Prata (dinheiro), Bronze (permuta), Verificado (só a visita). **O selo de verificado nunca é vendido.**
+
 ## UX do mapa em touch (2026-09-18)
 
 - **Mapa não prende mais o scroll da página no celular**: `dragging` do
