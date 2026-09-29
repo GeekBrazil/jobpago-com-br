@@ -38,7 +38,8 @@ export default async function RelatorioCidadePage({ params }: Props) {
 
   const { municipio: m, negocios_total: tot, emprego: emp } = r;
   const cidade = m.municipio_nome;
-  const categorias = r.categorias.filter((c) => (c.novas_12m ?? 0) > 0).slice(0, 9);
+  // todos os setores com empresa ativa: o link "#setor-{categoria}" do e-mail cai no card certo
+  const categorias = r.categorias.filter((c) => (c.ativas ?? 0) > 0);
   const maxNovas = Math.max(1, ...categorias.map((c) => c.novas_90d ?? 0));
   const setores = (emp?.setores ?? []).filter((s) => s.salario_medio_adm).slice(0, 8);
 
@@ -82,7 +83,7 @@ export default async function RelatorioCidadePage({ params }: Props) {
             </p>
             <div className="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
               {categorias.map((c) => (
-                <article key={c.categoria} className="glass-panel rounded-3xl p-5">
+                <article key={c.categoria} id={`setor-${c.categoria}`} className="glass-panel rounded-3xl p-5 scroll-mt-24 target:ring-2 target:ring-amber-400">
                   <div className="flex items-baseline justify-between gap-3">
                     <h3 className="font-bold text-white">{nomeSetor(c.categoria)}</h3>
                     <span className="text-2xl font-black text-amber-400 tabular-nums">{n(c.novas_90d)}</span>
