@@ -43,7 +43,7 @@ export default function PrivacidadePage() {
               <li><strong>Botão de WhatsApp</strong>: antes de abrir a conversa, a pessoa escolhe o assunto (ex.: &quot;Sou negócio&quot;, &quot;Quero renda&quot;) e pode informar o nome. Finalidade: direcionar o atendimento.</li>
               <li><strong>Navegação</strong>: páginas vistas, tempo na página, rolagem, cliques e de onde veio a visita (ex.: Instagram, Google). Sem cookie e sem guardar o endereço IP; o navegador recebe um identificador aleatório. Finalidade: medir e melhorar o site.</li>
               <li><strong>Contato com empresas</strong>: usamos dados públicos do cadastro de CNPJ da Receita Federal (nome da empresa, cidade, setor, data de abertura e e-mail cadastrado) para convidar empresas ativas a usar a JobPago, com base no legítimo interesse (art. 7º, IX, da LGPD). Não enviamos a empresário individual nem MEI, limitamos a dois contatos por empresa e todo e-mail tem descadastro em um clique, respeitado para sempre.</li>
-              <li><strong>Reputação (XP/Honra)</strong>: fica apenas no seu navegador.</li>
+              <li><strong>Contribuições do viajante</strong> (conta JobPago): foto de fachada, relato de pernoite, teste de internet, preço de combustível, condição da estrada, indicação de lugar e o questionário do viajante. Para confirmar que a contribuição é do lugar, pedimos a <strong>localização do celular no momento do envio</strong> — só com o seu consentimento, avisado na tela. Fotos só aparecem no mapa depois de revisadas, sem rosto nem placa identificável. O questionário não é público. Finalidade: manter a informação da estrada verdadeira e calcular a sua reputação (nível e pontos), que fica guardada na sua conta.</li>
             </ul>
           </section>
 

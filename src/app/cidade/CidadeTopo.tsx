@@ -12,6 +12,7 @@ export default function CidadeTopo() {
         <nav className="flex items-center gap-5 text-xs font-bold uppercase tracking-wider text-slate-300">
           <Link href="/cidade" className="hover:text-amber-400">Cidades</Link>
           <Link href="/expedicao" className="hover:text-amber-400">Expedição</Link>
+          <Link href="/viajante" className="hover:text-amber-400 hidden sm:inline">Viajante</Link>
           <Link href="/como-funciona" className="hover:text-amber-400 hidden sm:inline">Como funciona</Link>
         </nav>
       </div>

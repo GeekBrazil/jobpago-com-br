@@ -6,7 +6,6 @@ import { NIVEIS_HONRA } from "@/data/honra";
 import Link from "next/link";
 import dynamic from "next/dynamic";
 import type { MapPoint } from "@/components/MapaServicos";
-import ModalPerfilRPG, { UserRPG, GUILD_DETAILS } from "@/components/ModalPerfilRPG";
 import { FILTROS } from "@/data/categorias";
 import { Icon } from "@/components/Icons";
 
@@ -37,58 +36,6 @@ export interface Job extends MapPoint {
   imagemUrl?: string;
 }
 
-/* Perfil de quem chega: começa do zero (até 29/09 todo visitante via o perfil
-   de demonstração "Allan C. — Nômade VIP", nível 14, como se fosse dele). */
-const DEFAULT_RPG_USER: UserRPG = {
-  name: "Viajante",
-  email: "",
-  level: 1,
-  xp: 0,
-  nextLevelXp: 500,
-  title: "Recém-chegado à estrada",
-  guild: "Nômades & Van Life",
-  honorScore: 0,
-  honorTitle: "Reputação a construir",
-  stats: {
-    velocidade: 0,
-    confiabilidade: 0,
-    hospitalidade: 0,
-  },
-  badges: [
-    { id: "b1", icon: "bolt", title: "Primeiro Acordo PIX", desc: "1ª tarefa combinada e paga direto via PIX", unlocked: false },
-    { id: "b2", icon: "shower", title: "Mestre da Carga 32A", desc: "Forneceu ou usou infra nômade verificada", unlocked: false },
-    { id: "b3", icon: "compass", title: "Explorador da Rota", desc: "Indicou um lugar que virou Refúgio da Estrada", unlocked: false },
-    { id: "b4", icon: "handshake", title: "Anfitrião de Alta Honra", desc: "Ofereceu apoio 100% cortesia a viajantes", unlocked: false },
-  ],
-  rewards: [
-    {
-      id: "r1",
-      category: "Camping",
-      icon: "tent",
-      title: "Pernoite cortesia num Refúgio da Estrada parceiro",
-      location: "Rota Paraty → Fortaleza",
-      requiredLevel: 5,
-      requiredHonor: 100,
-      unlocked: false,
-      claimed: false,
-      description: "Liberado quando os primeiros Refúgios da Estrada forem verificados na Expedição nº 01.",
-    },
-    {
-      id: "r4",
-      category: "Comboio",
-      icon: "tractor",
-      title: "Vaga no Comboio da Expedição Paraty → Fortaleza",
-      location: "Rota Litorânea (RJ -> BA -> CE)",
-      requiredLevel: 15,
-      requiredHonor: 300,
-      unlocked: false,
-      claimed: false,
-      description: "Integração ao comboio da expedição com rádio comunicador, suporte mecânico mútuo e pontos de parada mapeados.",
-    },
-  ],
-};
-
-
 const CATEGORIES = FILTROS;
 
 export default function Home() {
@@ -97,9 +44,7 @@ export default function Home() {
   const [selectedJob, setSelectedJob] = useState<Job | null>(null);
 
   // User State & RPG Modals
-  const [user, setUser] = useState<UserRPG | null>(null);
-  const [isRpgModalOpen, setIsRpgModalOpen] = useState(false);
-  const [toastMessage, setToastMessage] = useState<string | null>(null);
+  const [viajante, setViajante] = useState<{ nome: string; nivel: number } | null>(null);
 
   // Form Vaga Nova
 
@@ -118,38 +63,19 @@ export default function Home() {
   useEffect(() => {
     fetchJobs();
 
-    const storedUser = localStorage.getItem("jobpago_rpg_user");
-    if (storedUser) {
-      try {
-        const salvo = JSON.parse(storedUser) as UserRPG;
-        if (salvo.name === "Allan C. (Nômade VIP)") throw new Error("perfil de demonstração antigo");
-        setUser(salvo);
-      } catch {
-        setUser(DEFAULT_RPG_USER);
-        localStorage.setItem("jobpago_rpg_user", JSON.stringify(DEFAULT_RPG_USER));
-      }
-    } else {
-      setUser(DEFAULT_RPG_USER);
-      localStorage.setItem("jobpago_rpg_user", JSON.stringify(DEFAULT_RPG_USER));
-    }
+    // nível real do viajante logado (reputação fica no banco, não no navegador)
+    fetch("/api/viajante")
+      .then((r) => (r.ok ? r.json() : null))
+      .then((d) => { if (d?.logado) setViajante({ nome: d.nome, nivel: d.nivel }); })
+      .catch(() => {});
   }, []);
 
-  const showToast = (msg: string) => {
-    setToastMessage(msg);
-    setTimeout(() => setToastMessage(null), 4000);
-  };
 
   const publicJobs = jobs;
 
 
   return (
     <div className="min-h-screen text-slate-100 selection:bg-amber-500 selection:text-black">
-      {/* TOAST FLUTUANTE */}
-      {toastMessage && (
-        <div className="fixed bottom-6 right-6 z-50 glass-panel border border-amber-500/40 px-5 py-3.5 rounded-2xl shadow-2xl flex items-center gap-3 text-xs sm:text-sm font-bold text-white animate-bounce">
-          <span>{toastMessage}</span>
-        </div>
-      )}
 
       {/* ── HEADER RESPONSIVO ANTI-SOBREPOSIÇÃO ── */}
       <header className="sticky top-0 z-40 glass-panel border-b border-white/5 backdrop-blur-xl">
@@ -206,30 +132,20 @@ export default function Home() {
           {/* AÇÕES DIREITAS: PERFIL RPG + BOTÃO ANUNCIAR */}
           <div className="flex items-center gap-2.5 sm:gap-3">
 
-            {user && (
-              <button
-                onClick={() => setIsRpgModalOpen(true)}
-                className="flex items-center gap-2 glass-card rounded-2xl py-1.5 px-2.5 sm:px-3 hover:border-amber-500/40 border-white/10"
-                title="Abrir Perfil de Gamificação & Recompensas"
-              >
-                <div className="flex flex-col text-right">
-                  <div className="flex items-center gap-1.5 justify-end">
-                    <span className="hidden sm:block text-[11px] sm:text-xs font-black text-white truncate max-w-[90px] sm:max-w-[120px]">
-                      {user.name.split(" ")[0]}
-                    </span>
-                    <span className="max-[369px]:hidden text-[9px] font-black bg-amber-500/15 text-amber-300 border border-amber-500/30 px-1.5 py-0.2 rounded font-mono flex items-center gap-1">
-                      <Icon name="shield" width={24} height={24} /> {user.honorScore}
-                    </span>
-                  </div>
-                  <span className="text-[9px] sm:text-[10px] text-amber-400 font-medium truncate max-w-[110px] hidden sm:flex items-center gap-1">
-                    <Icon name={GUILD_DETAILS[user.guild]?.icon || "van"} width={26} height={26} /> Nível {user.level}
-                  </span>
-                </div>
-                <div className="w-7 h-7 sm:w-8 sm:h-8 rounded-xl bg-gradient-to-br from-amber-400 to-amber-600 text-black flex items-center justify-center shadow-md shrink-0">
-                  <Icon name="gift" width={36} height={36} />
-                </div>
-              </button>
-            )}
+            <Link
+              href="/viajante"
+              className="flex items-center gap-2 glass-card rounded-2xl py-1.5 px-2.5 sm:px-3 hover:border-amber-500/40 border-white/10"
+              title="Seu painel na estrada: contribua e suba de nível"
+            >
+              <div className="flex flex-col text-right">
+                <span className="hidden sm:block text-[11px] sm:text-xs font-black text-white truncate max-w-[120px]">
+                  {viajante ? viajante.nome.split(" ")[0] : "Viajante"}
+                </span>
+                <span className="text-[9px] sm:text-[10px] text-amber-400 font-medium flex items-center gap-1 justify-end">
+                  <Icon name="shield" width={22} height={22} /> {viajante ? `Nível ${viajante.nivel}` : "Pontuar"}
+                </span>
+              </div>
+            </Link>
 
             <Link
               href="/disponibilidade"
@@ -390,10 +306,10 @@ export default function Home() {
                 <Icon name="shield" width={32} height={32} className="text-amber-300" /> Ver refúgios e lugares verificados
               </Link>
               <Link
-                href="/contribuir"
+                href="/viajante/contribuir?tipo=fachada"
                 className="btn-secondary-glass inline-flex items-center gap-2 px-5 py-2.5 rounded-2xl text-xs font-bold cursor-pointer"
               >
-                <Icon name="pin" width={32} height={32} className="text-amber-400" /> Contribuir com uma Foto
+                <Icon name="pin" width={32} height={32} className="text-amber-400" /> Contribuir e ganhar pontos
               </Link>
             </div>
           </div>
@@ -583,28 +499,6 @@ export default function Home() {
         </div>
       )}
 
-      {/* ── MODAL PERFIL RPG & RECOMPENSAS ── */}
-      {isRpgModalOpen && user && (
-        <ModalPerfilRPG
-          user={user}
-          onClose={() => setIsRpgModalOpen(false)}
-          onUpdateGuild={(g) => {
-            const updated = { ...user, guild: g };
-            setUser(updated);
-            localStorage.setItem("jobpago_rpg_user", JSON.stringify(updated));
-            showToast(`Você agora é membro oficial da guilda: ${g}`);
-          }}
-          onClaimReward={(rid) => {
-            const updatedRewards = user.rewards.map((r) =>
-              r.id === rid ? { ...r, claimed: true } : r
-            );
-            const updated = { ...user, rewards: updatedRewards };
-            setUser(updated);
-            localStorage.setItem("jobpago_rpg_user", JSON.stringify(updated));
-            showToast("Recompensa resgatada com sucesso! Apresente o voucher no local.");
-          }}
-        />
-      )}
 
       {/* ── FOOTER ELEGANTE ── */}
       </main>
