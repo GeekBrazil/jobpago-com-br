@@ -19,8 +19,8 @@ export default function IndicacaoNoWhats() {
           const u = new URL(a.href);
           const t = u.searchParams.get("text") || "";
           if (t.includes(marca)) return;
-          u.searchParams.set("text", (t ? t + "\n\n" : "") + marca);
-          a.href = u.toString();
+          // encodeURIComponent (%20), não searchParams.set: este troca espaço por "+", que aparece literal no WhatsApp
+          a.href = `https://wa.me/${NUMERO}?text=${encodeURIComponent((t ? t + "\n\n" : "") + marca)}`;
         } catch { /* link estranho: deixa como está */ }
       });
     };
