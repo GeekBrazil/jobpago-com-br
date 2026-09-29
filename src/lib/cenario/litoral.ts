@@ -11,6 +11,7 @@ import { EffectComposer } from "three/examples/jsm/postprocessing/EffectComposer
 import { RenderPass } from "three/examples/jsm/postprocessing/RenderPass.js";
 import { UnrealBloomPass } from "three/examples/jsm/postprocessing/UnrealBloomPass.js";
 import { OutputPass } from "three/examples/jsm/postprocessing/OutputPass.js";
+import * as TX from "./texturas";
 
 export interface OpcoesCenario {
   /** celular / aparelho modesto: menos geometria, sem bloom, 30 fps */
@@ -80,26 +81,6 @@ function altura(x: number, z: number) {
 }
 
 /* ───────────── texturas desenhadas ───────────── */
-function texturaAsfalto() {
-  const c = document.createElement("canvas");
-  c.width = 128; c.height = 256;
-  const g = c.getContext("2d")!;
-  g.fillStyle = "#2a2b2f"; g.fillRect(0, 0, 128, 256);
-  for (let i = 0; i < 1400; i++) {
-    const v = 30 + Math.random() * 30;
-    g.fillStyle = `rgb(${v},${v},${v + 3})`;
-    g.fillRect(Math.random() * 128, Math.random() * 256, 1, 1);
-  }
-  g.fillStyle = "#e8e6df"; // bordas brancas
-  g.fillRect(5, 0, 3, 256); g.fillRect(120, 0, 3, 256);
-  g.fillStyle = "#e0a526"; // eixo amarelo tracejado (padrão de rodovia brasileira)
-  g.fillRect(62, 0, 4, 150);
-  const t = new THREE.CanvasTexture(c);
-  t.wrapS = THREE.ClampToEdgeWrapping; t.wrapT = THREE.RepeatWrapping;
-  t.colorSpace = THREE.SRGBColorSpace;
-  return t;
-}
-
 function texturaLetreiro(linhas: { texto: string; tam: number; cor: string }[], fundo: string, w = 512, h = 128) {
   const c = document.createElement("canvas");
   c.width = w; c.height = h;
@@ -136,7 +117,7 @@ export function iniciarCenario(canvas: HTMLCanvasElement, op: OpcoesCenario) {
   const renderer = new THREE.WebGLRenderer({ canvas, antialias: leve, alpha: false, powerPreference: "high-performance" });
   renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, leve ? 1 : 1.5));
   renderer.toneMapping = THREE.ACESFilmicToneMapping;
-  renderer.toneMappingExposure = 1.05;
+  renderer.toneMappingExposure = 1.3;
   renderer.outputColorSpace = THREE.SRGBColorSpace;
 
   const cena = new THREE.Scene();
@@ -179,34 +160,56 @@ export function iniciarCenario(canvas: HTMLCanvasElement, op: OpcoesCenario) {
   cena.add(new THREE.Points(estrelasGeo, estrelasMat));
 
   /* luzes */
-  const hemi = new THREE.HemisphereLight(0xffc9a0, 0x1c2a22, 1.1);
+  const hemi = new THREE.HemisphereLight(0xffd2aa, 0x3a4a36, 1.4);
   cena.add(hemi);
-  const luzSol = new THREE.DirectionalLight(0xffa15c, 2.2);
+  const luzSol = new THREE.DirectionalLight(0xffa15c, 2.6);
   luzSol.position.copy(sol).multiplyScalar(500);
   cena.add(luzSol);
 
-  /* terreno com cor por vértice: areia, mata atlântica, leito da estrada */
+  /* texturas desenhadas na hora (src/lib/cenario/texturas.ts) */
+  const T = leve ? 256 : 512;
+  const txAreia = TX.areia(T), txGrama = TX.grama(T), txRocha = TX.rocha(T), txCasc = TX.cascalho(T), txMacro = TX.macro(256);
+
+  /* terreno: pesos por vértice (areia, grama, leito, areia molhada) misturando as texturas no shader */
   const W = 900, L = 1500, segX = leve ? 110 : 200, segZ = leve ? 180 : 320;
   const terGeo = new THREE.PlaneGeometry(W, L, segX, segZ);
   terGeo.rotateX(-Math.PI / 2);
   terGeo.translate(-170, 0, -COMPRIMENTO / 2);
   const pos = terGeo.attributes.position as THREE.BufferAttribute;
-  const cores = new Float32Array(pos.count * 3);
-  const areia = new THREE.Color(0xd8bd8c), areiaMolhada = new THREE.Color(0x9c8260), mata = new THREE.Color(0x2e5a2f),
-    mataEsc = new THREE.Color(0x173522), leito = new THREE.Color(0x5b5448), tmp = new THREE.Color();
+  const pesos = new Float32Array(pos.count * 4);
   for (let i = 0; i < pos.count; i++) {
     const x = pos.getX(i), z = pos.getZ(i);
-    const h = altura(x, z);
-    pos.setY(i, h);
+    pos.setY(i, altura(x, z));
     const d = x - estradaX(z);
-    if (Math.abs(d) < MEIA_PISTA + 1.5 || Math.hypot(x - POSTO.x, z - POSTO.z) < 22) tmp.copy(leito);
-    else if (d > 0) tmp.copy(areia).lerp(areiaMolhada, suave(costa(z) - 6, costa(z) + 1, d));
-    else tmp.copy(mata).lerp(mataEsc, suave(4, 60, h) * 0.8 + ruido(x * 0.05, z * 0.05) * 0.2);
-    cores.set([tmp.r, tmp.g, tmp.b], i * 3);
+    const leitoK = Math.max(1 - suave(MEIA_PISTA + 1.5, MEIA_PISTA + 4, Math.abs(d)), 1 - suave(20, 30, Math.hypot(x - POSTO.x, z - POSTO.z)));
+    let a = 0, g = 0, m = 0;
+    if (d > 0) { m = suave(costa(z) - 7, costa(z) + 1, d); a = 1 - m; } else g = 1;
+    pesos.set([a * (1 - leitoK), g * (1 - leitoK), leitoK, m * (1 - leitoK)], i * 4);
   }
-  terGeo.setAttribute("color", new THREE.BufferAttribute(cores, 3));
+  terGeo.setAttribute("aPeso", new THREE.BufferAttribute(pesos, 4));
   terGeo.computeVertexNormals();
-  cena.add(new THREE.Mesh(terGeo, new THREE.MeshLambertMaterial({ vertexColors: true })));
+  const terMat = new THREE.MeshLambertMaterial({ color: 0xffffff });
+  terMat.onBeforeCompile = (sh) => {
+    Object.assign(sh.uniforms, { tAreia: { value: txAreia.cor }, tGrama: { value: txGrama }, tRocha: { value: txRocha.cor }, tCasc: { value: txCasc.cor }, tMacro: { value: txMacro } });
+    sh.vertexShader = sh.vertexShader
+      .replace("#include <common>", "#include <common>\nattribute vec4 aPeso; varying vec4 vPeso; varying vec3 vW; varying float vInclina;")
+      .replace("#include <begin_vertex>", "#include <begin_vertex>\nvPeso = aPeso; vW = (modelMatrix * vec4(transformed, 1.0)).xyz; vInclina = 1.0 - normalize(mat3(modelMatrix) * objectNormal).y;");
+    sh.fragmentShader = sh.fragmentShader
+      .replace("#include <common>", "#include <common>\nuniform sampler2D tAreia, tGrama, tRocha, tCasc, tMacro; varying vec4 vPeso; varying vec3 vW; varying float vInclina;")
+      .replace("#include <map_fragment>", `
+        vec2 uvw = vW.xz * 0.22;
+        float mac = texture2D(tMacro, vW.xz * 0.0035).r;
+        vec3 cA = mix(texture2D(tAreia, uvw).rgb, texture2D(tAreia, uvw * 0.23 + 0.37).rgb, 0.35);
+        vec3 cG = mix(texture2D(tGrama, uvw * 0.6).rgb, texture2D(tGrama, uvw * 0.13).rgb, 0.45);
+        vec3 cR = texture2D(tRocha, vW.xz * 0.05 + vec2(vW.y * 0.04)).rgb;
+        vec3 cL = texture2D(tCasc, uvw * 0.8).rgb;
+        vec3 cM = cA * vec3(0.6, 0.57, 0.54);
+        vec3 col = cA * vPeso.x + cG * vPeso.y + cL * vPeso.z + cM * vPeso.w;
+        col = mix(col, cR, smoothstep(0.32, 0.6, vInclina) * vPeso.y);
+        col *= 0.72 + 0.56 * mac;
+        diffuseColor.rgb *= col;`);
+  };
+  cena.add(new THREE.Mesh(terGeo, terMat));
 
   /* mar: ondas no vértice e reflexo do céu/sol no fragmento */
   const marMat = new THREE.ShaderMaterial({
@@ -298,47 +301,43 @@ export function iniciarCenario(canvas: HTMLCanvasElement, op: OpcoesCenario) {
   estradaGeo.setAttribute("uv", new THREE.Float32BufferAttribute(ruv, 2));
   estradaGeo.setIndex(ri);
   estradaGeo.computeVertexNormals();
-  const asfalto = texturaAsfalto();
-  asfalto.anisotropy = renderer.capabilities.getMaxAnisotropy();
-  cena.add(new THREE.Mesh(estradaGeo, new THREE.MeshLambertMaterial({ map: asfalto, side: THREE.DoubleSide, polygonOffset: true, polygonOffsetFactor: -2 })));
+  const asfalto = TX.asfalto(T);
+  asfalto.cor.anisotropy = asfalto.normal.anisotropy = renderer.capabilities.getMaxAnisotropy();
+  asfalto.cor.wrapS = asfalto.normal.wrapS = THREE.ClampToEdgeWrapping;
+  cena.add(new THREE.Mesh(estradaGeo, new THREE.MeshStandardMaterial({
+    map: asfalto.cor, normalMap: asfalto.normal, normalScale: new THREE.Vector2(0.8, 0.8), roughness: 0.88, metalness: 0,
+    side: THREE.DoubleSide, polygonOffset: true, polygonOffsetFactor: -2,
+  })));
 
-  /* coqueiro: tronco curvo + folhas caídas, uma geometria só, instanciada */
-  function geoCoqueiro() {
-    const partes: THREE.BufferGeometry[] = [];
-    const tronco = new THREE.CylinderGeometry(0.16, 0.26, 9, 6, 10, true);
-    tronco.translate(0, 4.5, 0);
-    const tp = tronco.attributes.position as THREE.BufferAttribute;
-    for (let i = 0; i < tp.count; i++) { const y = tp.getY(i); tp.setX(i, tp.getX(i) + 0.022 * y * y); }
-    pintar(tronco, 0x6e5a44);
-    partes.push(tronco);
-    for (let f = 0; f < 9; f++) {
-      const folha = new THREE.PlaneGeometry(0.9, 4.2, 1, 6);
-      const fp = folha.attributes.position as THREE.BufferAttribute;
-      for (let i = 0; i < fp.count; i++) {
-        const y = fp.getY(i) + 2.1; // 0..4.2 ao longo da folha
-        const larg = Math.sin((y / 4.2) * Math.PI) * 1.0;
-        fp.setX(i, fp.getX(i) * larg);
-        fp.setY(i, y);
-        fp.setZ(i, -0.09 * y * y); // cai para baixo
-      }
-      folha.rotateX(-Math.PI / 2 + 0.35);
-      folha.rotateY((f / 9) * Math.PI * 2 + (f % 2) * 0.2);
-      folha.translate(0.022 * 81, 9, 0);
-      pintar(folha, f % 3 ? 0x3f7a32 : 0x57893a);
-      partes.push(folha);
+  /* coqueiro: tronco curvo com casca + folhas com folíolos recortados (duas malhas instanciadas) */
+  const CURVA_TRONCO = 0.022;
+  const troncoGeo = new THREE.CylinderGeometry(0.16, 0.26, 9, 7, 12, true);
+  troncoGeo.translate(0, 4.5, 0);
+  {
+    const tp = troncoGeo.attributes.position as THREE.BufferAttribute;
+    for (let i = 0; i < tp.count; i++) { const y = tp.getY(i); tp.setX(i, tp.getX(i) + CURVA_TRONCO * y * y); }
+    troncoGeo.computeVertexNormals();
+  }
+  const folhas: THREE.BufferGeometry[] = [];
+  for (let f = 0; f < 11; f++) {
+    const folha = new THREE.PlaneGeometry(2.0, 4.4, 2, 8);
+    const fp = folha.attributes.position as THREE.BufferAttribute;
+    for (let i = 0; i < fp.count; i++) {
+      const y = fp.getY(i) + 2.2; // 0..4.4 ao longo da folha
+      fp.setY(i, y);
+      fp.setZ(i, -0.085 * y * y + Math.abs(fp.getX(i)) * 0.25); // cai e forma um "V"
     }
-    return mergeGeometries(partes.map((g) => g.toNonIndexed()));
+    folha.rotateX(-Math.PI / 2 + 0.3 + (f % 3) * 0.12);
+    folha.rotateY((f / 11) * Math.PI * 2 + (f % 2) * 0.25);
+    folha.translate(CURVA_TRONCO * 81, 9, 0);
+    folhas.push(folha);
   }
-  function pintar(g: THREE.BufferGeometry, hex: number) {
-    const c = new THREE.Color(hex), n = g.attributes.position.count, a = new Float32Array(n * 3);
-    for (let i = 0; i < n; i++) a.set([c.r, c.g, c.b], i * 3);
-    g.setAttribute("color", new THREE.BufferAttribute(a, 3));
-    g.deleteAttribute("uv");
-    g.deleteAttribute("normal");
-    g.computeVertexNormals();
-  }
-  const coqGeo = geoCoqueiro();
-  const vegMat = new THREE.MeshLambertMaterial({ vertexColors: true, side: THREE.DoubleSide });
+  const folhaGeo = mergeGeometries(folhas);
+  folhaGeo.computeVertexNormals();
+  const txCasca = TX.casca(T);
+  txCasca.repeat.set(2, 3);
+  const troncoMat = new THREE.MeshLambertMaterial({ map: txCasca });
+  const folhaMat = new THREE.MeshLambertMaterial({ map: TX.folhaCoqueiro(T), alphaTest: 0.45, side: THREE.DoubleSide });
   const locais: THREE.Matrix4[] = [];
   const m4 = new THREE.Matrix4(), q = new THREE.Quaternion(), e = new THREE.Euler(), s3 = new THREE.Vector3(), p3 = new THREE.Vector3();
   const nCoq = leve ? 150 : 300;
@@ -359,15 +358,31 @@ export function iniciarCenario(canvas: HTMLCanvasElement, op: OpcoesCenario) {
     const k = 0.9 + Math.random() * 0.3;
     locais.push(m4.clone().compose(p3.set(x, ALT_ESTRADA - 0.1, z), q.clone().setFromEuler(e), s3.set(k, k, k).clone()));
   }
-  const coqueiros = new THREE.InstancedMesh(coqGeo, vegMat, locais.length);
-  locais.forEach((m, i) => coqueiros.setMatrixAt(i, m));
-  cena.add(coqueiros);
+  const troncos = new THREE.InstancedMesh(troncoGeo, troncoMat, locais.length);
+  const coqueiros = new THREE.InstancedMesh(folhaGeo, folhaMat, locais.length);
+  const corFolha = new THREE.Color();
+  locais.forEach((m, i) => {
+    troncos.setMatrixAt(i, m);
+    coqueiros.setMatrixAt(i, m);
+    coqueiros.setColorAt(i, corFolha.setHSL(0.22 + Math.random() * 0.06, 0.3, 0.8 + Math.random() * 0.2));
+  });
+  cena.add(troncos, coqueiros);
 
   /* mata atlântica na serra: copas baixas instanciadas */
-  const copaGeo = new THREE.IcosahedronGeometry(1, 1);
-  copaGeo.scale(1, 0.8, 1);
+  const copaGeo = new THREE.IcosahedronGeometry(1, 2);
+  {
+    const cp = copaGeo.attributes.position as THREE.BufferAttribute, v = new THREE.Vector3();
+    for (let i = 0; i < cp.count; i++) {
+      v.fromBufferAttribute(cp, i);
+      const k = 0.78 + 0.4 * ruido(v.x * 2.1 + 5, v.z * 2.1 + v.y * 1.7);
+      cp.setXYZ(i, v.x * k, v.y * k * 0.8, v.z * k);
+    }
+    copaGeo.computeVertexNormals();
+  }
+  const txCopa = TX.copa(T);
+  txCopa.cor.repeat.set(3, 2); txCopa.normal.repeat.set(3, 2);
   const nCopa = leve ? 1400 : 3600;
-  const copas = new THREE.InstancedMesh(copaGeo, new THREE.MeshLambertMaterial({ color: 0xffffff }), nCopa);
+  const copas = new THREE.InstancedMesh(copaGeo, new THREE.MeshLambertMaterial({ map: txCopa.cor, normalMap: txCopa.normal }), nCopa);
   const corCopa = new THREE.Color();
   let nc = 0;
   for (let i = 0; i < nCopa * 3 && nc < nCopa; i++) {
@@ -377,7 +392,7 @@ export function iniciarCenario(canvas: HTMLCanvasElement, op: OpcoesCenario) {
     if (Math.hypot(x - POSTO.x, z - POSTO.z) < 30) continue;
     const k = 1.6 + Math.random() * 2.6;
     copas.setMatrixAt(nc, m4.compose(p3.set(x, altura(x, z) + k * 0.4, z), q.setFromEuler(e.set(0, Math.random() * 6, 0)), s3.set(k, k * (0.8 + Math.random() * 0.5), k)));
-    copas.setColorAt(nc, corCopa.setHSL(0.25 + Math.random() * 0.09, 0.5, 0.18 + Math.random() * 0.14));
+    copas.setColorAt(nc, corCopa.setHSL(0.2 + Math.random() * 0.1, 0.3, 0.72 + Math.random() * 0.26));
     nc++;
   }
   copas.count = nc;
@@ -421,11 +436,14 @@ export function iniciarCenario(canvas: HTMLCanvasElement, op: OpcoesCenario) {
     bomba.position.set(9, 0.85, bz); apoio.add(bomba);
   }
   // loja
-  const loja = new THREE.Mesh(new THREE.BoxGeometry(8, 4.2, 12), lambert(0xe9e1d0));
+  const txReboco = TX.reboco(T, [236, 226, 206]);
+  const loja = new THREE.Mesh(new THREE.BoxGeometry(8, 4.2, 12), new THREE.MeshLambertMaterial({ map: txReboco }));
   loja.position.set(-4, 2.1, -2);
   const vitrine = new THREE.Mesh(new THREE.PlaneGeometry(10, 2.4), new THREE.MeshBasicMaterial({ color: brilho(0xffd49a, 1.2) }));
   vitrine.rotation.y = Math.PI / 2; vitrine.position.set(0.02, 1.6, -2);
-  const telhado = new THREE.Mesh(new THREE.BoxGeometry(9, 0.4, 13), lambert(0x8a4b2c));
+  const txTelha = TX.telha(T);
+  txTelha.cor.repeat.set(2, 3); txTelha.normal.repeat.set(2, 3);
+  const telhado = new THREE.Mesh(new THREE.BoxGeometry(9, 0.4, 13), new THREE.MeshLambertMaterial({ map: txTelha.cor, normalMap: txTelha.normal }));
   telhado.position.set(-4, 4.4, -2);
   const letreiro = new THREE.Mesh(
     new THREE.PlaneGeometry(9, 2.2),
@@ -439,15 +457,15 @@ export function iniciarCenario(canvas: HTMLCanvasElement, op: OpcoesCenario) {
   const mh = new THREE.Group();
   // girado 180°: o lado do toldo fica virado para a estrada (e para a câmera)
   mh.position.set(-2, 0, 13); mh.rotation.y = Math.PI - 0.12;
-  const corpo = new THREE.Mesh(new THREE.BoxGeometry(2.5, 2.9, 7.2), lambert(0xf4f1ea));
+  // lataria com faixa só nas laterais (faces ±x); teto e pontas lisos
+  const txLat = TX.lataria(T), liso = lambert(0xf1eee6), lat = new THREE.MeshLambertMaterial({ map: txLat });
+  const corpo = new THREE.Mesh(new THREE.BoxGeometry(2.5, 2.9, 7.2), [lat, lat, liso, liso, liso, liso]);
   corpo.position.set(0, 1.95, 0);
-  const saia = new THREE.Mesh(new THREE.BoxGeometry(2.52, 0.45, 7.22), lambert(0x0f766e));
-  saia.position.set(0, 0.95, 0);
   const cabine = new THREE.Mesh(new THREE.BoxGeometry(2.4, 1.6, 1.6), lambert(0xf4f1ea));
   cabine.position.set(0, 1.35, 4.3);
   const parabrisa = new THREE.Mesh(new THREE.PlaneGeometry(2.1, 0.8), lambert(0x1e293b));
   parabrisa.position.set(0, 1.75, 5.11);
-  mh.add(corpo, saia, cabine, parabrisa);
+  mh.add(corpo, cabine, parabrisa);
   for (const [jz, jw] of [[-2, 1.6], [0.6, 1.2]]) {
     const jan = new THREE.Mesh(new THREE.PlaneGeometry(jw, 0.8), new THREE.MeshBasicMaterial({ color: brilho(0xffc47a, 1.1) }));
     jan.rotation.y = -Math.PI / 2; jan.position.set(-1.26, 2.3, jz); mh.add(jan);
@@ -578,8 +596,8 @@ export function iniciarCenario(canvas: HTMLCanvasElement, op: OpcoesCenario) {
     estrelasMat.opacity = suave(0.55, 1, atual) * 0.9;
     neblina.color.setRGB(0.93 - 0.8 * noite, 0.6 - 0.52 * noite, 0.4 - 0.29 * noite);
     neblina.density = 0.0028 - 0.0008 * noite;
-    hemi.intensity = 1.1 - 0.75 * noite;
-    luzSol.intensity = 2.2 * (1 - noite);
+    hemi.intensity = 1.4 - 0.95 * noite;
+    luzSol.intensity = 2.6 * (1 - noite);
     const acesas = suave(0.35, 0.75, atual);
     luzVaral.intensity = 14 * acesas;
     luzPosto.intensity = 45 * acesas;
