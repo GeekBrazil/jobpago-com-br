@@ -15,6 +15,6 @@ export async function POST(req: NextRequest) {
   if (!codigoValido(b.codigo)) return NextResponse.json({ ok: false }, { status: 400 });
   const pool = await garantirTabelasIndicacao();
   if (!pool) return NextResponse.json({ ok: false }, { status: 503 });
-  await pool.query(`INSERT INTO indicacao_cliques (codigo) SELECT $1 WHERE EXISTS (SELECT 1 FROM indicadores WHERE codigo = $1)`, [b.codigo]);
+  await pool.query(`INSERT INTO indicacao_cliques (codigo) SELECT $1::varchar WHERE EXISTS (SELECT 1 FROM indicadores WHERE codigo = $1::varchar)`, [b.codigo]);
   return NextResponse.json({ ok: true });
 }
