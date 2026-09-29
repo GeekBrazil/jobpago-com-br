@@ -58,9 +58,8 @@ export default function ComoFuncionaPage() {
           </h1>
 
           <p className="mt-5 text-sm sm:text-base text-slate-300 leading-relaxed">
-            Um mapa de conexão direta entre quem precisa de um serviço e quem tá
-            na estrada pra fazer — dev, eletricista, caminhoneiro, motorhome com
-            ponto de apoio. Sem comissão sobre o seu trabalho e sem checkout na
+            A JobPago liga o negócio do bairro e da estrada a quem faz a tarefa —
+            fotos, Instagram, cardápio, frete, apoio na estrada. Sem comissão sobre o seu trabalho e sem checkout na
             plataforma: o valor é combinado e pago direto por PIX entre as duas
             partes.
           </p>
@@ -71,7 +70,7 @@ export default function ComoFuncionaPage() {
           <h2 className="text-xl sm:text-2xl font-black text-white">Dois lados, uma rede</h2>
           <p className="mt-2 text-sm text-slate-400 max-w-2xl">
             Não importa se você precisa contratar ou se você é quem presta o
-            serviço — os dois caminhos abaixo levam pro mesmo mapa.
+            serviço — cada lado tem sua porta de entrada.
           </p>
 
           <div className="mt-8 grid grid-cols-1 md:grid-cols-2 gap-5">
@@ -84,20 +83,13 @@ export default function ComoFuncionaPage() {
                 <li className="flex gap-2.5">
                   <Icon name="check" width={36} height={36} className="text-amber-400 shrink-0 mt-0.5" />
                   <span>
-                    <strong className="text-white">+ Anunciar Vaga</strong> no topo publica sua
-                    vaga no mapa e no feed em tempo real. Quem tem interesse te chama
-                    direto no WhatsApp.
+                    <Link href="/cadastrar-servico?tipo=contratante" className="text-amber-400 underline hover:text-amber-300">Publica uma tarefa</Link>: descreve o que precisa e a gente chama quem faz, da cidade ou remoto.
                   </span>
                 </li>
                 <li className="flex gap-2.5">
                   <Icon name="check" width={36} height={36} className="text-amber-400 shrink-0 mt-0.5" />
                   <span>
-                    Ou usa{" "}
-                    <Link href="/cadastrar-servico" className="text-amber-400 underline hover:text-amber-300">
-                      Cadastrar Serviço
-                    </Link>{" "}
-                    → aba <strong className="text-white">Preciso Contratar</strong>: descreve o
-                    que precisa e a gente busca alguém qualificado na rede.
+                    Vê o <Link href="/cidade" className="text-amber-400 underline hover:text-amber-300">relatório da sua cidade</Link>: quem está abrindo negócio e quanto se paga em cada setor.
                   </span>
                 </li>
               </ul>
@@ -112,20 +104,13 @@ export default function ComoFuncionaPage() {
                 <li className="flex gap-2.5">
                   <Icon name="check" width={36} height={36} className="text-amber-400 shrink-0 mt-0.5" />
                   <span>
-                    Filtra o mapa ou o feed pela sua categoria (Nômade & Infra,
-                    Estrada & Cargas, Tecnologia & TI...) e chama direto no
-                    WhatsApp de quem publicou.
+                    <Link href="/disponibilidade" className="text-amber-400 underline hover:text-amber-300">Cadastra sua disponibilidade</Link>: o que você faz e de onde trabalha — da cidade, remoto ou na estrada.
                   </span>
                 </li>
                 <li className="flex gap-2.5">
                   <Icon name="check" width={36} height={36} className="text-amber-400 shrink-0 mt-0.5" />
                   <span>
-                    Ou usa{" "}
-                    <Link href="/cadastrar-servico" className="text-amber-400 underline hover:text-amber-300">
-                      Cadastrar Serviço
-                    </Link>{" "}
-                    → aba <strong className="text-white">Sou Prestador</strong>: cadastra uma vez e
-                    a gente te envia pra contratantes qualificados da rede.
+                    Quando um negócio publicar uma tarefa que combina, a gente te chama no WhatsApp. Sem vitrine: seu contato não fica exposto.
                   </span>
                 </li>
               </ul>
@@ -142,17 +127,17 @@ export default function ComoFuncionaPage() {
               <span className="text-[11px] font-mono font-bold uppercase tracking-widest text-amber-400">
                 Caminho 01
               </span>
-              <h3 className="text-base font-black text-white mt-1">Mapa & Feed em Tempo Real</h3>
+              <h3 className="text-base font-black text-white mt-1">Tarefa do negócio</h3>
               <div className="flex flex-col gap-4 border-l border-white/10 pl-5 mt-4">
                 <div>
                   <span className="text-[10px] font-mono font-bold text-slate-400 uppercase tracking-widest block">Passo 1</span>
-                  <p className="text-sm text-white font-bold mt-0.5">Publicar ou buscar</p>
-                  <p className="text-xs text-slate-400 mt-1">Uma vaga aparece no mapa/feed, ou você filtra por categoria e cidade.</p>
+                  <p className="text-sm text-white font-bold mt-0.5">Tarefa publicada</p>
+                  <p className="text-xs text-slate-400 mt-1">O negócio diz o que precisa, o prazo e a faixa de valor.</p>
                 </div>
                 <div>
                   <span className="text-[10px] font-mono font-bold text-slate-400 uppercase tracking-widest block">Passo 2</span>
-                  <p className="text-sm text-white font-bold mt-0.5">Contato direto no WhatsApp</p>
-                  <p className="text-xs text-slate-400 mt-1">O botão &quot;Ver Detalhes&quot; abre uma conversa direta com quem publicou. Sem intermediário lendo a conversa.</p>
+                  <p className="text-sm text-white font-bold mt-0.5">A gente chama quem faz</p>
+                  <p className="text-xs text-slate-400 mt-1">Quem cadastrou disponibilidade naquela área recebe o contato. Sem vitrine: ninguém fica com o telefone exposto.</p>
                 </div>
                 <div>
                   <span className="text-[10px] font-mono font-bold text-slate-400 uppercase tracking-widest block">Passo 3</span>
@@ -215,12 +200,12 @@ export default function ComoFuncionaPage() {
             <div className="flex-1">
               <h2 className="text-lg sm:text-xl font-black text-white">Alta Honra: reputação de quem ajuda na estrada</h2>
               <p className="mt-3 text-sm text-slate-300 leading-relaxed max-w-2xl">
-                A régua de Honra mede quem mais agrega valor pra comunidade.
-                Marque uma vaga como <strong className="text-amber-300">Cortesia Solidária 0800</strong> (chuveiro,
-                tomada, recarga, mentoria de graça pra quem tá na estrada) e
-                ganhe pontos que sobem seu nível — cada nível pede 40% a mais
-                de XP que o anterior, então nível alto é reputação real, não
-                cadastro.
+                A reputação começa a contar com as primeiras tarefas fechadas e os
+                primeiros Refúgios da Estrada verificados na Expedição nº 01 — até lá,
+                todo mundo começa do zero. Apoio de cortesia (chuveiro, tomada, recarga,
+                mentoria de graça pra quem tá na estrada), confirmado por quem recebeu,
+                é o que mais pontua — cada nível pede 40% a mais de XP que o anterior,
+                então nível alto é reputação real, não cadastro.
               </p>
               <div className="mt-5 grid grid-cols-1 sm:grid-cols-2 gap-3 max-w-xl">
                 <div className="glass-card border border-amber-400/20 rounded-2xl p-4">
@@ -229,7 +214,7 @@ export default function ComoFuncionaPage() {
                 </div>
                 <div className="glass-card border border-amber-400/20 rounded-2xl p-4">
                   <span className="text-amber-300 font-black text-sm">+150 XP · +10 PTS</span>
-                  <p className="text-xs text-slate-400 mt-1">Publicar uma oportunidade na guilda.</p>
+                  <p className="text-xs text-slate-400 mt-1">Tarefa concluída e paga, confirmada pelas duas partes.</p>
                 </div>
               </div>
             </div>

@@ -24,7 +24,7 @@ export default function PrivacidadePage() {
         </div>
 
         <h1 className="text-3xl sm:text-4xl font-black text-white mb-6">Política de Privacidade</h1>
-        <p className="text-xs text-slate-400 mb-8">Última atualização: Agosto de 2026</p>
+        <p className="text-xs text-slate-400 mb-8">Última atualização: 29 de setembro de 2026</p>
 
         <div className="space-y-6 text-sm text-slate-300 leading-relaxed">
           <section>
@@ -36,18 +36,20 @@ export default function PrivacidadePage() {
 
           <section>
             <h2 className="text-lg font-bold text-white mb-2">2. Dados Coletados e Finalidade</h2>
-            <p>
-              Coletamos apenas as informações voluntariamente fornecidas pelo usuário ao publicar anúncios ou criar perfis (como nome de exibição, e-mail de contato, número de WhatsApp para direcionamento e localização aproximada de serviços).
-            </p>
-            <p className="mt-2">
-              <strong>Finalidade:</strong> Permitir a exibição de anúncios no mural, viabilizar o contato direto entre contratantes e prestadores e operacionalizar a gamificação de reputação (XP/Honra).
-            </p>
+            <ul className="list-disc pl-5 space-y-2">
+              <li><strong>Cadastro de disponibilidade</strong> (quem busca renda): nome, WhatsApp, e-mail opcional, cidade e UF (ou &quot;na estrada&quot;), áreas de atuação, modo e horário. Finalidade: chamar a pessoa quando um negócio publicar tarefa compatível. Não é exibido publicamente.</li>
+              <li><strong>Cadastro de tarefa ou serviço</strong>: nome, WhatsApp, e-mail e descrição. Finalidade: encaminhar o pedido pelo WhatsApp a quem combina com ele.</li>
+              <li><strong>Botão de WhatsApp</strong>: antes de abrir a conversa, a pessoa escolhe o assunto (ex.: &quot;Sou negócio&quot;, &quot;Quero renda&quot;) e pode informar o nome. Finalidade: direcionar o atendimento.</li>
+              <li><strong>Navegação</strong>: páginas vistas, tempo na página, rolagem, cliques e de onde veio a visita (ex.: Instagram, Google). Sem cookie e sem guardar o endereço IP; o navegador recebe um identificador aleatório. Finalidade: medir e melhorar o site.</li>
+              <li><strong>Contato com empresas</strong>: usamos dados públicos do cadastro de CNPJ da Receita Federal (nome da empresa, cidade, setor, data de abertura e e-mail cadastrado) para convidar empresas ativas a usar a JobPago, com base no legítimo interesse (art. 7º, IX, da LGPD). Não enviamos a empresário individual nem MEI, limitamos a dois contatos por empresa e todo e-mail tem descadastro em um clique, respeitado para sempre.</li>
+              <li><strong>Reputação (XP/Honra)</strong>: fica apenas no seu navegador.</li>
+            </ul>
           </section>
 
           <section>
             <h2 className="text-lg font-bold text-white mb-2">3. Compartilhamento e Ausência de Dados Bancários</h2>
             <p>
-              Como o JobPago é um marketplace passivo e não processa pagamentos, a plataforma <strong>não armazena nem processa dados de cartão de crédito, senhas bancárias ou chaves PIX privadas</strong>. Os dados de contato informados em anúncios públicos ficam visíveis a outros usuários para que possam combinar os serviços diretamente.
+              Como o JobPago é um marketplace passivo e não processa pagamentos, a plataforma <strong>não armazena nem processa dados de cartão de crédito, senhas bancárias ou chaves PIX privadas</strong>. Os dados de contato não ficam expostos em vitrine pública: são usados só para pôr as duas partes em contato, que então combinam o serviço diretamente.
             </p>
           </section>
 

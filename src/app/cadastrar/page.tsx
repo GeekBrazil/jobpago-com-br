@@ -52,7 +52,7 @@ function FormularioCadastro() {
         </Link>
 
         <h1 className="text-lg font-bold text-white mb-1">Criar conta</h1>
-        <p className="text-xs text-slate-400 mb-6">Rapidinho — só pra anunciar sua vaga com segurança.</p>
+        <p className="text-xs text-slate-400 mb-6">Rapidinho — sua conta JobPago, com segurança.</p>
 
         <form onSubmit={handleSubmit} className="flex flex-col gap-3">
           <input

@@ -17,7 +17,7 @@ const fontSans = Plus_Jakarta_Sans({
 
 export const metadata: Metadata = {
   title: "JobPago.com.br · Renda Online & Conexão para Nômades Digitais",
-  description: "Marketplace de conexão direta para nômades digitais, profissionais remotos, devs e infraestrutura van life. Vagas, serviços e comodidades com negociação direta e PIX sem taxas.",
+  description: "Negócios do bairro e da estrada encontram quem faz a tarefa — fotos, Instagram, cardápio, frete, apoio na estrada — com Pix direto e sem comissão. Relatório grátis da sua cidade e os Refúgios da Estrada verificados na Expedição Paraty → Fortaleza.",
   icons: {
     icon: "/icon.png",
     shortcut: "/icon.png",

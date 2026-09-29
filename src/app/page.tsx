@@ -36,63 +36,41 @@ export interface Job extends MapPoint {
   imagemUrl?: string;
 }
 
+/* Perfil de quem chega: começa do zero (até 29/09 todo visitante via o perfil
+   de demonstração "Allan C. — Nômade VIP", nível 14, como se fosse dele). */
 const DEFAULT_RPG_USER: UserRPG = {
-  name: "Allan C. (Nômade VIP)",
-  email: "allan@jobpago.com.br",
-  level: 14,
-  xp: 2850,
-  nextLevelXp: 3500,
-  title: "Nômade da Estrada (Rank A)",
+  name: "Viajante",
+  email: "",
+  level: 1,
+  xp: 0,
+  nextLevelXp: 500,
+  title: "Recém-chegado à estrada",
   guild: "Nômades & Van Life",
-  honorScore: 320,
-  honorTitle: "Anfitrião Nômade (Rank S)",
+  honorScore: 0,
+  honorTitle: "Reputação a construir",
   stats: {
-    velocidade: 94,
-    confiabilidade: 98,
-    hospitalidade: 100,
+    velocidade: 0,
+    confiabilidade: 0,
+    hospitalidade: 0,
   },
   badges: [
-    { id: "b1", icon: "bolt", title: "Primeiro Acordo PIX", desc: "1º serviço combinado e liquidado direto via PIX", unlocked: true },
-    { id: "b2", icon: "shower", title: "Mestre da Carga 32A", desc: "Forneceu ou usou infra nômade aquecida", unlocked: true },
-    { id: "b3", icon: "compass", title: "Explorador da Rota", desc: "Visitou ou indicou ponto verificado na estrada", unlocked: true },
-    { id: "b4", icon: "handshake", title: "Anfitrião de Alta Honra", desc: "Ofereceu apoio 100% cortesia a viajantes", unlocked: true },
+    { id: "b1", icon: "bolt", title: "Primeiro Acordo PIX", desc: "1ª tarefa combinada e paga direto via PIX", unlocked: false },
+    { id: "b2", icon: "shower", title: "Mestre da Carga 32A", desc: "Forneceu ou usou infra nômade verificada", unlocked: false },
+    { id: "b3", icon: "compass", title: "Explorador da Rota", desc: "Indicou um lugar que virou Refúgio da Estrada", unlocked: false },
+    { id: "b4", icon: "handshake", title: "Anfitrião de Alta Honra", desc: "Ofereceu apoio 100% cortesia a viajantes", unlocked: false },
   ],
   rewards: [
     {
       id: "r1",
       category: "Camping",
       icon: "tent",
-      title: "Ponto de Apoio Nômade: Pernoite & Carga 220V Cortesia",
-      location: "Praia do Coqueiro, Angra dos Reis, RJ",
+      title: "Pernoite cortesia num Refúgio da Estrada parceiro",
+      location: "Rota Paraty → Fortaleza",
       requiredLevel: 5,
       requiredHonor: 100,
-      unlocked: true,
+      unlocked: false,
       claimed: false,
-      description: "Cortesia de parada para Van Life com ponto de energia, água e área segura oferecida pela rede comunitária.",
-    },
-    {
-      id: "r2",
-      category: "Camping",
-      icon: "van",
-      title: "Vaga Especial em Área Parceira de Paraty",
-      location: "Centro Histórico, Paraty, RJ",
-      requiredLevel: 10,
-      requiredHonor: 200,
-      unlocked: true,
-      claimed: false,
-      description: "Pernoite cortesia com tomada industrial 32A e descarte de água cinza para viajantes com selo de Alta Honra.",
-    },
-    {
-      id: "r3",
-      category: "Aventura",
-      icon: "compass",
-      title: "Roteiro & Guia Náutico Verificado da Costa Verde",
-      location: "Ilha Grande & Paraty, RJ",
-      requiredLevel: 12,
-      requiredHonor: 250,
-      unlocked: true,
-      claimed: false,
-      description: "Acesso ao mapeamento de poitas seguras, pontos de água e contatos de socorro marítimo e terrestre.",
+      description: "Liberado quando os primeiros Refúgios da Estrada forem verificados na Expedição nº 01.",
     },
     {
       id: "r4",
@@ -104,7 +82,7 @@ const DEFAULT_RPG_USER: UserRPG = {
       requiredHonor: 300,
       unlocked: false,
       claimed: false,
-      description: "Integração ao comboio oficial da expedição com rádio comunicador, suporte mecânico mútuo e pontos de parada mapeados.",
+      description: "Integração ao comboio da expedição com rádio comunicador, suporte mecânico mútuo e pontos de parada mapeados.",
     },
   ],
 };
@@ -115,16 +93,16 @@ const REGRAS_HONRA = [
     icon: "shield" as const,
     xp: "+200 XP",
     honra: "+50 PTS",
-    title: "Serviço 100% gratuito",
-    desc: "Oferecer apoio de cortesia a quem está na estrada é o que mais pontua na comunidade.",
+    title: "Apoio de cortesia",
+    desc: "Ajudar de graça quem está na estrada — chuveiro, tomada, recarga, mentoria —, confirmado por quem recebeu.",
   },
   {
-    id: "publicar",
+    id: "tarefa",
     icon: "bolt" as const,
     xp: "+150 XP",
     honra: "+10 PTS",
-    title: "Publicar na guilda",
-    desc: "Abrir uma oportunidade ou ponto de apoio para a sua tribo encontrar.",
+    title: "Tarefa concluída e paga",
+    desc: "Cada tarefa fechada pela JobPago e confirmada pelas duas partes.",
   },
   {
     id: "nivel",
@@ -168,7 +146,9 @@ export default function Home() {
     const storedUser = localStorage.getItem("jobpago_rpg_user");
     if (storedUser) {
       try {
-        setUser(JSON.parse(storedUser));
+        const salvo = JSON.parse(storedUser) as UserRPG;
+        if (salvo.name === "Allan C. (Nômade VIP)") throw new Error("perfil de demonstração antigo");
+        setUser(salvo);
       } catch {
         setUser(DEFAULT_RPG_USER);
         localStorage.setItem("jobpago_rpg_user", JSON.stringify(DEFAULT_RPG_USER));
@@ -349,7 +329,7 @@ export default function Home() {
               Mapa GPS de serviços e rotas
             </h2>
             <p className="text-xs text-slate-300 mt-1">
-              Encontre pontos de apoio, garagens, energia 220V/32A e serviços locais para sua jornada.
+              Trace sua rota. Os pontos de apoio verificados aparecem aqui conforme a Expedição nº 01 avança.
             </p>
           </div>
 
@@ -386,20 +366,20 @@ export default function Home() {
 
           <div className="max-w-2xl">
             <span className="px-3 py-1 rounded-full bg-amber-500/15 text-amber-300 border border-amber-500/30 text-xs font-black uppercase tracking-wider">
-              Infraestrutura Van Life & Trabalho Remoto
+              Apoio na estrada · verificado
             </span>
             <h2 className="text-2xl sm:text-4xl font-black text-white mt-3 flex items-center gap-3">
               <Icon name="van" width={60} height={60} /> Espaço Nômade & Apoio na Estrada
             </h2>
             <p className="text-sm text-slate-300 mt-3 leading-relaxed">
-              Viajando de motorhome, campervan ou trabalhando remotamente na estrada? Encontre pontos com chuveiro aquecido, tomadas 220V/32A, Starlink e apoio solidário com selo de Alta Honra.
+              Viajando de motorhome, campervan ou trabalhando remoto na estrada? Chuveiro quente, tomada 220V, internet e pernoite seguro entram no mapa conforme a Expedição nº 01 visita e verifica cada lugar.
             </p>
             <p className="text-sm text-slate-400 mt-2 leading-relaxed">
-              Dono de posto, pousada ou camping? Anuncie sua vaga paga aqui do mesmo jeito, ou vire{" "}
+              Dono de posto, pousada ou camping na rota? Peça a visita e vire{" "}
               <Link href="/parceiros/planos" className="text-amber-400 underline hover:text-amber-300">
                 parceiro verificado
               </Link>{" "}
-              e apareça com selo pra quem está passando agora.
+              — ou Refúgio da Estrada, se tiver onde dormir.
             </p>
 
             <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 mt-6">
@@ -420,8 +400,8 @@ export default function Home() {
               </div>
               <div className="glass-card p-3 rounded-2xl text-center flex flex-col items-center">
                 <Icon name="wifi" width={52} height={52} className="mb-1 text-amber-400" />
-                <span className="text-xs font-bold text-white block">Wi-Fi Starlink</span>
-                <span className="text-[10px] text-slate-400">Alta velocidade</span>
+                <span className="text-xs font-bold text-white block">Internet</span>
+                <span className="text-[10px] text-slate-400">Velocidade medida</span>
               </div>
             </div>
 
@@ -430,7 +410,7 @@ export default function Home() {
                 href="/certificados"
                 className="btn-secondary-glass inline-flex items-center gap-2 px-5 py-2.5 rounded-2xl text-xs font-bold cursor-pointer"
               >
-                <Icon name="shield" width={32} height={32} className="text-amber-300" /> Ver Estabelecimentos Certificados
+                <Icon name="shield" width={32} height={32} className="text-amber-300" /> Ver refúgios e lugares verificados
               </Link>
               <Link
                 href="/contribuir"
@@ -455,7 +435,7 @@ export default function Home() {
                 Como Funciona a Alta Honra
               </h2>
               <p className="text-xs sm:text-sm text-slate-300 mt-1 max-w-2xl">
-                A régua de honra mede quem mais agrega valor à comunidade na estrada. Pontue oferecendo serviços gratuitos, anunciando na guilda e construindo reputação real.
+                A reputação começa a contar com as primeiras tarefas fechadas e os primeiros Refúgios da Estrada verificados na Expedição nº 01. Até lá, todo mundo começa do zero — inclusive nós.
               </p>
             </div>
 

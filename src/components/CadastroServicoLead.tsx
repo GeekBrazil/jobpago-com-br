@@ -361,7 +361,7 @@ export default function CadastroServicoLead({ onSuccess, tipoInicial = "prestado
 
             <div>
               <label htmlFor="titulo-servico" className="text-xs font-bold text-slate-300 block mb-1.5">
-                {isContratante ? "Título da Vaga *" : "Título do Serviço *"}
+                {isContratante ? "O que você precisa (a tarefa) *" : "Título do Serviço *"}
               </label>
               <input
                 type="text"

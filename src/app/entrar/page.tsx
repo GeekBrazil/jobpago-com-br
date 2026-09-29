@@ -39,7 +39,7 @@ function FormularioEntrar() {
         </Link>
 
         <h1 className="text-lg font-bold text-white mb-1">Entrar</h1>
-        <p className="text-xs text-slate-400 mb-6">Pra anunciar uma vaga, primeiro entra na sua conta.</p>
+        <p className="text-xs text-slate-400 mb-6">Entre na sua conta JobPago.</p>
 
         {(temGoogle || temFacebook) && (
           <div className="flex flex-col gap-2 mb-6">

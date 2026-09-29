@@ -30,7 +30,7 @@ export default function TermosPage() {
           <section>
             <h2 className="text-lg font-bold text-white mb-2">1. Natureza do Serviço (Marketplace Passivo)</h2>
             <p>
-              O <strong>JobPago.com.br</strong> atua exclusivamente como mural e plataforma de conexão (marketplace passivo) entre contratantes e prestadores de serviços, nômades digitais e viajantes. A plataforma <strong>não é parte</strong> de nenhum contrato de prestação de serviços celebrado entre os usuários.
+              O <strong>JobPago.com.br</strong> atua exclusivamente como plataforma de conexão (marketplace passivo) entre contratantes e prestadores de serviços, nômades digitais e viajantes. A plataforma <strong>não é parte</strong> de nenhum contrato de prestação de serviços celebrado entre os usuários.
             </p>
           </section>
 
