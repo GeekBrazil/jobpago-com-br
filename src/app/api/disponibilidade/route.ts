@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { getPool } from "@/lib/db";
 import { CATEGORIAS } from "@/data/categorias";
+import { msg } from "@/lib/traducoesCadastro";
 
 export const runtime = "nodejs";
 
@@ -38,19 +39,20 @@ export async function POST(req: NextRequest) {
   const ip = req.headers.get("x-forwarded-for")?.split(",")[0]?.trim() ?? "?";
   if (limitado(ip)) return NextResponse.json({ ok: false, erro: "Muitas tentativas. Tente em alguns minutos." }, { status: 429 });
   const b = await req.json().catch(() => ({}));
+  const m = (pt: string, es: string, en: string) => msg(b.idioma, pt, es, en);
   const txt = (v: unknown, n: number) => (typeof v === "string" ? v.trim().slice(0, n) : "");
   const nome = txt(b.nome, 80);
   const whatsapp = txt(b.whatsapp, 20).replace(/\D/g, "");
   const email = txt(b.email, 200);
   const categorias = (Array.isArray(b.categorias) ? b.categorias : []).map(String).filter((c: string) => CATS.has(c)).slice(0, 7);
-  if (!nome) return NextResponse.json({ ok: false, erro: "Diga seu nome." }, { status: 400 });
-  if (whatsapp.length < 10 || whatsapp.length > 13) return NextResponse.json({ ok: false, erro: "WhatsApp com DDD, por favor." }, { status: 400 });
-  if (email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) return NextResponse.json({ ok: false, erro: "E-mail inválido." }, { status: 400 });
-  if (!categorias.length) return NextResponse.json({ ok: false, erro: "Escolha pelo menos uma área." }, { status: 400 });
-  if (b.lgpd !== true) return NextResponse.json({ ok: false, erro: "É preciso autorizar o contato (LGPD)." }, { status: 400 });
+  if (!nome) return NextResponse.json({ ok: false, erro: m("Diga seu nome.", "Decí tu nombre.", "Enter your name.") }, { status: 400 });
+  if (whatsapp.length < 10 || whatsapp.length > 13) return NextResponse.json({ ok: false, erro: m("WhatsApp com DDD, por favor.", "WhatsApp con código de área, por favor.", "WhatsApp with area code, please.") }, { status: 400 });
+  if (email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) return NextResponse.json({ ok: false, erro: m("E-mail inválido.", "E-mail inválido.", "Invalid e-mail.") }, { status: 400 });
+  if (!categorias.length) return NextResponse.json({ ok: false, erro: m("Escolha pelo menos uma área.", "Elegí al menos un área.", "Choose at least one area.") }, { status: 400 });
+  if (b.lgpd !== true) return NextResponse.json({ ok: false, erro: m("É preciso autorizar o contato (LGPD).", "Tenés que autorizar el contacto (LGPD).", "Please authorise us to contact you (LGPD).") }, { status: 400 });
 
   const pool = await garantirTabela();
-  if (!pool) return NextResponse.json({ ok: false, erro: "Cadastro indisponível agora. Tente mais tarde." }, { status: 503 });
+  if (!pool) return NextResponse.json({ ok: false, erro: m("Cadastro indisponível agora. Tente mais tarde.", "Registro no disponible ahora. Probá más tarde.", "Sign-up unavailable right now. Try later.") }, { status: 503 });
   await pool.query(
     `INSERT INTO disponibilidades (nome, whatsapp, email, cidade, uf, na_estrada, categorias, faz, modo, quando, lgpd_consent)
      VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,true)`,

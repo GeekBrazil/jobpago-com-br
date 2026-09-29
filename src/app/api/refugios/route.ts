@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { getPool } from "@/lib/db";
 import { OFERECE, TIPOS_REFUGIO, NIVEIS_HONRA } from "@/data/honra";
 import { codigoValido } from "@/lib/indicacao";
+import { msg } from "@/lib/traducoesCadastro";
 
 export const runtime = "nodejs";
 
@@ -49,21 +50,22 @@ export async function GET() {
 
 export async function POST(req: NextRequest) {
   const ip = req.headers.get("x-forwarded-for")?.split(",")[0]?.trim() ?? "?";
-  if (limitado(ip)) return NextResponse.json({ ok: false, erro: "Muitas tentativas. Tente em alguns minutos." }, { status: 429 });
+  if (limitado(ip)) return NextResponse.json({ ok: false, erro: "Muitas tentativas. Tente em alguns minutos. / Demasiados intentos. / Too many attempts." }, { status: 429 });
   const b = await req.json().catch(() => ({}));
+  const m = (pt: string, es: string, en: string) => msg(b.idioma, pt, es, en);
   const txt = (v: unknown, n: number) => (typeof v === "string" ? v.trim().slice(0, n) : "");
   const nome = txt(b.nome, 120), cidade = txt(b.cidade, 80), uf = txt(b.uf, 2).toUpperCase();
   const whatsapp = txt(b.whatsapp, 20).replace(/\D/g, "");
   const email = txt(b.email, 200);
-  if (!nome) return NextResponse.json({ ok: false, erro: "Diga o nome do lugar." }, { status: 400 });
-  if (!TIPOS.has(b.tipo)) return NextResponse.json({ ok: false, erro: "Escolha o tipo de lugar." }, { status: 400 });
-  if (!cidade || uf.length !== 2) return NextResponse.json({ ok: false, erro: "Informe cidade e UF." }, { status: 400 });
-  if (whatsapp.length < 10 || whatsapp.length > 13) return NextResponse.json({ ok: false, erro: "WhatsApp com DDD, por favor." }, { status: 400 });
-  if (email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) return NextResponse.json({ ok: false, erro: "E-mail inválido." }, { status: 400 });
-  if (b.lgpd !== true) return NextResponse.json({ ok: false, erro: "É preciso autorizar o contato (LGPD)." }, { status: 400 });
+  if (!nome) return NextResponse.json({ ok: false, erro: m("Diga o nome do lugar.", "Decí el nombre del lugar.", "Enter the name of the place.") }, { status: 400 });
+  if (!TIPOS.has(b.tipo)) return NextResponse.json({ ok: false, erro: m("Escolha o tipo de lugar.", "Elegí el tipo de lugar.", "Choose the type of place.") }, { status: 400 });
+  if (!cidade || uf.length !== 2) return NextResponse.json({ ok: false, erro: m("Informe cidade e UF.", "Indicá ciudad y estado.", "Enter town and state.") }, { status: 400 });
+  if (whatsapp.length < 10 || whatsapp.length > 13) return NextResponse.json({ ok: false, erro: m("WhatsApp com DDD, por favor.", "WhatsApp con código de área, por favor.", "WhatsApp with area code, please.") }, { status: 400 });
+  if (email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) return NextResponse.json({ ok: false, erro: m("E-mail inválido.", "E-mail inválido.", "Invalid e-mail.") }, { status: 400 });
+  if (b.lgpd !== true) return NextResponse.json({ ok: false, erro: m("É preciso autorizar o contato (LGPD).", "Tenés que autorizar el contacto (LGPD).", "Please authorise us to contact you (LGPD).") }, { status: 400 });
   const oferece = (Array.isArray(b.oferece) ? b.oferece : []).map(String).filter((o: string) => OFER.has(o));
   const pool = await tabela();
-  if (!pool) return NextResponse.json({ ok: false, erro: "Cadastro indisponível agora. Tente mais tarde." }, { status: 503 });
+  if (!pool) return NextResponse.json({ ok: false, erro: m("Cadastro indisponível agora. Tente mais tarde.", "Registro no disponible ahora. Probá más tarde.", "Sign-up unavailable right now. Try later.") }, { status: 503 });
   // indicação: só guarda código que existe (a comissão depende dele)
   let indicador: string | null = null;
   if (codigoValido(b.indicador)) {
