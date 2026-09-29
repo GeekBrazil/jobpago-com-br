@@ -109,6 +109,10 @@ export default function PainelViajante() {
               <p className="font-bold text-white">{idioma === "es" ? "Recomendar y ganar" : idioma === "en" ? "Refer and earn" : "Indicar e ganhar"}</p>
               <p className="text-xs text-slate-400 mt-1">{idioma === "es" ? "50% de la primera cuota o 15% del plan anual de los negocios que recomiendes." : idioma === "en" ? "50% of the first month or 15% of the yearly plan of businesses you refer." : "50% da 1ª mensalidade ou 15% do plano anual dos negócios que você indicar."}</p>
             </Link>
+            <Link href="/viajante/expedicao" className="glass-panel rounded-2xl p-5 border border-amber-400/40 hover:border-amber-400 sm:col-span-2">
+              <p className="font-bold text-white">{idioma === "es" ? "Creá tu expedición" : idioma === "en" ? "Create your expedition" : "Crie sua expedição"}</p>
+              <p className="text-xs text-slate-400 mt-1">{idioma === "es" ? "Tu viaje con página propia y patrocinio: el 85% es para vos. Nunca mostramos dónde estás ahora." : idioma === "en" ? "Your trip with its own page and sponsorship: 85% goes to you. We never show where you are now." : "Sua viagem com página própria e patrocínio: 85% vão para você. Nunca mostramos onde você está agora."}</p>
+            </Link>
             <div className="glass-panel rounded-2xl p-5 border border-white/10">
               <p className="font-bold text-white">{idioma === "es" ? "Lugar en el convoy — gratis" : idioma === "en" ? "Seat in the convoy — free" : "Vaga no comboio — gratuita"}</p>
               {p.nivel >= 100 ? (

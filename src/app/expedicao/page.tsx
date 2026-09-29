@@ -171,6 +171,7 @@ export default function ExpedicaoPage() {
             Pedágios: Agência Nacional de Transportes Terrestres. Gerado em {rota.gerado_em}.
           </p>
           <p><Link href="/refugio" className="underline hover:text-amber-400">Tem onde dormir no caminho? Peça a visita e seja um Refúgio da Estrada →</Link></p>
+          <p><Link href="/expedicoes" className="underline hover:text-amber-400">Expedições de outros viajantes — e como criar a sua →</Link></p>
         </footer>
       </main>
     </div>
