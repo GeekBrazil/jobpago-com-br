@@ -81,6 +81,7 @@ export const SETORES: Record<string, { nome: string; tarefas: string }> = {
   artesanato: { nome: "Artesanato", tarefas: "loja online, fotos, envio" },
   camping_estacionamento: { nome: "Campings e estacionamentos", tarefas: "reserva, mapa, avaliações de viajante" },
   pousada: { nome: "Pousadas", tarefas: "Booking e Google, fotos, resposta rápida a hóspede" },
+  posto_combustivel: { nome: "Postos de combustível", tarefas: "perfil no Google, avaliações, conveniência no Instagram" },
 };
 export const nomeSetor = (c: string) => SETORES[c]?.nome ?? c.replace(/_/g, " ");
 
