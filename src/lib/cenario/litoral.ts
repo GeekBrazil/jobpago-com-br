@@ -13,6 +13,7 @@ import { UnrealBloomPass } from "three/examples/jsm/postprocessing/UnrealBloomPa
 import { OutputPass } from "three/examples/jsm/postprocessing/OutputPass.js";
 import * as TX from "./texturas";
 import { criarApoio } from "./apoio";
+import { carregarFotos, carregarModelos } from "./modelos";
 
 export interface OpcoesCenario {
   /** celular / aparelho modesto: menos geometria, sem bloom, 30 fps */
@@ -200,9 +201,11 @@ export function iniciarCenario(canvas: HTMLCanvasElement, op: OpcoesCenario) {
   }
   terGeo.setAttribute("aPeso", new THREE.BufferAttribute(pesos, 4));
   terGeo.computeVertexNormals();
+  // objeto único: trocar .value depois (textura fotográfica) atualiza o shader
+  const uTerreno = { tAreia: { value: txAreia.cor as THREE.Texture }, tGrama: { value: txGrama }, tRocha: { value: txRocha.cor }, tCasc: { value: txCasc.cor }, tMacro: { value: txMacro } };
   const terMat = new THREE.MeshLambertMaterial({ color: 0xffffff });
   terMat.onBeforeCompile = (sh) => {
-    Object.assign(sh.uniforms, { tAreia: { value: txAreia.cor }, tGrama: { value: txGrama }, tRocha: { value: txRocha.cor }, tCasc: { value: txCasc.cor }, tMacro: { value: txMacro } });
+    Object.assign(sh.uniforms, uTerreno);
     sh.vertexShader = sh.vertexShader
       .replace("#include <common>", "#include <common>\nattribute vec4 aPeso; varying vec4 vPeso; varying vec3 vW; varying float vInclina;")
       .replace("#include <begin_vertex>", "#include <begin_vertex>\nvPeso = aPeso; vW = (modelMatrix * vec4(transformed, 1.0)).xyz; vInclina = 1.0 - normalize(mat3(modelMatrix) * objectNormal).y;");
@@ -316,10 +319,11 @@ export function iniciarCenario(canvas: HTMLCanvasElement, op: OpcoesCenario) {
   const asfalto = TX.asfalto(T);
   asfalto.cor.anisotropy = asfalto.normal.anisotropy = renderer.capabilities.getMaxAnisotropy();
   asfalto.cor.wrapS = asfalto.normal.wrapS = THREE.ClampToEdgeWrapping;
-  cena.add(new THREE.Mesh(estradaGeo, new THREE.MeshStandardMaterial({
+  const estradaMat = new THREE.MeshStandardMaterial({
     map: asfalto.cor, normalMap: asfalto.normal, normalScale: new THREE.Vector2(0.8, 0.8), roughness: 0.88, metalness: 0,
     side: THREE.DoubleSide, polygonOffset: true, polygonOffsetFactor: -2,
-  })));
+  });
+  cena.add(new THREE.Mesh(estradaGeo, estradaMat));
 
   /* coqueiro: tronco curvo com casca + folhas com folíolos recortados (duas malhas instanciadas) */
   const CURVA_TRONCO = 0.022;
@@ -381,7 +385,7 @@ export function iniciarCenario(canvas: HTMLCanvasElement, op: OpcoesCenario) {
   cena.add(troncos, coqueiros);
 
   /* mata atlântica na serra: copas baixas instanciadas */
-  const copaGeo = new THREE.IcosahedronGeometry(1, 2);
+  const copaGeo = new THREE.IcosahedronGeometry(1, 1);
   {
     const cp = copaGeo.attributes.position as THREE.BufferAttribute, v = new THREE.Vector3();
     for (let i = 0; i < cp.count; i++) {
@@ -431,6 +435,12 @@ export function iniciarCenario(canvas: HTMLCanvasElement, op: OpcoesCenario) {
   const apoio = criarApoio(T, leve);
   apoio.grupo.position.copy(POSTO);
   cena.add(apoio.grupo);
+  // texturas fotográficas e objetos do Poly Haven: chegam depois, sem travar a abertura
+  const esperaFotos = setTimeout(() => {
+    const alvos = { uTerreno, estradaMat, T, apoio };
+    carregarFotos(alvos).catch(() => {});
+    carregarModelos(alvos).catch(() => {});
+  }, 1200);
 
   /* poeira dourada no ar (só com movimento liberado) */
   let poeira: THREE.Points | null = null;
@@ -460,8 +470,8 @@ export function iniciarCenario(canvas: HTMLCanvasElement, op: OpcoesCenario) {
   {
     // enquadramento final: da estrada, um pouco antes, olhando o posto e o motorhome
     // mais perto: o motorhome em primeiro plano e a conveniência atrás
-    fimPos.copy(POSTO).add(new THREE.Vector3(13, 2.6, 27));
-    fimOlhar.copy(POSTO).add(new THREE.Vector3(1, 2.2, 6));
+    fimPos.copy(POSTO).add(new THREE.Vector3(9.5, 2.3, 23));
+    fimOlhar.copy(POSTO).add(new THREE.Vector3(-0.5, 1.7, 8.5));
     // tela em pé: mais recuado e mirando entre o motorhome e a loja
     fimPosV.copy(POSTO).add(new THREE.Vector3(15, 3.2, 34));
     fimOlharV.copy(POSTO).add(new THREE.Vector3(-1.5, 2.4, 9));
@@ -547,6 +557,7 @@ export function iniciarCenario(canvas: HTMLCanvasElement, op: OpcoesCenario) {
 
   return () => {
     vivo = false;
+    clearTimeout(esperaFotos);
     cancelAnimationFrame(id);
     window.removeEventListener("resize", redimensionar);
     cena.traverse((o) => {

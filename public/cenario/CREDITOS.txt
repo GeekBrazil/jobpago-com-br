@@ -1,0 +1,4 @@
+Modelos e texturas deste cenário: Poly Haven (https://polyhaven.com), licença CC0 (domínio público).
+Modelos: outdoor_table_chair_set_01, Lantern_01, propane_tank, plastic_monobloc_chair_01, plastic_crate_01, potted_plant_02, rollershutter_door.
+Texturas: asphalt_02, concrete_pavement.
+Comprimidos com gltf-transform (meshopt + WebP 512).

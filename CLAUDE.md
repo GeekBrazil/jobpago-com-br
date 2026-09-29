@@ -94,6 +94,7 @@ todas com fonte única em `src/data/`:
 - `src/components/CenarioLitoral.tsx` (no layout, atrás de todas as páginas) + `src/lib/cenario/litoral.ts` (Three.js, tudo procedural, padrão do Kage do Creative Lab). A rolagem leva a câmera pela estrada, a tarde vira noite e no fim ela enquadra a conveniência + motorhome — é **ilustração**, não um Refúgio real (a legenda na home diz isso).
 - Substituiu a "estrada nevada" (foto 2D no canvas): neve não combina com Paraty → Fortaleza. Decisão do Allan: cenário no litoral.
 - Desempenho: Three.js só por `import()` depois da página aparecer; celular/aparelho fraco = sem bloom, 30 fps, menos geometria; `prefers-reduced-motion` = sem ondas; sem WebGL = céu em CSS. A vinheta (`CenarioLitoral`) garante leitura e abre no fim da página.
+- Ponto de apoio (posto + conveniência + motorhome) modelado em código em `src/lib/cenario/apoio.ts`; objetos e texturas fotográficas do **Poly Haven (CC0)** em `public/cenario/` (créditos em `CREDITOS.txt`), carregados depois da abertura por `src/lib/cenario/modelos.ts` — se falharem, fica a versão desenhada. Areia e reboco fotográficos foram testados e descartados (manchas repetidas / loja escura). Não existe motorhome nem posto realista gratuito sem login (Sketchfab exige conta).
 - O painel de navegador do app não tem WebGL: para ver o cenário, fotos com Chromium headless (Playwright do `~/pncp-etl/pncpvenv`, `--use-angle=swiftshader`).
 
 ## Idiomas: o site inteiro é PT/ES/EN (2026-09-29)

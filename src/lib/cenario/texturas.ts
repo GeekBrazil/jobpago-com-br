@@ -159,21 +159,7 @@ export function asfalto(t: number) {
     for (let s = 0; s < 12; s++) { x += (Math.random() - 0.5) * W * 0.08; y += (Math.random() - 0.3) * H * 0.02; ctx.lineTo(x, y); }
     ctx.stroke();
   }
-  // faixas pintadas, gastas pelo ruído
-  const faixa = (x0: number, largura: number, cor: [number, number, number], y0 = 0, y1 = H) => {
-    const img = ctx.getImageData(0, 0, W, H);
-    for (let y = Math.floor(y0); y < y1; y++) for (let x = Math.floor(x0); x < x0 + largura; x++) {
-      const gasto = fbmP(x / W * 4, y / H * 8, 8) * 0.6 + hashP(x, y, W) * 0.4;
-      if (gasto < 0.28) continue;
-      const i = (y * W + x) * 4, a = 0.88;
-      img.data[i] = mix(img.data[i], cor[0], a); img.data[i + 1] = mix(img.data[i + 1], cor[1], a); img.data[i + 2] = mix(img.data[i + 2], cor[2], a);
-    }
-    ctx.putImageData(img, 0, 0);
-  };
-  const lw = W * 0.025;
-  faixa(W * 0.035, lw, [232, 230, 222]);
-  faixa(W * 0.94, lw, [232, 230, 222]);
-  faixa(W * 0.5 - lw / 2, lw, [226, 168, 38], 0, H * 0.55); // eixo amarelo tracejado
+  pintarFaixas(ctx, W, H);
   return { cor: textura(canvas), normal: normalDe(alt!, W, H, 2.5) };
 }
 
@@ -267,4 +253,40 @@ export function lataria(t: number) {
   ctx.strokeStyle = "rgba(0,0,0,0.12)"; ctx.lineWidth = 2;
   for (let i = 1; i < 6; i++) { ctx.beginPath(); ctx.moveTo((W / 6) * i, 0); ctx.lineTo((W / 6) * i, H); ctx.stroke(); }
   return textura(canvas, true, false);
+}
+
+/** faixas pintadas (bordas brancas, eixo amarelo tracejado), gastas pelo ruído */
+function pintarFaixas(ctx: CanvasRenderingContext2D, W: number, H: number) {
+  const img = ctx.getImageData(0, 0, W, H);
+  const faixa = (x0: number, largura: number, cor: [number, number, number], y0 = 0, y1 = H) => {
+    for (let y = Math.floor(y0); y < y1; y++) for (let x = Math.floor(x0); x < x0 + largura; x++) {
+      const gasto = fbmP(x / W * 4, y / H * 8, 8) * 0.6 + hashP(x, y, W) * 0.4;
+      if (gasto < 0.28) continue;
+      const i = (y * W + x) * 4, a = 0.88;
+      img.data[i] = mix(img.data[i], cor[0], a); img.data[i + 1] = mix(img.data[i + 1], cor[1], a); img.data[i + 2] = mix(img.data[i + 2], cor[2], a);
+    }
+  };
+  const lw = W * 0.025;
+  faixa(W * 0.035, lw, [232, 230, 222]);
+  faixa(W * 0.94, lw, [232, 230, 222]);
+  faixa(W * 0.5 - lw / 2, lw, [226, 168, 38], 0, H * 0.55);
+  ctx.putImageData(img, 0, 0);
+}
+
+/** asfalto fotográfico (Poly Haven, CC0) repetido na faixa da estrada + as faixas pintadas por cima.
+    `ladrilhos` = quantas vezes a foto cabe na largura da pista. */
+export function asfaltoFoto(cor: HTMLImageElement, normal: HTMLImageElement, t: number, ladrilhos = 3) {
+  const W = t / 2, H = t * 2, lado = W / ladrilhos;
+  const montar = (img: HTMLImageElement) => {
+    const c = document.createElement("canvas");
+    c.width = W; c.height = H;
+    const g = c.getContext("2d")!;
+    for (let y = 0; y < H; y += lado) for (let x = 0; x < W; x += lado) g.drawImage(img, x, y, lado, lado);
+    return { c, g };
+  };
+  const a = montar(cor);
+  a.g.fillStyle = "rgba(20,20,24,0.18)"; a.g.fillRect(0, 0, W, H); // um pouco mais escuro que a foto
+  pintarFaixas(a.g, W, H);
+  const n = montar(normal);
+  return { cor: textura(a.c), normal: textura(n.c, false) };
 }

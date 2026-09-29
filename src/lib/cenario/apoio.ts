@@ -205,7 +205,8 @@ export function criarApoio(T: number, leve: boolean) {
   /* ══════════ PÁTIO ══════════ */
   const txConc = texConcreto(T);
   txConc.repeat.set(9, 8);
-  add(new THREE.PlaneGeometry(46, 42).rotateX(-Math.PI / 2), std(0xffffff, 0.85, 0, { map: txConc }), 6, 0.02, 2);
+  const patioMat = std(0xffffff, 0.85, 0, { map: txConc });
+  add(new THREE.PlaneGeometry(46, 42).rotateX(-Math.PI / 2), patioMat, 6, 0.02, 2);
   // vagas pintadas na frente da loja
   const tinta = std(0xe8e6df, 0.7);
   for (let i = 0; i < 4; i++) add(new THREE.PlaneGeometry(0.12, 4.5).rotateX(-Math.PI / 2), tinta, 1.8 + i * 0, 0.03, -7.5 + i * 2.6).rotation.y = Math.PI / 2;
@@ -470,6 +471,7 @@ export function criarApoio(T: number, leve: boolean) {
   // tapete, mesa dobrável, cadeiras de camping, lampião
   add(new THREE.PlaneGeometry(2.2, 3.2).rotateX(-Math.PI / 2), std(0xffffff, 0.95, 0, { map: texTapete() }), -(L / 2 + 1.3), 0.05, -0.9, mh);
   const mesa = new THREE.Group(); mesa.position.set(-(L / 2 + 1.35), 0, -1.0); mh.add(mesa);
+  const cadeiras: THREE.Group[] = [];
   add(rb(0.7, 0.04, 1.1, 0.02), std(0xe5e0d5, 0.5), 0, 0.72, 0, mesa);
   for (const s of [-1, 1]) {
     const perna = add(new THREE.CylinderGeometry(0.015, 0.015, 0.8, 6), cinzaMetal, 0, 0.36, s * 0.4, mesa);
@@ -483,7 +485,7 @@ export function criarApoio(T: number, leve: boolean) {
   add(new THREE.CylinderGeometry(0.05, 0.04, 0.1, 10), std(0x1d4ed8, 0.5), -0.15, 0.79, -0.25, mesa); // caneca
   const lona2 = std(0x1d4ed8, 0.85, 0, { side: THREE.DoubleSide });
   for (const [cz, ang] of [[-2.1, 0.3], [0.2, Math.PI - 0.4]] as [number, number][]) {
-    const cad = new THREE.Group(); cad.position.set(-(L / 2 + 1.5), 0, cz); cad.rotation.y = ang; mh.add(cad);
+    const cad = new THREE.Group(); cad.position.set(-(L / 2 + 1.5), 0, cz); cad.rotation.y = ang; mh.add(cad); cadeiras.push(cad);
     const assento = new THREE.PlaneGeometry(0.5, 0.45, 4, 4);
     { const ap = assento.attributes.position as THREE.BufferAttribute; for (let i = 0; i < ap.count; i++) ap.setZ(i, -Math.cos((ap.getX(i) / 0.5) * Math.PI) * 0.04); }
     add(assento.rotateX(-Math.PI / 2), lona2, 0, 0.42, 0, cad);
@@ -512,5 +514,5 @@ export function criarApoio(T: number, leve: boolean) {
     }
   }
   atualizar(0);
-  return { grupo, atualizar };
+  return { grupo, atualizar, mh, loja, mesa, cadeiras, patioMat, paredeMat, larguraMH: L };
 }
