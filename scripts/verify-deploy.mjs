@@ -15,9 +15,13 @@ const TARGETS = [
       "nômades digitais",
       "PIX COMBINADO DIRETO ENTRE AS PARTES",
       "Devs",
-      "Van Life"
+      "Tenho um negócio",
+      "Quero renda",
+      "Refúgio da Estrada"
     ],
     mustNotContain: [
+      "Anunciar Vaga",
+      "Há 10 min",
       "Harley-Davidson",
       "Investidores 50+",
       "Escrow Imobiliário",
