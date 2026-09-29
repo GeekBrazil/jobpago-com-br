@@ -89,6 +89,13 @@ todas com fonte única em `src/data/`:
 - **Refúgio da Estrada** = selo de lugar verificado para dormir. Candidatura em `/refugio` → tabela `refugios` (banco `jobpago`) → o Allan aprova na aba Refúgios da Central de Prospecção (`~/central-prospeccao`) → `/api/refugios` (GET) lista só os verificados, sem contato, e `/certificados` mostra.
 - **Alta Honra** = como o estabelecimento apoia a expedição (`src/data/honra.ts`): Ouro (dinheiro + permuta), Prata (dinheiro), Bronze (permuta), Verificado (só a visita). **O selo de verificado nunca é vendido.**
 
+## Fundo 3D: BR-101 beira-mar (2026-09-29)
+
+- `src/components/CenarioLitoral.tsx` (no layout, atrás de todas as páginas) + `src/lib/cenario/litoral.ts` (Three.js, tudo procedural, padrão do Kage do Creative Lab). A rolagem leva a câmera pela estrada, a tarde vira noite e no fim ela enquadra a conveniência + motorhome — é **ilustração**, não um Refúgio real (a legenda na home diz isso).
+- Substituiu a "estrada nevada" (foto 2D no canvas): neve não combina com Paraty → Fortaleza. Decisão do Allan: cenário no litoral.
+- Desempenho: Three.js só por `import()` depois da página aparecer; celular/aparelho fraco = sem bloom, 30 fps, menos geometria; `prefers-reduced-motion` = sem ondas; sem WebGL = céu em CSS. A vinheta (`CenarioLitoral`) garante leitura e abre no fim da página.
+- O painel de navegador do app não tem WebGL: para ver o cenário, fotos com Chromium headless (Playwright do `~/pncp-etl/pncpvenv`, `--use-angle=swiftshader`).
+
 ## Idiomas: o site inteiro é PT/ES/EN (2026-09-29)
 
 - Idioma do servidor: `?lang=` (o `src/proxy.ts` põe o header `x-jp-lang` e o cookie `jp_lang`) > cookie > Accept-Language > pt (`src/lib/idiomaServidor.ts`). No navegador: `useIdioma()` (IdiomaProvider no layout); botão flutuante `IdiomaFlutuante`.

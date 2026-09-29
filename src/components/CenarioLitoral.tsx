@@ -23,7 +23,7 @@ export default function CenarioLitoral() {
     };
     const vinheta = () => {
       const p = progresso();
-      if (vinhetaRef.current) vinhetaRef.current.style.opacity = String(1 - 0.6 * Math.min(1, Math.max(0, (p - 0.7) / 0.2)));
+      if (vinhetaRef.current) vinhetaRef.current.style.opacity = String(1 - 0.4 * Math.min(1, Math.max(0, (p - 0.7) / 0.2)));
     };
     window.addEventListener("scroll", vinheta, { passive: true });
     vinheta();
