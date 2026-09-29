@@ -5,7 +5,7 @@ import Link from "next/link";
 import { useIdioma } from "@/components/useIdioma";
 import SeletorIdioma from "@/components/SeletorIdioma";
 import { TXT, CONTRIBUICOES } from "@/lib/textosEstrada";
-import { RECOMPENSAS, PONTOS } from "@/lib/reputacao";
+import { RECOMPENSAS, PONTOS, pontosParaNivel } from "@/lib/reputacao";
 
 interface Perfil {
   logado: boolean; nome?: string; pontos: number; nivel: number; titulo: string; base: number; proximo: number; progresso: number;
@@ -27,7 +27,20 @@ export default function PainelViajante() {
     }).catch(() => setErro(true));
   }, []);
 
-  const nomeTipo = (id: string) => CONTRIBUICOES.find((c) => c.id === id)?.nome[idioma] ?? (id === "questionario" ? T.questionario : id);
+  const nomeTipo = (id: string) =>
+    CONTRIBUICOES.find((c) => c.id === id)?.nome[idioma] ??
+    ({ questionario: T.questionario, indicacao_verificado: idioma === "es" ? "Recomendado verificado" : idioma === "en" ? "Referral verified" : "Indicado verificado",
+       indicacao_pagante: idioma === "es" ? "Recomendado contrató un plan" : idioma === "en" ? "Referral bought a plan" : "Indicado fechou plano" } as Record<string, string>)[id] ?? id;
+
+  const [comboio, setComboio] = useState<{ status: string } | null | undefined>(undefined);
+  const [trecho, setTrecho] = useState("");
+  useEffect(() => {
+    fetch("/api/comboio").then((r) => (r.ok ? r.json() : null)).then((j) => setComboio(j?.inscrito ?? null)).catch(() => setComboio(null));
+  }, []);
+  async function entrarComboio() {
+    const r = await fetch("/api/comboio", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ trecho }) });
+    if (r.ok) setComboio({ status: "inscrito" });
+  }
 
   return (
     <div>
@@ -89,6 +102,25 @@ export default function PainelViajante() {
                 <p className="text-xs text-slate-400 mt-1">{c.desc[idioma]}</p>
               </Link>
             ))}
+          </div>
+
+          <div className="mt-6 grid gap-3 sm:grid-cols-2">
+            <Link href="/viajante/indicar" className="glass-panel rounded-2xl p-5 border border-amber-400/40 hover:border-amber-400">
+              <p className="font-bold text-white">{idioma === "es" ? "Recomendar y ganar" : idioma === "en" ? "Refer and earn" : "Indicar e ganhar"}</p>
+              <p className="text-xs text-slate-400 mt-1">{idioma === "es" ? "50% de la primera cuota o 15% del plan anual de los negocios que recomiendes." : idioma === "en" ? "50% of the first month or 15% of the yearly plan of businesses you refer." : "50% da 1ª mensalidade ou 15% do plano anual dos negócios que você indicar."}</p>
+            </Link>
+            <div className="glass-panel rounded-2xl p-5 border border-white/10">
+              <p className="font-bold text-white">{idioma === "es" ? "Lugar en el convoy — gratis" : idioma === "en" ? "Seat in the convoy — free" : "Vaga no comboio — gratuita"}</p>
+              {p.nivel >= 100 ? (
+                comboio ? <p className="text-xs text-emerald-300 mt-1">✓ {idioma === "es" ? "Inscripto" : idioma === "en" ? "Signed up" : "Inscrito"}</p> : (
+                  <div className="mt-2 flex gap-2">
+                    <input value={trecho} onChange={(e) => setTrecho(e.target.value)} placeholder={idioma === "es" ? "Tramo (ej.: Salvador → Recife)" : idioma === "en" ? "Stretch (e.g. Salvador → Recife)" : "Trecho (ex.: Salvador → Recife)"} className="flex-1 min-w-0 rounded-xl bg-slate-900/80 border border-white/15 px-3 py-2 text-sm text-white" />
+                    <button onClick={entrarComboio} className="btn-primary-amalfi rounded-xl px-4 py-2 text-xs font-black">{idioma === "es" ? "Quiero" : idioma === "en" ? "Join" : "Quero"}</button>
+                  </div>)
+              ) : (
+                <p className="text-xs text-slate-400 mt-1">{idioma === "es" ? "Se libera en el nivel 100" : idioma === "en" ? "Unlocks at level 100" : "Libera no nível 100"} · {nf.format(Math.max(0, pontosParaNivel(100) - p.pontos))} {T.pontos}</p>
+              )}
+            </div>
           </div>
 
           <h2 className="mt-10 text-xl font-black">{idioma === "es" ? "Lo que desbloqueás" : idioma === "en" ? "What you unlock" : "O que você desbloqueia"}</h2>

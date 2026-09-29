@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { getPool } from "@/lib/db";
 import { OFERECE, TIPOS_REFUGIO, NIVEIS_HONRA } from "@/data/honra";
+import { codigoValido } from "@/lib/indicacao";
 
 export const runtime = "nodejs";
 
@@ -21,7 +22,8 @@ async function tabela() {
     responsavel VARCHAR(80), whatsapp VARCHAR(20) NOT NULL, email VARCHAR(200), site VARCHAR(200),
     oferece TEXT[] DEFAULT '{}', preco_noite VARCHAR(40), honra_desejada VARCHAR(20), mensagem TEXT,
     status VARCHAR(20) NOT NULL DEFAULT 'candidato', honra VARCHAR(20), verificado_em DATE, notas TEXT,
-    lgpd_consent BOOLEAN NOT NULL, criado_em TIMESTAMPTZ DEFAULT now(), atualizado_em TIMESTAMPTZ DEFAULT now())`);
+    lgpd_consent BOOLEAN NOT NULL, indicador_codigo VARCHAR(12), criado_em TIMESTAMPTZ DEFAULT now(), atualizado_em TIMESTAMPTZ DEFAULT now())`);
+  await pool.query(`ALTER TABLE refugios ADD COLUMN IF NOT EXISTS indicador_codigo VARCHAR(12)`);
   pronta = true;
   return pool;
 }
@@ -62,11 +64,17 @@ export async function POST(req: NextRequest) {
   const oferece = (Array.isArray(b.oferece) ? b.oferece : []).map(String).filter((o: string) => OFER.has(o));
   const pool = await tabela();
   if (!pool) return NextResponse.json({ ok: false, erro: "Cadastro indisponível agora. Tente mais tarde." }, { status: 503 });
+  // indicação: só guarda código que existe (a comissão depende dele)
+  let indicador: string | null = null;
+  if (codigoValido(b.indicador)) {
+    const r = await pool.query(`SELECT 1 FROM indicadores WHERE codigo = $1`, [b.indicador]).catch(() => ({ rowCount: 0 }));
+    if (r.rowCount) indicador = b.indicador;
+  }
   await pool.query(
-    `INSERT INTO refugios (nome, tipo, cidade, uf, responsavel, whatsapp, email, site, oferece, preco_noite, honra_desejada, mensagem, lgpd_consent)
-     VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,true)`,
+    `INSERT INTO refugios (nome, tipo, cidade, uf, responsavel, whatsapp, email, site, oferece, preco_noite, honra_desejada, mensagem, lgpd_consent, indicador_codigo)
+     VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,true,$13)`,
     [nome, b.tipo, cidade, uf, txt(b.responsavel, 80) || null, whatsapp, email || null, txt(b.site, 200) || null, oferece,
-     txt(b.precoNoite, 40) || null, HONRAS.has(b.honra) ? b.honra : null, txt(b.mensagem, 600) || null]
+     txt(b.precoNoite, 40) || null, HONRAS.has(b.honra) ? b.honra : null, txt(b.mensagem, 600) || null, indicador]
   );
   return NextResponse.json({ ok: true });
 }

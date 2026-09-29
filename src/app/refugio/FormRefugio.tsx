@@ -3,6 +3,7 @@
 import { useState } from "react";
 import Link from "next/link";
 import { NIVEIS_HONRA, OFERECE, TIPOS_REFUGIO } from "@/data/honra";
+import { lerIndicacao } from "@/lib/indicacaoCliente";
 
 const UFS = "RJ ES BA SE AL PE PB RN CE AC AP AM DF GO MA MT MS MG PA PR PI RS RO RR SC SP TO".split(" ");
 const campo = "w-full rounded-2xl bg-slate-900/80 border border-white/15 px-4 py-3 text-white placeholder:text-slate-500 focus:outline-none focus:border-amber-400";
@@ -18,7 +19,7 @@ export default function FormRefugio() {
     setErro("");
     setEstado("enviando");
     try {
-      const r = await fetch("/api/refugios", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(f) });
+      const r = await fetch("/api/refugios", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ ...f, indicador: lerIndicacao() }) });
       const d = await r.json().catch(() => ({}));
       if (!r.ok || !d.ok) { setErro(d.erro || "Não foi possível enviar. Tente de novo."); setEstado(""); return; }
       // central de prospecção (r.js): lead do lado negócio
