@@ -8,7 +8,7 @@ import IdiomaProvider from "@/components/IdiomaProvider";
 import IdiomaFlutuante from "@/components/IdiomaFlutuante";
 import { idiomaServidor } from "@/lib/idiomaServidor";
 import { L } from "@/lib/i18n";
-import EstradaNevadaScrollytelling from "@/components/EstradaNevadaScrollytelling";
+import CenarioLitoral from "@/components/CenarioLitoral";
 
 const fontDisplay = Bricolage_Grotesque({
   variable: "--font-display",
@@ -61,7 +61,7 @@ export default async function RootLayout({
       className={`${fontDisplay.variable} ${fontSans.variable} h-full antialiased dark`}
     >
       <body className="min-h-full flex flex-col relative">
-        <EstradaNevadaScrollytelling />
+        <CenarioLitoral />
         <div className="relative z-10 flex flex-col min-h-full">
           <AuthProvider>
             <IdiomaProvider inicial={idioma}>

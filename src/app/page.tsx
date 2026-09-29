@@ -371,19 +371,11 @@ export default function Home() {
           </p>
         </div>
 
-        {/* janela para o cenário 3D do fundo — ilustração, não um lugar real */}
-        <div className="relative w-full rounded-3xl border border-amber-500/30 min-h-[520px] sm:min-h-[680px] flex flex-col justify-between p-6 sm:p-8 overflow-hidden bg-transparent shadow-[0_24px_70px_-15px_rgba(0,0,0,0.9)] my-10 pointer-events-none">
-          <div className="flex items-center justify-between w-full">
-            <span className="text-[11px] font-mono font-bold tracking-wider text-amber-400 bg-slate-950/80 border border-amber-500/40 px-3.5 py-1.5 rounded-full backdrop-blur-md">
-              {L(idioma, "ILUSTRAÇÃO · COMO É UM REFÚGIO DA ESTRADA", "ILUSTRACIÓN · CÓMO ES UN REFUGIO DE LA RUTA", "ILLUSTRATION · WHAT A ROAD REFUGE LOOKS LIKE")}
-            </span>
-          </div>
-          <div className="flex-1" />
-          <div className="text-xs text-slate-300 bg-slate-950/80 border border-white/10 p-3 sm:px-5 sm:py-2.5 rounded-2xl backdrop-blur-md w-full">
-            <span className="font-bold text-white">{L(idioma, "Os primeiros refúgios serão verificados na Expedição nº 01", "Los primeros refugios se verificarán en la Expedición nº 01", "The first refuges will be checked on Expedition no. 01")}</span>
-            <span className="text-slate-400"> · Paraty → Fortaleza, {L(idioma, "pelo litoral", "por la costa", "along the coast")}</span>
-          </div>
-        </div>
+        {/* espaço limpo: aqui o cenário 3D do fundo enquadra o ponto de apoio (ilustração, não um lugar real) */}
+        <div className="min-h-[70vh] sm:min-h-[80vh]" aria-hidden="true" />
+        <p className="text-center text-[11px] text-slate-400">
+          {L(idioma, "Ilustração. Os primeiros Refúgios serão verificados na Expedição nº 01 · Paraty → Fortaleza, pelo litoral", "Ilustración. Los primeros Refugios se verificarán en la Expedición nº 01 · Paraty → Fortaleza, por la costa", "Illustration. The first Refuges will be checked on Expedition no. 01 · Paraty → Fortaleza, along the coast")}
+        </p>
 
         {/* O QUE CONFERIMOS PARA DAR O SELO */}
         <div className="mt-14 sm:mt-16">
