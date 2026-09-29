@@ -9,6 +9,9 @@ import {
   faixaAtual,
 } from "@/data/apoiadores";
 import { WHATSAPP } from "@/data/planos-parceiro";
+import { useIdioma } from "@/components/useIdioma";
+import { L } from "@/lib/i18n";
+import { tFaixa } from "@/lib/traducoesCadastro";
 
 const TONS: Record<string, { texto: string; bg: string; borda: string }> = {
   slate: { texto: "text-slate-300", bg: "bg-white/5", borda: "border-white/15" },
@@ -17,6 +20,8 @@ const TONS: Record<string, { texto: string; bg: string; borda: string }> = {
 };
 
 export default function ReguaContribuicao() {
+  const [i] = useIdioma();
+  const t = (pt: string, es: string, en: string) => L(i, pt, es, en);
   const [valor, setValor] = useState(100);
   const faixa = faixaAtual(valor);
   const pct = ((valor - VALOR_MIN_SLIDER) / (VALOR_MAX_SLIDER - VALOR_MIN_SLIDER)) * 100;
@@ -28,8 +33,9 @@ export default function ReguaContribuicao() {
   return (
     <div className="glass-panel border border-white/10 rounded-3xl p-6 sm:p-10">
       <p className="text-sm text-slate-400 max-w-2xl">
-        Arraste pra escolher quanto quer contribuir com a Expedição. Cada
-        faixa desbloqueia uma insígnia — combinado no WhatsApp, sem checkout.
+        {t("Arraste pra escolher quanto quer contribuir com a Expedição. Cada faixa desbloqueia uma insígnia — combinado no WhatsApp, sem checkout.",
+          "Deslizá para elegir cuánto querés aportar a la Expedición. Cada franja desbloquea una insignia; se acuerda por WhatsApp, sin checkout.",
+          "Slide to choose how much you'd like to contribute to the Expedition. Each tier unlocks a badge — arranged on WhatsApp, no checkout.")}
       </p>
 
       <div className="mt-10 px-2">
@@ -97,10 +103,10 @@ export default function ReguaContribuicao() {
               <span
                 className={`text-xs font-black px-3 py-1.5 rounded-xl border flex items-center gap-1.5 ${TONS[faixa.tom].bg} ${TONS[faixa.tom].texto} ${TONS[faixa.tom].borda}`}
               >
-                <Icon name="medal" width={30} height={30} /> {faixa.insignia}
+                <Icon name="medal" width={30} height={30} /> {tFaixa(i, faixa.id, "insignia", faixa.insignia)}
               </span>
             ) : (
-              <span className="text-xs font-bold text-slate-500">Arraste pra desbloquear uma insígnia</span>
+              <span className="text-xs font-bold text-slate-500">{t("Arraste pra desbloquear uma insígnia", "Deslizá para desbloquear una insignia", "Slide to unlock a badge")}</span>
             )}
           </div>
 
@@ -110,12 +116,12 @@ export default function ReguaContribuicao() {
             rel="noopener noreferrer"
             className="btn-primary-amalfi w-full sm:w-auto px-6 py-3 rounded-2xl text-sm font-black cursor-pointer flex items-center justify-center gap-2 whitespace-nowrap"
           >
-            <Icon name="chat" width={34} height={34} /> Contribuir via PIX
+            <Icon name="chat" width={34} height={34} /> {t("Contribuir via PIX", "Aportar por PIX", "Contribute via PIX")}
           </a>
         </div>
 
         {faixa && (
-          <p className="mt-4 text-xs text-slate-400">{faixa.recompensa}</p>
+          <p className="mt-4 text-xs text-slate-400">{tFaixa(i, faixa.id, "recompensa", faixa.recompensa)}</p>
         )}
       </div>
     </div>

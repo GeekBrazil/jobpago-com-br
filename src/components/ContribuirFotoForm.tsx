@@ -3,10 +3,15 @@
 import { useState } from "react";
 import { CATEGORIAS } from "@/data/categorias";
 import { Icon } from "@/components/Icons";
+import { useIdioma } from "@/components/useIdioma";
+import { L } from "@/lib/i18n";
+import { tCategoria } from "@/lib/traducoesCadastro";
 
 const PONTOS_FOTO_API = "https://allancandido.com/api/pontos-fotograficos";
 
 export default function ContribuirFotoForm() {
+  const [i] = useIdioma();
+  const t = (pt: string, es: string, en: string) => L(i, pt, es, en);
   const [tipo, setTipo] = useState<"empresario" | "viajante">("viajante");
   const [titulo, setTitulo] = useState("");
   const [categoria, setCategoria] = useState(CATEGORIAS[0].nome);
@@ -26,7 +31,7 @@ export default function ContribuirFotoForm() {
     setError(null);
 
     if (!foto) {
-      setError("Escolha uma foto do estabelecimento ou ponto de apoio.");
+      setError(t("Escolha uma foto do estabelecimento ou ponto de apoio.", "Elegí una foto del establecimiento o punto de apoyo.", "Choose a photo of the place or support point."));
       return;
     }
 
@@ -53,15 +58,15 @@ export default function ContribuirFotoForm() {
         // 422 = sem GPS no EXIF e sem pin manual — pede a localização e reenvia.
         if (res.status === 422 && !latManual) {
           setPrecisaManual(true);
-          setError("Essa foto não tem localização (a maioria das fotos comprimidas perde isso). Marque onde foi tirada abaixo.");
+          setError(t("Essa foto não tem localização (a maioria das fotos comprimidas perde isso). Marque onde foi tirada abaixo.", "Esta foto no tiene ubicación (la mayoría de las fotos comprimidas la pierde). Marcá abajo dónde fue sacada.", "This photo has no location (most compressed photos lose it). Mark where it was taken below."));
           return;
         }
-        throw new Error(data.error || "Falha ao enviar.");
+        throw new Error(i === "pt" && data.error ? data.error : t("Falha ao enviar.", "No se pudo enviar.", "Sending failed."));
       }
 
       setSucesso(true);
     } catch (err) {
-      setError(err instanceof Error ? err.message : "Falha ao conectar com o servidor.");
+      setError(err instanceof Error ? err.message : t("Falha ao conectar com o servidor.", "No se pudo conectar con el servidor.", "Couldn't reach the server."));
     } finally {
       setLoading(false);
     }
@@ -69,12 +74,12 @@ export default function ContribuirFotoForm() {
 
   function pedirLocalizacaoAtual() {
     if (!navigator.geolocation) {
-      setError("Seu navegador não suporta localização automática — tente outra foto.");
+      setError(t("Seu navegador não suporta localização automática — tente outra foto.", "Tu navegador no admite ubicación automática; probá con otra foto.", "Your browser doesn't support location — try another photo."));
       return;
     }
     navigator.geolocation.getCurrentPosition(
       (pos) => setLatManual({ lat: pos.coords.latitude, lng: pos.coords.longitude }),
-      () => setError("Não foi possível pegar sua localização. Permita o acesso e tente de novo.")
+      () => setError(t("Não foi possível pegar sua localização. Permita o acesso e tente de novo.", "No se pudo obtener tu ubicación. Permití el acceso y probá de nuevo.", "Couldn't get your location. Allow access and try again."))
     );
   }
 
@@ -84,14 +89,13 @@ export default function ContribuirFotoForm() {
         <div className="w-16 h-16 rounded-2xl bg-amber-500/20 border border-amber-500/40 text-amber-400 flex items-center justify-center mx-auto mb-6">
           <Icon name="check" width={56} height={56} />
         </div>
-        <h3 className="text-2xl font-black text-white">Foto enviada!</h3>
+        <h3 className="text-2xl font-black text-white">{t("Foto enviada!", "¡Foto enviada!", "Photo sent!")}</h3>
         <p className="text-sm text-slate-300 mt-3 leading-relaxed max-w-lg mx-auto">
-          Fica pendente até o Allan revisar e aprovar. Quando aprovada, aparece
-          na camada &quot;Fotos da Comunidade&quot; do mapa e em{" "}
+          {t("Fica pendente até o Allan revisar e aprovar. Quando aprovada, aparece na camada “Fotos da Comunidade” do mapa e em", "Queda pendiente hasta que Allan la revise y apruebe. Cuando se aprueba, aparece en la capa “Fotos de la Comunidad” del mapa y en", "It stays pending until Allan reviews and approves it. Once approved, it appears in the map’s “Community Photos” layer and on")}{" "}
           <a href="https://jobpago.com.br/certificados" className="text-amber-400 underline">
             /certificados
           </a>
-          , se for o caso.
+          {t(", se for o caso.", ", si corresponde.", ", where relevant.")}
         </p>
         <button
           onClick={() => {
@@ -104,7 +108,7 @@ export default function ContribuirFotoForm() {
           }}
           className="btn-secondary-glass px-6 py-3 rounded-2xl text-sm font-bold cursor-pointer mt-6"
         >
-          Enviar outra foto
+          {t("Enviar outra foto", "Enviar otra foto", "Send another photo")}
         </button>
       </div>
     );
@@ -121,7 +125,7 @@ export default function ContribuirFotoForm() {
             tipo === "viajante" ? "bg-amber-500 text-black shadow-lg" : "text-slate-400 hover:text-white"
           }`}
         >
-          <Icon name="compass" width={32} height={32} /> Sou Viajante
+          <Icon name="compass" width={32} height={32} /> {t("Sou Viajante", "Soy viajero", "I'm a traveller")}
         </button>
         <button
           type="button"
@@ -130,7 +134,7 @@ export default function ContribuirFotoForm() {
             tipo === "empresario" ? "bg-amber-500 text-black shadow-lg" : "text-slate-400 hover:text-white"
           }`}
         >
-          <Icon name="building" width={32} height={32} /> Sou Empresário
+          <Icon name="building" width={32} height={32} /> {t("Sou Empresário", "Soy empresario", "I own a business")}
         </button>
       </div>
 
@@ -142,7 +146,7 @@ export default function ContribuirFotoForm() {
 
       <form onSubmit={enviar} className="flex flex-col gap-4">
         <div>
-          <label className="text-xs font-extrabold text-slate-300 block mb-1">Foto do local *</label>
+          <label className="text-xs font-extrabold text-slate-300 block mb-1">{t("Foto do local", "Foto del lugar", "Photo of the place")} *</label>
           <input
             type="file"
             accept="image/*"
@@ -155,31 +159,31 @@ export default function ContribuirFotoForm() {
             className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-sm text-white file:mr-3 file:py-1.5 file:px-3 file:rounded-lg file:border-0 file:bg-amber-500 file:text-black file:font-bold file:text-xs"
           />
           <p className="text-[11px] text-slate-500 mt-1">
-            Se a foto tiver GPS (a maioria das câmeras de celular tem), a localização é automática.
+            {t("Se a foto tiver GPS (a maioria das câmeras de celular tem), a localização é automática.", "Si la foto tiene GPS (la mayoría de las cámaras de celular lo tienen), la ubicación es automática.", "If the photo has GPS (most phone cameras do), the location is automatic.")}
           </p>
         </div>
 
         {precisaManual && (
           <div className="p-3.5 rounded-xl bg-amber-950/20 border border-amber-400/20 flex items-center justify-between gap-3">
             <span className="text-xs text-amber-200">
-              {latManual ? "Localização marcada ✓" : "Marque sua localização atual:"}
+              {latManual ? t("Localização marcada ✓", "Ubicación marcada ✓", "Location set ✓") : t("Marque sua localização atual:", "Marcá tu ubicación actual:", "Set your current location:")}
             </span>
             <button
               type="button"
               onClick={pedirLocalizacaoAtual}
               className="text-xs font-black px-3 py-2 rounded-lg bg-amber-400 text-black shrink-0"
             >
-              <Icon name="pin" width={28} height={28} className="inline mr-1" /> Usar Minha Posição
+              <Icon name="pin" width={28} height={28} className="inline mr-1" /> {t("Usar Minha Posição", "Usar mi ubicación", "Use my location")}
             </button>
           </div>
         )}
 
         <div>
-          <label className="text-xs font-extrabold text-slate-300 block mb-1">Título *</label>
+          <label className="text-xs font-extrabold text-slate-300 block mb-1">{t("Título", "Título", "Title")} *</label>
           <input
             type="text"
             required
-            placeholder="Ex: Posto com chuveiro e 220V"
+            placeholder={t("Ex: Posto com chuveiro e 220V", "Ej.: Estación con ducha y 220V", "E.g. Gas station with shower and 220V")}
             value={titulo}
             onChange={(e) => setTitulo(e.target.value)}
             className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:border-amber-400"
@@ -187,7 +191,7 @@ export default function ContribuirFotoForm() {
         </div>
 
         <div>
-          <label className="text-xs font-extrabold text-slate-300 block mb-1">Categoria</label>
+          <label className="text-xs font-extrabold text-slate-300 block mb-1">{t("Categoria", "Categoría", "Category")}</label>
           <select
             value={categoria}
             onChange={(e) => setCategoria(e.target.value)}
@@ -195,17 +199,17 @@ export default function ContribuirFotoForm() {
           >
             {CATEGORIAS.map((c) => (
               <option key={c.id} value={c.nome}>
-                {c.nome}
+                {tCategoria(i, c.id, c.nome)}
               </option>
             ))}
           </select>
         </div>
 
         <div>
-          <label className="text-xs font-extrabold text-slate-300 block mb-1">Descrição</label>
+          <label className="text-xs font-extrabold text-slate-300 block mb-1">{t("Descrição", "Descripción", "Description")}</label>
           <textarea
             rows={3}
-            placeholder="O que tem nesse ponto? Chuveiro, tomada, Wi-Fi, socorro mecânico..."
+            placeholder={t("O que tem nesse ponto? Chuveiro, tomada, Wi-Fi, socorro mecânico...", "¿Qué hay en este punto? Ducha, enchufe, Wi-Fi, auxilio mecánico...", "What's there? Shower, power, Wi-Fi, breakdown help...")}
             value={descricao}
             onChange={(e) => setDescricao(e.target.value)}
             className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:border-amber-400"
@@ -214,20 +218,20 @@ export default function ContribuirFotoForm() {
 
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           <div>
-            <label className="text-xs font-extrabold text-slate-300 block mb-1">Seu nome</label>
+            <label className="text-xs font-extrabold text-slate-300 block mb-1">{t("Seu nome", "Tu nombre", "Your name")}</label>
             <input
               type="text"
-              placeholder="Opcional"
+              placeholder={t("Opcional", "Opcional", "Optional")}
               value={nomeContribuidor}
               onChange={(e) => setNomeContribuidor(e.target.value)}
               className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:border-amber-400"
             />
           </div>
           <div>
-            <label className="text-xs font-extrabold text-slate-300 block mb-1">WhatsApp ou e-mail</label>
+            <label className="text-xs font-extrabold text-slate-300 block mb-1">{t("WhatsApp ou e-mail", "WhatsApp o e-mail", "WhatsApp or e-mail")}</label>
             <input
               type="text"
-              placeholder="Opcional"
+              placeholder={t("Opcional", "Opcional", "Optional")}
               value={contato}
               onChange={(e) => setContato(e.target.value)}
               className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:border-amber-400"
@@ -244,7 +248,7 @@ export default function ContribuirFotoForm() {
             <div className="w-5 h-5 rounded-full border-2 border-black border-t-transparent animate-spin"></div>
           ) : (
             <>
-              <Icon name="rocket" width={36} height={36} /> Enviar Foto
+              <Icon name="rocket" width={36} height={36} /> {t("Enviar Foto", "Enviar foto", "Send photo")}
             </>
           )}
         </button>

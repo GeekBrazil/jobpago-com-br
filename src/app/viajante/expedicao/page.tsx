@@ -1,8 +1,16 @@
 import type { Metadata } from "next";
+import { idiomaServidor } from "@/lib/idiomaServidor";
+import { L } from "@/lib/i18n";
 import CidadeTopo from "../../cidade/CidadeTopo";
 import FormExpedicao from "./FormExpedicao";
 
-export const metadata: Metadata = { title: "Sua expedição · JobPago", robots: { index: false } };
+export async function generateMetadata(): Promise<Metadata> {
+  const i = await idiomaServidor();
+  return {
+    title: L(i, "Sua expedição · JobPago", "Tu expedición · JobPago", "Your expedition · JobPago"),
+    robots: { index: false },
+  };
+}
 
 export default function ExpedicaoViajantePage() {
   return (

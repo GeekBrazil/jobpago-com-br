@@ -2,10 +2,13 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
+import { useIdioma } from "@/components/useIdioma";
+import { L } from "@/lib/i18n";
 
 interface Opcao { ibge: string; nome: string; uf: string }
 
 export default function BuscaCidade() {
+  const [idioma] = useIdioma();
   const [q, setQ] = useState("");
   const [opcoes, setOpcoes] = useState<Opcao[]>([]);
   const [carregando, setCarregando] = useState(false);
@@ -26,18 +29,18 @@ export default function BuscaCidade() {
 
   return (
     <div className="w-full max-w-xl">
-      <label htmlFor="busca-cidade" className="block text-sm font-bold text-slate-300 mb-2">Qual é a sua cidade?</label>
+      <label htmlFor="busca-cidade" className="block text-sm font-bold text-slate-300 mb-2">{L(idioma, "Qual é a sua cidade?", "¿Cuál es tu ciudad?", "Which town are you in?")}</label>
       <input
         id="busca-cidade"
         value={q}
         onChange={(e) => setQ(e.target.value)}
-        placeholder="Digite o nome da cidade"
+        placeholder={L(idioma, "Digite o nome da cidade", "Escribí el nombre de la ciudad", "Type the town name")}
         autoComplete="off"
         className="w-full rounded-2xl bg-slate-900/80 border border-white/15 px-5 py-4 text-base text-white placeholder:text-slate-500 focus:outline-none focus:border-amber-400"
       />
       {(opcoes.length > 0 || carregando) && (
         <ul className="mt-2 rounded-2xl bg-slate-900/95 border border-white/10 overflow-hidden" aria-live="polite">
-          {carregando && opcoes.length === 0 && <li className="px-5 py-3 text-sm text-slate-400">Buscando…</li>}
+          {carregando && opcoes.length === 0 && <li className="px-5 py-3 text-sm text-slate-400">{L(idioma, "Buscando…", "Buscando…", "Searching…")}</li>}
           {opcoes.map((o) => (
             <li key={o.ibge}>
               <Link href={`/cidade/${o.ibge}`} className="block px-5 py-3 text-sm text-slate-100 hover:bg-amber-500/10 hover:text-amber-300">

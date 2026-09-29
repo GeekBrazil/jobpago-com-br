@@ -34,7 +34,7 @@ export const CATEGORIAS: Categoria[] = [
 ];
 
 /** Chips de filtro da home. "Todas" não é categoria, é ausência de filtro. */
-export const FILTROS: { name: string; icon: IconName }[] = [
-  { name: "Todas", icon: "fire" },
-  ...CATEGORIAS.map((c) => ({ name: c.nome, icon: c.icone })),
+export const FILTROS: { id: string; name: string; icon: IconName }[] = [
+  { id: "todas", name: "Todas", icon: "fire" },
+  ...CATEGORIAS.map((c) => ({ id: c.id, name: c.nome, icon: c.icone })),
 ];

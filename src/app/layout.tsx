@@ -7,6 +7,7 @@ import IndicacaoNoWhats from "@/components/IndicacaoNoWhats";
 import IdiomaProvider from "@/components/IdiomaProvider";
 import IdiomaFlutuante from "@/components/IdiomaFlutuante";
 import { idiomaServidor } from "@/lib/idiomaServidor";
+import { L } from "@/lib/i18n";
 import EstradaNevadaScrollytelling from "@/components/EstradaNevadaScrollytelling";
 
 const fontDisplay = Bricolage_Grotesque({
@@ -19,9 +20,14 @@ const fontSans = Plus_Jakarta_Sans({
   subsets: ["latin"],
 });
 
-export const metadata: Metadata = {
-  title: "JobPago.com.br · Renda Online & Conexão para Nômades Digitais",
-  description: "Negócios do bairro e da estrada encontram quem faz a tarefa — fotos, Instagram, cardápio, frete, apoio na estrada — com Pix direto e sem comissão. Relatório grátis da sua cidade e os Refúgios da Estrada verificados na Expedição Paraty → Fortaleza.",
+export async function generateMetadata(): Promise<Metadata> {
+  const i = await idiomaServidor();
+  return {
+  title: L(i, "JobPago.com.br · Renda Online & Conexão para Nômades Digitais", "JobPago.com.br · Ingresos online y conexión para nómades digitales", "JobPago.com.br · Online income & connections for digital nomads"),
+  description: L(i,
+    "Negócios do bairro e da estrada encontram quem faz a tarefa — fotos, Instagram, cardápio, frete, apoio na estrada — com Pix direto e sem comissão. Relatório grátis da sua cidade e os Refúgios da Estrada verificados na Expedição Paraty → Fortaleza.",
+    "Negocios del barrio y de la ruta encuentran quién hace la tarea (fotos, Instagram, menú, flete, apoyo en la ruta) con Pix directo y sin comisión. Informe gratis de tu ciudad y los Refugios de la Ruta verificados en la Expedición Paraty → Fortaleza.",
+    "Local and roadside businesses find people to do the tasks — photos, Instagram, menus, freight, roadside help — with direct Pix and no commission. Free town reports and verified Road Refuges on the Paraty → Fortaleza Expedition."),
   icons: {
     icon: "/icon.png",
     shortcut: "/icon.png",
@@ -33,7 +39,8 @@ export const metadata: Metadata = {
     statusBarStyle: "black-translucent",
     title: "JobPago",
   },
-};
+  };
+}
 
 export const viewport: Viewport = {
   themeColor: "#060913",

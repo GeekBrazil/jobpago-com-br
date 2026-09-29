@@ -1,8 +1,16 @@
 import type { Metadata } from "next";
+import { idiomaServidor } from "@/lib/idiomaServidor";
+import { L } from "@/lib/i18n";
 import CidadeTopo from "../../cidade/CidadeTopo";
 import PainelIndicacao from "./PainelIndicacao";
 
-export const metadata: Metadata = { title: "Indicar e ganhar · JobPago", robots: { index: false } };
+export async function generateMetadata(): Promise<Metadata> {
+  const i = await idiomaServidor();
+  return {
+    title: L(i, "Indicar e ganhar · JobPago", "Recomendar y ganar · JobPago", "Refer and earn · JobPago"),
+    robots: { index: false },
+  };
+}
 
 export default function IndicarPage() {
   return (

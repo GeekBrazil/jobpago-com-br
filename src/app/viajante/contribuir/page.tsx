@@ -1,9 +1,17 @@
 import type { Metadata } from "next";
+import { idiomaServidor } from "@/lib/idiomaServidor";
+import { L } from "@/lib/i18n";
 import { Suspense } from "react";
 import CidadeTopo from "../../cidade/CidadeTopo";
 import FormContribuicao from "./FormContribuicao";
 
-export const metadata: Metadata = { title: "Contribuir com a estrada · JobPago", robots: { index: false } };
+export async function generateMetadata(): Promise<Metadata> {
+  const i = await idiomaServidor();
+  return {
+    title: L(i, "Contribuir com a estrada · JobPago", "Contribuir con la ruta · JobPago", "Contribute to the road · JobPago"),
+    robots: { index: false },
+  };
+}
 
 export default function ContribuirViajantePage() {
   return (

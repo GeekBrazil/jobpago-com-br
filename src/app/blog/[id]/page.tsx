@@ -3,6 +3,8 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { readFileSync } from "fs";
 import { join } from "path";
+import { idiomaServidor } from "@/lib/idiomaServidor";
+import { L } from "@/lib/i18n";
 
 interface Article {
   id: string;
@@ -30,7 +32,7 @@ export async function generateMetadata(
 ): Promise<Metadata> {
   const { id } = await params;
   const article = getArticleById(id);
-  if (!article) return { title: "Artigo não encontrado · JobPago" };
+  if (!article) return { title: L(await idiomaServidor(), "Artigo não encontrado", "Artículo no encontrado", "Article not found") + " · JobPago" };
   return { title: `${article.title} · JobPago`, description: article.summary };
 }
 
@@ -38,6 +40,8 @@ export default async function ArticlePage(
   { params }: { params: Promise<{ id: string }> }
 ) {
   const { id } = await params;
+  const i = await idiomaServidor();
+  const t = (pt: string, es: string, en: string) => L(i, pt, es, en);
   const article = getArticleById(id);
   if (!article) notFound();
 
@@ -56,7 +60,7 @@ export default async function ArticlePage(
             href="/blog"
             className="btn-secondary-glass text-xs font-bold px-4 py-2 rounded-xl flex items-center gap-1.5"
           >
-            ← Voltar para o Blog
+            ← {t("Voltar para o Blog", "Volver al blog", "Back to the blog")}
           </Link>
         </div>
       </header>
@@ -67,7 +71,7 @@ export default async function ArticlePage(
             {article.category}
           </span>
           <span className="text-xs text-slate-500 font-mono">
-            {new Date(article.publishedAt).toLocaleDateString("pt-BR", { day: "2-digit", month: "long", year: "numeric" })}
+            {new Date(article.publishedAt).toLocaleDateString(i === "en" ? "en-GB" : i === "es" ? "es-AR" : "pt-BR", { day: "2-digit", month: "long", year: "numeric" })}
           </span>
         </div>
 
@@ -96,10 +100,10 @@ export default async function ArticlePage(
 
         <div className="mt-12 pt-8 border-t border-white/10 flex justify-between items-center">
           <Link href="/blog" className="text-xs font-bold text-slate-400 hover:text-white">
-            ← Todos os artigos
+            ← {t("Todos os artigos", "Todos los artículos", "All articles")}
           </Link>
           <Link href="/parceiros/planos" className="text-xs font-bold px-4 py-2 rounded-xl bg-amber-500 text-black">
-            Conhecer JobPago Pro →
+            {t("Conhecer JobPago Pro →", "Conocer JobPago Pro →", "Discover JobPago Pro →")}
           </Link>
         </div>
       </main>

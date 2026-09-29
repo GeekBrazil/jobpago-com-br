@@ -2,6 +2,7 @@
 
 import { useEffect, useRef } from "react";
 import L from "leaflet";
+import type { Idioma } from "@/lib/textosEstrada";
 
 /* Mapa da Expedição (Paraty → Fortaleza): traçado colorido por pista duplicada/simples
    e trechos com acostamento confirmado no OpenStreetMap, praças de pedágio (ANTT) e paradas com link
@@ -28,8 +29,9 @@ function trechos(mapa: L.Map, geo: [number, number][], classes: string, estilo: 
 }
 
 export default function MapaRota({
-  geometria, acostamento, pista, pedagios, paradas,
-}: { geometria: [number, number][]; acostamento: string; pista: string; pedagios: Pedagio[]; paradas: Parada[] }) {
+  geometria, acostamento, pista, pedagios, paradas, idioma = "pt",
+}: { geometria: [number, number][]; acostamento: string; pista: string; pedagios: Pedagio[]; paradas: Parada[]; idioma?: Idioma }) {
+  const t = (pt: string, es: string, en: string) => (idioma === "es" ? es : idioma === "en" ? en : pt);
   const ref = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -54,18 +56,19 @@ export default function MapaRota({
 
     for (const p of pedagios) {
       L.marker([p.lat, p.lon], { icon: icone("#fbbf24", 12), title: p.nome })
-        .bindPopup(`<strong>Pedágio ${p.nome}</strong><br>${p.rodovia} · ${p.concessionaria}<br>km ${Math.round(p.km_rota)} do roteiro`)
+        .bindPopup(`<strong>${t("Pedágio", "Peaje", "Toll")} ${p.nome}</strong><br>${p.rodovia} · ${p.concessionaria}<br>km ${Math.round(p.km_rota)} ${t("do roteiro", "de la ruta", "of the route")}`)
         .addTo(mapa);
     }
     for (const c of paradas) {
-      const link = c.ibge ? `<br><a href="/cidade/${c.ibge}">Relatório da cidade →</a>` : "";
+      const link = c.ibge ? `<br><a href="/cidade/${c.ibge}">${t("Relatório da cidade", "Informe de la ciudad", "Town report")} →</a>` : "";
       L.marker([c.lat, c.lon], { icon: icone("#f8fafc", 14), title: c.nome })
         .bindPopup(`<strong>${c.nome} · ${c.uf}</strong>${link}`)
         .addTo(mapa);
     }
     mapa.fitBounds(L.latLngBounds(geometria), { padding: [20, 20] });
     return () => { mapa.remove(); };
-  }, [geometria, acostamento, pista, pedagios, paradas]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [geometria, acostamento, pista, pedagios, paradas, idioma]);
 
-  return <div ref={ref} style={{ height: "min(72vh, 640px)", minHeight: 420 }} className="w-full rounded-3xl overflow-hidden border border-white/10" role="region" aria-label="Mapa do roteiro Paraty a Fortaleza" />;
+  return <div ref={ref} style={{ height: "min(72vh, 640px)", minHeight: 420 }} className="w-full rounded-3xl overflow-hidden border border-white/10" role="region" aria-label={t("Mapa do roteiro Paraty a Fortaleza", "Mapa de la ruta Paraty a Fortaleza", "Route map, Paraty to Fortaleza")} />;
 }

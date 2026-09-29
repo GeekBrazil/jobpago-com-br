@@ -1,6 +1,8 @@
 "use client";
 
 import { useState } from "react";
+import { useIdioma } from "@/components/useIdioma";
+import { L } from "@/lib/i18n";
 
 /* Compartilhar um card: no celular abre a folha de compartilhar com a imagem
    (Instagram, WhatsApp, X…); sem suporte, baixa o PNG. */
@@ -11,6 +13,7 @@ const FORMATOS = [
 ] as const;
 
 export default function Compartilhar({ card, titulo, link, compacto = false }: { card: string; titulo: string; link: string; compacto?: boolean }) {
+  const [idioma] = useIdioma();
   const [estado, setEstado] = useState("");
 
   async function compartilhar(formato: string) {
@@ -32,13 +35,13 @@ export default function Compartilhar({ card, titulo, link, compacto = false }: {
       }
       setEstado("");
     } catch (e) {
-      setEstado(e instanceof DOMException && e.name === "AbortError" ? "" : "Não deu — tente de novo.");
+      setEstado(e instanceof DOMException && e.name === "AbortError" ? "" : L(idioma, "Não deu — tente de novo.", "No funcionó, probá de nuevo.", "That didn't work — try again."));
     }
   }
 
   return (
     <div className={compacto ? "mt-3" : "mt-6"}>
-      {!compacto && <p className="text-sm font-bold text-slate-300 mb-2">Compartilhar</p>}
+      {!compacto && <p className="text-sm font-bold text-slate-300 mb-2">{L(idioma, "Compartilhar", "Compartir", "Share")}</p>}
       <div className="flex flex-wrap gap-2">
         {FORMATOS.map(([f, rotulo]) => (
           <button key={f} type="button" onClick={() => compartilhar(f)}

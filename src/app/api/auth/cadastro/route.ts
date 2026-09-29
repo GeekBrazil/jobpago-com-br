@@ -1,3 +1,4 @@
+import { msg } from "@/lib/traducoesCadastro";
 import { NextRequest, NextResponse } from "next/server";
 import bcrypt from "bcryptjs";
 import { getPool } from "@/lib/db";
@@ -28,24 +29,26 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: "json" }, { status: 400 });
   }
 
+  const m = (pt: string, es: string, en: string) => msg(body.idioma, pt, es, en);
   const nome = String(body.nome ?? "").trim().slice(0, 120);
   const email = String(body.email ?? "").trim().toLowerCase().slice(0, 160);
   const telefone = String(body.telefone ?? "").replace(/\D/g, "").slice(0, 15);
   const senha = String(body.senha ?? "");
 
-  if (nome.length < 2) return NextResponse.json({ error: "Nome inválido." }, { status: 400 });
-  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) return NextResponse.json({ error: "E-mail inválido." }, { status: 400 });
-  if (telefone.length < 10 || telefone.length > 11) return NextResponse.json({ error: "Telefone inválido. Informe DDD + número." }, { status: 400 });
-  if (senha.length < 8) return NextResponse.json({ error: "Senha precisa ter no mínimo 8 caracteres." }, { status: 400 });
+  if (nome.length < 2) return NextResponse.json({ error: m("Nome inválido.", "Nombre inválido.", "Invalid name.") }, { status: 400 });
+  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) return NextResponse.json({ error: m("E-mail inválido.", "E-mail inválido.", "Invalid e-mail.") }, { status: 400 });
+  // 10–11 dígitos = Brasil (DDD + número); até 15 = número estrangeiro com código do país (viajantes de fora)
+  if (telefone.length < 10 || telefone.length > 15) return NextResponse.json({ error: m("Telefone inválido. Informe DDD + número.", "Teléfono inválido. Incluí el código de país.", "Invalid phone. Include the country code.") }, { status: 400 });
+  if (senha.length < 8) return NextResponse.json({ error: m("Senha precisa ter no mínimo 8 caracteres.", "La contraseña necesita al menos 8 caracteres.", "Password must be at least 8 characters.") }, { status: 400 });
 
   const pool = getPool();
-  if (!pool) return NextResponse.json({ error: "Cadastro indisponível no momento." }, { status: 503 });
+  if (!pool) return NextResponse.json({ error: m("Cadastro indisponível no momento.", "Registro no disponible en este momento.", "Sign-up unavailable right now.") }, { status: 503 });
 
   await ensureUsuariosTable();
 
   const { rows: existentes } = await pool.query(`SELECT id FROM usuarios WHERE email = $1`, [email]);
   if (existentes.length > 0) {
-    return NextResponse.json({ error: "Já existe conta com esse e-mail. Faça login." }, { status: 409 });
+    return NextResponse.json({ error: m("Já existe conta com esse e-mail. Faça login.", "Ya existe una cuenta con ese e-mail. Iniciá sesión.", "An account with this e-mail already exists. Please log in.") }, { status: 409 });
   }
 
   const senhaHash = await bcrypt.hash(senha, 12);

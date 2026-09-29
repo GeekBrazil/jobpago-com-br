@@ -1,7 +1,10 @@
 import Link from "next/link";
+import { idiomaServidor } from "@/lib/idiomaServidor";
+import { L } from "@/lib/i18n";
 
 /* Cabeçalho das páginas de cidade — mesmo padrão de /como-funciona. */
-export default function CidadeTopo() {
+export default async function CidadeTopo() {
+  const i = await idiomaServidor();
   return (
     <header className="sticky top-0 z-40 glass-panel border-b border-white/5 backdrop-blur-xl">
       <div className="max-w-6xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between">
@@ -10,10 +13,10 @@ export default function CidadeTopo() {
           <span className="text-xl font-black tracking-tight text-white">JobPago<span className="text-amber-400">.</span></span>
         </Link>
         <nav className="flex items-center gap-5 text-xs font-bold uppercase tracking-wider text-slate-300">
-          <Link href="/cidade" className="hover:text-amber-400">Cidades</Link>
-          <Link href="/expedicao" className="hover:text-amber-400">Expedição</Link>
-          <Link href="/viajante" className="hover:text-amber-400 hidden sm:inline">Viajante</Link>
-          <Link href="/como-funciona" className="hover:text-amber-400 hidden sm:inline">Como funciona</Link>
+          <Link href="/cidade" className="hover:text-amber-400">{L(i, "Cidades", "Ciudades", "Towns")}</Link>
+          <Link href="/expedicao" className="hover:text-amber-400">{L(i, "Expedição", "Expedición", "Expedition")}</Link>
+          <Link href="/viajante" className="hover:text-amber-400 hidden sm:inline">{L(i, "Viajante", "Viajero", "Traveller")}</Link>
+          <Link href="/como-funciona" className="hover:text-amber-400 hidden sm:inline">{L(i, "Como funciona", "Cómo funciona", "How it works")}</Link>
         </nav>
       </div>
     </header>

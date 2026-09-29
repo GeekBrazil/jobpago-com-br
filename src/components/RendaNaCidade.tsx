@@ -2,6 +2,9 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
+import { useIdioma } from "@/components/useIdioma";
+import { L } from "@/lib/i18n";
+import { tSecao, competenciaEm } from "@/lib/traducoesCadastro";
 
 /* "Quanto se ganha de verdade fazendo X na sua cidade?" — número oficial
    (salário médio de admissão do Novo CAGED, 12 meses) no lugar de promessa. */
@@ -12,10 +15,11 @@ interface Opcao { ibge: string; nome: string; uf: string }
 
 const brl = new Intl.NumberFormat("pt-BR", { style: "currency", currency: "BRL", minimumFractionDigits: 0, maximumFractionDigits: 0 });
 const nf = new Intl.NumberFormat("pt-BR", { maximumFractionDigits: 0 });
-const MESES = ["jan", "fev", "mar", "abr", "mai", "jun", "jul", "ago", "set", "out", "nov", "dez"];
-const comp = (c: number) => `${MESES[(c % 100) - 1]}/${Math.floor(c / 100)}`;
 
 export default function RendaNaCidade({ ibgeInicial = "3303807" }: { ibgeInicial?: string }) {
+  const [idioma] = useIdioma();
+  const comp = (c: number) => competenciaEm(idioma, c);
+  const nomeSetor = (x: { secao: string; setor: string }) => tSecao(idioma, x.secao, x.setor).toLowerCase();
   const [ibge, setIbge] = useState(ibgeInicial);
   const [dados, setDados] = useState<Dados | null>(null);
   const [secao, setSecao] = useState("");
@@ -51,10 +55,10 @@ export default function RendaNaCidade({ ibgeInicial = "3303807" }: { ibgeInicial
   return (
     <section id="renda-na-cidade" className="py-14 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto" aria-labelledby="renda-titulo">
       <div className="glass-panel rounded-[2rem] p-6 sm:p-10">
-        <p className="text-xs font-mono font-bold uppercase tracking-widest text-amber-400">Número oficial, não promessa</p>
+        <p className="text-xs font-mono font-bold uppercase tracking-widest text-amber-400">{L(idioma, "Número oficial, não promessa", "Dato oficial, no promesa", "Official figure, not a promise")}</p>
         <h2 id="renda-titulo" className="mt-3 text-3xl sm:text-5xl font-black tracking-tight leading-tight">
-          Quanto se ganha de verdade fazendo{" "}
-          <label className="sr-only" htmlFor="renda-setor">Setor</label>
+          {L(idioma, "Quanto se ganha de verdade fazendo", "Cuánto se gana de verdad trabajando en", "What you really earn working in")}{" "}
+          <label className="sr-only" htmlFor="renda-setor">{L(idioma, "Setor", "Sector", "Sector")}</label>
           <select
             id="renda-setor"
             value={secao}
@@ -62,34 +66,34 @@ export default function RendaNaCidade({ ibgeInicial = "3303807" }: { ibgeInicial
             className="block sm:inline w-full sm:w-auto my-1 bg-transparent border-b-2 border-amber-400 text-amber-300 font-black focus:outline-none text-lg sm:text-5xl pr-6"
           >
             {(dados?.setores ?? []).map((s) => (
-              <option key={s.secao} value={s.secao} className="bg-slate-900 text-base">{s.setor.toLowerCase()}</option>
+              <option key={s.secao} value={s.secao} className="bg-slate-900 text-base">{nomeSetor(s)}</option>
             ))}
           </select>{" "}
-          em {dados ? dados.cidade : "…"}?
+          {L(idioma, "em", "en", "in")} {dados ? dados.cidade : "…"}?
         </h2>
 
         <div className="mt-8 grid gap-6 lg:grid-cols-[1fr_1fr] items-start">
           <div aria-live="polite">
-            {erro && <p className="text-slate-300">Ainda não temos esse número para essa cidade. Tente uma cidade vizinha.</p>}
+            {erro && <p className="text-slate-300">{L(idioma, "Ainda não temos esse número para essa cidade. Tente uma cidade vizinha.", "Todavía no tenemos ese dato para esta ciudad. Probá una ciudad vecina.", "We don't have this figure for that town yet. Try a nearby town.")}</p>}
             {setor && dados && (
               <>
                 <p className="text-6xl sm:text-7xl font-black text-white tabular-nums">{brl.format(setor.salario)}</p>
                 <p className="mt-3 text-slate-300">
-                  salário médio de entrada em <strong className="text-white">{setor.setor.toLowerCase()}</strong> em {dados.cidade},
-                  com base em {nf.format(setor.admissoes)} contratações de {comp(dados.de)} a {comp(dados.ate)}.
-                  {dados.media ? <> Média da cidade, todos os setores: {brl.format(dados.media)}.</> : null}
+                  {L(idioma, "salário médio de entrada em", "sueldo medio de entrada en", "average starting salary in")} <strong className="text-white">{nomeSetor(setor)}</strong> {L(idioma, "em", "en", "in")} {dados.cidade},{" "}
+                  {L(idioma, "com base em", "según", "based on")} {nf.format(setor.admissoes)} {L(idioma, "contratações de", "contrataciones de", "hires from")} {comp(dados.de)} {L(idioma, "a", "a", "to")} {comp(dados.ate)}.
+                  {dados.media ? <> {L(idioma, "Média da cidade, todos os setores:", "Promedio de la ciudad, todos los sectores:", "Town average, all sectors:")} {brl.format(dados.media)}.</> : null}
                 </p>
-                <p className="mt-3 text-xs text-slate-400">Fonte: Novo CAGED, Ministério do Trabalho (carteira assinada). Quem cobra por tarefa usa esse número como piso para não trabalhar de graça.</p>
+                <p className="mt-3 text-xs text-slate-400">{L(idioma, "Fonte: Novo CAGED, Ministério do Trabalho (carteira assinada). Quem cobra por tarefa usa esse número como piso para não trabalhar de graça.", "Fuente: Novo CAGED, Ministerio de Trabajo de Brasil (empleo formal). Quien cobra por tarea usa este número como piso para no trabajar gratis.", "Source: Novo CAGED, Brazil's Ministry of Labour (formal jobs). If you charge per task, use this as a floor so you don't work for free.")}</p>
               </>
             )}
           </div>
           <div>
-            <label htmlFor="renda-cidade" className="block text-sm font-bold text-slate-300 mb-2">Trocar de cidade</label>
+            <label htmlFor="renda-cidade" className="block text-sm font-bold text-slate-300 mb-2">{L(idioma, "Trocar de cidade", "Cambiar de ciudad", "Change town")}</label>
             <input
               id="renda-cidade"
               value={busca}
               onChange={(e) => setBusca(e.target.value)}
-              placeholder="Digite sua cidade"
+              placeholder={L(idioma, "Digite sua cidade", "Escribí tu ciudad", "Type your town")}
               autoComplete="off"
               className="w-full rounded-2xl bg-slate-900/80 border border-white/15 px-5 py-3.5 text-white placeholder:text-slate-500 focus:outline-none focus:border-amber-400"
             />
@@ -110,7 +114,7 @@ export default function RendaNaCidade({ ibgeInicial = "3303807" }: { ibgeInicial
             )}
             {dados && (
               <Link href={`/cidade/${dados.ibge}`} className="mt-5 inline-flex btn-primary-amalfi rounded-2xl px-6 py-3 text-sm font-black">
-                Relatório completo de {dados.cidade}
+                {L(idioma, "Relatório completo de", "Informe completo de", "Full report for")} {dados.cidade}
               </Link>
             )}
           </div>

@@ -3,6 +3,10 @@
 import { useEffect, useRef, useState } from "react";
 import L from "leaflet";
 import { Icon } from "@/components/Icons";
+import { useIdioma } from "@/components/useIdioma";
+import { L as Lt } from "@/lib/i18n";
+import { CATEGORIAS } from "@/data/categorias";
+import { tCategoria } from "@/lib/traducoesCadastro";
 
 export interface MapPoint {
   id: string;
@@ -89,6 +93,18 @@ export default function MapaServicos({
   const [isResolvingRoute, setIsResolvingRoute] = useState(false);
   const [tracedRouteInfo, setTracedRouteInfo] = useState<{ distanceKm: string; durationMin: string } | null>(null);
 
+  // Idioma: o JSX usa `t`; o que o Leaflet cria fora do React (popups, camadas) lê `tRef`.
+  const [idioma] = useIdioma();
+  const t = (pt: string, es: string, en: string) => Lt(idioma, pt, es, en);
+  const tRef = useRef(t);
+  useEffect(() => { tRef.current = t; });
+  const nomeCategoria = (nome: string) => {
+    const c = CATEGORIAS.find((x) => x.nome === nome);
+    return c ? tCategoria(idioma, c.id, c.nome) : nome;
+  };
+  const nomeCategoriaRef = useRef(nomeCategoria);
+  useEffect(() => { nomeCategoriaRef.current = nomeCategoria; });
+
   // Inicializar o Mapa
   useEffect(() => {
     if (!mapContainerRef.current || mapRef.current) return;
@@ -128,9 +144,9 @@ export default function MapaServicos({
       .layers(
         undefined,
         {
-          "Oportunidades & Serviços": oportunidadesLayer,
-          "Estabelecimentos Certificados": certificadosLayer,
-          "Fotos da Comunidade": fotosComunidadeLayer,
+          [tRef.current("Oportunidades & Serviços", "Oportunidades y servicios", "Opportunities & services")]: oportunidadesLayer,
+          [tRef.current("Estabelecimentos Certificados", "Establecimientos certificados", "Certified places")]: certificadosLayer,
+          [tRef.current("Fotos da Comunidade", "Fotos de la Comunidad", "Community photos")]: fotosComunidadeLayer,
         },
         { position: "bottomleft", collapsed: true }
       )
@@ -151,7 +167,7 @@ export default function MapaServicos({
       const container = map.getContainer();
 
       const dica = document.createElement("div");
-      dica.textContent = "Use 2 dedos pra mover o mapa";
+      dica.textContent = tRef.current("Use 2 dedos pra mover o mapa", "Usá 2 dedos para mover el mapa", "Use 2 fingers to move the map");
       dica.style.cssText =
         "position:absolute;left:50%;bottom:14px;transform:translateX(-50%);" +
         "background:rgba(0,0,0,0.8);color:#fff;font-size:11px;font-weight:700;" +
@@ -224,19 +240,19 @@ export default function MapaServicos({
 
           const userIcon = L.divIcon({
             className: "custom-user-marker",
-            html: `<div class="user-pulse-marker" title="Sua Posição Atual"></div>`,
+            html: `<div class="user-pulse-marker" title="${tRef.current("Sua Posição Atual", "Tu ubicación actual", "Your current position")}"></div>`,
             iconSize: [20, 20],
             iconAnchor: [10, 10],
           });
 
           userMarkerRef.current = L.marker(uPos, { icon: userIcon })
             .addTo(map)
-            .bindPopup(`<div style="text-align:center; font-weight:bold; padding:4px;">Você está Aqui</div>`);
+            .bindPopup(`<div style="text-align:center; font-weight:bold; padding:4px;">${tRef.current("Você está Aqui", "Estás acá", "You are here")}</div>`);
 
           map.setView(uPos, 13);
         },
         () => {
-          setGeoError("Permissão de localização não concedida. Usando centro padrão.");
+          setGeoError("sem permissão de localização");
         }
       );
     };
@@ -324,13 +340,13 @@ export default function MapaServicos({
       popupContent.className = "p-2 min-w-[200px]";
       popupContent.innerHTML = `
         <div style="font-size: 11px; font-weight: 800; color: ${color}; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 2px;">
-          ${pt.category}
+          ${nomeCategoriaRef.current(pt.category)}
         </div>
         <div style="font-size: 14px; font-weight: 700; color: #fff; line-height: 1.2; margin-bottom: 6px;">
           ${pt.title}
         </div>
         <div style="font-size: 13px; font-weight: 900; color: #10b981; margin-bottom: 8px;">
-          R$ ${pt.budget.toLocaleString("pt-BR")} via PIX
+          R$ ${pt.budget.toLocaleString("pt-BR")} ${tRef.current("via PIX", "por PIX", "via PIX")}
         </div>
         <div style="font-size: 11px; color: #9ca3af; margin-bottom: 10px; display:flex; align-items:center; gap:4px;">
           <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21s7-6.6 7-11.5a7 7 0 1 0-14 0C5 14.4 12 21 12 21z"/><circle cx="12" cy="9.5" r="2.3"/></svg>
@@ -352,7 +368,7 @@ export default function MapaServicos({
           gap: 4px;
         ">
           <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="m15 9-2 6-6 2 2-6z"/></svg>
-          Traçar Rota até Aqui
+          ${tRef.current("Traçar Rota até Aqui", "Trazar ruta hasta acá", "Route to here")}
         </button>
       `;
 
@@ -396,9 +412,9 @@ export default function MapaServicos({
       viajante: "#a78bfa",
     };
     const LABEL_TIPO: Record<string, string> = {
-      allan: "Verificado pelo JobPago",
-      empresario: "Enviado pelo estabelecimento",
-      viajante: "Avistamento de viajante",
+      allan: tRef.current("Verificado pelo JobPago", "Verificado por JobPago", "Verified by JobPago"),
+      empresario: tRef.current("Enviado pelo estabelecimento", "Enviado por el establecimiento", "Sent by the business"),
+      viajante: tRef.current("Avistamento de viajante", "Avistaje de viajero", "Traveller sighting"),
     };
 
     fetch(PONTOS_FOTO_API)
@@ -431,7 +447,7 @@ export default function MapaServicos({
           popup.innerHTML = `
             <img src="${p.foto_url}" style="width:100%; border-radius:8px; margin-bottom:8px; max-height:140px; object-fit:cover;" />
             <div style="font-size: 10px; font-weight: 800; color: ${cor}; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 2px;">
-              ${LABEL_TIPO[p.tipo_contribuidor] || "Comunidade"}
+              ${LABEL_TIPO[p.tipo_contribuidor] || tRef.current("Comunidade", "Comunidad", "Community")}
             </div>
             <div style="font-size: 14px; font-weight: 700; color: #fff; line-height: 1.2; margin-bottom: 4px;">
               ${p.titulo}
@@ -546,7 +562,7 @@ export default function MapaServicos({
     const marker = L.marker([lat, lng], { icon }).addTo(map);
     waypointMarkersRef.current.push(marker);
 
-    setWaypoints((prev) => [...prev, { lat, lng, nome: "Resolvendo endereço…" }]);
+    setWaypoints((prev) => [...prev, { lat, lng, nome: tRef.current("Resolvendo endereço…", "Buscando dirección…", "Finding address…") }]);
 
     reverseGeocode(lat, lng).then((nome) => {
       setWaypoints((prev) => {
@@ -633,7 +649,7 @@ export default function MapaServicos({
           onClick={() => localizarRef.current?.()}
           className="min-h-[44px] px-4 rounded-2xl bg-[#08080c]/90 backdrop-blur-md border border-amber-500/30 text-xs font-bold text-amber-300 hover:border-amber-400 transition-colors"
         >
-          Minha posição
+          {t("Minha posição", "Mi ubicación", "My location")}
         </button>
         <button
           type="button"
@@ -648,7 +664,7 @@ export default function MapaServicos({
               : "bg-[#08080c]/90 border-amber-500/30 text-amber-300 hover:border-amber-400"
           }`}
         >
-          {isTracingMode ? "Sair do Modo Rota" : "Traçar Minha Rota"}
+          {isTracingMode ? t("Sair do Modo Rota", "Salir del modo ruta", "Exit route mode") : t("Traçar Minha Rota", "Trazar mi ruta", "Plan my route")}
         </button>
       </div>
 
@@ -658,11 +674,11 @@ export default function MapaServicos({
           <div className="flex items-center gap-2">
             <span className="w-3 h-3 rounded-full bg-amber-400 animate-ping"></span>
             <span className="text-xs font-bold text-white tracking-wide uppercase">
-              Mapa de Serviços GPS
+              {t("Mapa de Serviços GPS", "Mapa de servicios GPS", "GPS services map")}
             </span>
           </div>
           <p className="text-[11px] text-zinc-400 mt-1">
-            {visiblePointsCount} pontos disponíveis na região
+            {visiblePointsCount} {t("pontos disponíveis na região", "puntos disponibles en la región", "points available in the area")}
           </p>
         </div>
 
@@ -670,13 +686,13 @@ export default function MapaServicos({
           <div className="bg-[#0b121c]/95 backdrop-blur-lg border border-cyan-500/40 rounded-2xl p-4 shadow-2xl pointer-events-auto max-w-xs animate-in fade-in">
             <div className="flex items-center justify-between gap-3 mb-2">
               <span className="text-xs font-black text-cyan-400 uppercase tracking-wider flex items-center gap-1.5">
-                <Icon name="compass" width={30} height={30} /> Rota Ativa
+                <Icon name="compass" width={30} height={30} /> {t("Rota Ativa", "Ruta activa", "Active route")}
               </span>
               <button
                 onClick={clearRoute}
                 className="text-xs text-zinc-400 hover:text-white px-2 py-0.5 bg-white/10 rounded-lg"
               >
-                Limpar Rota
+                {t("Limpar Rota", "Borrar ruta", "Clear route")}
               </button>
             </div>
             <p className="text-sm font-extrabold text-white truncate">
@@ -696,8 +712,8 @@ export default function MapaServicos({
             className="bg-[#0b121c]/95 backdrop-blur-lg border border-amber-500/40 rounded-2xl px-4 py-2.5 shadow-2xl pointer-events-auto flex items-center gap-2 text-xs font-black text-amber-300 uppercase tracking-wider hover:border-amber-400 transition-colors"
           >
             <Icon name="pin" width={22} height={22} />
-            {waypoints.length > 0 ? `${waypoints.length} ponto${waypoints.length === 1 ? "" : "s"}` : "Traçando rota"}
-            <span className="text-amber-400/70 normal-case font-bold">— ver painel</span>
+            {waypoints.length > 0 ? `${waypoints.length} ${waypoints.length === 1 ? t("ponto", "punto", "point") : t("pontos", "puntos", "points")}` : t("Traçando rota", "Trazando ruta", "Planning route")}
+            <span className="text-amber-400/70 normal-case font-bold">— {t("ver painel", "ver panel", "show panel")}</span>
           </button>
         )}
 
@@ -705,13 +721,13 @@ export default function MapaServicos({
           <div className="bg-[#0b121c]/95 backdrop-blur-lg border border-amber-500/40 rounded-2xl p-4 shadow-2xl pointer-events-auto max-w-xs animate-in fade-in">
             <div className="flex items-center justify-between gap-3">
               <span className="text-xs font-black text-amber-300 uppercase tracking-wider flex items-center gap-1.5">
-                <Icon name="pin" width={30} height={30} /> Clique no mapa pra marcar pontos
+                <Icon name="pin" width={30} height={30} /> {t("Clique no mapa pra marcar pontos", "Tocá el mapa para marcar puntos", "Tap the map to add points")}
               </span>
               <button
                 type="button"
                 onClick={() => setIsRoutePanelHidden(true)}
-                aria-label="Esconder painel de rota"
-                title="Esconder painel pra ver a rota"
+                aria-label={t("Esconder painel de rota", "Ocultar panel de ruta", "Hide route panel")}
+                title={t("Esconder painel pra ver a rota", "Ocultar el panel para ver la ruta", "Hide the panel to see the route")}
                 className="shrink-0 text-zinc-400 hover:text-white text-sm font-black px-1.5 rounded-lg hover:bg-white/10 transition-colors"
               >
                 −
@@ -741,21 +757,21 @@ export default function MapaServicos({
                 disabled={waypoints.length < 2 || isResolvingRoute}
                 className="text-xs font-black px-3 py-1.5 rounded-lg bg-amber-500 text-black disabled:opacity-40 disabled:cursor-not-allowed"
               >
-                {isResolvingRoute ? "Calculando…" : "Calcular Rota"}
+                {isResolvingRoute ? t("Calculando…", "Calculando…", "Calculating…") : t("Calcular Rota", "Calcular ruta", "Calculate route")}
               </button>
               <button
                 onClick={copiarListaCidades}
                 disabled={waypoints.length === 0}
                 className="text-xs font-bold px-3 py-1.5 rounded-lg bg-white/10 text-white disabled:opacity-40 disabled:cursor-not-allowed"
               >
-                Copiar Lista de Cidades
+                {t("Copiar Lista de Cidades", "Copiar lista de ciudades", "Copy town list")}
               </button>
               <button
                 onClick={limparTracado}
                 disabled={waypoints.length === 0}
                 className="text-xs font-bold px-3 py-1.5 rounded-lg bg-white/10 text-zinc-300 disabled:opacity-40 disabled:cursor-not-allowed"
               >
-                Limpar
+                {t("Limpar", "Borrar", "Clear")}
               </button>
             </div>
           </div>
@@ -764,15 +780,15 @@ export default function MapaServicos({
 
       {/* Legenda de Categorias Rápidas */}
       <div className="absolute bottom-4 left-4 z-[1000] hidden sm:flex items-center gap-2 bg-[#08080c]/90 backdrop-blur-md border border-white/10 rounded-2xl p-2.5 shadow-xl">
-        <span className="text-[10px] font-bold text-zinc-400 uppercase px-1">Legenda:</span>
+        <span className="text-[10px] font-bold text-zinc-400 uppercase px-1">{t("Legenda:", "Leyenda:", "Legend:")}</span>
         <div className="flex items-center gap-1.5 text-[11px] text-zinc-300">
-          <span className="w-2.5 h-2.5 rounded-full bg-amber-400"></span> Nômade & Infra
+          <span className="w-2.5 h-2.5 rounded-full bg-amber-400"></span> {tCategoria(idioma, "vanlife", "Nômade & Infra")}
         </div>
         <div className="flex items-center gap-1.5 text-[11px] text-zinc-300">
-          <span className="w-2.5 h-2.5 rounded-full bg-cyan-400"></span> Tech & Devs
+          <span className="w-2.5 h-2.5 rounded-full bg-cyan-400"></span> {tCategoria(idioma, "devs", "Tecnologia & TI")}
         </div>
         <div className="flex items-center gap-1.5 text-[11px] text-zinc-300">
-          <span className="w-2.5 h-2.5 rounded-full bg-amber-400"></span> Estrada & Cargas
+          <span className="w-2.5 h-2.5 rounded-full bg-amber-400"></span> {tCategoria(idioma, "estrada", "Estrada & Cargas")}
         </div>
       </div>
     </div>
