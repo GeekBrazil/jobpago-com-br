@@ -89,6 +89,13 @@ todas com fonte única em `src/data/`:
 - **Refúgio da Estrada** = selo de lugar verificado para dormir. Candidatura em `/refugio` → tabela `refugios` (banco `jobpago`) → o Allan aprova na aba Refúgios da Central de Prospecção (`~/central-prospeccao`) → `/api/refugios` (GET) lista só os verificados, sem contato, e `/certificados` mostra.
 - **Alta Honra** = como o estabelecimento apoia a expedição (`src/data/honra.ts`): Ouro (dinheiro + permuta), Prata (dinheiro), Bronze (permuta), Verificado (só a visita). **O selo de verificado nunca é vendido.**
 
+## Idiomas: o site inteiro é PT/ES/EN (2026-09-29)
+
+- Idioma do servidor: `?lang=` (o `src/proxy.ts` põe o header `x-jp-lang` e o cookie `jp_lang`) > cookie > Accept-Language > pt (`src/lib/idiomaServidor.ts`). No navegador: `useIdioma()` (IdiomaProvider no layout); botão flutuante `IdiomaFlutuante`.
+- Texto novo **sempre** nas três línguas: `L(i, pt, es, en)` (`src/lib/i18n.ts`). Listas vindas de `src/data/` (categorias, Honra, tipos de Refúgio, planos de parceiro, faixas PIX, setores do CAGED) são traduzidas pelo id em `src/lib/traducoesCadastro.ts` — o português continua no arquivo de dados.
+- APIs recebem `idioma` no corpo e devolvem o erro nessa língua (`msg()`).
+- Ficam só em português: texto dos artigos do blog, `/admin`, e as mensagens pré-preenchidas que chegam no WhatsApp do Allan. Privacidade e termos traduzidos com aviso de que vale a versão em português.
+
 ## Viajante, contribuições e cards (2026-09-29)
 
 - `/viajante` (painel), `/viajante/contribuir?tipo=`, `/viajante/questionario`, `/refugio` e `/disponibilidade` — PT/ES/EN (`src/lib/textosEstrada.ts`; espanhol e inglês de tipos, estrutura, Alta Honra e categorias em `src/lib/traducoesCadastro.ts`; as APIs devolvem o erro no `idioma` do corpo). Reputação em `contribuicoes` (banco `jobpago`), regras em `src/lib/reputacao.ts`; pontos só quando o Allan confirma na aba Contribuições da Central. Foto de fachada: GPS do celular com aviso antes; a foto passa por `allancandido.com/api/pontos-fotograficos`.
