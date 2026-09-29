@@ -7,6 +7,8 @@ import { Icon } from "@/components/Icons";
 import { useIdioma } from "@/components/useIdioma";
 import { L } from "@/lib/i18n";
 import { tCategoria } from "@/lib/traducoesCadastro";
+import CampoTelefone from "@/components/CampoTelefone";
+import { normalizarTelefone } from "@/lib/telefone";
 
 interface CadastroServicoLeadProps {
   tipoInicial?: "prestador" | "contratante";
@@ -36,30 +38,12 @@ export default function CadastroServicoLead({ onSuccess, tipoInicial = "prestado
   const [error, setError] = useState<string | null>(null);
   const [successData, setSuccessData] = useState<{ whatsappUrl: string } | null>(null);
 
-  // Máscara de telefone/WhatsApp brasileiro (XX) 9XXXX-XXXX
-  const handlePhoneChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    let v = e.target.value.replace(/\D/g, "");
-    if (v.length > 11) v = v.slice(0, 11);
-
-    if (v.length > 10) {
-      v = v.replace(/^(\d{2})(\d{5})(\d{4})$/, "($1) $2-$3");
-    } else if (v.length > 6) {
-      v = v.replace(/^(\d{2})(\d{4})(\d{0,4})$/, "($1) $2-$3");
-    } else if (v.length > 2) {
-      v = v.replace(/^(\d{2})(\d{0,5})$/, "($1) $2");
-    } else if (v.length > 0) {
-      v = v.replace(/^(\d*)$/, "($1");
-    }
-    setWhatsappContratado(v);
-  };
-
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError(null);
 
-    const rawDigits = whatsappContratado.replace(/\D/g, "");
-    if (rawDigits.length < 10) {
-      setError(L(idioma, "Por favor, informe um WhatsApp válido com DDD.", "Por favor, indicá un WhatsApp válido con código de área.", "Please enter a valid WhatsApp number with area code."));
+    if (!normalizarTelefone(whatsappContratado)) {
+      setError(L(idioma, "Por favor, informe um WhatsApp válido com DDD.", "Por favor, indicá un WhatsApp válido, con código de área.", "Please enter a valid WhatsApp number, with area code."));
       return;
     }
 
@@ -96,6 +80,7 @@ export default function CadastroServicoLead({ onSuccess, tipoInicial = "prestado
           isCortesia,
           descricao,
           lgpdConsent,
+          idioma,
         }),
       });
 
@@ -295,17 +280,9 @@ export default function CadastroServicoLead({ onSuccess, tipoInicial = "prestado
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div>
                 <label htmlFor="whatsapp-contratado" className="text-xs font-bold text-slate-300 block mb-1.5">
-                  {L(idioma, "WhatsApp com DDD *", "WhatsApp con código de área *", "WhatsApp with area code *")}
+                  {L(idioma, "WhatsApp com DDD *", "WhatsApp (país y número) *", "WhatsApp (country and number) *")}
                 </label>
-                <input
-                  type="tel"
-                  required
-                  placeholder="(24) 99999-9999"
-                  id="whatsapp-contratado"
-                value={whatsappContratado}
-                  onChange={handlePhoneChange}
-                  className="w-full bg-black/30 border border-white/10 rounded-xl px-4 py-3 text-sm text-white placeholder-slate-500 focus:outline-none focus:border-amber-400 transition-colors font-mono"
-                />
+                <CampoTelefone id="whatsapp-contratado" onChange={setWhatsappContratado} />
               </div>
 
               <div>

@@ -2,6 +2,8 @@ import { NextResponse } from "next/server";
 import fs from "fs";
 import path from "path";
 import { Pool } from "pg";
+import { normalizarTelefone } from "@/lib/telefone";
+import { msg } from "@/lib/traducoesCadastro";
 
 const LEADS_FILE = path.join(process.cwd(), "public", "data", "leads_store.json");
 
@@ -110,13 +112,15 @@ export async function POST(req: Request) {
     }
 
     // 2. Validação de Telefone / WhatsApp (mínimo 10 dígitos)
-    const cleanPhone = body.whatsappContratado.replace(/\D/g, "");
-    if (cleanPhone.length < 10 || cleanPhone.length > 11) {
+    const idioma = (body as { idioma?: string }).idioma;
+    const telefone = normalizarTelefone(body.whatsappContratado);
+    if (!telefone) {
       return NextResponse.json(
-        { success: false, error: "WhatsApp inválido. Informe DDD + número (ex: 24 99999-9999)." },
+        { success: false, error: msg(idioma, "WhatsApp inválido. Informe DDD + número (ex: 24 99999-9999).", "WhatsApp inválido. Indicá país y número con código de área.", "Invalid WhatsApp. Enter country and number with area code.") },
         { status: 400 }
       );
     }
+    body.whatsappContratado = telefone;
 
     // 3. Validação de E-mail
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;

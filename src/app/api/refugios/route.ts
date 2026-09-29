@@ -3,6 +3,7 @@ import { getPool } from "@/lib/db";
 import { OFERECE, TIPOS_REFUGIO, NIVEIS_HONRA } from "@/data/honra";
 import { codigoValido } from "@/lib/indicacao";
 import { msg } from "@/lib/traducoesCadastro";
+import { normalizarTelefone } from "@/lib/telefone";
 
 export const runtime = "nodejs";
 
@@ -55,12 +56,12 @@ export async function POST(req: NextRequest) {
   const m = (pt: string, es: string, en: string) => msg(b.idioma, pt, es, en);
   const txt = (v: unknown, n: number) => (typeof v === "string" ? v.trim().slice(0, n) : "");
   const nome = txt(b.nome, 120), cidade = txt(b.cidade, 80), uf = txt(b.uf, 2).toUpperCase();
-  const whatsapp = txt(b.whatsapp, 20).replace(/\D/g, "");
+  const whatsapp = normalizarTelefone(txt(b.whatsapp, 24));
   const email = txt(b.email, 200);
   if (!nome) return NextResponse.json({ ok: false, erro: m("Diga o nome do lugar.", "Decí el nombre del lugar.", "Enter the name of the place.") }, { status: 400 });
   if (!TIPOS.has(b.tipo)) return NextResponse.json({ ok: false, erro: m("Escolha o tipo de lugar.", "Elegí el tipo de lugar.", "Choose the type of place.") }, { status: 400 });
   if (!cidade || uf.length !== 2) return NextResponse.json({ ok: false, erro: m("Informe cidade e UF.", "Indicá ciudad y estado.", "Enter town and state.") }, { status: 400 });
-  if (whatsapp.length < 10 || whatsapp.length > 13) return NextResponse.json({ ok: false, erro: m("WhatsApp com DDD, por favor.", "WhatsApp con código de área, por favor.", "WhatsApp with area code, please.") }, { status: 400 });
+  if (!whatsapp) return NextResponse.json({ ok: false, erro: m("WhatsApp com DDD, por favor.", "WhatsApp con código de país y de área, por favor.", "WhatsApp with country and area code, please.") }, { status: 400 });
   if (email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) return NextResponse.json({ ok: false, erro: m("E-mail inválido.", "E-mail inválido.", "Invalid e-mail.") }, { status: 400 });
   if (b.lgpd !== true) return NextResponse.json({ ok: false, erro: m("É preciso autorizar o contato (LGPD).", "Tenés que autorizar el contacto (LGPD).", "Please authorise us to contact you (LGPD).") }, { status: 400 });
   const oferece = (Array.isArray(b.oferece) ? b.oferece : []).map(String).filter((o: string) => OFER.has(o));

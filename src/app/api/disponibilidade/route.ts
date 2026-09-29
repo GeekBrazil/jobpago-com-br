@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { getPool } from "@/lib/db";
 import { CATEGORIAS } from "@/data/categorias";
 import { msg } from "@/lib/traducoesCadastro";
+import { normalizarTelefone } from "@/lib/telefone";
 
 export const runtime = "nodejs";
 
@@ -42,11 +43,11 @@ export async function POST(req: NextRequest) {
   const m = (pt: string, es: string, en: string) => msg(b.idioma, pt, es, en);
   const txt = (v: unknown, n: number) => (typeof v === "string" ? v.trim().slice(0, n) : "");
   const nome = txt(b.nome, 80);
-  const whatsapp = txt(b.whatsapp, 20).replace(/\D/g, "");
+  const whatsapp = normalizarTelefone(txt(b.whatsapp, 24));
   const email = txt(b.email, 200);
   const categorias = (Array.isArray(b.categorias) ? b.categorias : []).map(String).filter((c: string) => CATS.has(c)).slice(0, 7);
   if (!nome) return NextResponse.json({ ok: false, erro: m("Diga seu nome.", "Decí tu nombre.", "Enter your name.") }, { status: 400 });
-  if (whatsapp.length < 10 || whatsapp.length > 13) return NextResponse.json({ ok: false, erro: m("WhatsApp com DDD, por favor.", "WhatsApp con código de área, por favor.", "WhatsApp with area code, please.") }, { status: 400 });
+  if (!whatsapp) return NextResponse.json({ ok: false, erro: m("WhatsApp com DDD, por favor.", "WhatsApp con código de país y de área, por favor.", "WhatsApp with country and area code, please.") }, { status: 400 });
   if (email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) return NextResponse.json({ ok: false, erro: m("E-mail inválido.", "E-mail inválido.", "Invalid e-mail.") }, { status: 400 });
   if (!categorias.length) return NextResponse.json({ ok: false, erro: m("Escolha pelo menos uma área.", "Elegí al menos un área.", "Choose at least one area.") }, { status: 400 });
   if (b.lgpd !== true) return NextResponse.json({ ok: false, erro: m("É preciso autorizar o contato (LGPD).", "Tenés que autorizar el contacto (LGPD).", "Please authorise us to contact you (LGPD).") }, { status: 400 });

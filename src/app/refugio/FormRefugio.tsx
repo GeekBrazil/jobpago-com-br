@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import CampoTelefone from "@/components/CampoTelefone";
 import Link from "next/link";
 import { NIVEIS_HONRA, OFERECE, TIPOS_REFUGIO } from "@/data/honra";
 import { lerIndicacao } from "@/lib/indicacaoCliente";
@@ -90,8 +91,8 @@ export default function FormRefugio({ idioma }: { idioma: Idioma }) {
       <div className="grid gap-4 sm:grid-cols-2">
         <label className="block"><span className="text-sm font-bold text-slate-300">{L(idioma, "Seu nome", "Tu nombre", "Your name")}</span>
           <input maxLength={80} value={f.responsavel} onChange={(e) => setF({ ...f, responsavel: e.target.value })} className={campo + " mt-2"} autoComplete="name" /></label>
-        <label className="block"><span className="text-sm font-bold text-slate-300">{L(idioma, "WhatsApp com DDD", "WhatsApp con código de área", "WhatsApp with area code")}</span>
-          <input required inputMode="tel" maxLength={20} value={f.whatsapp} onChange={(e) => setF({ ...f, whatsapp: e.target.value })} placeholder="(24) 99999-9999" className={campo + " mt-2"} autoComplete="tel" /></label>
+        <label className="block"><span className="text-sm font-bold text-slate-300">{L(idioma, "WhatsApp com DDD", "WhatsApp (país y número)", "WhatsApp (country and number)")}</span>
+          <CampoTelefone className="mt-2" onChange={(v) => setF((x) => ({ ...x, whatsapp: v }))} /></label>
         <label className="block"><span className="text-sm font-bold text-slate-300">{L(idioma, "E-mail (opcional)", "E-mail (opcional)", "E-mail (optional)")}</span>
           <input type="email" maxLength={200} value={f.email} onChange={(e) => setF({ ...f, email: e.target.value })} className={campo + " mt-2"} autoComplete="email" /></label>
         <label className="block"><span className="text-sm font-bold text-slate-300">{L(idioma, "Site ou Instagram (opcional)", "Sitio o Instagram (opcional)", "Website or Instagram (optional)")}</span>

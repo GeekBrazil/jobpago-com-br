@@ -1,4 +1,5 @@
 import { msg } from "@/lib/traducoesCadastro";
+import { normalizarTelefone } from "@/lib/telefone";
 import { NextRequest, NextResponse } from "next/server";
 import bcrypt from "bcryptjs";
 import { getPool } from "@/lib/db";
@@ -32,13 +33,13 @@ export async function POST(req: NextRequest) {
   const m = (pt: string, es: string, en: string) => msg(body.idioma, pt, es, en);
   const nome = String(body.nome ?? "").trim().slice(0, 120);
   const email = String(body.email ?? "").trim().toLowerCase().slice(0, 160);
-  const telefone = String(body.telefone ?? "").replace(/\D/g, "").slice(0, 15);
+  const telefone = normalizarTelefone(String(body.telefone ?? "").slice(0, 24)) ?? "";
   const senha = String(body.senha ?? "");
 
   if (nome.length < 2) return NextResponse.json({ error: m("Nome inválido.", "Nombre inválido.", "Invalid name.") }, { status: 400 });
   if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) return NextResponse.json({ error: m("E-mail inválido.", "E-mail inválido.", "Invalid e-mail.") }, { status: 400 });
-  // 10–11 dígitos = Brasil (DDD + número); até 15 = número estrangeiro com código do país (viajantes de fora)
-  if (telefone.length < 10 || telefone.length > 15) return NextResponse.json({ error: m("Telefone inválido. Informe DDD + número.", "Teléfono inválido. Incluí el código de país.", "Invalid phone. Include the country code.") }, { status: 400 });
+  // Brasil: DDD + número; estrangeiro: +código do país (lib/telefone)
+  if (!telefone) return NextResponse.json({ error: m("Telefone inválido. Informe DDD + número.", "Teléfono inválido. Incluí el código de país.", "Invalid phone. Include the country code.") }, { status: 400 });
   if (senha.length < 8) return NextResponse.json({ error: m("Senha precisa ter no mínimo 8 caracteres.", "La contraseña necesita al menos 8 caracteres.", "Password must be at least 8 characters.") }, { status: 400 });
 
   const pool = getPool();

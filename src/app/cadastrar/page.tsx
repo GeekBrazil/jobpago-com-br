@@ -6,6 +6,7 @@ import { useRouter, useSearchParams } from "next/navigation";
 import Link from "next/link";
 import { useIdioma } from "@/components/useIdioma";
 import { L } from "@/lib/i18n";
+import CampoTelefone from "@/components/CampoTelefone";
 
 function FormularioCadastro() {
   const router = useRouter();
@@ -75,14 +76,7 @@ function FormularioCadastro() {
             onChange={(e) => setEmail(e.target.value)}
             className="bg-black/30 border border-white/10 rounded-xl px-4 py-2.5 text-sm text-white placeholder-slate-500 focus:outline-none focus:border-amber-400/50"
           />
-          <input
-            type="tel"
-            required
-            placeholder={t("WhatsApp (DDD + número)", "WhatsApp (con código de país)", "WhatsApp (with country code)")}
-            value={telefone}
-            onChange={(e) => setTelefone(e.target.value)}
-            className="bg-black/30 border border-white/10 rounded-xl px-4 py-2.5 text-sm text-white placeholder-slate-500 focus:outline-none focus:border-amber-400/50"
-          />
+          <CampoTelefone onChange={setTelefone} />
           <input
             type="password"
             required
