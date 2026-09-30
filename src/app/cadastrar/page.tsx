@@ -57,7 +57,7 @@ function FormularioCadastro() {
         </Link>
 
         <h1 className="text-lg font-bold text-white mb-1">{t("Criar conta", "Crear cuenta", "Create account")}</h1>
-        <p className="text-xs text-slate-400 mb-6">{t("Rapidinho — sua conta JobPago, com segurança.", "Rapidito: tu cuenta JobPago, segura.", "Quick — your JobPago account, safely.")}</p>
+        <p className="text-xs text-slate-400 mb-6">{t("Rapidinho — sua conta JobPago.", "Rapidito: tu cuenta JobPago.", "Quick — your JobPago account.")}</p>
 
         <form onSubmit={handleSubmit} className="flex flex-col gap-3">
           <input
