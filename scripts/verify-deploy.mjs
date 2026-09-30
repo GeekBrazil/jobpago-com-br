@@ -7,19 +7,24 @@
 
 const TARGETS = [
   {
-    name: "Home - Renda Online & Vida Nômade",
+    name: "Home - JobPago · renda na viagem",
     url: "https://www.jobpago.com.br/",
     expectedStatus: 200,
     mustContain: [
-      "Renda online",
-      "nômades digitais",
+      "renda na viagem",
       "PIX COMBINADO DIRETO ENTRE AS PARTES",
-      "Devs",
       "Tenho um negócio",
-      "Quero renda",
-      "Refúgio da Estrada"
+      "Oferecer meu serviço",
+      "Onde dormir",
+      "Disque 100"
     ],
     mustNotContain: [
+      // limpeza de escopo 2026-09-30: sem promessa de verificação/segurança
+      "Refúgio da Estrada",
+      "Noite segura",
+      "não se compra",
+      "Estou disponível",
+      "Quanto se paga",
       "Anunciar Vaga",
       "Há 10 min",
       "Harley-Davidson",
@@ -52,8 +57,27 @@ const TARGETS = [
       "Cadastro de Serviços",
       "Nós enviamos os serviços para o contratante",
       "Consentimento LGPD",
-      "WhatsApp com DDD"
+      "WhatsApp com DDD",
+      "Declaro ter 18 anos ou mais"
     ],
+    mustNotContain: []
+  },
+  {
+    name: "Termos de Uso - 18+ e serviços proibidos (/termos)",
+    url: "https://www.jobpago.com.br/termos",
+    expectedStatus: 200,
+    mustContain: [
+      "maiores de 18 anos",
+      "Serviços proibidos",
+      "jobpago@allancandido.com"
+    ],
+    mustNotContain: ["allan@jobpago.com.br"]
+  },
+  {
+    name: "Listagem pública de leads fechada (/api/leads GET)",
+    url: "https://www.jobpago.com.br/api/leads",
+    expectedStatus: 405,
+    mustContain: [],
     mustNotContain: []
   },
   {
