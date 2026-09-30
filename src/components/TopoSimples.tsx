@@ -14,7 +14,7 @@ export default async function TopoSimples() {
           </div>
           <div className="flex flex-col">
             <span className="text-xl sm:text-2xl font-black tracking-tight text-white leading-none">JobPago<span className="text-amber-400">.</span></span>
-            <span className="text-[9px] font-mono font-bold tracking-wider text-slate-400 uppercase mt-0.5">{L(i, "Renda & Estrada", "Ingresos & Ruta", "Income & Road")}</span>
+            <span className="text-[9px] font-mono font-bold tracking-wider text-slate-400 uppercase mt-0.5">{L(i, "renda na viagem", "ingresos en el viaje", "income on the go")}</span>
           </div>
         </Link>
         <Link href="/" className="btn-secondary-glass text-xs font-bold px-4 py-2 rounded-xl flex items-center gap-1.5">← {L(i, "Voltar para a Home", "Volver al inicio", "Back to home")}</Link>

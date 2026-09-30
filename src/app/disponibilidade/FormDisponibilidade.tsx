@@ -3,7 +3,7 @@
 import { useState } from "react";
 import CampoTelefone from "@/components/CampoTelefone";
 import Link from "next/link";
-import { CATEGORIAS } from "@/data/categorias";
+import { CATEGORIAS, avisoCategoria } from "@/data/categorias";
 import { useIdioma } from "@/components/useIdioma";
 import SeletorIdioma from "@/components/SeletorIdioma";
 import { tCategoria } from "@/lib/traducoesCadastro";
@@ -46,7 +46,7 @@ export default function FormDisponibilidade() {
         <p className="text-xs font-mono font-bold uppercase tracking-widest text-amber-400">{L(idioma, "Quero renda", "Quiero ingresos", "I want income")}</p>
         <SeletorIdioma idioma={idioma} onChange={setIdioma} />
       </div>
-      <h1 className="mt-3 text-4xl sm:text-5xl font-black tracking-tight leading-[1.05]">{L(idioma, "Cadastre sua disponibilidade", "Registrá tu disponibilidad", "Register your availability")}</h1>
+      <h1 className="mt-3 text-4xl sm:text-5xl font-black tracking-tight leading-[1.05]">{L(idioma, "Cadastre o seu serviço", "Registrá tu servicio", "Register your service")}</h1>
       <p className="mt-4 text-lg text-slate-300">
         {L(idioma,
           "Sem vitrine: seu contato não fica exposto. Você diz o que sabe fazer e de onde trabalha; quando um negócio publicar uma tarefa que combina, a gente te chama no WhatsApp. O pagamento é combinado direto entre vocês, por Pix, sem comissão.",
@@ -61,8 +61,8 @@ export default function FormDisponibilidade() {
       <>{cabecalho}
       <div className="mt-10 glass-panel rounded-3xl p-7">
         <h2 className="text-2xl font-black text-white">{L(idioma, "Pronto", "Listo", "Done")}, {f.nome.split(" ")[0]}.</h2>
-        <p className="mt-2 text-slate-300">{L(idioma, "Sua disponibilidade está registrada. Quando aparecer uma tarefa que combina com você, a gente chama no WhatsApp.", "Tu disponibilidad quedó registrada. Cuando aparezca una tarea que te encaje, te escribimos por WhatsApp.", "Your availability is registered. When a matching task comes up, we'll message you on WhatsApp.")}</p>
-        <p className="mt-4 text-sm text-slate-400">{L(idioma, "Enquanto isso, veja", "Mientras tanto, mirá", "Meanwhile, see")} <Link href="/#renda-na-cidade" className="underline hover:text-amber-400">{L(idioma, "quanto se paga na sua área", "cuánto se paga en tu área", "what your field pays")}</Link> {L(idioma, "para cobrar o preço certo.", "para cobrar el precio justo.", "so you charge the right price.")}</p>
+        <p className="mt-2 text-slate-300">{L(idioma, "Seu serviço está cadastrado. Quando aparecer uma tarefa que combina com você, a gente chama no WhatsApp.", "Tu servicio quedó registrado. Cuando aparezca una tarea que te encaje, te escribimos por WhatsApp.", "Your service is registered. When a matching task comes up, we'll message you on WhatsApp.")}</p>
+        <p className="mt-4 text-sm text-slate-400">{L(idioma, "Enquanto isso, veja", "Mientras tanto, mirá", "Meanwhile, see")} <Link href="/#renda-na-cidade" className="underline hover:text-amber-400">{L(idioma, "os valores de referência da sua área", "los valores de referencia de tu área", "reference rates for your field")}</Link> {L(idioma, "para cobrar o preço certo.", "para cobrar el precio justo.", "so you charge the right price.")}</p>
       </div>
       </>
     );
@@ -91,6 +91,9 @@ export default function FormDisponibilidade() {
             </button>
           ))}
         </div>
+        {[...new Set(f.categorias.map((id) => avisoCategoria(idioma, id)).filter(Boolean))].map((aviso) => (
+          <p key={aviso} className="mt-2 text-[11px] text-amber-200/80 leading-snug">{aviso}</p>
+        ))}
         <textarea maxLength={500} value={f.faz} onChange={(e) => setF({ ...f, faz: e.target.value })} rows={3}
           placeholder={L(idioma, "Em uma frase: ex. edito vídeo curto para Instagram, tenho drone, faço frete de retorno SP–RJ…", "En una frase: ej. edito videos cortos para Instagram, tengo dron, hago fletes de vuelta SP–RJ…", "In one line: e.g. I edit short videos for Instagram, I have a drone, I do return freight SP–RJ…")} className={campo + " mt-3"} />
       </fieldset>
@@ -104,7 +107,7 @@ export default function FormDisponibilidade() {
           </select>
         </div>
         <label className="mt-3 flex items-center gap-2 text-sm text-slate-300">
-          <input type="checkbox" checked={f.naEstrada} onChange={(e) => setF({ ...f, naEstrada: e.target.checked })} /> {L(idioma, "Estou na estrada (sem cidade fixa)", "Estoy en la ruta (sin ciudad fija)", "I'm on the road (no fixed town)")}
+          <input type="checkbox" checked={f.naEstrada} onChange={(e) => setF({ ...f, naEstrada: e.target.checked })} /> {L(idioma, "Estou viajando (sem cidade fixa)", "Estoy viajando (sin ciudad fija)", "I'm travelling (no fixed town)")}
         </label>
       </fieldset>
 
@@ -126,7 +129,7 @@ export default function FormDisponibilidade() {
 
       {erro && <p className="text-sm text-rose-300" role="alert">{erro}</p>}
       <button disabled={estado === "enviando"} className="btn-primary-amalfi w-full sm:w-auto rounded-2xl px-8 py-4 text-base font-black disabled:opacity-60">
-        {estado === "enviando" ? "…" : L(idioma, "Cadastrar minha disponibilidade", "Registrar mi disponibilidad", "Register my availability")}
+        {estado === "enviando" ? "…" : L(idioma, "Cadastrar meu serviço", "Registrar mi servicio", "Register my service")}
       </button>
     </form>
     </>

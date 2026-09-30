@@ -54,11 +54,11 @@ export default function PainelViajante() {
 
       {p && !p.logado && (
         <div className="mt-8 glass-panel rounded-3xl p-7">
-          <h1 className="text-3xl sm:text-4xl font-black">{idioma === "es" ? "Alimentá la ruta y subí de nivel" : idioma === "en" ? "Feed the road and level up" : "Alimente a estrada e suba de nível"}</h1>
+          <h1 className="text-3xl sm:text-4xl font-black">{idioma === "es" ? "Alimentá la ruta y subí de nivel" : idioma === "en" ? "Feed the route and level up" : "Alimente a rota e suba de nível"}</h1>
           <p className="mt-3 text-slate-300">
             {idioma === "es" ? "Cada foto, lugar para dormir o precio que confirmás ayuda a otro viajero — y suma puntos: del Andarilho a la Leyenda de la Ruta."
-              : idioma === "en" ? "Every photo, place to sleep or price you confirm helps another traveller — and earns points: from Wanderer to Legend of the Road."
-              : "Cada foto, lugar para dormir ou preço que você confirma ajuda outro viajante — e vale pontos: do Andarilho à Lenda da Estrada."}
+              : idioma === "en" ? "Every photo, place to sleep or price you confirm helps another traveller — and earns points: from Wanderer to Legend of the Route."
+              : "Cada foto, lugar para dormir ou preço que você confirma ajuda outro viajante — e vale pontos: do Andarilho à Lenda da Rota."}
           </p>
           <div className="mt-5 flex flex-wrap gap-3">
             <Link href="/entrar?callbackUrl=/viajante" className="btn-primary-amalfi rounded-2xl px-6 py-3 text-sm font-black">{T.entrar}</Link>
@@ -132,7 +132,7 @@ export default function PainelViajante() {
             {RECOMPENSAS.map((r) => (
               <li key={r.nivel} className={`flex gap-3 items-start rounded-2xl p-3 border ${p.nivel >= r.nivel ? "border-amber-400/50 bg-amber-400/10" : "border-white/10"}`}>
                 <span className="font-mono text-xs font-bold text-amber-300 w-16 shrink-0">{T.nivel} {r.nivel}</span>
-                <span className="text-sm text-slate-200">{r.titulo}{r.parceiro ? <span className="text-slate-400"> · com os Refúgios parceiros</span> : null}</span>
+                <span className="text-sm text-slate-200">{r.titulo}{r.parceiro ? <span className="text-slate-400"> · com os pousos parceiros</span> : null}</span>
               </li>
             ))}
           </ul>

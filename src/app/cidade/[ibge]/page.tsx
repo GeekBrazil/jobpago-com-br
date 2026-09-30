@@ -32,9 +32,9 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   return {
     title: `${nome}: ${novas != null ? `${nf.format(novas)} ${L(i, "negócios abertos em 90 dias", "negocios abiertos en 90 días", "businesses opened in 90 days")}` : L(i, "negócios e renda", "negocios e ingresos", "business and income")} · JobPago`,
     description: L(i,
-      `Relatório grátis de ${nome}: quem está abrindo negócio por setor, quanto se paga para começar em cada área e compras da prefeitura abertas. Dados da Receita Federal, CAGED e PNCP.`,
-      `Informe gratis de ${nome}: quién abre negocios por sector, cuánto se paga al empezar en cada área y compras públicas abiertas. Datos oficiales de Brasil.`,
-      `Free report for ${nome}: who is opening businesses by sector, what each field pays to start, and open public purchases. Official Brazilian data.`),
+      `Relatório grátis de ${nome}: quem está abrindo negócio por setor, valores de referência de cada setor e compras da prefeitura abertas. Dados da Receita Federal, CAGED e PNCP.`,
+      `Informe gratis de ${nome}: quién abre negocios por sector, valores de referencia de cada sector y compras públicas abiertas. Datos oficiales de Brasil.`,
+      `Free report for ${nome}: who is opening businesses by sector, reference rates for each sector and open public purchases. Official Brazilian data.`),
     alternates: { canonical: `https://jobpago.com.br/cidade/${ibge}` },
   };
 }
@@ -119,10 +119,10 @@ export default async function RelatorioCidadePage({ params }: Props) {
         {/* QUANTO SE PAGA */}
         {emp && setores.length > 0 && (
           <section className="mt-16" aria-labelledby="renda">
-            <h2 id="renda" className="text-2xl sm:text-3xl font-black">{t("Quanto se paga para começar em", "Cuánto se paga al empezar en", "What it pays to start in")} {cidade}</h2>
+            <h2 id="renda" className="text-2xl sm:text-3xl font-black">{t("Valores de referência por setor em", "Valores de referencia por sector en", "Reference rates by sector in")} {cidade}</h2>
             <p className="mt-2 text-slate-300 max-w-2xl">
               {t("Salário médio de admissão com carteira assinada, por setor, de", "Sueldo medio de ingreso con empleo formal, por sector, de", "Average starting salary in formal jobs, by sector, from")} {comp(emp.de)} {t("a", "a", "to")} {comp(emp.ate)}.{" "}
-              {t("É o piso real da cidade — não promessa de renda fácil.", "Es el piso real de la ciudad, no una promesa de plata fácil.", "It's the town's real floor — not a promise of easy money.")}
+              {t("Salário de admissão por setor, de fonte oficial. É referência, não promessa de renda.", "Salario de ingreso por sector, de fuente oficial. Es referencia, no promesa de ingresos.", "Starting pay by sector, from an official source. A reference, not a promise of income.")}
             </p>
             <div className="mt-6 overflow-x-auto glass-panel rounded-3xl">
               <table className="w-full text-sm">
@@ -218,7 +218,7 @@ export default async function RelatorioCidadePage({ params }: Props) {
             <h2 className="mt-2 text-2xl font-black">{t("Trabalho de verdade, pago por Pix", "Trabajo de verdad, pagado por Pix", "Real work, paid by Pix")}</h2>
             <p className="mt-2 text-slate-300">{t("Os negócios que abriram aqui precisam de gente. Diga o que você sabe fazer e de onde você trabalha.", "Los negocios que abrieron acá necesitan gente. Contá qué sabés hacer y desde dónde trabajás.", "The businesses opening here need people. Tell us what you can do and where you work from.")}</p>
             <div className="mt-5 flex flex-wrap gap-3">
-              <Link href="/disponibilidade" className="btn-primary-amalfi rounded-2xl px-6 py-3 text-sm font-black">{t("Cadastrar minha disponibilidade", "Registrar mi disponibilidad", "Register my availability")}</Link>
+              <Link href="/disponibilidade" className="btn-primary-amalfi rounded-2xl px-6 py-3 text-sm font-black">{t("Cadastrar meu serviço", "Registrar mi servicio", "Register my service")}</Link>
               <a href={zap(`Quero renda. Estou em ${cidade} (${m.uf}) ou atendo a cidade.`)} target="_blank" rel="noopener noreferrer" className="btn-secondary-glass rounded-2xl px-6 py-3 text-sm font-bold">
                 WhatsApp
               </a>

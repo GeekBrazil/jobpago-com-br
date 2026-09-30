@@ -9,7 +9,7 @@ import { L } from "@/lib/i18n";
 export async function generateMetadata(): Promise<Metadata> {
   const i = await idiomaServidor();
   return {
-    title: L(i, "Relatório da sua cidade: quem está abrindo negócio e quanto se paga · JobPago", "Informe de tu ciudad: quién abre negocios y cuánto se paga · JobPago", "Your town report: who is opening businesses and what it pays · JobPago"),
+    title: L(i, "Relatório da sua cidade: negócios abrindo e valores de referência · JobPago · renda na viagem", "Informe de tu ciudad: negocios que abren y valores de referencia · JobPago · ingresos en el viaje", "Your town report: new businesses and reference rates · JobPago · income on the go"),
     description: L(i,
       "Grátis, com dado oficial: empresas abertas por setor nos últimos 90 dias (Receita Federal), salário de quem começa em cada setor (Novo CAGED) e compras da prefeitura abertas para pequeno negócio.",
       "Gratis y con datos oficiales: empresas abiertas por sector en los últimos 90 días, sueldo de ingreso por sector y compras públicas abiertas.",
@@ -26,7 +26,7 @@ export default async function CidadesPage() {
       <main className="max-w-6xl mx-auto px-4 sm:px-6 py-14 sm:py-20">
         <p className="text-xs font-mono font-bold uppercase tracking-widest text-amber-400">{L(i, "Relatório da cidade · grátis", "Informe de la ciudad · gratis", "Town report · free")}</p>
         <h1 className="mt-3 text-4xl sm:text-6xl font-black tracking-tight leading-[1.05] max-w-3xl">
-          {L(i, "Quem está abrindo negócio na sua cidade — e quanto se paga para começar.", "Quién abre negocios en tu ciudad y cuánto se paga al empezar.", "Who is opening businesses in your town — and what it pays to start.")}
+          {L(i, "Quem está abrindo negócio na sua cidade — e os valores de referência de cada setor.", "Quién abre negocios en tu ciudad y los valores de referencia de cada sector.", "Who is opening businesses in your town — and reference rates for each sector.")}
         </h1>
         <p className="mt-5 max-w-2xl text-lg text-slate-300">
           {L(i,

@@ -43,7 +43,7 @@ export const PLANOS: PlanoParceiro[] = [
     nome: "Parceiro Local",
     valor: "R$ 180 a 450 (taxa única) ou R$ 49/mês",
     resumo:
-      "Para quem quer aparecer para quem está na estrada agora, não só para quem já conhece.",
+      "Para quem quer aparecer para quem está viajando agora, não só para quem já conhece.",
     entregaveis: [
       "Minisite completo, com fotos, tags de infraestrutura e contato direto",
       "Otimização do seu perfil no Google Maps",

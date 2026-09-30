@@ -10,7 +10,7 @@ export async function generateMetadata(): Promise<Metadata> {
   const i = await idiomaServidor();
   return {
     title: L(i, "Contribuir com uma Foto · JobPago.com.br", "Contribuir con una foto · JobPago.com.br", "Contribute a photo · JobPago.com.br"),
-    description: L(i, "Envie a foto de um posto, pousada, camping ou ponto de apoio na estrada — a localização é lida automaticamente da foto.", "Enviá la foto de una estación, posada, camping o punto de apoyo en la ruta; la ubicación se lee automáticamente de la foto.", "Send a photo of a gas station, guesthouse, campsite or support point on the road — the location is read from the photo automatically."),
+    description: L(i, "Envie a foto de um posto, pousada, camping ou ponto de apoio na rota — a localização é lida automaticamente da foto.", "Enviá la foto de una estación, posada, camping o punto de apoyo en la ruta; la ubicación se lee automáticamente de la foto.", "Send a photo of a gas station, guesthouse, campsite or support point along the route — the location is read from the photo automatically."),
     robots: { index: true, follow: true },
   };
 }

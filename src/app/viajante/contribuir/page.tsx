@@ -8,7 +8,7 @@ import FormContribuicao from "./FormContribuicao";
 export async function generateMetadata(): Promise<Metadata> {
   const i = await idiomaServidor();
   return {
-    title: L(i, "Contribuir com a estrada · JobPago", "Contribuir con la ruta · JobPago", "Contribute to the road · JobPago"),
+    title: L(i, "Contribuir com a rota · JobPago · renda na viagem", "Contribuir con la ruta · JobPago · ingresos en el viaje", "Contribute to the route · JobPago · income on the go"),
     robots: { index: false },
   };
 }

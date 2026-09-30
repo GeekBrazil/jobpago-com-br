@@ -49,7 +49,7 @@ export default async function PlanosParceiroPage() {
           </h1>
 
           <p className="mt-5 text-sm sm:text-base text-slate-300 leading-relaxed">
-            {t("Estou percorrendo o litoral parando em pousadas, restaurantes de estrada, postos, oficinas e cafés. Onde eu paro, registro o que encontrei: ducha, tomada, Wi-Fi, pátio. O lugar entra no mapa com a data da visita e a lista do que havia no dia.",
+            {t("Estou percorrendo o litoral parando em pousadas, restaurantes de beira de rodovia, postos, oficinas e cafés. Onde eu paro, registro o que encontrei: ducha, tomada, Wi-Fi, pátio. O lugar entra no mapa com a data da visita e a lista do que havia no dia.",
               "Estoy recorriendo la costa parando en posadas, paradores, estaciones de servicio, talleres y cafés. Donde paro, registro lo que encontré: ducha, enchufe, Wi-Fi, patio. El lugar entra en el mapa con la fecha de la visita y la lista de lo que había ese día.",
               "I'm travelling the coast stopping at guesthouses, roadside restaurants, gas stations, mechanics and cafés. Wherever I stop, I record what I found: shower, power, Wi-Fi, yard. The place goes on the map with the visit date and the list of what was there that day.")}
           </p>
@@ -158,7 +158,7 @@ export default async function PlanosParceiroPage() {
             href="/noticias-estrada"
             className="mt-4 inline-flex items-center gap-1.5 text-xs font-bold text-amber-400 hover:underline"
           >
-            {t("Ver Notícias da Estrada →", "Ver Noticias de la Ruta →", "See Road News →")}
+            {t("Ver Notícias da Rota →", "Ver Noticias de la Ruta →", "See Route News →")}
           </Link>
         </section>
 

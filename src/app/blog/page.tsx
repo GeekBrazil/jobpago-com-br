@@ -10,7 +10,7 @@ import { L } from "@/lib/i18n";
 export async function generateMetadata(): Promise<Metadata> {
   const i = await idiomaServidor();
   return {
-    title: L(i, "Blog & Notícias da Estrada · JobPago.com.br", "Blog y Noticias de la Ruta · JobPago.com.br", "Blog & Road News · JobPago.com.br"),
+    title: L(i, "Blog & Notícias da Rota · JobPago · renda na viagem", "Blog y Noticias de la Ruta · JobPago · ingresos en el viaje", "Blog & Route News · JobPago · income on the go"),
     description: L(i,
       "Artigos, análises de rotas, infraestrutura rodoviária e notícias da expedição pelo Brasil.",
       "Artículos, análisis de rutas, infraestructura vial y noticias de la expedición por Brasil (artículos en portugués).",
@@ -54,7 +54,7 @@ export default async function BlogPage() {
       <main className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-16">
         <span className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full glass-panel border border-amber-500/30 text-amber-300 text-[10px] sm:text-xs font-black tracking-widest uppercase">
           <span className="w-1.5 h-1.5 rounded-full bg-amber-400 animate-pulse" />
-          {t("Conteúdo Autoral & Estrada", "Contenido propio y ruta", "Original content & road")}
+          {t("Conteúdo Autoral & Rota", "Contenido propio y ruta", "Original content & route")}
         </span>
 
         <h1 className="mt-4 text-3xl sm:text-5xl font-black text-white leading-[1.12]">

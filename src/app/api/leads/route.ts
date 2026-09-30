@@ -4,6 +4,7 @@ import path from "path";
 import { Pool } from "pg";
 import { normalizarTelefone } from "@/lib/telefone";
 import { msg } from "@/lib/traducoesCadastro";
+import { termosParaRevisao } from "@/lib/moderacao";
 
 const LEADS_FILE = path.join(process.cwd(), "public", "data", "leads_store.json");
 
@@ -54,20 +55,6 @@ async function gravarNoPostgres(lead: LeadRegistrado) {
     ]
   );
   return true;
-}
-
-async function listarDoPostgres(): Promise<LeadRegistrado[] | null> {
-  if (!pool) return null;
-  const { rows } = await pool.query(
-    `SELECT id, tipo, nome_contratado AS "nomeContratado", whatsapp_contratado AS "whatsappContratado",
-            email_contratado AS "emailContratado", nome_contratante AS "nomeOuPerfilContratante",
-            email_contratante AS "emailContratante", whatsapp_contratante AS "whatsappContratante",
-            titulo_servico AS "tituloServico", categoria, modalidade, cidade, valor,
-            is_cortesia AS "isCortesia", descricao, lgpd_consent AS "lgpdConsent", status,
-            criado_em AS "createdAt"
-       FROM leads ORDER BY criado_em DESC LIMIT 500`
-  );
-  return rows;
 }
 
 function readLeadsDoDisco(): LeadRegistrado[] {
@@ -147,11 +134,16 @@ export async function POST(req: Request) {
       timeZone: "America/Sao_Paulo",
     }).format(new Date());
 
+    // Filtro de termos (src/config/termos-revisao.ts): não rejeita, segura para
+    // revisão manual. Quem preencheu não é avisado, para não ensinar o drible.
+    const termosSuspeitos = termosParaRevisao(body.tituloServico, body.descricao, body.nomeOuPerfilContratante);
+    const emRevisao = termosSuspeitos.length > 0;
+
     const newLead: LeadRegistrado = {
       id: `lead_${Date.now()}_${Math.random().toString(36).substring(2, 6)}`,
       ...body,
       createdAt: nowIso,
-      status: "pendente_envio_contratante",
+      status: emRevisao ? "revisao_manual" : "pendente_envio_contratante",
     };
 
     // Persistência: Postgres é a fonte de verdade; disco/memória é só rede de
@@ -202,7 +194,14 @@ export async function POST(req: Request) {
 • Contratante / Perfil: ${body.nomeOuPerfilContratante || "Contratantes da Rede JobPago"}
 • Modalidade: Nós enviamos os serviços para o contratante.`;
 
-    const mensagemWhatsapp = `⚡ *NOVO ${isContratante ? "PEDIDO DE CONTRATAÇÃO" : "SERVIÇO CADASTRADO"} — JOBPAGO*
+    const avisoRevisao = emRevisao
+      ? `🚫 *REVISAR ANTES DE DESPACHAR* — termos: ${termosSuspeitos.join(", ")}
+Não repasse a ninguém até revisar. Serviço sexual, de acompanhante ou com menor de idade: remover e, se houver sinal de menor, denunciar no Disque 100.
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+`
+      : "";
+
+    const mensagemWhatsapp = `${avisoRevisao}⚡ *NOVO ${isContratante ? "PEDIDO DE CONTRATAÇÃO" : "SERVIÇO CADASTRADO"} — JOBPAGO*
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 ${blocoAcao}
 
@@ -237,11 +236,5 @@ ${blocoDestino}
   }
 }
 
-export async function GET() {
-  const doPostgres = await listarDoPostgres().catch((err) => {
-    console.error("Erro lendo leads do Postgres:", err);
-    return null;
-  });
-  const leads = doPostgres ?? readLeadsDoDisco();
-  return NextResponse.json({ success: true, count: leads.length, leads, fonte: doPostgres ? "postgres" : "disco" });
-}
+/* A listagem pública (GET) saiu em 2026-09-30: devolvia nome, WhatsApp e
+   e-mail de todo mundo sem login. A lista fica só em /api/admin/leads. */

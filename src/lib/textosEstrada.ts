@@ -27,7 +27,7 @@ export const QUESTIONARIO: Pergunta[] = [
     o("carro", "Carro", "Auto", "Car"), o("van", "Van ou motorhome", "Van o motorhome", "Van or motorhome"),
     o("onibus", "Ônibus", "Ómnibus / colectivo", "Bus"), o("carona", "Carona", "A dedo", "Hitchhiking"), o("caminhao", "Caminhão", "Camión", "Truck"),
   ] },
-  { id: "tempo", tipo: "uma", titulo: t("Há quanto tempo está na estrada?", "¿Hace cuánto estás en la ruta?", "How long have you been on the road?"), opcoes: [
+  { id: "tempo", tipo: "uma", titulo: t("Há quanto tempo está viajando?", "¿Hace cuánto estás viajando?", "How long have you been travelling?"), opcoes: [
     o("sem", "Menos de 1 semana", "Menos de 1 semana", "Less than a week"), o("mes", "Até 1 mês", "Hasta 1 mes", "Up to a month"),
     o("6m", "1 a 6 meses", "1 a 6 meses", "1 to 6 months"), o("mais", "Mais de 6 meses", "Más de 6 meses", "More than 6 months"),
   ] },
@@ -41,7 +41,7 @@ export const QUESTIONARIO: Pergunta[] = [
     o("chip", "Chip de celular e internet", "Chip de celular e internet", "SIM card and internet"),
     o("cambio", "Câmbio e dinheiro", "Cambio y efectivo", "Currency exchange and cash"),
     o("idioma", "Idioma", "Idioma", "Language"),
-    o("seguranca", "Segurança na estrada", "Seguridad en la ruta", "Safety on the road"),
+    o("seguranca", "Segurança na viagem", "Seguridad en el viaje", "Safety while travelling"),
     o("transporte", "Transporte entre cidades", "Transporte entre ciudades", "Getting between cities"),
     o("banho", "Banho, água e banheiro", "Ducha, agua y baño", "Showers, water and toilets"),
     o("saude", "Saúde e farmácia", "Salud y farmacia", "Health and pharmacies"),
@@ -64,13 +64,13 @@ export const QUESTIONARIO: Pergunta[] = [
     o("tarefas", "Acesso a trabalhos pagos no caminho", "Acceso a trabajos pagos en el camino", "Access to paid gigs along the way"),
     o("nada", "Nada, só usaria grátis", "Nada, solo lo usaría gratis", "Nothing, I'd only use it for free"),
   ] },
-  { id: "confianca", tipo: "escala", titulo: t("De 1 a 5, quanto você confia nas informações que acha hoje sobre lugares na estrada?", "Del 1 al 5, ¿cuánto confiás en la información que encontrás hoy sobre lugares en la ruta?", "From 1 to 5, how much do you trust the information you find today about places on the road?") },
+  { id: "confianca", tipo: "escala", titulo: t("De 1 a 5, quanto você confia nas informações que acha hoje sobre lugares na rota?", "Del 1 al 5, ¿cuánto confiás en la información que encontrás hoy sobre lugares en la ruta?", "From 1 to 5, how much do you trust the information you find today about places along the route?") },
   { id: "redes", tipo: "texto", titulo: t("Seu perfil nas redes (opcional)", "Tu perfil en redes (opcional)", "Your social media profile (optional)") },
 ];
 
 export const TXT = {
   pt: {
-    painel: "Seu painel na estrada", nivel: "Nível", pontos: "pontos", proximo: "para o próximo nível",
+    painel: "Seu painel de viagem", nivel: "Nível", pontos: "pontos", proximo: "para o próximo nível",
     contribuir: "Contribuir", questionario: "Questionário do viajante", entrar: "Entrar para pontuar",
     pendente: "aguardando confirmação", confirmada: "confirmada", recusada: "recusada",
     avisoGps: "Vamos pedir a localização do seu celular para confirmar que a foto é do lugar. Ela só é usada para isso e fica guardada junto da contribuição.",
@@ -88,7 +88,7 @@ export const TXT = {
     questionarioFeito: "Cuestionario respondido — tus puntos ya se sumaron.",
   },
   en: {
-    painel: "Your road dashboard", nivel: "Level", pontos: "points", proximo: "to the next level",
+    painel: "Your travel dashboard", nivel: "Level", pontos: "points", proximo: "to the next level",
     contribuir: "Contribute", questionario: "Traveller questionnaire", entrar: "Sign in to earn points",
     pendente: "awaiting confirmation", confirmada: "confirmed", recusada: "rejected",
     avisoGps: "We'll ask for your phone's location to confirm the photo was taken at the place. It's only used for that and is stored with your contribution.",

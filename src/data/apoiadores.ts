@@ -22,7 +22,7 @@ export const FAIXAS_CONTRIBUICAO: FaixaContribuicao[] = [
   {
     id: "apoiador",
     valorMinimo: 30,
-    insignia: "Apoiador da Estrada",
+    insignia: "Apoiador da Rota",
     recompensa: "Nome na lista de apoiadores da Expedição",
     publicacao: false,
     tom: "slate",
@@ -31,7 +31,7 @@ export const FAIXAS_CONTRIBUICAO: FaixaContribuicao[] = [
     id: "insignia",
     valorMinimo: 100,
     insignia: "Insígnia de Apoiador",
-    recompensa: "Insígnia digital + menção em Notícias da Estrada",
+    recompensa: "Insígnia digital + menção em Notícias da Rota",
     publicacao: true,
     tom: "amber",
   },

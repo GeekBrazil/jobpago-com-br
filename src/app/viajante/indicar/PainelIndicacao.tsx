@@ -77,7 +77,7 @@ export default function PainelIndicacao() {
     <div>
       {topo}
       <h1 className="mt-4 text-3xl sm:text-4xl font-black">{L(idioma, "Indicar e ganhar", "Recomendar y ganar", "Refer and earn")}</h1>
-      <p className="mt-2 text-slate-300">{L(idioma, "Apresente a JobPago aos negócios que você encontra na estrada — pousadas, campings, postos, restaurantes.", "Presentale JobPago a los negocios que encontrás en la ruta — posadas, campings, estaciones, restaurantes.", "Introduce JobPago to the businesses you meet on the road — guesthouses, campsites, gas stations, restaurants.")}</p>
+      <p className="mt-2 text-slate-300">{L(idioma, "Apresente a JobPago aos negócios que você encontra na rota — pousadas, campings, postos, restaurantes.", "Presentale JobPago a los negocios que encontrás en la ruta — posadas, campings, estaciones, restaurantes.", "Introduce JobPago to the businesses you meet along the route — guesthouses, campsites, gas stations, restaurants.")}</p>
 
       {!d.codigo ? (
         <div className="mt-6 glass-panel rounded-3xl p-6">

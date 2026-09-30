@@ -128,7 +128,7 @@ const PLANOS_TR: Record<string, { es: TrPlano; en: TrPlano }> = {
   local: {
     es: { nome: "Socio Local", valor: "R$ 180 a 450 (pago único) o R$ 49/mes", resumo: "Para quien quiere que lo vea quien está en la ruta ahora, no solo quien ya lo conoce.",
       entregaveis: ["Minisitio completo, con fotos, etiquetas de infraestructura y contacto directo", "Optimización de tu perfil en Google Maps", "Un video o reel colaborativo, grabado en el lugar", "Destacado en el mapa, siempre identificado como Socio"] },
-    en: { nome: "Local Partner", valor: "R$ 180 to 450 (one-off) or R$ 49/month", resumo: "For places that want to be seen by people on the road now, not just those who already know them.",
+    en: { nome: "Local Partner", valor: "R$ 180 to 450 (one-off) or R$ 49/month", resumo: "For places that want to be seen by people travelling now, not just those who already know them.",
       entregaveis: ["Full mini-site with photos, facility tags and direct contact", "Google Maps profile optimisation", "One collaborative video or reel filmed on site", "Featured on the map, always labeled as Partner"] },
   },
   regional: {
@@ -151,8 +151,8 @@ export function tPlano<P extends TrPlano & { id: string }>(i: Idioma, p: P): P {
 
 /* Faixas da régua de contribuição (apoiadores.ts), pelo id. */
 const FAIXAS_TR: Record<string, { es: [string, string]; en: [string, string] }> = {
-  apoiador: { es: ["Apoyo de la Ruta", "Nombre en la lista de apoyos de la Expedición"], en: ["Road Supporter", "Name on the Expedition supporters list"] },
-  insignia: { es: ["Insignia de Apoyo", "Insignia digital + mención en Noticias de la Ruta"], en: ["Supporter Badge", "Digital badge + mention in Road News"] },
+  apoiador: { es: ["Apoyo de la Ruta", "Nombre en la lista de apoyos de la Expedición"], en: ["Route Supporter", "Name on the Expedition supporters list"] },
+  insignia: { es: ["Insignia de Apoyo", "Insignia digital + mención en Noticias de la Ruta"], en: ["Supporter Badge", "Digital badge + mention in Route News"] },
   honra: { es: ["Apoyo de Honor", "Insignia de Honor + publicación destacada con foto del tramo"], en: ["Honour Supporter", "Honour badge + featured post with a photo of the stretch"] },
   padrinho: { es: ["Padrino de la Expedición", "Todo lo de Apoyo de Honor + mención en video/reel del viaje"], en: ["Expedition Godparent", "Everything in Honour Supporter + mention in a trip video/reel"] },
 };

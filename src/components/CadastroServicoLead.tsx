@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { CATEGORIAS } from "@/data/categorias";
+import { CATEGORIAS, avisoCategoria } from "@/data/categorias";
 import Link from "next/link";
 import { Icon } from "@/components/Icons";
 import { useIdioma } from "@/components/useIdioma";
@@ -374,6 +374,9 @@ export default function CadastroServicoLead({ onSuccess, tipoInicial = "prestado
                     </option>
                   ))}
                 </select>
+                {avisoCategoria(idioma, categoria) && (
+                  <p className="mt-2 text-[11px] text-amber-200/80 leading-snug">{avisoCategoria(idioma, categoria)}</p>
+                )}
               </div>
 
               <div>
@@ -385,7 +388,7 @@ export default function CadastroServicoLead({ onSuccess, tipoInicial = "prestado
                   className="w-full bg-slate-900 border border-white/10 rounded-xl px-3 py-3 text-sm text-white focus:outline-none focus:border-amber-400 cursor-pointer"
                 >
                   <option value="Remoto">{L(idioma, "Remoto (online)", "Remoto (online)", "Remote (online)")}</option>
-                  <option value="Presencial">{L(idioma, "Presencial (local ou estrada)", "Presencial (local o ruta)", "In person (local or on the road)")}</option>
+                  <option value="Presencial">{L(idioma, "Presencial (local ou na rota)", "Presencial (local o en la ruta)", "In person (local or along the route)")}</option>
                 </select>
               </div>
             </div>
@@ -414,7 +417,7 @@ export default function CadastroServicoLead({ onSuccess, tipoInicial = "prestado
                   <Icon name="shield" width={30} height={30} /> {L(idioma, "Cortesia solidária (grátis)", "Cortesía solidaria (gratis)", "Free, solidarity help")}
                 </label>
                 <span className="text-[10px] text-slate-400 block">
-                  {L(idioma, "Ponto de apoio na estrada, recarga elétrica ou mentoria voluntária.", "Punto de apoyo en la ruta, carga eléctrica o mentoría voluntaria.", "A support stop on the road, power top-up or volunteer mentoring.")}
+                  {L(idioma, "Ponto de apoio na rota, recarga elétrica ou mentoria voluntária.", "Punto de apoyo en la ruta, carga eléctrica o mentoría voluntaria.", "A support stop along the route, power top-up or volunteer mentoring.")}
                 </span>
               </div>
               <input

@@ -6,7 +6,7 @@ import { useIdioma } from "@/components/useIdioma";
 import { L } from "@/lib/i18n";
 import { tSecao, competenciaEm } from "@/lib/traducoesCadastro";
 
-/* "Quanto se ganha de verdade fazendo X na sua cidade?" — número oficial
+/* "Valores de referência por setor na sua cidade" (salário de admissão) — número oficial
    (salário médio de admissão do Novo CAGED, 12 meses) no lugar de promessa. */
 
 interface Setor { secao: string; setor: string; salario: number; admissoes: number }
@@ -55,9 +55,9 @@ export default function RendaNaCidade({ ibgeInicial = "3303807" }: { ibgeInicial
   return (
     <section id="renda-na-cidade" className="py-14 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto" aria-labelledby="renda-titulo">
       <div className="glass-panel rounded-[2rem] p-6 sm:p-10">
-        <p className="text-xs font-mono font-bold uppercase tracking-widest text-amber-400">{L(idioma, "Número oficial, não promessa", "Dato oficial, no promesa", "Official figure, not a promise")}</p>
+        <p className="text-xs font-mono font-bold uppercase tracking-widest text-amber-400">{L(idioma, "Valores de referência por setor na sua cidade", "Valores de referencia por sector en tu ciudad", "Reference rates by sector in your town")}</p>
         <h2 id="renda-titulo" className="mt-3 text-3xl sm:text-5xl font-black tracking-tight leading-tight">
-          {L(idioma, "Quanto se ganha de verdade fazendo", "Cuánto se gana de verdad trabajando en", "What you really earn working in")}{" "}
+          {L(idioma, "Salário de admissão em", "Salario de ingreso en", "Starting pay in")}{" "}
           <label className="sr-only" htmlFor="renda-setor">{L(idioma, "Setor", "Sector", "Sector")}</label>
           <select
             id="renda-setor"
@@ -69,7 +69,7 @@ export default function RendaNaCidade({ ibgeInicial = "3303807" }: { ibgeInicial
               <option key={s.secao} value={s.secao} className="bg-slate-900 text-base">{nomeSetor(s)}</option>
             ))}
           </select>{" "}
-          {L(idioma, "em", "en", "in")} {dados ? dados.cidade : "…"}?
+          {L(idioma, "em", "en", "in")} {dados ? dados.cidade : "…"}
         </h2>
 
         <div className="mt-8 grid gap-6 lg:grid-cols-[1fr_1fr] items-start">

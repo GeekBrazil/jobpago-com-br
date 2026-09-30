@@ -41,14 +41,14 @@ export default async function IndicacaoPage({ params }: { params: Promise<{ codi
         <p className="text-xs font-mono font-bold uppercase tracking-widest text-amber-400">{t("Indicação de", "Recomendación de", "Referral from")} {nome}</p>
         <h1 className="mt-3 text-4xl sm:text-5xl font-black tracking-tight leading-[1.05]">{t(`${nome} indicou o seu negócio para a JobPago`, `${nome} recomendó tu negocio a JobPago`, `${nome} referred your business to JobPago`)}</h1>
         <p className="mt-4 text-lg text-slate-300">
-          {t("A JobPago liga negócios do bairro e da estrada a quem está passando e a quem faz as tarefas do dia a dia. Na Expedição nº 01 (Paraty → Fortaleza, saída em 15 de outubro), a gente visita e verifica os lugares da rota.",
+          {t("A JobPago liga negócios locais e da rota a quem está passando e a quem faz as tarefas do dia a dia. Na Expedição nº 01 (Paraty → Fortaleza, saída em 15 de outubro), a gente visita e verifica os lugares da rota.",
             "JobPago conecta negocios del barrio y de la ruta con quien está de paso y con quien hace las tareas del día a día. En la Expedición nº 01 (Paraty → Fortaleza, salida el 15 de octubre) visitamos y verificamos los lugares del recorrido.",
             "JobPago connects local and roadside businesses with people passing through and people who do everyday tasks. On Expedition no. 01 (Paraty → Fortaleza, leaving 15 October), we visit and verify places along the route.")}
         </p>
         <div className="mt-8 grid gap-4 sm:grid-cols-2">
           <Link href="/refugio" className="glass-panel rounded-3xl p-6 border border-amber-400/40 hover:border-amber-400">
             <p className="font-black text-white text-lg">{t("Tem onde dormir?", "¿Tenés dónde dormir?", "Got a place to sleep?")}</p>
-            <p className="mt-1 text-sm text-slate-300">{t("Camping, hostel, pousada, hotel ou pátio: peça a visita e seja um Refúgio da Estrada.", "Camping, hostel, posada, hotel o patio: pedí la visita y sé un Refugio de la Ruta.", "Campsite, hostel, guesthouse, hotel or yard: request a visit and become a Road Refuge.")}</p>
+            <p className="mt-1 text-sm text-slate-300">{t("Camping, hostel, pousada, hotel ou pátio: peça a visita e seja um Pouso visitado.", "Camping, hostel, posada, hotel o patio: pedí la visita y sé una Parada visitada.", "Campsite, hostel, guesthouse, hotel or yard: request a visit and become a Visited stopover.")}</p>
           </Link>
           <Link href="/parceiros/planos" className="glass-panel rounded-3xl p-6 border border-white/10 hover:border-amber-400/60">
             <p className="font-black text-white text-lg">{t("Outro tipo de negócio?", "¿Otro tipo de negocio?", "Another kind of business?")}</p>

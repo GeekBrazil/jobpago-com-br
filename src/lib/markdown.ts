@@ -64,7 +64,7 @@ export function parseMarkdownArticle(rawContent: string): ParsedArticle {
       .replace(/(^-|-$)/g, "");
 
   const summary = meta.excerpt || meta.summary || meta.description || "";
-  const category = meta.category || "Logística & Estrada";
+  const category = meta.category || "Logística & Rota";
   const coverImage = meta.coverImage || meta.image || meta.cover || undefined;
   const publishedAt = meta.date
     ? new Date(meta.date).toISOString()

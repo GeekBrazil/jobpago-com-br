@@ -59,7 +59,7 @@ export default async function ExpedicaoPage() {
             <span className="font-mono text-xs font-bold uppercase tracking-[0.3em] text-amber-400 shrink-0">Nº 01</span>
             <div>
               <h2 id="mapa" className="text-2xl sm:text-3xl font-black tracking-tight">{t("Travessia de reconhecimento", "Travesía de reconocimiento", "Scouting crossing")}</h2>
-              <p className="mt-1 text-sm text-slate-400">{t("A primeira viagem abre o caminho: visitar, verificar e mapear cada ponto de apoio antes de convidar a estrada inteira.", "El primer viaje abre el camino: visitar, verificar y mapear cada punto de apoyo antes de invitar a toda la ruta.", "The first trip opens the way: visit, verify and map every support point before inviting the whole road.")}</p>
+              <p className="mt-1 text-sm text-slate-400">{t("A primeira viagem abre o caminho: visitar, verificar e mapear cada ponto de apoio antes de convidar todo mundo que está na rota.", "El primer viaje abre el camino: visitar, verificar y mapear cada punto de apoyo antes de invitar a toda la ruta.", "The first trip opens the way: visit, verify and map every support point before inviting everyone along the route.")}</p>
             </div>
           </div>
           <MapaRotaCliente
@@ -170,7 +170,7 @@ export default async function ExpedicaoPage() {
         {rota.cidades.length > 0 && (
           <section className="mt-14" aria-labelledby="cidades">
             <h2 id="cidades" className="text-2xl sm:text-3xl font-black">{rota.cidades.length} {t("cidades no caminho", "ciudades en el camino", "towns on the way")}</h2>
-            <p className="mt-2 text-slate-300">{t("Cada uma tem seu relatório: quem está abrindo negócio e quanto se paga para começar.", "Cada una tiene su informe: quién abre negocios y cuánto se paga al empezar.", "Each has its own report: who is opening businesses and what it pays to start.")}</p>
+            <p className="mt-2 text-slate-300">{t("Cada uma tem seu relatório: quem está abrindo negócio e os valores de referência de cada setor.", "Cada una tiene su informe: quién abre negocios y los valores de referencia de cada sector.", "Each has its own report: who is opening businesses and reference rates for each sector.")}</p>
             <div className="mt-5 flex flex-wrap gap-2">
               {rota.cidades.map((c) =>
                 c.ibge ? (
@@ -191,7 +191,7 @@ export default async function ExpedicaoPage() {
               "Trazado: OSRM sobre OpenStreetMap. Banquina y tipo de ruta: OpenStreetMap (colaborativo, extracto Geofabrik). Peajes: Agencia Nacional de Transportes Terrestres. Generado el",
               "Route: OSRM on OpenStreetMap. Shoulder and carriageway: OpenStreetMap (crowdsourced, Geofabrik extract). Tolls: National Land Transport Agency. Generated")} {rota.gerado_em}.
           </p>
-          <p><Link href="/refugio" className="underline hover:text-amber-400">{t("Tem onde dormir no caminho? Peça a visita e seja um Refúgio da Estrada →", "¿Tenés dónde dormir en el camino? Pedí la visita y sé un Refugio de la Ruta →", "Got a place to sleep on the way? Request a visit and become a Road Refuge →")}</Link></p>
+          <p><Link href="/refugio" className="underline hover:text-amber-400">{t("Tem onde dormir no caminho? Peça a visita e seja um Pouso visitado →", "¿Tenés dónde dormir en el camino? Pedí la visita y sé una Parada visitada →", "Got a place to sleep on the way? Request a visit and become a Visited stopover →")}</Link></p>
           <p><Link href="/expedicoes" className="underline hover:text-amber-400">{t("Expedições de outros viajantes — e como criar a sua →", "Expediciones de otros viajeros, y cómo crear la tuya →", "Other travellers’ expeditions — and how to create yours →")}</Link></p>
         </footer>
       </main>
