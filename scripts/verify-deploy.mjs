@@ -69,7 +69,8 @@ const TARGETS = [
     mustContain: [
       "maiores de 18 anos",
       "Serviços proibidos",
-      "jobpago@allancandido.com"
+      "jobpago@allancandido.com",
+      "62.685.514/0001-85"
     ],
     mustNotContain: ["allan@jobpago.com.br"]
   },

@@ -518,6 +518,7 @@ export default function Home() {
             </a>
           </div>
         </div>
+        <p className="max-w-7xl mx-auto mt-4 text-[11px] text-slate-500 leading-relaxed">62.685.514 ALLAN CANDIDO · CNPJ 62.685.514/0001-85 · Rua Leontino Antonio de Souza, 85, Água Santa, Angra dos Reis/RJ, CEP 23915-505</p>
       </footer>
     </div>
   );

@@ -115,7 +115,7 @@ export default async function TermosPage() {
     },
     {
       titulo: t("12. Responsável", "12. Responsable", "12. Operator"),
-      texto: <>{t("Plataforma mantida e operada por", "Plataforma mantenida y operada por", "Platform maintained and operated by")} {b("Allan Candido")} (jobpago@allancandido.com).</>,
+      texto: <>{t("Plataforma mantida e operada por", "Plataforma mantenida y operada por", "Platform maintained and operated by")} {b("Allan Candido")} — 62.685.514 ALLAN CANDIDO · CNPJ 62.685.514/0001-85 · Rua Leontino Antonio de Souza, 85, Água Santa, Angra dos Reis/RJ, CEP 23915-505 (jobpago@allancandido.com)</>,
     },
   ];
 

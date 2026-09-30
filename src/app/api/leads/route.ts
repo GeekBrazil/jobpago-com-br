@@ -1,13 +1,16 @@
 import { NextResponse } from "next/server";
 import fs from "fs";
 import path from "path";
+import os from "os";
 import { Pool } from "pg";
 import { normalizarTelefone } from "@/lib/telefone";
 import { msg } from "@/lib/traducoesCadastro";
 import { termosParaRevisao } from "@/lib/moderacao";
 import { garantirColunasMaioridade, declarouMaioridade, ERRO_MAIORIDADE } from "@/lib/maioridade";
 
-const LEADS_FILE = path.join(process.cwd(), "public", "data", "leads_store.json");
+// Fora de public/: se o banco cair, o lead (com WhatsApp e e-mail) não pode
+// ficar num diretório que o site serve.
+const LEADS_FILE = path.join(os.tmpdir(), "jobpago-leads_store.json");
 
 interface LeadPayload {
   tipo: "prestador" | "contratante";
