@@ -7,6 +7,7 @@ import Link from "next/link";
 import { useIdioma } from "@/components/useIdioma";
 import { L } from "@/lib/i18n";
 import CampoTelefone from "@/components/CampoTelefone";
+import DeclaracaoMaioridade from "@/components/DeclaracaoMaioridade";
 
 function FormularioCadastro() {
   const router = useRouter();
@@ -19,6 +20,7 @@ function FormularioCadastro() {
   const [email, setEmail] = useState("");
   const [telefone, setTelefone] = useState("");
   const [senha, setSenha] = useState("");
+  const [maior18, setMaior18] = useState(false);
   const [erro, setErro] = useState("");
   const [enviando, setEnviando] = useState(false);
 
@@ -30,7 +32,7 @@ function FormularioCadastro() {
     const res = await fetch("/api/auth/cadastro", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ nome, email, telefone, senha, idioma: i }),
+      body: JSON.stringify({ nome, email, telefone, senha, maior18, idioma: i }),
     });
     const data = await res.json();
 
@@ -57,7 +59,7 @@ function FormularioCadastro() {
         </Link>
 
         <h1 className="text-lg font-bold text-white mb-1">{t("Criar conta", "Crear cuenta", "Create account")}</h1>
-        <p className="text-xs text-slate-400 mb-6">{t("Rapidinho — sua conta JobPago, com segurança.", "Rapidito: tu cuenta JobPago, segura.", "Quick — your JobPago account, safely.")}</p>
+        <p className="text-xs text-slate-400 mb-6">{t("Rapidinho — sua conta JobPago.", "Rapidito: tu cuenta JobPago.", "Quick — your JobPago account.")}</p>
 
         <form onSubmit={handleSubmit} className="flex flex-col gap-3">
           <input
@@ -86,6 +88,7 @@ function FormularioCadastro() {
             onChange={(e) => setSenha(e.target.value)}
             className="bg-black/30 border border-white/10 rounded-xl px-4 py-2.5 text-sm text-white placeholder-slate-500 focus:outline-none focus:border-amber-400/50"
           />
+          <DeclaracaoMaioridade idioma={i} marcado={maior18} onChange={setMaior18} />
           {erro && <p className="text-xs text-red-400">{erro}</p>}
           <button
             type="submit"

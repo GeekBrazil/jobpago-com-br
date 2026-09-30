@@ -23,11 +23,11 @@ const fontSans = Plus_Jakarta_Sans({
 export async function generateMetadata(): Promise<Metadata> {
   const i = await idiomaServidor();
   return {
-  title: L(i, "JobPago.com.br · Renda Online & Conexão para Nômades Digitais", "JobPago.com.br · Ingresos online y conexión para nómades digitales", "JobPago.com.br · Online income & connections for digital nomads"),
+  title: L(i, "JobPago · Renda na viagem para nômades e viajantes", "JobPago · Ingresos en el viaje para nómades y viajeros", "JobPago · Income on the go for nomads and travellers"),
   description: L(i,
-    "Negócios do bairro e da estrada encontram quem faz a tarefa — fotos, Instagram, cardápio, frete, apoio na estrada — com Pix direto e sem comissão. Relatório grátis da sua cidade e os Refúgios da Estrada verificados na Expedição Paraty → Fortaleza.",
-    "Negocios del barrio y de la ruta encuentran quién hace la tarea (fotos, Instagram, menú, flete, apoyo en la ruta) con Pix directo y sin comisión. Informe gratis de tu ciudad y los Refugios de la Ruta verificados en la Expedición Paraty → Fortaleza.",
-    "Local and roadside businesses find people to do the tasks — photos, Instagram, menus, freight, roadside help — with direct Pix and no commission. Free town reports and verified Road Refuges on the Paraty → Fortaleza Expedition."),
+    "Negócios locais e da rota encontram quem faz a tarefa — fotos, Instagram, cardápio, frete, apoio na viagem — com Pix direto e sem comissão. Relatório grátis da sua cidade e os lugares visitados pela Expedição Paraty → Fortaleza.",
+    "Negocios locales y de la ruta encuentran quién hace la tarea (fotos, Instagram, menú, flete, apoyo en el viaje) con Pix directo y sin comisión. Informe gratis de tu ciudad y los lugares visitados por la Expedición Paraty → Fortaleza.",
+    "Local businesses along the route find people to do the tasks — photos, Instagram, menus, freight, travel support — with direct Pix and no commission. Free town reports and the places visited by the Paraty → Fortaleza Expedition."),
   icons: {
     icon: "/icon.png",
     shortcut: "/icon.png",
@@ -66,6 +66,14 @@ export default async function RootLayout({
           <AuthProvider>
             <IdiomaProvider inicial={idioma}>
               {children}
+              <p className="relative z-10 border-t border-white/10 bg-slate-950/90 px-4 py-3 text-center text-xs text-slate-300">
+                {L(idioma,
+                  "Viu exploração sexual de criança ou adolescente? Denuncie: ",
+                  "¿Viste explotación sexual de niños, niñas o adolescentes en Brasil? Denunciá: ",
+                  "Seen child sexual exploitation in Brazil? Report it: ")}
+                <a href="tel:100" className="font-bold text-white underline">Disque 100</a>
+                {L(idioma, " (gratuito, 24 horas).", " (gratuito, 24 horas).", " (free, 24 hours).")}
+              </p>
               <IdiomaFlutuante />
             </IdiomaProvider>
             <IndicacaoNoWhats />

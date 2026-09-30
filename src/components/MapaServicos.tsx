@@ -145,7 +145,7 @@ export default function MapaServicos({
         undefined,
         {
           [tRef.current("Oportunidades & Serviços", "Oportunidades y servicios", "Opportunities & services")]: oportunidadesLayer,
-          [tRef.current("Estabelecimentos Certificados", "Establecimientos certificados", "Certified places")]: certificadosLayer,
+          [tRef.current("Lugares visitados", "Lugares visitados", "Visited places")]: certificadosLayer,
           [tRef.current("Fotos da Comunidade", "Fotos de la Comunidad", "Community photos")]: fotosComunidadeLayer,
         },
         { position: "bottomleft", collapsed: true }
@@ -412,7 +412,7 @@ export default function MapaServicos({
       viajante: "#a78bfa",
     };
     const LABEL_TIPO: Record<string, string> = {
-      allan: tRef.current("Verificado pelo JobPago", "Verificado por JobPago", "Verified by JobPago"),
+      allan: tRef.current("Foto da expedição JobPago", "Foto de la expedición JobPago", "JobPago expedition photo"),
       empresario: tRef.current("Enviado pelo estabelecimento", "Enviado por el establecimiento", "Sent by the business"),
       viajante: tRef.current("Avistamento de viajante", "Avistaje de viajero", "Traveller sighting"),
     };

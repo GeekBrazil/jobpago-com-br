@@ -45,7 +45,7 @@ export default function PainelIndicacao() {
   }
   async function compartilhar() {
     if (!d?.link) return;
-    const texto = L(idioma, "Conhece a JobPago? Negócios da estrada entram no mapa da expedição com selo de verificado.", "¿Conocés JobPago? Los negocios de la ruta entran al mapa de la expedición con sello de verificado.", "Know JobPago? Roadside businesses get on the expedition map with a verified seal.");
+    const texto = L(idioma, "Conhece a JobPago? Negócios da rota entram no mapa da expedição com o registro de visita.", "¿Conocés JobPago? Los negocios de la ruta entran al mapa de la expedición con el registro de visita.", "Know JobPago? Businesses along the route get on the expedition map with a visit record.");
     try { if (navigator.share) { await navigator.share({ text: texto, url: d.link }); return; } } catch { return; }
     try { await navigator.clipboard.writeText(d.link); setMsg(L(idioma, "Link copiado.", "Link copiado.", "Link copied.")); } catch { /* sem clipboard */ }
   }
@@ -63,7 +63,7 @@ export default function PainelIndicacao() {
       <li>{L(idioma, "A comissão libera 30 dias depois do pagamento do comerciante e é paga uma vez por mês, por Pix, Wise ou PayPal (a partir de R$ 50).", "La comisión se libera 30 días después del pago del comercio y se paga una vez por mes, por Pix, Wise o PayPal (desde R$ 50).", "Commission is released 30 days after the business pays and is paid monthly via Pix, Wise or PayPal (from R$ 50).")}</li>
       <li>{L(idioma, "Vale o primeiro link que o comerciante clicou, por 60 dias. Não vale indicar o próprio negócio.", "Vale el primer link que el comercio abrió, por 60 días. No vale recomendar tu propio negocio.", "The first link the business opened counts, for 60 days. You can't refer your own business.")}</li>
       <li>{L(idioma, "Avise quem você indica que você ganha comissão — a página que ele abre também avisa.", "Avisale a quien recomendás que ganás comisión — la página que abre también lo avisa.", "Tell the people you refer that you earn a commission — the page they open says so too.")}</li>
-      <li>{L(idioma, "Pontos: +300 quando o indicado vira lugar verificado, +800 quando fecha um plano.", "Puntos: +300 cuando el recomendado queda verificado, +800 cuando contrata un plan.", "Points: +300 when your referral gets verified, +800 when they buy a plan.")}</li>
+      <li>{L(idioma, "Pontos: +300 quando o indicado recebe a visita, +800 quando fecha um plano.", "Puntos: +300 cuando el recomendado recibe la visita, +800 cuando contrata un plan.", "Points: +300 when your referral gets visited, +800 when they buy a plan.")}</li>
     </ul>
   );
 
@@ -77,7 +77,7 @@ export default function PainelIndicacao() {
     <div>
       {topo}
       <h1 className="mt-4 text-3xl sm:text-4xl font-black">{L(idioma, "Indicar e ganhar", "Recomendar y ganar", "Refer and earn")}</h1>
-      <p className="mt-2 text-slate-300">{L(idioma, "Apresente a JobPago aos negócios que você encontra na estrada — pousadas, campings, postos, restaurantes.", "Presentale JobPago a los negocios que encontrás en la ruta — posadas, campings, estaciones, restaurantes.", "Introduce JobPago to the businesses you meet on the road — guesthouses, campsites, gas stations, restaurants.")}</p>
+      <p className="mt-2 text-slate-300">{L(idioma, "Apresente a JobPago aos negócios que você encontra na rota — pousadas, campings, postos, restaurantes.", "Presentale JobPago a los negocios que encontrás en la ruta — posadas, campings, estaciones, restaurantes.", "Introduce JobPago to the businesses you meet along the route — guesthouses, campsites, gas stations, restaurants.")}</p>
 
       {!d.codigo ? (
         <div className="mt-6 glass-panel rounded-3xl p-6">

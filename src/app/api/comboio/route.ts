@@ -17,6 +17,7 @@ export async function GET() {
 export async function POST(req: NextRequest) {
   const u = await usuarioLogado();
   if (!u) return NextResponse.json({ erro: "login" }, { status: 401 });
+  if (!u.maior18) return NextResponse.json({ ok: false, erro: "maior18" }, { status: 403 }); // Termos, seção 7
   const p = await perfilViajante(u.id);
   if (p.nivel < NIVEL_COMBOIO) return NextResponse.json({ erro: `A vaga no comboio libera no nível ${NIVEL_COMBOIO}.` }, { status: 403 });
   const b = await req.json().catch(() => ({}));

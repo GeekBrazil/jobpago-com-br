@@ -1,6 +1,7 @@
 import { auth } from "@/lib/authOptions";
 import { getPool } from "@/lib/db";
 import { nivelDe, tituloDe } from "@/lib/reputacao";
+import { garantirColunasMaioridade } from "@/lib/maioridade";
 
 /* Viajante = usuário logado da JobPago (tabela usuarios). Contribuições e
    questionário ficam em `contribuicoes`; pontos = soma das confirmadas. */
@@ -24,13 +25,15 @@ export async function garantirTabelasViajante() {
 }
 
 /** id e nome do usuário logado (a sessão JWT só traz e-mail e nome). */
-export async function usuarioLogado(): Promise<{ id: number; nome: string; email: string } | null> {
+export async function usuarioLogado(): Promise<{ id: number; nome: string; email: string; maior18: boolean } | null> {
   const s = await auth();
   const email = s?.user?.email?.toLowerCase();
   if (!email) return null;
   const pool = await garantirTabelasViajante();
   if (!pool) return null;
-  const { rows } = await pool.query(`SELECT id, nome, email FROM usuarios WHERE lower(email) = $1`, [email]);
+  await garantirColunasMaioridade(pool);
+  const { rows } = await pool.query(
+    `SELECT id, nome, email, maior_18_em IS NOT NULL AS "maior18" FROM usuarios WHERE lower(email) = $1`, [email]);
   return rows[0] ?? null;
 }
 

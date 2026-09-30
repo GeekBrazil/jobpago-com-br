@@ -39,6 +39,7 @@ function limpa(dados: unknown): Record<string, unknown> {
 export async function POST(req: NextRequest) {
   const u = await usuarioLogado();
   if (!u) return NextResponse.json({ ok: false, erro: "login" }, { status: 401 });
+  if (!u.maior18) return NextResponse.json({ ok: false, erro: "maior18" }, { status: 403 }); // Termos, seção 7
   if (limitado(String(u.id))) return NextResponse.json({ ok: false, erro: "Muitas contribuições nesta hora. Tente mais tarde." }, { status: 429 });
   const b = await req.json().catch(() => ({}));
   const tipo = String(b.tipo || "") as TipoContribuicao;

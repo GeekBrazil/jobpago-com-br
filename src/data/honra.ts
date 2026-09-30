@@ -3,9 +3,9 @@
  * Expedição — dinheiro + permuta no topo, depois só dinheiro, depois só permuta.
  * Complementa os planos de parceiro (planos-parceiro.ts), que dizem O QUE ele recebe.
  *
- * Regra que não pode ser quebrada: o selo de Verificado nunca é vendido — só entra
- * quem passou na visita. A Honra aparece sempre identificada, para o viajante saber
- * que aquele lugar apoia a estrada.
+ * Regra que não pode ser quebrada: o registro de visita nunca é vendido. Quem paga
+ * (dinheiro ou permuta) aparece SEMPRE identificado como Parceiro — publicidade
+ * tem de ser identificável (CDC art. 36). Os ids ficam iguais: estão no banco.
  */
 export interface NivelHonra {
   id: "ouro" | "prata" | "bronze" | "verificado";
@@ -19,34 +19,34 @@ export interface NivelHonra {
 export const NIVEIS_HONRA: NivelHonra[] = [
   {
     id: "ouro",
-    nome: "Honra Ouro",
+    nome: "Parceiro · Honra Ouro",
     como: "Dinheiro + permuta",
     desc: "Fecha um plano de parceiro e ainda recebe a expedição: pernoite, refeição ou estrutura.",
-    ganha: "Primeiro na lista da cidade e no mapa, com a medalha ouro, e menção em todo conteúdo gravado no trecho.",
+    ganha: "Primeiro na lista da cidade e no mapa, identificado como Parceiro, com a medalha ouro, e menção em todo conteúdo gravado no trecho.",
     cor: "bg-amber-400 text-black border-amber-300",
   },
   {
     id: "prata",
-    nome: "Honra Prata",
+    nome: "Parceiro · Honra Prata",
     como: "Dinheiro",
     desc: "Fecha um plano de parceiro (Local, Regional ou Master).",
-    ganha: "Aparece antes dos lugares só verificados, com a medalha prata, e menção quando a expedição passar.",
+    ganha: "Aparece antes dos lugares só visitados, identificado como Parceiro, com a medalha prata, e menção quando a expedição passar.",
     cor: "bg-slate-200 text-slate-900 border-slate-100",
   },
   {
     id: "bronze",
-    nome: "Honra Bronze",
+    nome: "Parceiro (permuta) · Honra Bronze",
     como: "Permuta",
     desc: "Recebe a expedição em troca de visibilidade: uma noite, uma refeição ou a estrutura para gravar.",
-    ganha: "Medalha bronze no selo e menção nas redes durante a passagem.",
+    ganha: "Medalha bronze, identificado como Parceiro (permuta), e menção nas redes durante a passagem.",
     cor: "bg-orange-700 text-orange-50 border-orange-500",
   },
   {
     id: "verificado",
-    nome: "Verificado",
+    nome: "Visitado",
     como: "Só a visita",
-    desc: "Foi visitado e passou nos critérios, sem contrapartida.",
-    ganha: "Selo de verificado com a data da visita, no mapa e na lista.",
+    desc: "Foi visitado pela expedição, sem contrapartida.",
+    ganha: "Registro de visita com a data, no mapa e na lista.",
     cor: "bg-white/5 text-amber-300 border-white/15",
   },
 ];
@@ -62,7 +62,7 @@ export const TIPOS_REFUGIO = [
 ] as const;
 
 export const OFERECE = [
-  ["seguro", "Noite segura (portão, recepção ou vigia)"],
+  ["seguro", "Portão, recepção ou vigia no dia da visita"],
   ["banho", "Banho quente"],
   ["energia", "Tomada para celular e notebook"],
   ["220v", "Ponto 220V para motorhome e van"],

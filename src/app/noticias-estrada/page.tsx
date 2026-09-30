@@ -10,7 +10,7 @@ import { L } from "@/lib/i18n";
 export async function generateMetadata(): Promise<Metadata> {
   const i = await idiomaServidor();
   return {
-    title: L(i, "Notícias da Estrada · JobPago.com.br", "Noticias de la Ruta · JobPago.com.br", "Road News · JobPago.com.br"),
+    title: L(i, "Notícias da Rota · JobPago · renda na viagem", "Noticias de la Ruta · JobPago · ingresos en el viaje", "Route News · JobPago · income on the go"),
     description: L(i, "Atualizações da Expedição JobPago e reconhecimento de quem apoia — Paraty → Fortaleza.", "Novedades de la Expedición JobPago y reconocimiento a quienes apoyan, Paraty → Fortaleza.", "JobPago Expedition updates and thanks to our supporters — Paraty → Fortaleza."),
     robots: { index: true, follow: true },
   };
@@ -30,11 +30,11 @@ export default async function NoticiasEstradaPage() {
         </span>
 
         <h1 className="mt-6 text-3xl sm:text-5xl font-black text-white leading-[1.12]">
-          {t("Notícias da Estrada", "Noticias de la Ruta", "Road News")}
+          {t("Notícias da Rota", "Noticias de la Ruta", "Route News")}
         </h1>
 
         <p className="mt-5 text-sm sm:text-base text-slate-300 leading-relaxed">
-          {t("Atualizações reais da viagem, estabelecimentos recém-certificados e reconhecimento de quem apoiou a Expedição com uma", "Novedades reales del viaje, establecimientos recién certificados y reconocimiento a quienes apoyaron la Expedición con una", "Real trip updates, newly certified places and thanks to those who supported the Expedition with a")}{" "}
+          {t("Atualizações reais da viagem, lugares recém-visitados e reconhecimento de quem apoiou a Expedição com uma", "Novedades reales del viaje, lugares recién visitados y reconocimiento a quienes apoyaron la Expedición con una", "Real trip updates, newly visited places and thanks to those who supported the Expedition with a")}{" "}
           <Link href="/parceiros/planos" className="text-amber-400 underline hover:text-amber-300">
             {t("contribuição PIX", "contribución por PIX", "PIX contribution")}
           </Link>
@@ -48,10 +48,10 @@ export default async function NoticiasEstradaPage() {
                 <Icon name="rocket" width={52} height={52} />
               </div>
               <h3 className="text-lg sm:text-xl font-black text-white">
-                {t("A estrada ainda não começou", "La ruta todavía no empezó", "The road hasn’t started yet")}
+                {t("A viagem ainda não começou", "El viaje todavía no empezó", "The trip hasn’t started yet")}
               </h3>
               <p className="text-sm text-slate-400 max-w-md">
-                {t("O primeiro post aparece aqui quando a Expedição sair do papel — atualização de trecho, selo novo ou apoiador reconhecido.", "El primer post aparece acá cuando la Expedición arranque: novedad de un tramo, sello nuevo o apoyo reconocido.", "The first post appears here once the Expedition gets going — a stretch update, a new seal or a supporter thanked.")}
+                {t("O primeiro post aparece aqui quando a Expedição sair do papel — atualização de trecho, lugar visitado ou apoiador reconhecido.", "El primer post aparece acá cuando la Expedición arranque: novedad de un tramo, lugar visitado o apoyo reconocido.", "The first post appears here once the Expedition gets going — a stretch update, a newly visited place or a supporter thanked.")}
               </p>
             </div>
           ) : (

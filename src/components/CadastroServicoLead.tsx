@@ -1,7 +1,8 @@
 "use client";
 
 import { useState } from "react";
-import { CATEGORIAS } from "@/data/categorias";
+import { CATEGORIAS, avisoCategoria } from "@/data/categorias";
+import DeclaracaoMaioridade from "@/components/DeclaracaoMaioridade";
 import Link from "next/link";
 import { Icon } from "@/components/Icons";
 import { useIdioma } from "@/components/useIdioma";
@@ -33,6 +34,7 @@ export default function CadastroServicoLead({ onSuccess, tipoInicial = "prestado
   const [isCortesia, setIsCortesia] = useState(false);
   const [descricao, setDescricao] = useState("");
   const [lgpdConsent, setLgpdConsent] = useState(false);
+  const [maior18, setMaior18] = useState(false);
 
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -50,6 +52,11 @@ export default function CadastroServicoLead({ onSuccess, tipoInicial = "prestado
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailRegex.test(emailContratado.trim())) {
       setError(L(idioma, "Por favor, insira um endereço de e-mail válido.", "Por favor, ingresá un e-mail válido.", "Please enter a valid e-mail address."));
+      return;
+    }
+
+    if (!maior18) {
+      setError(L(idioma, "A JobPago é só para maiores de 18 anos. Marque a declaração para continuar.", "JobPago es solo para mayores de 18 años. Marcá la declaración para continuar.", "JobPago is for people aged 18 or over. Tick the declaration to continue."));
       return;
     }
 
@@ -80,6 +87,7 @@ export default function CadastroServicoLead({ onSuccess, tipoInicial = "prestado
           isCortesia,
           descricao,
           lgpdConsent,
+          maior18,
           idioma,
         }),
       });
@@ -149,6 +157,7 @@ export default function CadastroServicoLead({ onSuccess, tipoInicial = "prestado
               setTituloServico("");
               setDescricao("");
               setLgpdConsent(false);
+              setMaior18(false);
             }}
             className="btn-secondary-glass w-full sm:w-auto px-6 py-3.5 rounded-2xl text-xs sm:text-sm font-bold cursor-pointer"
           >
@@ -184,7 +193,7 @@ export default function CadastroServicoLead({ onSuccess, tipoInicial = "prestado
             </span>
             <h2 className="text-sm font-black text-white mt-0.5">{L(idioma, "Cadastro e validação", "Registro y validación", "Sign-up & validation")}</h2>
             <p className="text-xs text-slate-400 mt-1">
-              {L(idioma, "WhatsApp com DDD e e-mail validados para contato seguro e direto.", "WhatsApp y e-mail validados para un contacto seguro y directo.", "Validated WhatsApp and e-mail for safe, direct contact.")}
+              {L(idioma, "WhatsApp com DDD e e-mail validados para contato direto.", "WhatsApp y e-mail validados para un contacto directo.", "Validated WhatsApp and e-mail for direct contact.")}
             </p>
           </div>
 
@@ -374,6 +383,9 @@ export default function CadastroServicoLead({ onSuccess, tipoInicial = "prestado
                     </option>
                   ))}
                 </select>
+                {avisoCategoria(idioma, categoria) && (
+                  <p className="mt-2 text-[11px] text-amber-200/80 leading-snug">{avisoCategoria(idioma, categoria)}</p>
+                )}
               </div>
 
               <div>
@@ -385,7 +397,7 @@ export default function CadastroServicoLead({ onSuccess, tipoInicial = "prestado
                   className="w-full bg-slate-900 border border-white/10 rounded-xl px-3 py-3 text-sm text-white focus:outline-none focus:border-amber-400 cursor-pointer"
                 >
                   <option value="Remoto">{L(idioma, "Remoto (online)", "Remoto (online)", "Remote (online)")}</option>
-                  <option value="Presencial">{L(idioma, "Presencial (local ou estrada)", "Presencial (local o ruta)", "In person (local or on the road)")}</option>
+                  <option value="Presencial">{L(idioma, "Presencial (local ou na rota)", "Presencial (local o en la ruta)", "In person (local or along the route)")}</option>
                 </select>
               </div>
             </div>
@@ -414,7 +426,7 @@ export default function CadastroServicoLead({ onSuccess, tipoInicial = "prestado
                   <Icon name="shield" width={30} height={30} /> {L(idioma, "Cortesia solidária (grátis)", "Cortesía solidaria (gratis)", "Free, solidarity help")}
                 </label>
                 <span className="text-[10px] text-slate-400 block">
-                  {L(idioma, "Ponto de apoio na estrada, recarga elétrica ou mentoria voluntária.", "Punto de apoyo en la ruta, carga eléctrica o mentoría voluntaria.", "A support stop on the road, power top-up or volunteer mentoring.")}
+                  {L(idioma, "Ponto de apoio na rota, recarga elétrica ou mentoria voluntária.", "Punto de apoyo en la ruta, carga eléctrica o mentoría voluntaria.", "A support stop along the route, power top-up or volunteer mentoring.")}
                 </span>
               </div>
               <input
@@ -455,6 +467,11 @@ export default function CadastroServicoLead({ onSuccess, tipoInicial = "prestado
                 className="w-full bg-black/30 border border-white/10 rounded-xl px-4 py-3 text-sm text-white placeholder-slate-500 focus:outline-none focus:border-amber-400 transition-colors"
               />
             </div>
+          </div>
+
+          {/* DECLARAÇÃO DE 18+ */}
+          <div className="p-4 rounded-2xl bg-amber-950/20 border border-amber-500/20">
+            <DeclaracaoMaioridade idioma={idioma} marcado={maior18} onChange={setMaior18} />
           </div>
 
           {/* CONSENTIMENTO LGPD */}

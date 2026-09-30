@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import DeclaracaoMaioridade from "@/components/DeclaracaoMaioridade";
 import Link from "next/link";
 import { useIdioma } from "@/components/useIdioma";
 import SeletorIdioma from "@/components/SeletorIdioma";
@@ -8,7 +9,7 @@ import { TXT, CONTRIBUICOES } from "@/lib/textosEstrada";
 import { RECOMPENSAS, PONTOS, pontosParaNivel } from "@/lib/reputacao";
 
 interface Perfil {
-  logado: boolean; nome?: string; pontos: number; nivel: number; titulo: string; base: number; proximo: number; progresso: number;
+  logado: boolean; nome?: string; maior18?: boolean; pontos: number; nivel: number; titulo: string; base: number; proximo: number; progresso: number;
   confirmadas: number; pendentes: number; questionario: boolean;
   recentes: { id: number; tipo: string; status: "pendente" | "confirmada" | "recusada"; pontos: number; nome: string | null; cidade: string | null; uf: string | null; quando: string }[];
 }
@@ -29,8 +30,15 @@ export default function PainelViajante() {
 
   const nomeTipo = (id: string) =>
     CONTRIBUICOES.find((c) => c.id === id)?.nome[idioma] ??
-    ({ questionario: T.questionario, indicacao_verificado: idioma === "es" ? "Recomendado verificado" : idioma === "en" ? "Referral verified" : "Indicado verificado",
+    ({ questionario: T.questionario, indicacao_verificado: idioma === "es" ? "Recomendado visitado" : idioma === "en" ? "Referral visited" : "Indicado visitado",
        indicacao_pagante: idioma === "es" ? "Recomendado contrató un plan" : idioma === "en" ? "Referral bought a plan" : "Indicado fechou plano" } as Record<string, string>)[id] ?? id;
+
+  // Conta antiga ou do Google: declara 18+ uma vez antes de usar o painel.
+  const [marcou18, setMarcou18] = useState(false);
+  async function declarar18() {
+    const r = await fetch("/api/auth/maioridade", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ maior18: true }) });
+    if (r.ok) setP((atual) => (atual ? { ...atual, maior18: true } : atual));
+  }
 
   const [comboio, setComboio] = useState<{ status: string } | null | undefined>(undefined);
   const [trecho, setTrecho] = useState("");
@@ -54,11 +62,11 @@ export default function PainelViajante() {
 
       {p && !p.logado && (
         <div className="mt-8 glass-panel rounded-3xl p-7">
-          <h1 className="text-3xl sm:text-4xl font-black">{idioma === "es" ? "Alimentá la ruta y subí de nivel" : idioma === "en" ? "Feed the road and level up" : "Alimente a estrada e suba de nível"}</h1>
+          <h1 className="text-3xl sm:text-4xl font-black">{idioma === "es" ? "Alimentá la ruta y subí de nivel" : idioma === "en" ? "Feed the route and level up" : "Alimente a rota e suba de nível"}</h1>
           <p className="mt-3 text-slate-300">
             {idioma === "es" ? "Cada foto, lugar para dormir o precio que confirmás ayuda a otro viajero — y suma puntos: del Andarilho a la Leyenda de la Ruta."
-              : idioma === "en" ? "Every photo, place to sleep or price you confirm helps another traveller — and earns points: from Wanderer to Legend of the Road."
-              : "Cada foto, lugar para dormir ou preço que você confirma ajuda outro viajante — e vale pontos: do Andarilho à Lenda da Estrada."}
+              : idioma === "en" ? "Every photo, place to sleep or price you confirm helps another traveller — and earns points: from Wanderer to Legend of the Route."
+              : "Cada foto, lugar para dormir ou preço que você confirma ajuda outro viajante — e vale pontos: do Andarilho à Lenda da Rota."}
           </p>
           <div className="mt-5 flex flex-wrap gap-3">
             <Link href="/entrar?callbackUrl=/viajante" className="btn-primary-amalfi rounded-2xl px-6 py-3 text-sm font-black">{T.entrar}</Link>
@@ -67,7 +75,18 @@ export default function PainelViajante() {
         </div>
       )}
 
-      {p && p.logado && (
+      {p && p.logado && !p.maior18 && (
+        <div className="mt-8 glass-panel rounded-3xl p-7 max-w-xl">
+          <h1 className="text-2xl sm:text-3xl font-black">{idioma === "es" ? "Antes de seguir" : idioma === "en" ? "Before you continue" : "Antes de continuar"}</h1>
+          <p className="mt-3 text-slate-300">{idioma === "es" ? "Los Términos de Uso cambiaron: JobPago es solo para mayores de 18 años." : idioma === "en" ? "The Terms of Use changed: JobPago is for people aged 18 or over." : "Os Termos de Uso mudaram: a JobPago é só para maiores de 18 anos."}</p>
+          <div className="mt-5"><DeclaracaoMaioridade idioma={idioma} marcado={marcou18} onChange={setMarcou18} /></div>
+          <button type="button" disabled={!marcou18} onClick={declarar18} className="mt-5 btn-primary-amalfi rounded-2xl px-6 py-3 text-sm font-black disabled:opacity-40">
+            {idioma === "es" ? "Confirmar" : idioma === "en" ? "Confirm" : "Confirmar"}
+          </button>
+        </div>
+      )}
+
+      {p && p.logado && p.maior18 && (
         <>
           <h1 className="mt-4 text-3xl sm:text-5xl font-black tracking-tight">{p.nome}</h1>
           <div className="mt-6 glass-panel rounded-3xl p-6">
@@ -132,7 +151,7 @@ export default function PainelViajante() {
             {RECOMPENSAS.map((r) => (
               <li key={r.nivel} className={`flex gap-3 items-start rounded-2xl p-3 border ${p.nivel >= r.nivel ? "border-amber-400/50 bg-amber-400/10" : "border-white/10"}`}>
                 <span className="font-mono text-xs font-bold text-amber-300 w-16 shrink-0">{T.nivel} {r.nivel}</span>
-                <span className="text-sm text-slate-200">{r.titulo}{r.parceiro ? <span className="text-slate-400"> · com os Refúgios parceiros</span> : null}</span>
+                <span className="text-sm text-slate-200">{r.titulo}{r.parceiro ? <span className="text-slate-400"> · com os lugares parceiros</span> : null}</span>
               </li>
             ))}
           </ul>

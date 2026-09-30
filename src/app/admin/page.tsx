@@ -152,7 +152,9 @@ export default function AdminPage() {
                 <td style={{ padding: 8 }}>{l.categoria}</td>
                 <td style={{ padding: 8 }}>{l.cidade || "—"}</td>
                 <td style={{ padding: 8 }}>{l.isCortesia ? "Cortesia" : `R$ ${l.valor}`}</td>
-                <td style={{ padding: 8 }}>{l.status}</td>
+                <td style={{ padding: 8, ...(l.status === "revisao_manual" ? { color: "#fca5a5", fontWeight: 700 } : {}) }}>
+                  {l.status === "revisao_manual" ? "⚠️ revisar antes de despachar" : l.status}
+                </td>
                 <td style={{ padding: 8 }}>{new Date(l.createdAt).toLocaleString("pt-BR")}</td>
               </tr>
             ))}

@@ -3,6 +3,7 @@ import { normalizarTelefone } from "@/lib/telefone";
 import { NextRequest, NextResponse } from "next/server";
 import bcrypt from "bcryptjs";
 import { getPool } from "@/lib/db";
+import { garantirColunasMaioridade, declarouMaioridade, ERRO_MAIORIDADE } from "@/lib/maioridade";
 
 export const runtime = "nodejs";
 
@@ -42,10 +43,13 @@ export async function POST(req: NextRequest) {
   if (!telefone) return NextResponse.json({ error: m("Telefone inválido. Informe DDD + número.", "Teléfono inválido. Incluí el código de país.", "Invalid phone. Include the country code.") }, { status: 400 });
   if (senha.length < 8) return NextResponse.json({ error: m("Senha precisa ter no mínimo 8 caracteres.", "La contraseña necesita al menos 8 caracteres.", "Password must be at least 8 characters.") }, { status: 400 });
 
+  if (!declarouMaioridade(body)) return NextResponse.json({ error: m(ERRO_MAIORIDADE.pt, ERRO_MAIORIDADE.es, ERRO_MAIORIDADE.en) }, { status: 400 });
+
   const pool = getPool();
   if (!pool) return NextResponse.json({ error: m("Cadastro indisponível no momento.", "Registro no disponible en este momento.", "Sign-up unavailable right now.") }, { status: 503 });
 
   await ensureUsuariosTable();
+  await garantirColunasMaioridade(pool);
 
   const { rows: existentes } = await pool.query(`SELECT id FROM usuarios WHERE email = $1`, [email]);
   if (existentes.length > 0) {
@@ -54,7 +58,7 @@ export async function POST(req: NextRequest) {
 
   const senhaHash = await bcrypt.hash(senha, 12);
   await pool.query(
-    `INSERT INTO usuarios (nome, email, telefone, senha_hash, provider) VALUES ($1, $2, $3, $4, 'credentials')`,
+    `INSERT INTO usuarios (nome, email, telefone, senha_hash, provider, maior_18_em) VALUES ($1, $2, $3, $4, 'credentials', now())`,
     [nome, email, telefone, senhaHash],
   );
 

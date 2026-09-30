@@ -18,21 +18,21 @@ export default function RefugioConteudo() {
         <p className="text-xs font-mono font-bold uppercase tracking-widest text-amber-400">{L(idioma, "Expedição nº 01 · saída 15 de outubro", "Expedición nº 01 · salida 15 de octubre", "Expedition no. 01 · departs 15 October")}</p>
         <SeletorIdioma idioma={idioma} onChange={setIdioma} />
       </div>
-      <h1 className="mt-3 text-4xl sm:text-5xl font-black tracking-tight leading-[1.05]">{L(idioma, "Seja um Refúgio da Estrada", "Sé un Refugio de la Ruta", "Become a Road Refuge")}</h1>
+      <h1 className="mt-3 text-4xl sm:text-5xl font-black tracking-tight leading-[1.05]">{L(idioma, "Cadastre seu lugar para dormir", "Registrá tu lugar para dormir", "List your place to sleep")}</h1>
       <p className="mt-4 text-lg text-slate-300 max-w-2xl">
         {L(idioma,
-          "Camping, hostel, pousada, hotel ou pátio para motorhome entre Paraty e Fortaleza: peça a visita. A gente passa a noite, confere o que está combinado e, se estiver tudo certo, seu lugar entra no mapa com o selo e a data da visita.",
-          "Camping, hostel, posada, hotel o patio para motorhome entre Paraty y Fortaleza: pedí la visita. Pasamos la noche, revisamos lo acordado y, si todo está bien, tu lugar entra al mapa con el sello y la fecha de la visita.",
-          "Campsite, hostel, guesthouse, hotel or motorhome yard between Paraty and Fortaleza: ask for a visit. We spend the night, check what was agreed and, if all is right, your place goes on the map with the seal and the visit date.")}
+          "Camping, hostel, pousada, hotel ou pátio para motorhome entre Paraty e Fortaleza: peça a visita. A expedição passa por aí, registra o que havia no dia e seu lugar entra no mapa com a data da visita. É um registro, não uma garantia.",
+          "Camping, hostel, posada, hotel o patio para motorhome entre Paraty y Fortaleza: pedí la visita. La expedición pasa, registra lo que había ese día y tu lugar entra al mapa con la fecha de la visita. Es un registro, no una garantía.",
+          "Campsite, hostel, guesthouse, hotel or motorhome yard between Paraty and Fortaleza: ask for a visit. The expedition stops by, records what was there that day and your place goes on the map with the visit date. It's a record, not a guarantee.")}
       </p>
 
       <section className="mt-12" aria-labelledby="honra">
-        <h2 id="honra" className="text-2xl sm:text-3xl font-black">{L(idioma, "Alta Honra: como seu lugar apoia a estrada", "Alto Honor: cómo tu lugar apoya la ruta", "High Honour: how your place supports the road")}</h2>
+        <h2 id="honra" className="text-2xl sm:text-3xl font-black">{L(idioma, "Alta Honra: como seu lugar apoia a expedição", "Alto Honor: cómo tu lugar apoya la expedición", "High Honour: how your place supports the expedition")}</h2>
         <p className="mt-2 text-slate-300 max-w-2xl">
           {L(idioma,
-            "O selo de verificado não se compra — só entra quem passou na visita. A Honra mostra, identificada no selo, quanto o lugar apoia a expedição.",
-            "El sello de verificado no se compra: solo entra quien pasó la visita. El Honor muestra, identificado en el sello, cuánto apoya el lugar a la expedición.",
-            "The verified seal can't be bought — only places that pass the visit get it. Honour shows, marked on the seal, how much the place supports the expedition.")}
+            "O registro de visita não é vendido. Parceiros pagantes aparecem em destaque e são sempre identificados como Parceiro. A Honra mostra quanto o lugar apoia a expedição.",
+            "El registro de visita no se vende. Los socios que pagan aparecen destacados y siempre identificados como Socio. El Honor muestra cuánto apoya el lugar a la expedición.",
+            "The visit record isn't sold. Paying partners are featured and always labeled as Partner. Honour shows how much the place supports the expedition.")}
         </p>
         <div className="mt-6 grid gap-4 sm:grid-cols-2">
           {NIVEIS_HONRA.map((n) => (
@@ -48,8 +48,8 @@ export default function RefugioConteudo() {
         </div>
         <p className="mt-4 text-xs text-slate-400">
           {L(idioma, "Valores dos planos em", "Valores de los planes en", "Plan prices at")} <Link href="/parceiros/planos" className="underline hover:text-amber-400">{L(idioma, "Parceiros", "Socios", "Partners")}</Link>.{" "}
-          {L(idioma, "O que conferimos na visita está em", "Lo que revisamos en la visita está en", "What we check on the visit is at")}{" "}
-          <Link href="/#refugio-estrada" className="underline hover:text-amber-400">{L(idioma, "Refúgio da Estrada", "Refugio de la Ruta", "Road Refuge")}</Link>.
+          {L(idioma, "O que registramos na visita está em", "Lo que registramos en la visita está en", "What we record on the visit is at")}{" "}
+          <Link href="/#refugio-estrada" className="underline hover:text-amber-400">{L(idioma, "Onde dormir", "Dónde dormir", "Where to sleep")}</Link>.
         </p>
       </section>
 

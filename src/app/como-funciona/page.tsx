@@ -13,9 +13,9 @@ export async function generateMetadata(): Promise<Metadata> {
   return {
     title: L(i, "Como Funciona · JobPago.com.br", "Cómo funciona · JobPago.com.br", "How it works · JobPago.com.br"),
     description: L(i,
-      "Entenda como o JobPago conecta quem precisa contratar e quem presta serviço na estrada, sem comissão e com pagamento direto por PIX.",
+      "Entenda como o JobPago conecta quem precisa contratar e quem presta serviço na viagem, sem comissão e com pagamento direto por PIX.",
       "Entendé cómo JobPago conecta a quien necesita contratar con quien presta servicios en la ruta, sin comisión y con pago directo por PIX.",
-      "How JobPago connects people who need to hire with people who provide services on the road — no commission, paid directly via PIX."),
+      "How JobPago connects people who need to hire with people who provide services while travelling — no commission, paid directly via PIX."),
     robots: { index: true, follow: true },
   };
 }
@@ -40,7 +40,7 @@ export default async function ComoFuncionaPage() {
           </h1>
 
           <p className="mt-5 text-sm sm:text-base text-slate-300 leading-relaxed">
-            {t("A JobPago liga o negócio do bairro e da estrada a quem faz a tarefa — fotos, Instagram, cardápio, frete, apoio na estrada. Sem comissão sobre o seu trabalho e sem checkout na plataforma: o valor é combinado e pago direto por PIX entre as duas partes.", "JobPago conecta el negocio del barrio y de la ruta con quien hace la tarea: fotos, Instagram, menú, flete, apoyo en la ruta. Sin comisión sobre tu trabajo y sin checkout en la plataforma: el valor se acuerda y se paga directo por PIX entre las dos partes.", "JobPago connects local and roadside businesses with the people who do the tasks — photos, Instagram, menus, freight, roadside help. No commission on your work and no checkout on the platform: the price is agreed and paid directly via PIX between the two parties.")}
+            {t("A JobPago liga o negócio local e da rota a quem faz a tarefa — fotos, Instagram, cardápio, frete, apoio na viagem. Sem comissão sobre o seu trabalho e sem checkout na plataforma: o valor é combinado e pago direto por PIX entre as duas partes.", "JobPago conecta el negocio del barrio y de la ruta con quien hace la tarea: fotos, Instagram, menú, flete, apoyo en la ruta. Sin comisión sobre tu trabajo y sin checkout en la plataforma: el valor se acuerda y se paga directo por PIX entre las dos partes.", "JobPago connects local and roadside businesses with the people who do the tasks — photos, Instagram, menus, freight, roadside help. No commission on your work and no checkout on the platform: the price is agreed and paid directly via PIX between the two parties.")}
           </p>
         </div>
 
@@ -67,7 +67,7 @@ export default async function ComoFuncionaPage() {
                 <li className="flex gap-2.5">
                   <Icon name="check" width={36} height={36} className="text-amber-400 shrink-0 mt-0.5" />
                   <span>
-                    {t("Vê o", "Mira el", "Sees the")} <Link href="/cidade" className="text-amber-400 underline hover:text-amber-300">{t("relatório da sua cidade", "informe de su ciudad", "town report")}</Link>{t(": quem está abrindo negócio e quanto se paga em cada setor.", ": quién abre negocios y cuánto se paga en cada sector.", ": who is opening businesses and what each sector pays.")}
+                    {t("Vê o", "Mira el", "Sees the")} <Link href="/cidade" className="text-amber-400 underline hover:text-amber-300">{t("relatório da sua cidade", "informe de su ciudad", "town report")}</Link>{t(": quem está abrindo negócio e os valores de referência de cada setor.", ": quién abre negocios y los valores de referencia de cada sector.", ": who is opening businesses and reference rates for each sector.")}
                   </span>
                 </li>
               </ul>
@@ -82,7 +82,7 @@ export default async function ComoFuncionaPage() {
                 <li className="flex gap-2.5">
                   <Icon name="check" width={36} height={36} className="text-amber-400 shrink-0 mt-0.5" />
                   <span>
-                    <Link href="/disponibilidade" className="text-amber-400 underline hover:text-amber-300">{t("Cadastra sua disponibilidade", "Registra su disponibilidad", "Registers availability")}</Link>{t(": o que você faz e de onde trabalha — da cidade, remoto ou na estrada.", ": qué hace y desde dónde trabaja: en la ciudad, remoto o en la ruta.", ": what you do and where you work from — local, remote or on the road.")}
+                    <Link href="/disponibilidade" className="text-amber-400 underline hover:text-amber-300">{t("Cadastra o seu serviço", "Registra su servicio", "Registers their service")}</Link>{t(": o que você faz e de onde trabalha — da cidade, remoto ou viajando.", ": qué hace y desde dónde trabaja: en la ciudad, remoto o viajando.", ": what you do and where you work from — local, remote or while travelling.")}
                   </span>
                 </li>
                 <li className="flex gap-2.5">
@@ -115,7 +115,7 @@ export default async function ComoFuncionaPage() {
                 <div>
                   <span className="text-[10px] font-mono font-bold text-slate-400 uppercase tracking-widest block">Passo 2</span>
                   <p className="text-sm text-white font-bold mt-0.5">{t("A gente chama quem faz", "Llamamos a quien lo hace", "We call someone to do it")}</p>
-                  <p className="text-xs text-slate-400 mt-1">{t("Quem cadastrou disponibilidade naquela área recebe o contato. Sem vitrine: ninguém fica com o telefone exposto.", "Quien registró disponibilidad en esa área recibe el contacto. Sin vidriera: nadie queda con el teléfono expuesto.", "People registered for that area get the contact. No public listing: nobody's phone is exposed.")}</p>
+                  <p className="text-xs text-slate-400 mt-1">{t("Quem cadastrou serviço naquela área recebe o contato. Sem vitrine: ninguém fica com o telefone exposto.", "Quien registró su servicio en esa área recibe el contacto. Sin vidriera: nadie queda con el teléfono expuesto.", "People who registered a service in that area get the contact. No public listing: nobody's phone is exposed.")}</p>
                 </div>
                 <div>
                   <span className="text-[10px] font-mono font-bold text-slate-400 uppercase tracking-widest block">Passo 3</span>
@@ -134,7 +134,7 @@ export default async function ComoFuncionaPage() {
                 <div>
                   <span className="text-[10px] font-mono font-bold text-slate-400 uppercase tracking-widest block">Passo 1</span>
                   <p className="text-sm text-white font-bold mt-0.5">{t("Cadastro & validação", "Registro y validación", "Sign-up & validation")}</p>
-                  <p className="text-xs text-slate-400 mt-1">{t("WhatsApp com DDD e e-mail validados, pra contato seguro dos dois lados.", "WhatsApp y e-mail validados, para un contacto seguro de los dos lados.", "Validated WhatsApp and e-mail, for safe contact on both sides.")}</p>
+                  <p className="text-xs text-slate-400 mt-1">{t("WhatsApp com DDD e e-mail validados, pra contato direto dos dois lados.", "WhatsApp y e-mail validados, para un contacto directo de los dos lados.", "Validated WhatsApp and e-mail, for direct contact on both sides.")}</p>
                 </div>
                 <div>
                   <span className="text-[10px] font-mono font-bold text-slate-400 uppercase tracking-widest block">Passo 2</span>
@@ -173,9 +173,9 @@ export default async function ComoFuncionaPage() {
               <Icon name="shield" width={44} height={44} className="text-amber-300" />
             </div>
             <div className="flex-1">
-              <h2 className="text-lg sm:text-xl font-black text-white">{t("Alta Honra: reputação de quem ajuda na estrada", "Alto Honor: reputación de quien ayuda en la ruta", "High Honour: reputation for helping on the road")}</h2>
+              <h2 className="text-lg sm:text-xl font-black text-white">{t("Alta Honra: reputação de quem ajuda na viagem", "Alto Honor: reputación de quien ayuda en el viaje", "High Honour: reputation for helping travellers")}</h2>
               <p className="mt-3 text-sm text-slate-300 leading-relaxed max-w-2xl">
-                {t("A reputação começa a contar com as primeiras tarefas fechadas e os primeiros Refúgios da Estrada verificados na Expedição nº 01 — até lá, todo mundo começa do zero. Apoio de cortesia (chuveiro, tomada, recarga, mentoria de graça pra quem tá na estrada), confirmado por quem recebeu, é o que mais pontua — cada nível pede 40% a mais de XP que o anterior, então nível alto é reputação real, não cadastro.", "La reputación empieza a contar con las primeras tareas cerradas y los primeros Refugios de la Ruta verificados en la Expedición nº 01; hasta entonces, todos empiezan de cero. El apoyo de cortesía (ducha, enchufe, carga, mentoría gratis para quien está en la ruta), confirmado por quien lo recibió, es lo que más suma: cada nivel pide 40% más de XP que el anterior, así que un nivel alto es reputación real, no un registro.", "Reputation starts counting with the first closed tasks and the first Road Refuges verified on Expedition no. 01 — until then, everyone starts from zero. Courtesy help (shower, power, charging, free mentoring for people on the road), confirmed by whoever received it, scores the most — each level needs 40% more XP than the last, so a high level is real reputation, not just a sign-up.")}
+                {t("A reputação começa a contar com as primeiras tarefas fechadas e os primeiros lugares para dormir visitados na Expedição nº 01 — até lá, todo mundo começa do zero. Apoio de cortesia (chuveiro, tomada, recarga, mentoria de graça pra quem tá viajando), confirmado por quem recebeu, é o que mais pontua — cada nível pede 40% a mais de XP que o anterior, então nível alto é reputação real, não cadastro.", "La reputación empieza a contar con las primeras tareas cerradas y los primeros lugares para dormir visitados en la Expedición nº 01; hasta entonces, todos empiezan de cero. El apoyo de cortesía (ducha, enchufe, carga, mentoría gratis para quien está en la ruta), confirmado por quien lo recibió, es lo que más suma: cada nivel pide 40% más de XP que el anterior, así que un nivel alto es reputación real, no un registro.", "Reputation starts counting with the first closed tasks and the first places to sleep visited on Expedition no. 01 — until then, everyone starts from zero. Courtesy help (shower, power, charging, free mentoring for travellers), confirmed by whoever received it, scores the most — each level needs 40% more XP than the last, so a high level is real reputation, not just a sign-up.")}
               </p>
               <div className="mt-5 grid grid-cols-1 sm:grid-cols-2 gap-3 max-w-xl">
                 <div className="glass-card border border-amber-400/20 rounded-2xl p-4">
@@ -193,7 +193,7 @@ export default async function ComoFuncionaPage() {
 
         {/* CATEGORIAS */}
         <section className="mt-16">
-          <h2 className="text-xl sm:text-2xl font-black text-white">{t("7 categorias da estrada, 1 mapa", "7 categorías de la ruta, 1 mapa", "7 road categories, 1 map")}</h2>
+          <h2 className="text-xl sm:text-2xl font-black text-white">{t("7 categorias, 1 mapa", "7 categorías, 1 mapa", "7 categories, 1 map")}</h2>
           <p className="mt-2 text-sm text-slate-400 max-w-2xl">
             {t("Cada categoria reúne quem oferece e quem procura. Encontre a sua.", "Cada categoría reúne a quien ofrece y a quien busca. Encontrá la tuya.", "Each category brings together people offering and people looking. Find yours.")}
           </p>
@@ -203,6 +203,7 @@ export default async function ComoFuncionaPage() {
                 <Icon name={cat.icone} width={56} height={56} />
                 <h3 className="text-sm font-black text-white mt-3">{tCategoria(i, cat.id, cat.nome)}</h3>
                 <p className="text-xs text-slate-400 mt-1">{tCategoriaDesc(i, cat.id, cat.descricao)}</p>
+                {cat.aviso && <p className="text-[11px] text-amber-200/80 mt-2 leading-snug">{cat.aviso[i]}</p>}
               </div>
             ))}
           </div>

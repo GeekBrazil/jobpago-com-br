@@ -32,7 +32,7 @@ export default function CertificadosLista() {
       <h2 className="text-xl sm:text-2xl font-black text-white">
         {loading
           ? t("Carregando...", "Cargando...", "Loading...")
-          : `${certificados.length} ${certificados.length === 1 ? t("lugar verificado", "lugar verificado", "verified place") : t("lugares verificados", "lugares verificados", "verified places")}`}
+          : `${certificados.length} ${certificados.length === 1 ? t("lugar visitado", "lugar visitado", "visited place") : t("lugares visitados", "lugares visitados", "visited places")}`}
       </h2>
 
       {!loading && certificados.length === 0 && (
@@ -41,12 +41,12 @@ export default function CertificadosLista() {
             <Icon name="shield" width={52} height={52} className="text-amber-300" />
           </div>
           <h3 className="text-lg sm:text-xl font-black text-white">
-            {t("Nenhum refúgio ou estabelecimento verificado ainda", "Todavía no hay refugios ni establecimientos verificados", "No refuges or verified places yet")}
+            {t("Nenhum lugar visitado ainda", "Todavía no hay lugares visitados", "No visited places yet")}
           </h3>
           <p className="text-sm text-slate-400 max-w-md">
-            {t("A Expedição Paraty → Fortaleza está começando. Os primeiros selos aparecem aqui assim que o Allan visitar e testar o local pessoalmente.",
-              "La Expedición Paraty → Fortaleza está empezando. Los primeros sellos aparecen acá apenas Allan visite y pruebe el lugar en persona.",
-              "The Paraty → Fortaleza Expedition is just starting. The first seals appear here as soon as Allan visits and tests each place in person.")}
+            {t("A Expedição Paraty → Fortaleza está começando. Os primeiros registros aparecem aqui assim que a expedição passar pelo local.",
+              "La Expedición Paraty → Fortaleza está empezando. Los primeros registros aparecen acá apenas la expedición pase por el lugar.",
+              "The Paraty → Fortaleza Expedition is just starting. The first records appear here as soon as the expedition passes through each place.")}
           </p>
         </div>
       )}
@@ -60,7 +60,7 @@ export default function CertificadosLista() {
                 <div>
                   <div className="flex flex-wrap items-center gap-1.5 mb-3">
                     <span className="text-[10px] font-black px-2 py-1 rounded-xl bg-amber-500/15 text-amber-300 border border-amber-500/30 flex items-center gap-1">
-                      <Icon name="shield" width={26} height={26} /> {t("Refúgio verificado", "Refugio verificado", "Verified refuge")}
+                      <Icon name="shield" width={26} height={26} /> {t("Lugar para dormir", "Lugar para dormir", "Place to sleep")}
                     </span>
                     <span className={`text-[10px] font-black px-2 py-1 rounded-xl border ${h.cor}`}>{tHonra(i, h.id, "nome", h.nome)}</span>
                   </div>
@@ -73,7 +73,7 @@ export default function CertificadosLista() {
                 <span className="text-xs text-slate-400 flex items-center gap-1 mt-4">
                   <Icon name="pin" width={28} height={28} /> {r.cidade} · {r.uf}{r.verificado_em ? ` · ${t("visitado em", "visitado el", "visited")} ${r.verificado_em}` : ""}
                 </span>
-                <Compartilhar compacto card={`/card/refugio/${r.id}`} titulo={`${r.nome}: ${t("Refúgio da Estrada verificado", "Refugio de la Ruta verificado", "verified Road Refuge")}`} link="https://jobpago.com.br/certificados" />
+                <Compartilhar compacto card={`/card/refugio/${r.id}`} titulo={`${r.nome}: ${t("lugar para dormir visitado pela expedição JobPago", "lugar para dormir visitado por la expedición JobPago", "place to sleep visited by the JobPago expedition")}`} link="https://jobpago.com.br/certificados" />
               </div>
             );
           })}
@@ -87,9 +87,9 @@ export default function CertificadosLista() {
             <Icon name="shield" width={40} height={40} className="text-amber-300" /> {t("Seu estabelecimento na rota?", "¿Tu establecimiento está en la ruta?", "Is your place on the route?")}
           </h3>
           <p className="mt-2 text-sm text-slate-300 leading-relaxed max-w-lg">
-            {t("Camping, hostel, pousada, hotel ou pátio para motorhome. Peça a visita — a gente passa a noite, confere a estrutura e, se aprovar, você entra nesta lista com a data e o QR code no local.",
-              "Camping, hostel, posada, hotel o patio para motorhome. Pedí la visita: pasamos la noche, revisamos la estructura y, si aprueba, entrás en esta lista con la fecha y el código QR en el lugar.",
-              "Campsite, hostel, guesthouse, hotel or motorhome yard. Request a visit — we spend the night, check the facilities and, if approved, you join this list with the date and the QR code on site.")}
+            {t("Camping, hostel, pousada, hotel ou pátio para motorhome. Peça a visita — a expedição passa por aí, registra o que havia no dia e você entra nesta lista com a data e o QR code no local.",
+              "Camping, hostel, posada, hotel o patio para motorhome. Pedí la visita: la expedición pasa, registra lo que había ese día y entrás en esta lista con la fecha y el código QR en el lugar.",
+              "Campsite, hostel, guesthouse, hotel or motorhome yard. Request a visit — the expedition stops by, records what was there that day and you join this list with the date and the QR code on site.")}
           </p>
         </div>
         <div className="flex flex-col sm:flex-row gap-3 shrink-0 w-full sm:w-auto">

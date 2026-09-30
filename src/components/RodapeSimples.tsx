@@ -12,7 +12,7 @@ export default async function RodapeSimples() {
         <div className="flex items-center gap-6 text-xs text-slate-400">
           <Link href="/termos" className="hover:text-amber-400 transition-colors">{L(i, "Termos de Uso", "Términos de Uso", "Terms of Use")}</Link>
           <Link href="/privacidade" className="hover:text-amber-400 transition-colors">{L(i, "Política de Privacidade", "Política de Privacidad", "Privacy Policy")}</Link>
-          <a href="mailto:allan@jobpago.com.br" className="hover:text-amber-400 transition-colors">allan@jobpago.com.br</a>
+          <a href="mailto:jobpago@allancandido.com" className="hover:text-amber-400 transition-colors">jobpago@allancandido.com</a>
         </div>
       </div>
     </footer>

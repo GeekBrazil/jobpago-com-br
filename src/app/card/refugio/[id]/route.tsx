@@ -19,11 +19,11 @@ export async function GET(req: NextRequest, { params }: { params: Promise<{ id: 
   if (!r) return new Response("não encontrado", { status: 404 });
   const h = honra(r.honra);
   return card(formatoDe(req.nextUrl.searchParams.get("formato")), {
-    selo: "Refúgio da Estrada",
+    selo: "Lugar para dormir",
     medalha: { texto: h.nome, ...MEDALHA[h.id] },
     titulo: r.nome,
     subtitulo: `${NOME_TIPO[r.tipo] ?? r.tipo} · ${r.cidade}/${r.uf}`,
     linhas: [...(r.oferece ?? []).map((o: string) => `✓ ${NOME_OFERECE[o] ?? o}`), r.verificado_em ? `Visitado em ${r.verificado_em}` : ""].filter(Boolean),
-    rodape: "jobpago.com.br/certificados · verificado pessoalmente na Expedição",
+    rodape: "jobpago.com.br/certificados · registro de visita da Expedição, com data",
   });
 }

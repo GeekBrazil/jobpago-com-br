@@ -63,7 +63,7 @@ export default function FormQuestionario() {
     <form onSubmit={enviar}>
       {topo}
       <h1 className="mt-4 text-3xl sm:text-4xl font-black">{T.questionario} <span className="text-base font-mono text-amber-300">+{PONTOS.questionario}</span></h1>
-      <p className="mt-2 text-slate-300">{L(idioma, "Suas respostas ajudam a construir o que falta na estrada. Nada aqui é público.", "Tus respuestas ayudan a construir lo que falta en la ruta. Nada de esto es público.", "Your answers help build what's missing on the road. Nothing here is public.")}</p>
+      <p className="mt-2 text-slate-300">{L(idioma, "Suas respostas ajudam a construir o que falta na rota. Nada aqui é público.", "Tus respuestas ayudan a construir lo que falta en la ruta. Nada de esto es público.", "Your answers help build what's missing along the route. Nothing here is public.")}</p>
       <ol className="mt-8 space-y-7">
         {QUESTIONARIO.map((q, n) => (
           <li key={q.id}>

@@ -74,7 +74,7 @@ export default async function ExpedicaoViajantePublica({ params }: { params: Pro
         )}
 
         <section className="mt-10"><h2 className="text-xl font-black">{t("Diário", "Diario", "Diary")}</h2>
-          {diario.length === 0 ? <p className="mt-2 text-sm text-slate-400">{t("As primeiras notícias aparecem aqui — sempre com pelo menos um dia de atraso, pela segurança de quem está na estrada.", "Las primeras novedades aparecen acá, siempre con al menos un día de atraso, por la seguridad de quien está en la ruta.", "The first updates appear here — always at least a day late, for the safety of whoever is on the road.")}</p> : (
+          {diario.length === 0 ? <p className="mt-2 text-sm text-slate-400">{t("As primeiras notícias aparecem aqui — sempre com pelo menos um dia de atraso, para proteger quem está viajando.", "Las primeras novedades aparecen acá, siempre con al menos un día de atraso, por la seguridad de quien está en la ruta.", "The first updates appear here — always at least a day late, to protect whoever is travelling.")}</p> : (
             <ol className="mt-4 space-y-4">{diario.map((p, k) => (
               <li key={k} className="glass-panel rounded-2xl p-5">
                 <p className="text-xs font-mono text-amber-300">{p.dia}{p.cidade ? ` · ${p.cidade}${p.uf ? `/${p.uf}` : ""}` : ""}</p>

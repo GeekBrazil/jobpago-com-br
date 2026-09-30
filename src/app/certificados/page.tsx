@@ -9,8 +9,8 @@ import { L } from "@/lib/i18n";
 export async function generateMetadata(): Promise<Metadata> {
   const i = await idiomaServidor();
   return {
-    title: L(i, "Refúgios da Estrada e estabelecimentos verificados · JobPago.com.br", "Refugios de la Ruta y establecimientos verificados · JobPago.com.br", "Road Refuges and verified places · JobPago.com.br"),
-    description: L(i, "Refúgios da Estrada (camping, hostel, pousada, hotel) e postos visitados e verificados pessoalmente na Expedição JobPago Paraty → Fortaleza.", "Refugios de la Ruta (camping, hostel, posada, hotel) y estaciones visitadas y verificadas en persona en la Expedición JobPago Paraty → Fortaleza.", "Road Refuges (campsite, hostel, guesthouse, hotel) and gas stations visited and verified in person on the JobPago Expedition, Paraty → Fortaleza."),
+    title: L(i, "Lugares visitados · JobPago · renda na viagem", "Lugares visitados · JobPago · ingresos en el viaje", "Visited places · JobPago · income on the go"),
+    description: L(i, "Camping, hostel, pousada, hotel e postos por onde a Expedição JobPago Paraty → Fortaleza passou, com a data e o que havia no dia da visita.", "Camping, hostel, posada, hotel y estaciones por donde pasó la Expedición JobPago Paraty → Fortaleza, con la fecha y lo que había el día de la visita.", "Campsites, hostels, guesthouses, hotels and gas stations the JobPago Expedition, Paraty → Fortaleza, passed through, with the date and what was there on the day."),
     robots: { index: true, follow: true },
   };
 }
@@ -26,17 +26,17 @@ export default async function CertificadosPage() {
         {/* HERO */}
         <div className="max-w-3xl">
           <span className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full glass-panel border border-amber-400/30 text-amber-300 text-[10px] sm:text-xs font-black tracking-widest uppercase">
-            <Icon name="shield" width={30} height={30} /> {t("Selo Verificado", "Sello Verificado", "Verified Seal")}
+            <Icon name="shield" width={30} height={30} /> {t("Registro de visita", "Registro de visita", "Visit record")}
           </span>
 
           <h1 className="mt-6 text-3xl sm:text-5xl font-black text-white leading-[1.12]">
-            {t("Refúgios da Estrada e lugares verificados", "Refugios de la Ruta y lugares verificados", "Road Refuges and verified places")}
+            {t("Lugares visitados", "Lugares visitados", "Visited places")}
           </h1>
 
           <p className="mt-5 text-sm sm:text-base text-slate-300 leading-relaxed">
-            {t("Não é adesivo comprado. O selo diz que alguém da JobPago esteve no local, testou a estrutura de verdade — chuveiro, tomada, Wi-Fi, pátio — e anotou a data. Onde dormimos e recomendamos para passar a noite (camping, hostel, pousada, hotel) leva o nome de Refúgio da Estrada. Se a estrutura mudar, o selo cai. Cada pin âmbar no mapa da home é um lugar assim.",
-              "No es un sticker comprado. El sello dice que alguien de JobPago estuvo en el lugar, probó la estructura de verdad (ducha, enchufe, Wi-Fi, patio) y anotó la fecha. Donde dormimos y recomendamos pasar la noche (camping, hostel, posada, hotel) se llama Refugio de la Ruta. Si la estructura cambia, el sello se cae. Cada pin ámbar en el mapa de la home es un lugar así.",
-              "It’s not a sticker you can buy. The seal means someone from JobPago was there, actually tested the facilities — shower, power, Wi-Fi, yard — and noted the date. Places where we slept and recommend for the night (campsite, hostel, guesthouse, hotel) are called Road Refuges. If the facilities change, the seal comes off. Every amber pin on the home map is one of these places.")}
+            {t("Alguém da expedição esteve ali e anotou o que havia — chuveiro, tomada, Wi-Fi, pátio — com data. Wi-Fi entra com a velocidade medida naquele dia. É um registro, não uma garantia: confira sempre com o estabelecimento. Lugares para passar a noite (camping, hostel, pousada, hotel) aparecem como Lugar para dormir. O registro de visita não é vendido; parceiros pagantes aparecem sempre identificados como Parceiro. Cada pin âmbar no mapa da home é um lugar assim.",
+              "Alguien de la expedición estuvo ahí y anotó lo que había (ducha, enchufe, Wi-Fi, patio), con fecha. El Wi-Fi entra con la velocidad medida ese día. Es un registro, no una garantía: consultá siempre con el establecimiento. Los lugares para pasar la noche (camping, hostel, posada, hotel) aparecen como Lugar para dormir. El registro de visita no se vende; los socios que pagan aparecen siempre identificados como Socio. Cada pin ámbar en el mapa de la home es un lugar así.",
+              "Someone from the expedition was there and noted what they found — shower, power, Wi-Fi, yard — with the date. Wi-Fi is listed with the speed measured that day. It's a record, not a guarantee: always check with the business. Places to spend the night (campsite, hostel, guesthouse, hotel) are listed as Places to sleep. The visit record isn't sold; paying partners are always labeled as Partner. Every amber pin on the home map is one of these places.")}
           </p>
         </div>
 
@@ -50,11 +50,11 @@ export default async function CertificadosPage() {
             className="rounded-2xl border-4 border-white shrink-0"
           />
           <div>
-            <h2 className="text-lg font-black text-white">{t("O QR code do selo", "El código QR del sello", "The seal’s QR code")}</h2>
+            <h2 className="text-lg font-black text-white">{t("O QR code do adesivo", "El código QR del sticker", "The sticker’s QR code")}</h2>
             <p className="mt-2 text-sm text-slate-300 leading-relaxed max-w-lg">
-              {t("Um único QR code, o mesmo em todo adesivo físico entregue na estrada. Ele sempre aponta pra esta página — quem escaneia vê a lista completa de estabelecimentos certificados, então o mesmo adesivo serve pra qualquer parceiro sem precisar gerar um código por local.",
-                "Un único código QR, el mismo en todos los stickers entregados en la ruta. Siempre apunta a esta página: quien lo escanea ve la lista completa de establecimientos certificados, así el mismo sticker sirve para cualquier socio.",
-                "One single QR code, the same on every sticker handed out on the road. It always points to this page — whoever scans it sees the full list of certified places, so the same sticker works for any partner.")}
+              {t("Um único QR code, o mesmo em todo adesivo físico entregue na rota. Ele sempre aponta pra esta página — quem escaneia vê a lista completa de lugares visitados, então o mesmo adesivo serve pra qualquer parceiro sem precisar gerar um código por local.",
+                "Un único código QR, el mismo en todos los stickers entregados en la ruta. Siempre apunta a esta página: quien lo escanea ve la lista completa de lugares visitados, así el mismo sticker sirve para cualquier socio.",
+                "One single QR code, the same on every sticker handed out along the route. It always points to this page — whoever scans it sees the full list of visited places, so the same sticker works for any partner.")}
             </p>
             <a
               href="/qrcode-certificados.png"

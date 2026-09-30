@@ -20,6 +20,7 @@ export async function generateMetadata(): Promise<Metadata> {
 
 type Secao = { titulo: string; texto: React.ReactNode };
 
+// TODO: revisão por advogado (minuta; seções 7 a 11 incluídas em 29/09/2026 sem revisão jurídica).
 export default async function TermosPage() {
   const i = await idiomaServidor();
   const t = (pt: string, es: string, en: string) => L(i, pt, es, en);
@@ -48,8 +49,8 @@ export default async function TermosPage() {
         "Os planos de parceiro (Permuta, Parceiro Local, Patrocínio Regional e Master) são serviços de divulgação prestados pela própria JobPago ao estabelecimento. Valor, forma de pagamento e entregas são combinados por escrito (WhatsApp ou e-mail) antes do pagamento, que é feito à JobPago.",
         "Los planes de socio (Canje, Socio Local, Patrocinio Regional y Master) son servicios de difusión prestados por JobPago al establecimiento. Valor, forma de pago y entregas se acuerdan por escrito (WhatsApp o e-mail) antes del pago, que se hace a JobPago.",
         "Partner plans (Exchange, Local Partner, Regional Sponsorship and Master) are promotion services provided by JobPago itself to the business. Price, payment method and deliverables are agreed in writing (WhatsApp or e-mail) before payment, which is made to JobPago.")}{" "}
-        {b(t("O selo de verificado não é vendido:", "El sello de verificado no se vende:", "The verified seal is not sold:"))}{" "}
-        {t("depende da visita e dos critérios conferidos no local, e cai se a estrutura mudar — com ou sem plano.", "depende de la visita y de los criterios revisados en el lugar, y se retira si la estructura cambia, con o sin plan.", "it depends on the visit and the criteria checked on site, and is removed if the facilities change — with or without a plan.")}</>,
+        {b(t("O registro de visita", "El registro de visita", "The visit record"))}{" "}
+        {t("informa o que foi encontrado na data indicada e não constitui certificação, recomendação ou garantia de segurança, qualidade ou disponibilidade. Parceiros pagantes são identificados como tal.", "informa lo que se encontró en la fecha indicada y no constituye certificación, recomendación ni garantía de seguridad, calidad o disponibilidad. Los socios que pagan se identifican como tales.", "states what was found on the date shown and is not a certification, recommendation or guarantee of safety, quality or availability. Paying partners are identified as such.")}</>,
     },
     {
       titulo: t("4. Patrocínio de expedições de viajantes", "4. Patrocinio de expediciones de viajeros", "4. Sponsorship of traveller expeditions"),
@@ -78,8 +79,43 @@ export default async function TermosPage() {
         "Each party is responsible for its own taxes. For sponsorship transfers and commissions, JobPago may request the details needed for a receipt or invoice and withhold what the law requires.")}</>,
     },
     {
-      titulo: t("7. Responsável", "7. Responsable", "7. Operator"),
-      texto: <>{t("Plataforma mantida e operada por", "Plataforma mantenida y operada por", "Platform maintained and operated by")} {b("Allan Candido")} (allan@jobpago.com.br).</>,
+      titulo: t("7. Quem pode usar", "7. Quién puede usar", "7. Who can use it"),
+      texto: <>{t(
+        "A JobPago é destinada a maiores de 18 anos. Ao se cadastrar, o usuário declara ter 18 anos ou mais.",
+        "JobPago está destinada a mayores de 18 años. Al registrarse, el usuario declara tener 18 años o más.",
+        "JobPago is intended for people aged 18 or over. By signing up, users declare they are 18 or older.")}</>,
+    },
+    {
+      titulo: t("8. Serviços proibidos", "8. Servicios prohibidos", "8. Prohibited services"),
+      texto: <>{t(
+        "É proibido anunciar, oferecer ou procurar: serviços de natureza sexual ou de acompanhante; conteúdo adulto; qualquer atividade envolvendo menores de 18 anos; transporte remunerado de pessoas sem autorização legal; e qualquer atividade ilegal. Anúncios assim são removidos e a conta é encerrada. Suspeita de exploração sexual de crianças e adolescentes é comunicada às autoridades.",
+        "Está prohibido anunciar, ofrecer o buscar: servicios de naturaleza sexual o de acompañante; contenido adulto; cualquier actividad que involucre a menores de 18 años; transporte remunerado de personas sin autorización legal; y cualquier actividad ilegal. Esos anuncios se eliminan y la cuenta se cierra. La sospecha de explotación sexual de niños, niñas y adolescentes se comunica a las autoridades.",
+        "It is forbidden to advertise, offer or seek: sexual or escort services; adult content; any activity involving people under 18; paid passenger transport without legal authorisation; and any illegal activity. Such listings are removed and the account is closed. Suspected sexual exploitation of children and adolescents is reported to the authorities.")}</>,
+    },
+    {
+      titulo: t("9. Licenças do prestador", "9. Licencias del prestador", "9. Provider licences"),
+      texto: <>{t(
+        "Cada prestador é responsável por ter as licenças e registros exigidos pela sua atividade, como o RNTRC da ANTT para frete remunerado de cargas e o cadastro do drone no SISANT (ANAC) e as autorizações de voo no SARPAS (DECEA).",
+        "Cada prestador es responsable de tener las licencias y registros exigidos por su actividad, como el RNTRC de la ANTT para el flete remunerado de cargas y el registro del dron en el SISANT (ANAC) y las autorizaciones de vuelo en el SARPAS (DECEA).",
+        "Each provider is responsible for holding the licences and registrations their activity requires, such as the ANTT RNTRC for paid freight, and drone registration in SISANT (ANAC) plus flight authorisations in SARPAS (DECEA).")}</>,
+    },
+    {
+      titulo: t("10. Localização", "10. Ubicación", "10. Location"),
+      texto: <>{t(
+        "A JobPago não exibe a localização em tempo real de usuários. Prestadores aparecem no máximo com a cidade.",
+        "JobPago no muestra la ubicación en tiempo real de los usuarios. Los prestadores aparecen como máximo con la ciudad.",
+        "JobPago does not show users' real-time location. Providers are shown at most by town.")}</>,
+    },
+    {
+      titulo: t("11. Denúncias", "11. Denuncias", "11. Reports"),
+      texto: <>{t(
+        "Para denunciar um anúncio, um usuário ou um lugar, escreva para jobpago@allancandido.com com o link ou o nome e a cidade. A denúncia é analisada em até 5 dias úteis; conteúdo que envolva menores é retirado assim que recebido. Exploração sexual de criança ou adolescente também pode ser denunciada no Disque 100 (gratuito, 24 horas).",
+        "Para denunciar un anuncio, un usuario o un lugar, escribí a jobpago@allancandido.com con el enlace o el nombre y la ciudad. La denuncia se analiza en hasta 5 días hábiles; el contenido que involucre a menores se retira apenas se recibe. La explotación sexual de niños, niñas y adolescentes en Brasil también se puede denunciar al Disque 100 (gratuito, 24 horas).",
+        "To report a listing, a user or a place, write to jobpago@allancandido.com with the link or the name and town. Reports are reviewed within 5 business days; content involving minors is taken down as soon as it is received. Child sexual exploitation in Brazil can also be reported to Disque 100 (free, 24 hours).")}</>,
+    },
+    {
+      titulo: t("12. Responsável", "12. Responsable", "12. Operator"),
+      texto: <>{t("Plataforma mantida e operada por", "Plataforma mantenida y operada por", "Platform maintained and operated by")} {b("Allan Candido")} (jobpago@allancandido.com).</>,
     },
   ];
 

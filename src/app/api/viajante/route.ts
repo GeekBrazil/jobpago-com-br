@@ -7,5 +7,5 @@ export const runtime = "nodejs";
 export async function GET() {
   const u = await usuarioLogado();
   if (!u) return NextResponse.json({ logado: false }, { status: 401 });
-  return NextResponse.json({ logado: true, nome: u.nome, ...(await perfilViajante(u.id)) });
+  return NextResponse.json({ logado: true, nome: u.nome, maior18: u.maior18, ...(await perfilViajante(u.id)) });
 }

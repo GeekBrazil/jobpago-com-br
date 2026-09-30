@@ -14,7 +14,7 @@ const TIPOS: Tr = {
   patio: { es: "Patio de estación / área para motorhome", en: "Gas station yard / motorhome area" },
 };
 const OFERECE: Tr = {
-  seguro: { es: "Noche segura (portón, recepción o sereno)", en: "Safe night (gate, reception or night guard)" },
+  seguro: { es: "Portón, recepción o sereno el día de la visita", en: "Gate, reception or night guard on the day of the visit" },
   banho: { es: "Ducha caliente", en: "Hot shower" },
   energia: { es: "Enchufe para celular y notebook", en: "Power for phone and laptop" },
   "220v": { es: "Toma 220V para motorhome y van", en: "220V hookup for motorhome and van" },
@@ -23,10 +23,10 @@ const OFERECE: Tr = {
   agua: { es: "Agua potable / descarga para motorhome", en: "Drinking water / motorhome dump" },
 };
 const HONRA_NOME: Tr = {
-  ouro: { es: "Honor Oro", en: "Gold Honour" },
-  prata: { es: "Honor Plata", en: "Silver Honour" },
-  bronze: { es: "Honor Bronce", en: "Bronze Honour" },
-  verificado: { es: "Verificado", en: "Verified" },
+  ouro: { es: "Socio · Honor Oro", en: "Partner · Gold Honour" },
+  prata: { es: "Socio · Honor Plata", en: "Partner · Silver Honour" },
+  bronze: { es: "Socio (canje) · Honor Bronce", en: "Partner (exchange) · Bronze Honour" },
+  verificado: { es: "Visitado", en: "Visited" },
 };
 const HONRA_COMO: Tr = {
   ouro: { es: "Dinero + canje", en: "Money + exchange" },
@@ -38,13 +38,13 @@ const HONRA_DESC: Tr = {
   ouro: { es: "Contrata un plan de socio y además recibe a la expedición: noche, comida o estructura.", en: "Takes a partner plan and also hosts the expedition: a night, a meal or facilities." },
   prata: { es: "Contrata un plan de socio (Local, Regional o Master).", en: "Takes a partner plan (Local, Regional or Master)." },
   bronze: { es: "Recibe a la expedición a cambio de visibilidad: una noche, una comida o la estructura para grabar.", en: "Hosts the expedition in exchange for visibility: a night, a meal or a place to film." },
-  verificado: { es: "Fue visitado y pasó los criterios, sin contrapartida.", en: "Was visited and met the criteria, with nothing in return." },
+  verificado: { es: "Fue visitado por la expedición, sin contrapartida.", en: "Was visited by the expedition, with nothing in return." },
 };
 const HONRA_GANHA: Tr = {
-  ouro: { es: "Primero en la lista de la ciudad y en el mapa, con medalla de oro, y mención en todo el contenido grabado en el tramo.", en: "First in the town list and on the map, with the gold medal, and a mention in all content filmed on that stretch." },
-  prata: { es: "Aparece antes que los solo verificados, con medalla de plata, y mención cuando pase la expedición.", en: "Listed above verified-only places, with the silver medal, and a mention when the expedition passes." },
-  bronze: { es: "Medalla de bronce en el sello y mención en redes durante el paso.", en: "Bronze medal on the seal and a social media mention during the visit." },
-  verificado: { es: "Sello de verificado con la fecha de la visita, en el mapa y en la lista.", en: "Verified seal with the visit date, on the map and in the list." },
+  ouro: { es: "Primero en la lista de la ciudad y en el mapa, identificado como Socio, con medalla de oro, y mención en todo el contenido grabado en el tramo.", en: "First in the town list and on the map, labeled as Partner, with the gold medal, and a mention in all content filmed on that stretch." },
+  prata: { es: "Aparece antes que los solo visitados, identificado como Socio, con medalla de plata, y mención cuando pase la expedición.", en: "Listed above visited-only places, labeled as Partner, with the silver medal, and a mention when the expedition passes." },
+  bronze: { es: "Medalla de bronce, identificado como Socio (canje), y mención en redes durante el paso.", en: "Bronze medal, labeled as Partner (exchange), and a social media mention during the visit." },
+  verificado: { es: "Registro de visita con la fecha, en el mapa y en la lista.", en: "Visit record with the date, on the map and in the list." },
 };
 const CATEGORIA: Tr = {
   vanlife: { es: "Nómade e infraestructura", en: "Nomad & infrastructure" },
@@ -121,15 +121,15 @@ type TrPlano = { nome: string; valor: string | null; resumo: string; entregaveis
 const PLANOS_TR: Record<string, { es: TrPlano; en: TrPlano }> = {
   permuta: {
     es: { nome: "Canje", valor: "R$ 0 en dinero", resumo: "Vos ofrecés estructura, yo ofrezco visibilidad. Ninguno pone plata.",
-      entregaveis: ["Sello JobPago Verificado, con la fecha de la visita", "Minisitio básico en el mapa de la red", "Mención en redes durante el paso por el tramo"] },
+      entregaveis: ["Registro de visita, con la fecha (todo lugar visitado lo recibe, pague o no)", "Minisitio básico en el mapa de la red", "Mención en redes durante el paso por el tramo"] },
     en: { nome: "Exchange", valor: "R$ 0 in cash", resumo: "You offer facilities, I offer visibility. Neither of us pays.",
-      entregaveis: ["JobPago Verified seal, with the visit date", "Basic mini-site on the network map", "Social media mention while passing through"] },
+      entregaveis: ["Visit record, with the date (every visited place gets one, paying or not)", "Basic mini-site on the network map", "Social media mention while passing through"] },
   },
   local: {
     es: { nome: "Socio Local", valor: "R$ 180 a 450 (pago único) o R$ 49/mes", resumo: "Para quien quiere que lo vea quien está en la ruta ahora, no solo quien ya lo conoce.",
-      entregaveis: ["Minisitio completo, con fotos, etiquetas de infraestructura y contacto directo", "Optimización de tu perfil en Google Maps", "Un video o reel colaborativo, grabado en el lugar", "Sello JobPago Verificado, con la fecha de la visita"] },
-    en: { nome: "Local Partner", valor: "R$ 180 to 450 (one-off) or R$ 49/month", resumo: "For places that want to be seen by people on the road now, not just those who already know them.",
-      entregaveis: ["Full mini-site with photos, facility tags and direct contact", "Google Maps profile optimisation", "One collaborative video or reel filmed on site", "JobPago Verified seal, with the visit date"] },
+      entregaveis: ["Minisitio completo, con fotos, etiquetas de infraestructura y contacto directo", "Optimización de tu perfil en Google Maps", "Un video o reel colaborativo, grabado en el lugar", "Destacado en el mapa, siempre identificado como Socio"] },
+    en: { nome: "Local Partner", valor: "R$ 180 to 450 (one-off) or R$ 49/month", resumo: "For places that want to be seen by people travelling now, not just those who already know them.",
+      entregaveis: ["Full mini-site with photos, facility tags and direct contact", "Google Maps profile optimisation", "One collaborative video or reel filmed on site", "Featured on the map, always labeled as Partner"] },
   },
   regional: {
     es: { nome: "Patrocinio Regional", valor: "R$ 600 a 1.500 por tramo o estado", resumo: "Tu marca asociada a un tramo entero de la ruta, no a un punto en el mapa.",
@@ -151,8 +151,8 @@ export function tPlano<P extends TrPlano & { id: string }>(i: Idioma, p: P): P {
 
 /* Faixas da régua de contribuição (apoiadores.ts), pelo id. */
 const FAIXAS_TR: Record<string, { es: [string, string]; en: [string, string] }> = {
-  apoiador: { es: ["Apoyo de la Ruta", "Nombre en la lista de apoyos de la Expedición"], en: ["Road Supporter", "Name on the Expedition supporters list"] },
-  insignia: { es: ["Insignia de Apoyo", "Insignia digital + mención en Noticias de la Ruta"], en: ["Supporter Badge", "Digital badge + mention in Road News"] },
+  apoiador: { es: ["Apoyo de la Ruta", "Nombre en la lista de apoyos de la Expedición"], en: ["Route Supporter", "Name on the Expedition supporters list"] },
+  insignia: { es: ["Insignia de Apoyo", "Insignia digital + mención en Noticias de la Ruta"], en: ["Supporter Badge", "Digital badge + mention in Route News"] },
   honra: { es: ["Apoyo de Honor", "Insignia de Honor + publicación destacada con foto del tramo"], en: ["Honour Supporter", "Honour badge + featured post with a photo of the stretch"] },
   padrinho: { es: ["Padrino de la Expedición", "Todo lo de Apoyo de Honor + mención en video/reel del viaje"], en: ["Expedition Godparent", "Everything in Honour Supporter + mention in a trip video/reel"] },
 };
