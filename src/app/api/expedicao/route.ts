@@ -27,6 +27,7 @@ export async function GET() {
 export async function POST(req: NextRequest) {
   const u = await usuarioLogado();
   if (!u) return NextResponse.json({ erro: "login" }, { status: 401 });
+  if (!u.maior18) return NextResponse.json({ ok: false, erro: "maior18" }, { status: 403 }); // Termos, seção 7
   const b = await req.json().catch(() => ({}));
   const pool = (await garantirTabelasExpedicoes())!;
 

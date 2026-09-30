@@ -4,6 +4,7 @@ import { useState } from "react";
 import CampoTelefone from "@/components/CampoTelefone";
 import Link from "next/link";
 import { CATEGORIAS, avisoCategoria } from "@/data/categorias";
+import DeclaracaoMaioridade from "@/components/DeclaracaoMaioridade";
 import { useIdioma } from "@/components/useIdioma";
 import SeletorIdioma from "@/components/SeletorIdioma";
 import { tCategoria } from "@/lib/traducoesCadastro";
@@ -18,7 +19,7 @@ const campo = "w-full rounded-2xl bg-slate-900/80 border border-white/15 px-4 py
 
 export default function FormDisponibilidade() {
   const [idioma, setIdioma] = useIdioma();
-  const [f, setF] = useState({ nome: "", whatsapp: "", email: "", cidade: "", uf: "", naEstrada: false, categorias: [] as string[], faz: "", modo: "ambos", quando: "agora", lgpd: false });
+  const [f, setF] = useState({ nome: "", whatsapp: "", email: "", cidade: "", uf: "", naEstrada: false, categorias: [] as string[], faz: "", modo: "ambos", quando: "agora", lgpd: false, maior18: false });
   const [estado, setEstado] = useState<"" | "enviando" | "ok">("");
   const [erro, setErro] = useState("");
   const alterna = (id: string) => setF((x) => ({ ...x, categorias: x.categorias.includes(id) ? x.categorias.filter((c) => c !== id) : [...x.categorias, id] }));
@@ -121,6 +122,8 @@ export default function FormDisponibilidade() {
             {QUANDO.map(([v, pt, es, en]) => <option key={v} value={v}>{L(idioma, pt, es, en)}</option>)}
           </select></label>
       </div>
+
+      <DeclaracaoMaioridade idioma={idioma} marcado={f.maior18} onChange={(v) => setF({ ...f, maior18: v })} />
 
       <label className="flex items-start gap-3 text-sm text-slate-300">
         <input type="checkbox" required checked={f.lgpd} onChange={(e) => setF({ ...f, lgpd: e.target.checked })} className="mt-1" />

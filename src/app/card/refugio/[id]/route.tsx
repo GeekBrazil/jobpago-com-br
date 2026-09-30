@@ -19,7 +19,7 @@ export async function GET(req: NextRequest, { params }: { params: Promise<{ id: 
   if (!r) return new Response("não encontrado", { status: 404 });
   const h = honra(r.honra);
   return card(formatoDe(req.nextUrl.searchParams.get("formato")), {
-    selo: "Pouso visitado",
+    selo: "Lugar para dormir",
     medalha: { texto: h.nome, ...MEDALHA[h.id] },
     titulo: r.nome,
     subtitulo: `${NOME_TIPO[r.tipo] ?? r.tipo} · ${r.cidade}/${r.uf}`,

@@ -35,7 +35,7 @@ export function nivelDe(pontos: number) {
 /* Título novo a cada 100 níveis. */
 const TITULOS = [
   "Andarilho", "Olheiro da Rota", "Guia do Trecho", "Batedor", "Cartógrafo da Rota",
-  "Mestre do Litoral", "Guardião dos Pousos", "Desbravador", "Sentinela da Rota", "Patrono da Rota", "Lenda da Rota",
+  "Mestre do Litoral", "Guardião do Pernoite", "Desbravador", "Sentinela da Rota", "Patrono da Rota", "Lenda da Rota",
 ];
 export const tituloDe = (nivel: number) => TITULOS[Math.min(10, Math.floor(nivel / 100))];
 
@@ -45,7 +45,7 @@ export const RECOMPENSAS = [
   { nivel: 10, titulo: "Confirma contribuições de outros viajantes", parceiro: false },
   { nivel: 50, titulo: "Prioridade quando um negócio publica tarefa na sua área", parceiro: false },
   { nivel: 100, titulo: "Vaga no Comboio da Expedição — gratuita", parceiro: false },
-  { nivel: 200, titulo: "Pernoite ou desconto nos pousos parceiros", parceiro: true },
+  { nivel: 200, titulo: "Pernoite ou desconto nos lugares parceiros", parceiro: true },
   { nivel: 300, titulo: "Tarefas pagas de atualização de lugares (fotos, estrutura, preço)", parceiro: true },
   { nivel: 500, titulo: "Selo público de Mestre do Litoral no perfil e nos cards", parceiro: false },
   { nivel: 1000, titulo: "Lenda da Rota: nome na página da expedição", parceiro: false },

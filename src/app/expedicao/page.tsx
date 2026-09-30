@@ -191,7 +191,7 @@ export default async function ExpedicaoPage() {
               "Trazado: OSRM sobre OpenStreetMap. Banquina y tipo de ruta: OpenStreetMap (colaborativo, extracto Geofabrik). Peajes: Agencia Nacional de Transportes Terrestres. Generado el",
               "Route: OSRM on OpenStreetMap. Shoulder and carriageway: OpenStreetMap (crowdsourced, Geofabrik extract). Tolls: National Land Transport Agency. Generated")} {rota.gerado_em}.
           </p>
-          <p><Link href="/refugio" className="underline hover:text-amber-400">{t("Tem onde dormir no caminho? Peça a visita e seja um Pouso visitado →", "¿Tenés dónde dormir en el camino? Pedí la visita y sé una Parada visitada →", "Got a place to sleep on the way? Request a visit and become a Visited stopover →")}</Link></p>
+          <p><Link href="/refugio" className="underline hover:text-amber-400">{t("Tem onde dormir no caminho? Peça a visita e entre na lista de onde dormir →", "¿Tenés dónde dormir en el camino? Pedí la visita y entrá en la lista de dónde dormir →", "Got a place to sleep on the way? Request a visit and join the where-to-sleep list →")}</Link></p>
           <p><Link href="/expedicoes" className="underline hover:text-amber-400">{t("Expedições de outros viajantes — e como criar a sua →", "Expediciones de otros viajeros, y cómo crear la tuya →", "Other travellers’ expeditions — and how to create yours →")}</Link></p>
         </footer>
       </main>

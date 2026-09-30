@@ -129,7 +129,7 @@ export default function Home() {
               <span>{L(idioma, "Alta Honra", "Alto Honor", "High Honour")}</span>
             </a>
             <a href="#refugio-estrada" className="hover:text-amber-400 transition-colors">
-              {L(idioma, "Pousos visitados", "Paradas visitadas", "Visited stopovers")}
+              {L(idioma, "Onde dormir", "Dónde dormir", "Where to sleep")}
             </a>
           </nav>
 
@@ -275,7 +275,7 @@ export default function Home() {
               <Link href="/refugio" className="text-amber-400 underline hover:text-amber-300">
                 {L(idioma, "Peça a visita", "Pedí la visita", "Ask for a visit")}
               </Link>{" "}
-              {L(idioma, "e vire Parceiro JobPago — ou Pouso visitado, se tiver onde dormir.", "y sé Socio JobPago — o Parada visitada, si tenés dónde dormir.", "and become a JobPago Partner — or a Visited stopover, if you have somewhere to sleep.")}
+              {L(idioma, "e vire Parceiro JobPago — ou entre na lista de onde dormir, se tiver hospedagem.", "y sé Socio JobPago — o entrá en la lista de dónde dormir, si tenés alojamiento.", "and become a JobPago Partner — or join the where-to-sleep list, if you offer a place to stay.")}
             </p>
 
             <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 mt-6">
@@ -364,7 +364,7 @@ export default function Home() {
             <span>{L(idioma, "Registro JobPago · lugar visitado para dormir", "Registro JobPago · lugar visitado para dormir", "JobPago record · visited place to sleep")}</span>
           </div>
           <h2 className="text-3xl sm:text-5xl font-black text-white tracking-tight leading-tight">
-            {L(idioma, "Pouso visitado", "Parada visitada", "Visited stopover")}
+            {L(idioma, "Onde dormir", "Dónde dormir", "Where to sleep")}
           </h2>
           <p className="mt-4 text-slate-300 text-sm sm:text-base leading-relaxed">
             {L(idioma, "Camping, hostel, pousada, hotel ou pátio para motorhome onde a expedição passou. Cada registro mostra a data e o que havia no dia.", "Camping, hostel, posada, hotel o patio para motorhome por donde pasó la expedición. Cada registro muestra la fecha y lo que había ese día.", "A campsite, hostel, guesthouse, hotel or motorhome yard the expedition passed through. Each record shows the date and what was there that day.")}
@@ -374,7 +374,7 @@ export default function Home() {
         {/* espaço limpo: aqui o cenário 3D do fundo enquadra o ponto de apoio (ilustração, não um lugar real) */}
         <div className="min-h-[70vh] sm:min-h-[80vh]" aria-hidden="true" />
         <p className="text-center text-[11px] text-slate-400">
-          {L(idioma, "Ilustração. Os primeiros Pousos serão visitados na Expedição nº 01 · Paraty → Fortaleza, pelo litoral", "Ilustración. Las primeras Paradas se visitarán en la Expedición nº 01 · Paraty → Fortaleza, por la costa", "Illustration. The first stopovers will be visited on Expedition no. 01 · Paraty → Fortaleza, along the coast")}
+          {L(idioma, "Ilustração. Os primeiros lugares para dormir serão visitados na Expedição nº 01 · Paraty → Fortaleza, pelo litoral", "Ilustración. Los primeros lugares para dormir se visitarán en la Expedición nº 01 · Paraty → Fortaleza, por la costa", "Illustration. The first places to sleep will be visited on Expedition no. 01 · Paraty → Fortaleza, along the coast")}
         </p>
 
         {/* O QUE CONFERIMOS PARA DAR O SELO */}
@@ -404,7 +404,7 @@ export default function Home() {
             ))}
           </div>
           <p className="mt-6 text-center text-xs text-slate-400">
-            {L(idioma, "Vale para camping, hostel, pousada, hotel e pátio de posto com pernoite. Cada pouso mostra o que havia no dia da visita.", "Vale para camping, hostel, posada, hotel y patio de estación con pernocte. Cada parada muestra lo que había el día de la visita.", "Applies to campsites, hostels, guesthouses, hotels and gas-station yards with overnight stays. Each stopover shows what was there on the day of the visit.")}
+            {L(idioma, "Vale para camping, hostel, pousada, hotel e pátio de posto com pernoite. Cada lugar mostra o que havia no dia da visita.", "Vale para camping, hostel, posada, hotel y patio de estación con pernocte. Cada lugar muestra lo que había el día de la visita.", "Applies to campsites, hostels, guesthouses, hotels and gas-station yards with overnight stays. Each place shows what was there on the day of the visit.")}
           </p>
 
           <div className="mt-10 flex flex-col sm:flex-row items-center justify-center gap-4">
@@ -513,8 +513,8 @@ export default function Home() {
             <Link href="/privacidade" className="hover:text-amber-400 transition-colors">
               {L(idioma, "Política de Privacidade", "Política de Privacidad", "Privacy Policy")}
             </Link>
-            <a href="mailto:allan@jobpago.com.br" className="hover:text-amber-400 transition-colors">
-              allan@jobpago.com.br
+            <a href="mailto:jobpago@allancandido.com" className="hover:text-amber-400 transition-colors">
+              jobpago@allancandido.com
             </a>
           </div>
         </div>

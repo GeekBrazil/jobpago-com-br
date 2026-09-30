@@ -5,6 +5,7 @@ import { Pool } from "pg";
 import { normalizarTelefone } from "@/lib/telefone";
 import { msg } from "@/lib/traducoesCadastro";
 import { termosParaRevisao } from "@/lib/moderacao";
+import { garantirColunasMaioridade, declarouMaioridade, ERRO_MAIORIDADE } from "@/lib/maioridade";
 
 const LEADS_FILE = path.join(process.cwd(), "public", "data", "leads_store.json");
 
@@ -40,11 +41,12 @@ const pool = process.env.DATABASE_URL
 
 async function gravarNoPostgres(lead: LeadRegistrado) {
   if (!pool) return false;
+  await garantirColunasMaioridade(pool);
   await pool.query(
     `INSERT INTO leads (id, tipo, nome_contratado, whatsapp_contratado, email_contratado,
         nome_contratante, email_contratante, whatsapp_contratante, titulo_servico, categoria,
-        modalidade, cidade, valor, is_cortesia, descricao, lgpd_consent, status, criado_em)
-     VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,$15,$16,$17,$18)
+        modalidade, cidade, valor, is_cortesia, descricao, lgpd_consent, status, criado_em, maior_18_em)
+     VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,$15,$16,$17,$18,now())
      ON CONFLICT (id) DO NOTHING`,
     [
       lead.id, lead.tipo, lead.nomeContratado, lead.whatsappContratado, lead.emailContratado,
@@ -121,6 +123,11 @@ export async function POST(req: Request) {
         { success: false, error: "É obrigatório consentir com o termo da LGPD para prosseguir." },
         { status: 400 }
       );
+    }
+
+    // 5. Declaração de 18 anos ou mais (Termos, seção 7) — validada aqui também
+    if (!declarouMaioridade(body)) {
+      return NextResponse.json({ success: false, error: msg(idioma, ERRO_MAIORIDADE.pt, ERRO_MAIORIDADE.es, ERRO_MAIORIDADE.en) }, { status: 400 });
     }
 
     if (!body.tituloServico?.trim()) {

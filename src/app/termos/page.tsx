@@ -109,13 +109,13 @@ export default async function TermosPage() {
     {
       titulo: t("11. Denúncias", "11. Denuncias", "11. Reports"),
       texto: <>{t(
-        "Para denunciar um anúncio, um usuário ou um lugar, escreva para allan@jobpago.com.br com o link ou o nome e a cidade. A denúncia é analisada em até 5 dias úteis; conteúdo que envolva menores é retirado assim que recebido. Exploração sexual de criança ou adolescente também pode ser denunciada no Disque 100 (gratuito, 24 horas).",
-        "Para denunciar un anuncio, un usuario o un lugar, escribí a allan@jobpago.com.br con el enlace o el nombre y la ciudad. La denuncia se analiza en hasta 5 días hábiles; el contenido que involucre a menores se retira apenas se recibe. La explotación sexual de niños, niñas y adolescentes en Brasil también se puede denunciar al Disque 100 (gratuito, 24 horas).",
-        "To report a listing, a user or a place, write to allan@jobpago.com.br with the link or the name and town. Reports are reviewed within 5 business days; content involving minors is taken down as soon as it is received. Child sexual exploitation in Brazil can also be reported to Disque 100 (free, 24 hours).")}</>,
+        "Para denunciar um anúncio, um usuário ou um lugar, escreva para jobpago@allancandido.com com o link ou o nome e a cidade. A denúncia é analisada em até 5 dias úteis; conteúdo que envolva menores é retirado assim que recebido. Exploração sexual de criança ou adolescente também pode ser denunciada no Disque 100 (gratuito, 24 horas).",
+        "Para denunciar un anuncio, un usuario o un lugar, escribí a jobpago@allancandido.com con el enlace o el nombre y la ciudad. La denuncia se analiza en hasta 5 días hábiles; el contenido que involucre a menores se retira apenas se recibe. La explotación sexual de niños, niñas y adolescentes en Brasil también se puede denunciar al Disque 100 (gratuito, 24 horas).",
+        "To report a listing, a user or a place, write to jobpago@allancandido.com with the link or the name and town. Reports are reviewed within 5 business days; content involving minors is taken down as soon as it is received. Child sexual exploitation in Brazil can also be reported to Disque 100 (free, 24 hours).")}</>,
     },
     {
       titulo: t("12. Responsável", "12. Responsable", "12. Operator"),
-      texto: <>{t("Plataforma mantida e operada por", "Plataforma mantenida y operada por", "Platform maintained and operated by")} {b("Allan Candido")} (allan@jobpago.com.br).</>,
+      texto: <>{t("Plataforma mantida e operada por", "Plataforma mantenida y operada por", "Platform maintained and operated by")} {b("Allan Candido")} (jobpago@allancandido.com).</>,
     },
   ];
 

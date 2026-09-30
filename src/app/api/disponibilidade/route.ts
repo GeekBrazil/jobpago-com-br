@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { getPool } from "@/lib/db";
 import { CATEGORIAS } from "@/data/categorias";
 import { termosParaRevisao } from "@/lib/moderacao";
+import { garantirColunasMaioridade, declarouMaioridade, ERRO_MAIORIDADE } from "@/lib/maioridade";
 import { msg } from "@/lib/traducoesCadastro";
 import { normalizarTelefone } from "@/lib/telefone";
 
@@ -53,13 +54,16 @@ export async function POST(req: NextRequest) {
   if (!categorias.length) return NextResponse.json({ ok: false, erro: m("Escolha pelo menos uma área.", "Elegí al menos un área.", "Choose at least one area.") }, { status: 400 });
   if (b.lgpd !== true) return NextResponse.json({ ok: false, erro: m("É preciso autorizar o contato (LGPD).", "Tenés que autorizar el contacto (LGPD).", "Please authorise us to contact you (LGPD).") }, { status: 400 });
 
+  if (!declarouMaioridade(b)) return NextResponse.json({ ok: false, erro: m(ERRO_MAIORIDADE.pt, ERRO_MAIORIDADE.es, ERRO_MAIORIDADE.en) }, { status: 400 });
+
   const pool = await garantirTabela();
   if (!pool) return NextResponse.json({ ok: false, erro: m("Cadastro indisponível agora. Tente mais tarde.", "Registro no disponible ahora. Probá más tarde.", "Sign-up unavailable right now. Try later.") }, { status: 503 });
   // Filtro de termos (src/config/termos-revisao.ts): segura para revisão manual.
+  await garantirColunasMaioridade(pool);
   const status = termosParaRevisao(nome, txt(b.faz, 500)).length ? "revisao" : "nova";
   await pool.query(
-    `INSERT INTO disponibilidades (nome, whatsapp, email, cidade, uf, na_estrada, categorias, faz, modo, quando, lgpd_consent, status)
-     VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,true,$11)`,
+    `INSERT INTO disponibilidades (nome, whatsapp, email, cidade, uf, na_estrada, categorias, faz, modo, quando, lgpd_consent, status, maior_18_em)
+     VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,true,$11,now())`,
     [nome, whatsapp, email || null, txt(b.cidade, 80) || null, txt(b.uf, 2).toUpperCase() || null, b.naEstrada === true,
      categorias, txt(b.faz, 500) || null, MODOS.has(b.modo) ? b.modo : null, QUANDO.has(b.quando) ? b.quando : null, status]
   );

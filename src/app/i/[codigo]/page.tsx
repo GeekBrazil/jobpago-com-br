@@ -48,7 +48,7 @@ export default async function IndicacaoPage({ params }: { params: Promise<{ codi
         <div className="mt-8 grid gap-4 sm:grid-cols-2">
           <Link href="/refugio" className="glass-panel rounded-3xl p-6 border border-amber-400/40 hover:border-amber-400">
             <p className="font-black text-white text-lg">{t("Tem onde dormir?", "¿Tenés dónde dormir?", "Got a place to sleep?")}</p>
-            <p className="mt-1 text-sm text-slate-300">{t("Camping, hostel, pousada, hotel ou pátio: peça a visita e seja um Pouso visitado.", "Camping, hostel, posada, hotel o patio: pedí la visita y sé una Parada visitada.", "Campsite, hostel, guesthouse, hotel or yard: request a visit and become a Visited stopover.")}</p>
+            <p className="mt-1 text-sm text-slate-300">{t("Camping, hostel, pousada, hotel ou pátio: peça a visita e entre na lista de onde dormir.", "Camping, hostel, posada, hotel o patio: pedí la visita y entrá en la lista de dónde dormir.", "Campsite, hostel, guesthouse, hotel or yard: request a visit and join the where-to-sleep list.")}</p>
           </Link>
           <Link href="/parceiros/planos" className="glass-panel rounded-3xl p-6 border border-white/10 hover:border-amber-400/60">
             <p className="font-black text-white text-lg">{t("Outro tipo de negócio?", "¿Otro tipo de negocio?", "Another kind of business?")}</p>

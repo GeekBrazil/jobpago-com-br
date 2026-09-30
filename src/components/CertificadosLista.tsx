@@ -60,7 +60,7 @@ export default function CertificadosLista() {
                 <div>
                   <div className="flex flex-wrap items-center gap-1.5 mb-3">
                     <span className="text-[10px] font-black px-2 py-1 rounded-xl bg-amber-500/15 text-amber-300 border border-amber-500/30 flex items-center gap-1">
-                      <Icon name="shield" width={26} height={26} /> {t("Pouso visitado", "Parada visitada", "Visited stopover")}
+                      <Icon name="shield" width={26} height={26} /> {t("Lugar para dormir", "Lugar para dormir", "Place to sleep")}
                     </span>
                     <span className={`text-[10px] font-black px-2 py-1 rounded-xl border ${h.cor}`}>{tHonra(i, h.id, "nome", h.nome)}</span>
                   </div>
@@ -73,7 +73,7 @@ export default function CertificadosLista() {
                 <span className="text-xs text-slate-400 flex items-center gap-1 mt-4">
                   <Icon name="pin" width={28} height={28} /> {r.cidade} · {r.uf}{r.verificado_em ? ` · ${t("visitado em", "visitado el", "visited")} ${r.verificado_em}` : ""}
                 </span>
-                <Compartilhar compacto card={`/card/refugio/${r.id}`} titulo={`${r.nome}: ${t("Pouso visitado pela expedição JobPago", "Parada visitada por la expedición JobPago", "Stopover visited by the JobPago expedition")}`} link="https://jobpago.com.br/certificados" />
+                <Compartilhar compacto card={`/card/refugio/${r.id}`} titulo={`${r.nome}: ${t("lugar para dormir visitado pela expedição JobPago", "lugar para dormir visitado por la expedición JobPago", "place to sleep visited by the JobPago expedition")}`} link="https://jobpago.com.br/certificados" />
               </div>
             );
           })}

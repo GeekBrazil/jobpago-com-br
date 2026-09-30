@@ -32,7 +32,7 @@ export default async function PrivacidadePage() {
         </div>
 
         <h1 className="text-3xl sm:text-4xl font-black text-white mb-6">{t("Política de Privacidade", "Política de Privacidad", "Privacy Policy")}</h1>
-        <p className="text-xs text-slate-400 mb-8">{t("Última atualização: 29 de setembro de 2026", "Última actualización: 29 de septiembre de 2026", "Last updated: 29 September 2026")}</p>
+        <p className="text-xs text-slate-400 mb-8">{t("Última atualização: 30 de setembro de 2026", "Última actualización: 30 de septiembre de 2026", "Last updated: 30 September 2026")}</p>
         {i !== "pt" && (
           <p className="mb-6 text-xs text-slate-400">
             {t("", "Traducción para facilitar la lectura. En caso de diferencia, vale la versión en portugués.", "Translation provided for convenience. If there is any difference, the Portuguese version prevails.")}
@@ -44,7 +44,7 @@ export default async function PrivacidadePage() {
             <section>
               <h2 className="text-lg font-bold text-white mb-2">1. Identificação do Controlador</h2>
               <p>
-                O controlador dos dados pessoais coletados nesta plataforma é <strong>Allan Candido</strong>, com contato pelo e-mail <strong>allan@jobpago.com.br</strong>.
+                O controlador dos dados pessoais coletados nesta plataforma é <strong>Allan Candido</strong>, com contato pelo e-mail <strong>jobpago@allancandido.com</strong>.
               </p>
             </section>
 
@@ -52,7 +52,7 @@ export default async function PrivacidadePage() {
               <h2 className="text-lg font-bold text-white mb-2">2. Dados Coletados e Finalidade</h2>
               <ul className="list-disc pl-5 space-y-2">
                 <li><strong>Cadastro de serviço</strong> (quem busca renda): nome, WhatsApp, e-mail opcional, cidade e UF (ou &quot;viajando&quot;), áreas de atuação, modo e horário. Finalidade: chamar a pessoa quando um negócio publicar tarefa compatível. Não é exibido publicamente.</li>
-                <li><strong>Candidatura a Pouso visitado</strong> (camping, hostel, pousada, hotel, pátio): nome e tipo do lugar, cidade, o que oferece, preço da noite, forma de apoio à expedição, nome do responsável, WhatsApp, e-mail e site opcionais. Finalidade: combinar a visita. Só nome, tipo, cidade, estrutura, preço e nível de Honra dos lugares <em>visitados</em> ficam públicos.</li>
+                <li><strong>Candidatura de lugar para dormir</strong> (camping, hostel, pousada, hotel, pátio): nome e tipo do lugar, cidade, o que oferece, preço da noite, forma de apoio à expedição, nome do responsável, WhatsApp, e-mail e site opcionais. Finalidade: combinar a visita. Só nome, tipo, cidade, estrutura, preço e nível de Honra dos lugares <em>visitados</em> ficam públicos.</li>
                 <li><strong>Cadastro de tarefa ou serviço</strong>: nome, WhatsApp, e-mail e descrição. Finalidade: encaminhar o pedido pelo WhatsApp a quem combina com ele.</li>
                 <li><strong>Botão de WhatsApp</strong>: antes de abrir a conversa, a pessoa escolhe o assunto (ex.: &quot;Sou negócio&quot;, &quot;Quero renda&quot;) e pode informar o nome. Finalidade: direcionar o atendimento.</li>
                 <li><strong>Navegação</strong>: páginas vistas, tempo na página, rolagem, cliques e de onde veio a visita (ex.: Instagram, Google). Sem cookie e sem guardar o endereço IP; o navegador recebe um identificador aleatório. Finalidade: medir e melhorar o site.</li>
@@ -74,21 +74,26 @@ export default async function PrivacidadePage() {
             <section>
               <h2 className="text-lg font-bold text-white mb-2">4. Direitos do Titular (LGPD)</h2>
               <p>
-                O titular dos dados pode solicitar a qualquer momento a confirmação de existência de tratamento, acesso, correção ou exclusão definitiva de seus dados de cadastro enviando solicitação para <strong>allan@jobpago.com.br</strong>.
+                O titular dos dados pode solicitar a qualquer momento a confirmação de existência de tratamento, acesso, correção ou exclusão definitiva de seus dados de cadastro enviando solicitação para <strong>jobpago@allancandido.com</strong>.
               </p>
+            </section>
+
+            <section>
+              <h2 className="text-lg font-bold text-white mb-2">5. Prazo de guarda</h2>
+              <p>Registros de acesso ao site (data, hora e IP): 6 meses, como exige o Marco Civil da Internet (Lei 12.965/2014, art. 15). Registros de pagamento de planos e patrocínios: 5 anos, pelo prazo da legislação fiscal. Os demais dados ficam só enquanto servem à finalidade informada acima e são apagados quando você pedir ou quando deixarem de ser necessários (LGPD, arts. 15 e 16).</p>
             </section>
           </div>
         ) : i === "es" ? (
           <div className="space-y-6 text-sm text-slate-300 leading-relaxed">
             <section>
               <h2 className="text-lg font-bold text-white mb-2">1. Responsable del tratamiento</h2>
-              <p>El responsable de los datos personales recogidos en esta plataforma es <strong>Allan Candido</strong>, contacto: <strong>allan@jobpago.com.br</strong>.</p>
+              <p>El responsable de los datos personales recogidos en esta plataforma es <strong>Allan Candido</strong>, contacto: <strong>jobpago@allancandido.com</strong>.</p>
             </section>
             <section>
               <h2 className="text-lg font-bold text-white mb-2">2. Datos recogidos y finalidad</h2>
               <ul className="list-disc pl-5 space-y-2">
                 <li><strong>Registro de servicio</strong> (quien busca ingresos): nombre, WhatsApp, e-mail opcional, ciudad y estado (o &quot;en la ruta&quot;), áreas, modalidad y horario. Finalidad: contactar a la persona cuando un negocio publique una tarea compatible. No se muestra públicamente.</li>
-                <li><strong>Solicitud de Parada visitada</strong> (camping, hostel, posada, hotel, patio): nombre y tipo del lugar, ciudad, qué ofrece, precio por noche, forma de apoyo a la expedición, responsable, WhatsApp, e-mail y sitio opcionales. Finalidad: acordar la visita. Solo el nombre, tipo, ciudad, estructura, precio y nivel de Honor de los lugares <em>visitados</em> son públicos.</li>
+                <li><strong>Solicitud de lugar para dormir</strong> (camping, hostel, posada, hotel, patio): nombre y tipo del lugar, ciudad, qué ofrece, precio por noche, forma de apoyo a la expedición, responsable, WhatsApp, e-mail y sitio opcionales. Finalidad: acordar la visita. Solo el nombre, tipo, ciudad, estructura, precio y nivel de Honor de los lugares <em>visitados</em> son públicos.</li>
                 <li><strong>Registro de tarea o servicio</strong>: nombre, WhatsApp, e-mail y descripción. Finalidad: enviar el pedido por WhatsApp a quien coincide.</li>
                 <li><strong>Botón de WhatsApp</strong>: antes de abrir la conversación, la persona elige el asunto y puede dar su nombre. Finalidad: dirigir la atención.</li>
                 <li><strong>Navegación</strong>: páginas vistas, tiempo en la página, desplazamiento, clics y origen de la visita. Sin cookies y sin guardar la dirección IP; el navegador recibe un identificador aleatorio. Finalidad: medir y mejorar el sitio.</li>
@@ -105,20 +110,25 @@ export default async function PrivacidadePage() {
             </section>
             <section>
               <h2 className="text-lg font-bold text-white mb-2">4. Derechos del titular (LGPD)</h2>
-              <p>Podés pedir en cualquier momento la confirmación del tratamiento, acceso, corrección o eliminación definitiva de tus datos escribiendo a <strong>allan@jobpago.com.br</strong>.</p>
+              <p>Podés pedir en cualquier momento la confirmación del tratamiento, acceso, corrección o eliminación definitiva de tus datos escribiendo a <strong>jobpago@allancandido.com</strong>.</p>
+            </section>
+
+            <section>
+              <h2 className="text-lg font-bold text-white mb-2">5. Plazo de conservación</h2>
+              <p>Registros de acceso al sitio (fecha, hora e IP): 6 meses, como exige el Marco Civil de Internet de Brasil (Ley 12.965/2014, art. 15). Registros de pago de planes y patrocinios: 5 años, por el plazo de la legislación fiscal. Los demás datos se guardan solo mientras sirven a la finalidad indicada arriba y se borran cuando lo pedís o cuando dejan de ser necesarios (LGPD, arts. 15 y 16).</p>
             </section>
           </div>
         ) : (
           <div className="space-y-6 text-sm text-slate-300 leading-relaxed">
             <section>
               <h2 className="text-lg font-bold text-white mb-2">1. Data controller</h2>
-              <p>The controller of the personal data collected on this platform is <strong>Allan Candido</strong>, contact: <strong>allan@jobpago.com.br</strong>.</p>
+              <p>The controller of the personal data collected on this platform is <strong>Allan Candido</strong>, contact: <strong>jobpago@allancandido.com</strong>.</p>
             </section>
             <section>
               <h2 className="text-lg font-bold text-white mb-2">2. Data collected and purpose</h2>
               <ul className="list-disc pl-5 space-y-2">
                 <li><strong>Service sign-up</strong> (people looking for income): name, WhatsApp, optional e-mail, town and state (or &quot;travelling&quot;), fields, mode and hours. Purpose: contacting the person when a business posts a matching task. Not shown publicly.</li>
-                <li><strong>Visited stopover application</strong> (campsite, hostel, guesthouse, hotel, yard): place name and type, town, what it offers, price per night, how it supports the expedition, person in charge, WhatsApp, optional e-mail and website. Purpose: arranging the visit. Only the name, type, town, facilities, price and Honour level of <em>visited</em> places are public.</li>
+                <li><strong>Place-to-sleep application</strong> (campsite, hostel, guesthouse, hotel, yard): place name and type, town, what it offers, price per night, how it supports the expedition, person in charge, WhatsApp, optional e-mail and website. Purpose: arranging the visit. Only the name, type, town, facilities, price and Honour level of <em>visited</em> places are public.</li>
                 <li><strong>Task or service request</strong>: name, WhatsApp, e-mail and description. Purpose: forwarding the request on WhatsApp to matching people.</li>
                 <li><strong>WhatsApp button</strong>: before opening the chat, the person picks a subject and may give their name. Purpose: routing the conversation.</li>
                 <li><strong>Browsing</strong>: pages viewed, time on page, scrolling, clicks and where the visit came from. No cookies and no IP address stored; the browser gets a random identifier. Purpose: measuring and improving the site.</li>
@@ -135,7 +145,12 @@ export default async function PrivacidadePage() {
             </section>
             <section>
               <h2 className="text-lg font-bold text-white mb-2">4. Your rights (LGPD)</h2>
-              <p>You may at any time request confirmation of processing, access, correction or permanent deletion of your data by writing to <strong>allan@jobpago.com.br</strong>.</p>
+              <p>You may at any time request confirmation of processing, access, correction or permanent deletion of your data by writing to <strong>jobpago@allancandido.com</strong>.</p>
+            </section>
+
+            <section>
+              <h2 className="text-lg font-bold text-white mb-2">5. Retention</h2>
+              <p>Site access records (date, time and IP): 6 months, as required by Brazil's Internet Civil Framework (Law 12.965/2014, art. 15). Payment records for plans and sponsorships: 5 years, as required by tax law. All other data is kept only while it serves the purpose stated above and is deleted when you ask or when it is no longer needed (LGPD, arts. 15 and 16).</p>
             </section>
           </div>
         )}

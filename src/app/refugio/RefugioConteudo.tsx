@@ -18,7 +18,7 @@ export default function RefugioConteudo() {
         <p className="text-xs font-mono font-bold uppercase tracking-widest text-amber-400">{L(idioma, "Expedição nº 01 · saída 15 de outubro", "Expedición nº 01 · salida 15 de octubre", "Expedition no. 01 · departs 15 October")}</p>
         <SeletorIdioma idioma={idioma} onChange={setIdioma} />
       </div>
-      <h1 className="mt-3 text-4xl sm:text-5xl font-black tracking-tight leading-[1.05]">{L(idioma, "Seja um Pouso visitado", "Sé una Parada visitada", "Become a Visited Refuge")}</h1>
+      <h1 className="mt-3 text-4xl sm:text-5xl font-black tracking-tight leading-[1.05]">{L(idioma, "Cadastre seu lugar para dormir", "Registrá tu lugar para dormir", "List your place to sleep")}</h1>
       <p className="mt-4 text-lg text-slate-300 max-w-2xl">
         {L(idioma,
           "Camping, hostel, pousada, hotel ou pátio para motorhome entre Paraty e Fortaleza: peça a visita. A expedição passa por aí, registra o que havia no dia e seu lugar entra no mapa com a data da visita. É um registro, não uma garantia.",
@@ -49,7 +49,7 @@ export default function RefugioConteudo() {
         <p className="mt-4 text-xs text-slate-400">
           {L(idioma, "Valores dos planos em", "Valores de los planes en", "Plan prices at")} <Link href="/parceiros/planos" className="underline hover:text-amber-400">{L(idioma, "Parceiros", "Socios", "Partners")}</Link>.{" "}
           {L(idioma, "O que registramos na visita está em", "Lo que registramos en la visita está en", "What we record on the visit is at")}{" "}
-          <Link href="/#refugio-estrada" className="underline hover:text-amber-400">{L(idioma, "Pouso visitado", "Parada visitada", "Visited stopover")}</Link>.
+          <Link href="/#refugio-estrada" className="underline hover:text-amber-400">{L(idioma, "Onde dormir", "Dónde dormir", "Where to sleep")}</Link>.
         </p>
       </section>
 
