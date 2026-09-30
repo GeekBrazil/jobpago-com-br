@@ -184,7 +184,7 @@ export default function CadastroServicoLead({ onSuccess, tipoInicial = "prestado
             </span>
             <h2 className="text-sm font-black text-white mt-0.5">{L(idioma, "Cadastro e validação", "Registro y validación", "Sign-up & validation")}</h2>
             <p className="text-xs text-slate-400 mt-1">
-              {L(idioma, "WhatsApp com DDD e e-mail validados para contato seguro e direto.", "WhatsApp y e-mail validados para un contacto seguro y directo.", "Validated WhatsApp and e-mail for safe, direct contact.")}
+              {L(idioma, "WhatsApp com DDD e e-mail validados para contato direto.", "WhatsApp y e-mail validados para un contacto directo.", "Validated WhatsApp and e-mail for direct contact.")}
             </p>
           </div>
 

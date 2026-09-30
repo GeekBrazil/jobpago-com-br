@@ -9,7 +9,7 @@ export async function generateMetadata(): Promise<Metadata> {
   const i = await idiomaServidor();
   return {
     title: L(i, "Cadastrar Serviço & Envio para Contratantes · JobPago", "Registrar servicio y envío a contratantes · JobPago", "Post a service or task · JobPago"),
-    description: L(i, "Cadastre seu serviço com segurança e compliance LGPD. O JobPago envia as propostas diretamente para os contratantes qualificados da rede.", "Registrá tu servicio de forma segura y conforme a la LGPD. JobPago envía las propuestas directamente a los contratantes de la red.", "Register your service safely and LGPD-compliant. JobPago sends proposals straight to the right people in the network."),
+    description: L(i, "Cadastre seu serviço seguindo a LGPD. O JobPago envia as propostas diretamente para os contratantes qualificados da rede.", "Registrá tu servicio conforme a la LGPD. JobPago envía las propuestas directamente a los contratantes de la red.", "Register your service under LGPD rules. JobPago sends proposals straight to the right people in the network."),
   };
 }
 

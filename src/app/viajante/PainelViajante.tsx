@@ -29,7 +29,7 @@ export default function PainelViajante() {
 
   const nomeTipo = (id: string) =>
     CONTRIBUICOES.find((c) => c.id === id)?.nome[idioma] ??
-    ({ questionario: T.questionario, indicacao_verificado: idioma === "es" ? "Recomendado verificado" : idioma === "en" ? "Referral verified" : "Indicado verificado",
+    ({ questionario: T.questionario, indicacao_verificado: idioma === "es" ? "Recomendado visitado" : idioma === "en" ? "Referral visited" : "Indicado visitado",
        indicacao_pagante: idioma === "es" ? "Recomendado contrató un plan" : idioma === "en" ? "Referral bought a plan" : "Indicado fechou plano" } as Record<string, string>)[id] ?? id;
 
   const [comboio, setComboio] = useState<{ status: string } | null | undefined>(undefined);

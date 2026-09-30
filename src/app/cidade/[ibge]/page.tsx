@@ -205,7 +205,7 @@ export default async function RelatorioCidadePage({ params }: Props) {
           <div className="glass-panel rounded-3xl p-7">
             <p className="text-xs font-mono font-bold uppercase tracking-widest text-amber-400">{t("Tenho um negócio", "Tengo un negocio", "I have a business")}</p>
             <h2 className="mt-2 text-2xl font-black">{t("Mais clientes em", "Más clientes en", "More customers in")} {cidade}</h2>
-            <p className="mt-2 text-slate-300">{t("Cadastre o negócio, ganhe o selo de estabelecimento verificado e encontre quem faça as tarefas digitais.", "Registrá tu negocio, ganá el sello de establecimiento verificado y encontrá quién haga las tareas digitales.", "Register your business, earn the verified seal and find people to do the digital tasks.")}</p>
+            <p className="mt-2 text-slate-300">{t("Cadastre o negócio e encontre quem faça as tarefas digitais.", "Registrá tu negocio y encontrá quién haga las tareas digitales.", "Register your business and find people to do the digital tasks.")}</p>
             <div className="mt-5 flex flex-wrap gap-3">
               <Link href="/cadastrar-servico?tipo=contratante" className="btn-primary-amalfi rounded-2xl px-6 py-3 text-sm font-black">{t("Cadastrar meu negócio", "Registrar mi negocio", "Register my business")}</Link>
               <a href={zap(`Tenho um negócio em ${cidade} (${m.uf}) e quero mais clientes.`)} target="_blank" rel="noopener noreferrer" className="btn-secondary-glass rounded-2xl px-6 py-3 text-sm font-bold">

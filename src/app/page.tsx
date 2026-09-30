@@ -189,7 +189,7 @@ export default function Home() {
               <p className="text-[11px] font-mono font-bold uppercase tracking-widest text-amber-400">{L(idioma, "Tenho um negócio", "Tengo un negocio", "I have a business")}</p>
               <h2 className="mt-2 text-xl sm:text-2xl font-black text-white">{L(idioma, "Mais clientes no bairro e na estrada", "Más clientes en el barrio y en la ruta", "More customers in the neighbourhood and on the road")}</h2>
               <p className="mt-2 text-sm text-slate-300 leading-relaxed">
-                {L(idioma, "Diga a tarefa (fotos, Instagram, cardápio, frete, atendimento) e encontre quem faz, com Pix direto. Ganhe o selo de estabelecimento verificado.", "Contá la tarea (fotos, Instagram, menú, flete, atención) y encontrá quién la hace, con Pix directo. Ganá el sello de establecimiento verificado.", "Describe the task (photos, Instagram, menu, freight, customer service) and find who does it, paid by Pix. Earn the verified business seal.")}
+                {L(idioma, "Diga a tarefa (fotos, Instagram, cardápio, frete, atendimento) e encontre quem faz, com Pix direto. Receba o registro de visita da expedição.", "Contá la tarea (fotos, Instagram, menú, flete, atención) y encontrá quién la hace, con Pix directo. Recibí el registro de visita de la expedición.", "Describe the task (photos, Instagram, menu, freight, customer service) and find who does it, paid by Pix. Get an expedition visit record.")}
               </p>
               <div className="mt-5 flex flex-wrap gap-3">
                 <Link href="/cadastrar-servico?tipo=contratante" className="btn-primary-amalfi rounded-2xl px-5 py-3 text-sm font-black">{L(idioma, "Publicar uma tarefa", "Publicar una tarea", "Post a task")}</Link>
@@ -225,7 +225,7 @@ export default function Home() {
               {L(idioma, "Mapa GPS de serviços e rotas", "Mapa GPS de servicios y rutas", "GPS map of services and routes")}
             </h2>
             <p className="text-xs text-slate-300 mt-1">
-              {L(idioma, "Trace sua rota. Os pontos de apoio verificados aparecem aqui conforme a Expedição nº 01 avança.", "Trazá tu ruta. Los puntos de apoyo verificados aparecen aquí a medida que avanza la Expedición nº 01.", "Plot your route. Verified support points show up here as Expedition no. 01 moves on.")}
+              {L(idioma, "Trace sua rota. Os lugares visitados aparecem aqui conforme a Expedição nº 01 avança.", "Trazá tu ruta. Los lugares visitados aparecen aquí a medida que avanza la Expedición nº 01.", "Plot your route. Visited places show up here as Expedition no. 01 moves on.")}
             </p>
           </div>
 
@@ -262,20 +262,20 @@ export default function Home() {
 
           <div className="max-w-2xl">
             <span className="px-3 py-1 rounded-full bg-amber-500/15 text-amber-300 border border-amber-500/30 text-xs font-black uppercase tracking-wider">
-              {L(idioma, "Apoio na estrada · verificado", "Apoyo en la ruta · verificado", "Road support · verified")}
+              {L(idioma, "Apoio na viagem · lugares visitados", "Apoyo en el viaje · lugares visitados", "Travel support · visited places")}
             </span>
             <h2 className="text-2xl sm:text-4xl font-black text-white mt-3 flex items-center gap-3">
               <Icon name="van" width={60} height={60} /> {L(idioma, "Espaço Nômade & Apoio na Estrada", "Espacio nómade y apoyo en la ruta", "Nomad space & road support")}
             </h2>
             <p className="text-sm text-slate-300 mt-3 leading-relaxed">
-              {L(idioma, "Viajando de motorhome, campervan ou trabalhando remoto na estrada? Chuveiro quente, tomada 220V, internet e pernoite seguro entram no mapa conforme a Expedição nº 01 visita e verifica cada lugar.", "¿Viajás en motorhome, campervan o trabajás remoto en la ruta? Ducha caliente, enchufe 220V, internet y noche segura entran al mapa a medida que la Expedición nº 01 visita y verifica cada lugar.", "Travelling by motorhome or campervan, or working remotely on the road? Hot showers, 220V power, internet and safe overnight stops go on the map as Expedition no. 01 visits and checks each place.")}
+              {L(idioma, "Viajando de motorhome, campervan ou trabalhando remoto na estrada? Chuveiro quente, tomada 220V, internet e lugar para pernoitar entram no mapa conforme a Expedição nº 01 visita e registra cada lugar.", "¿Viajás en motorhome, campervan o trabajás remoto en la ruta? Ducha caliente, enchufe 220V, internet y lugar para pasar la noche entran al mapa a medida que la Expedición nº 01 visita y registra cada lugar.", "Travelling by motorhome or campervan, or working remotely on the road? Hot showers, 220V power, internet and overnight stops go on the map as Expedition no. 01 visits and records each place.")}
             </p>
             <p className="text-sm text-slate-400 mt-2 leading-relaxed">
               {L(idioma, "Dono de posto, pousada ou camping na rota?", "¿Tenés estación, posada o camping en la ruta?", "Own a gas station, guesthouse or campsite on the route?")}{" "}
               <Link href="/refugio" className="text-amber-400 underline hover:text-amber-300">
                 {L(idioma, "Peça a visita", "Pedí la visita", "Ask for a visit")}
               </Link>{" "}
-              {L(idioma, "e vire parceiro verificado — ou Refúgio da Estrada, se tiver onde dormir.", "y sé socio verificado — o Refugio de la Ruta, si tenés dónde dormir.", "and become a verified partner — or a Road Refuge, if you have somewhere to sleep.")}
+              {L(idioma, "e vire Parceiro JobPago — ou Refúgio, se tiver onde dormir.", "y sé Socio JobPago — o Refugio, si tenés dónde dormir.", "and become a JobPago Partner — or a Refuge, if you have somewhere to sleep.")}
             </p>
 
             <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 mt-6">
@@ -292,7 +292,7 @@ export default function Home() {
               <div className="glass-card p-3 rounded-2xl text-center flex flex-col items-center">
                 <Icon name="van" width={52} height={52} className="mb-1 text-amber-400" />
                 <span className="text-xs font-bold text-white block">{L(idioma, "Motorhome & garagem", "Motorhome y garaje", "Motorhome & parking")}</span>
-                <span className="text-[10px] text-slate-400">{L(idioma, "Pernoite seguro", "Noche segura", "Safe overnight")}</span>
+                <span className="text-[10px] text-slate-400">{L(idioma, "Pernoite", "Pernocte", "Overnight")}</span>
               </div>
               <div className="glass-card p-3 rounded-2xl text-center flex flex-col items-center">
                 <Icon name="wifi" width={52} height={52} className="mb-1 text-amber-400" />
@@ -306,7 +306,7 @@ export default function Home() {
                 href="/certificados"
                 className="btn-secondary-glass inline-flex items-center gap-2 px-5 py-2.5 rounded-2xl text-xs font-bold cursor-pointer"
               >
-                <Icon name="shield" width={32} height={32} className="text-amber-300" /> {L(idioma, "Ver refúgios e lugares verificados", "Ver refugios y lugares verificados", "See refuges and verified places")}
+                <Icon name="shield" width={32} height={32} className="text-amber-300" /> {L(idioma, "Ver lugares visitados", "Ver lugares visitados", "See visited places")}
               </Link>
               <Link
                 href="/viajante/contribuir?tipo=fachada"
@@ -325,13 +325,13 @@ export default function Home() {
           <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4 mb-8">
             <div>
               <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-amber-400/15 text-amber-300 border border-amber-400/30 text-xs font-black uppercase tracking-wider">
-                <Icon name="shield" width={30} height={30} /> {L(idioma, "Selo do estabelecimento", "Sello del establecimiento", "Business seal")}
+                <Icon name="shield" width={30} height={30} /> {L(idioma, "Registro de visita", "Registro de visita", "Visit record")}
               </div>
               <h2 className="text-2xl sm:text-4xl font-black text-white mt-2">
                 {L(idioma, "Alta Honra: como o lugar apoia a estrada", "Alto Honor: cómo el lugar apoya la ruta", "High Honour: how the place supports the road")}
               </h2>
               <p className="text-xs sm:text-sm text-slate-300 mt-1 max-w-2xl">
-                {L(idioma, "O selo de verificado não se compra: só entra quem passou na visita. A Honra mostra, identificada no selo, quanto o lugar apoia a expedição — dinheiro e permuta no topo, depois só dinheiro, depois só permuta.", "El sello de verificado no se compra: solo entra quien pasó la visita. El Honor muestra, identificado en el sello, cuánto apoya el lugar a la expedición: dinero y canje arriba, después solo dinero, después solo canje.", "The verified seal can't be bought: only places that pass the visit get it. Honour shows, marked on the seal, how much the place supports the expedition — money plus exchange at the top, then money only, then exchange only.")}
+                {L(idioma, "O registro de visita não é vendido. Parceiros pagantes aparecem em destaque e são sempre identificados como Parceiro. A Honra mostra quanto o lugar apoia a expedição — dinheiro e permuta no topo, depois só dinheiro, depois só permuta.", "El registro de visita no se vende. Los socios que pagan aparecen destacados y siempre identificados como Socio. El Honor muestra cuánto apoya el lugar a la expedición: dinero y canje arriba, después solo dinero, después solo canje.", "The visit record isn't sold. Paying partners are featured and always labeled as Partner. Honour shows how much the place supports the expedition — money plus exchange at the top, then money only, then exchange only.")}
               </p>
             </div>
 
@@ -361,36 +361,36 @@ export default function Home() {
         <div className="text-center max-w-3xl mx-auto mb-10 sm:mb-14">
           <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-amber-500/10 border border-amber-500/30 text-amber-300 text-xs font-bold uppercase tracking-widest mb-4">
             <Icon name="shield" width={18} height={18} className="text-amber-400" />
-            <span>{L(idioma, "Selo JobPago · lugar verificado para dormir", "Sello JobPago · lugar verificado para dormir", "JobPago seal · verified place to sleep")}</span>
+            <span>{L(idioma, "Registro JobPago · lugar visitado para dormir", "Registro JobPago · lugar visitado para dormir", "JobPago record · visited place to sleep")}</span>
           </div>
           <h2 className="text-3xl sm:text-5xl font-black text-white tracking-tight leading-tight">
             {L(idioma, "Refúgio da Estrada", "Refugio de la Ruta", "Road Refuge")}
           </h2>
           <p className="mt-4 text-slate-300 text-sm sm:text-base leading-relaxed">
-            {L(idioma, "Camping, hostel, pousada, hotel ou pátio para motorhome onde a gente passou a noite, conferiu e recomenda. Não é anúncio: só recebe o selo quem foi visitado pessoalmente na Expedição.", "Camping, hostel, posada, hotel o patio para motorhome donde pasamos la noche, revisamos y recomendamos. No es publicidad: solo recibe el sello quien fue visitado en persona en la Expedición.", "A campsite, hostel, guesthouse, hotel or motorhome yard where we spent the night, checked and recommend. It's not an ad: only places visited in person on the Expedition get the seal.")}
+            {L(idioma, "Camping, hostel, pousada, hotel ou pátio para motorhome onde a expedição passou. Cada registro mostra a data e o que havia no dia.", "Camping, hostel, posada, hotel o patio para motorhome por donde pasó la expedición. Cada registro muestra la fecha y lo que había ese día.", "A campsite, hostel, guesthouse, hotel or motorhome yard the expedition passed through. Each record shows the date and what was there that day.")}
           </p>
         </div>
 
         {/* espaço limpo: aqui o cenário 3D do fundo enquadra o ponto de apoio (ilustração, não um lugar real) */}
         <div className="min-h-[70vh] sm:min-h-[80vh]" aria-hidden="true" />
         <p className="text-center text-[11px] text-slate-400">
-          {L(idioma, "Ilustração. Os primeiros Refúgios serão verificados na Expedição nº 01 · Paraty → Fortaleza, pelo litoral", "Ilustración. Los primeros Refugios se verificarán en la Expedición nº 01 · Paraty → Fortaleza, por la costa", "Illustration. The first Refuges will be checked on Expedition no. 01 · Paraty → Fortaleza, along the coast")}
+          {L(idioma, "Ilustração. Os primeiros Refúgios serão visitados na Expedição nº 01 · Paraty → Fortaleza, pelo litoral", "Ilustración. Los primeros Refugios se visitarán en la Expedición nº 01 · Paraty → Fortaleza, por la costa", "Illustration. The first Refuges will be visited on Expedition no. 01 · Paraty → Fortaleza, along the coast")}
         </p>
 
         {/* O QUE CONFERIMOS PARA DAR O SELO */}
         <div className="mt-14 sm:mt-16">
           <div className="text-center mb-8">
-            <h3 className="text-xl sm:text-2xl font-black text-white">{L(idioma, "O que conferimos antes de dar o selo", "Qué revisamos antes de dar el sello", "What we check before giving the seal")}</h3>
+            <h3 className="text-xl sm:text-2xl font-black text-white">{L(idioma, "O que registramos na visita", "Qué registramos en la visita", "What we record on the visit")}</h3>
             <p className="text-xs sm:text-sm text-slate-400 mt-1">
-              {L(idioma, "Dormimos lá. O que está no selo é o que encontramos — não o que o lugar diz de si.", "Dormimos ahí. Lo que dice el sello es lo que encontramos, no lo que el lugar dice de sí.", "We slept there. What the seal says is what we found — not what the place says about itself.")}
+              {L(idioma, "O registro mostra o que encontramos no dia da visita. Não é garantia: as condições podem mudar depois.", "El registro muestra lo que encontramos el día de la visita. No es garantía: las condiciones pueden cambiar después.", "The record shows what we found on the day of the visit. It isn't a guarantee: conditions may change later.")}
             </p>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
             {([
-              ["lock", L(idioma, "Noite segura", "Noche segura", "Safe night"), L(idioma, "Portão, recepção ou vigia; onde deixar o carro, a moto ou o motorhome sem susto.", "Portón, recepción o sereno; dónde dejar el auto, la moto o el motorhome tranquilo.", "Gate, reception or night guard; somewhere to leave the car, bike or motorhome without worry.")],
-              ["shower", L(idioma, "Banho quente e banheiro limpo", "Ducha caliente y baño limpio", "Hot shower and clean bathroom"), L(idioma, "Conferido na hora de usar, não pela foto.", "Revisado al usarlo, no por la foto.", "Checked when we used it, not from a photo.")],
+              ["lock", L(idioma, "Acesso e estacionamento", "Acceso y estacionamiento", "Access and parking"), L(idioma, "Se havia portão, recepção ou vigia no dia da visita, e onde havia espaço para carro, moto ou motorhome.", "Si había portón, recepción o sereno el día de la visita, y dónde había lugar para auto, moto o motorhome.", "Whether there was a gate, reception or night guard on the day of the visit, and where there was room for a car, bike or motorhome.")],
+              ["shower", L(idioma, "Banho quente e banheiro limpo", "Ducha caliente y baño limpio", "Hot shower and clean bathroom"), L(idioma, "Registrado no dia da visita.", "Registrado el día de la visita.", "Recorded on the day of the visit.")],
               ["plug", L(idioma, "Energia", "Energía", "Power"), L(idioma, "Tomada para carregar celular e notebook; ponto 220V para motorhome e van, quando houver — anotamos a amperagem.", "Enchufe para cargar celular y notebook; toma 220V para motorhome y van, si hay: anotamos el amperaje.", "Sockets for phones and laptops; a 220V hookup for motorhomes and vans where available — we note the amperage.")],
-              ["wifi", L(idioma, "Internet que funciona", "Internet que funciona", "Internet that works"), L(idioma, "Medimos a velocidade no quarto ou na área comum, para quem trabalha remoto.", "Medimos la velocidad en la habitación o en el área común, para quien trabaja remoto.", "We measure the speed in the room or common area, for remote workers.")],
+              ["wifi", L(idioma, "Internet que funciona", "Internet que funciona", "Internet that works"), L(idioma, "Velocidade medida no dia da visita, no quarto ou na área comum.", "Velocidad medida el día de la visita, en la habitación o en el área común.", "Speed measured on the day of the visit, in the room or common area.")],
               ["water", L(idioma, "Água e cozinha", "Agua y cocina", "Water and kitchen"), L(idioma, "Água potável; cozinha ou refeição por perto; descarte para motorhome, quando houver.", "Agua potable; cocina o comida cerca; descarga para motorhome, si hay.", "Drinking water; a kitchen or meals nearby; a motorhome dump point where available.")],
               ["ticket", L(idioma, "Preço claro", "Precio claro", "Clear price"), L(idioma, "Anotamos quanto custou a noite e o que estava incluído — sem letra miúda.", "Anotamos cuánto costó la noche y qué incluía, sin letra chica.", "We note what the night cost and what was included — no fine print.")],
             ] as const).map(([icone, titulo, texto]) => (
@@ -412,7 +412,7 @@ export default function Home() {
               href="/certificados"
               className="btn-primary-amalfi px-8 py-3.5 rounded-2xl text-xs sm:text-sm font-black uppercase tracking-wider flex items-center gap-2"
             >
-              <Icon name="tent" width={22} height={22} /> {L(idioma, "Ver refúgios verificados", "Ver refugios verificados", "See verified refuges")}
+              <Icon name="tent" width={22} height={22} /> {L(idioma, "Ver lugares visitados", "Ver lugares visitados", "See visited places")}
             </Link>
             <Link
               href="/refugio"
@@ -441,7 +441,7 @@ export default function Home() {
               </span>
               {selectedJob.isVerifiedPartner && (
                 <span className="text-xs font-black bg-amber-500/20 text-amber-300 border border-amber-500/40 px-3 py-1 rounded-xl flex items-center gap-1">
-                  <Icon name="shield" width={28} height={28} /> {L(idioma, "Estabelecimento verificado", "Establecimiento verificado", "Verified business")}
+                  <Icon name="shield" width={28} height={28} /> {L(idioma, "Parceiro JobPago", "Socio JobPago", "JobPago Partner")}
                 </span>
               )}
               <span className="text-xs text-slate-400 flex items-center gap-1"><Icon name="pin" width={28} height={28} /> {selectedJob.location}</span>

@@ -15,9 +15,9 @@ export async function generateMetadata(): Promise<Metadata> {
   return {
     title: L(i, "Você foi indicado para a JobPago", "Te recomendaron para JobPago", "You were referred to JobPago"),
     description: L(i,
-      "Negócios da estrada entram no mapa da Expedição JobPago com o selo de verificado. Veja como participar.",
-      "Los negocios de la ruta entran en el mapa de la Expedición JobPago con el sello de verificado. Mirá cómo participar.",
-      "Roadside businesses join the JobPago Expedition map with the verified seal. See how to take part."),
+      "Negócios da rota entram no mapa da Expedição JobPago com o registro de visita. Veja como participar.",
+      "Los negocios de la ruta entran en el mapa de la Expedición JobPago con el registro de visita. Mirá cómo participar.",
+      "Businesses along the route join the JobPago Expedition map with a visit record. See how to take part."),
     robots: { index: false },
   };
 }
@@ -52,12 +52,12 @@ export default async function IndicacaoPage({ params }: { params: Promise<{ codi
           </Link>
           <Link href="/parceiros/planos" className="glass-panel rounded-3xl p-6 border border-white/10 hover:border-amber-400/60">
             <p className="font-black text-white text-lg">{t("Outro tipo de negócio?", "¿Otro tipo de negocio?", "Another kind of business?")}</p>
-            <p className="mt-1 text-sm text-slate-300">{t("Veja os planos de parceiro: selo, minisite, perfil no Google e vídeo no local.", "Mirá los planes de socio: sello, minisitio, perfil en Google y video en el lugar.", "See the partner plans: seal, mini-site, Google profile and on-site video.")}</p>
+            <p className="mt-1 text-sm text-slate-300">{t("Veja os planos de parceiro: destaque identificado, minisite, perfil no Google e vídeo no local.", "Mirá los planes de socio: destacado identificado, minisitio, perfil en Google y video en el lugar.", "See the partner plans: labeled featured spot, mini-site, Google profile and on-site video.")}</p>
           </Link>
         </div>
         <section className="mt-10">
           <h2 className="text-xl font-black">{t("Alta Honra", "Alto Honor", "High Honour")}</h2>
-          <p className="mt-2 text-sm text-slate-300">{t("O selo de verificado não se compra — só a visita dá o selo. A Honra mostra como o lugar apoia a expedição:", "El sello de verificado no se compra: solo la visita lo otorga. El Honor muestra cómo el lugar apoya la expedición:", "The verified seal can't be bought — only a visit earns it. Honour shows how the place supports the expedition:")}</p>
+          <p className="mt-2 text-sm text-slate-300">{t("O registro de visita não é vendido. Parceiros pagantes aparecem sempre identificados como Parceiro. A Honra mostra como o lugar apoia a expedição:", "El registro de visita no se vende. Los socios que pagan aparecen siempre identificados como Socio. El Honor muestra cómo el lugar apoya la expedición:", "The visit record isn't sold. Paying partners are always labeled as Partner. Honour shows how the place supports the expedition:")}</p>
           <ul className="mt-3 grid gap-2 sm:grid-cols-2">
             {NIVEIS_HONRA.map((n) => <li key={n.id} className="text-sm"><span className={`inline-block text-xs font-black px-2 py-0.5 rounded-full border mr-2 ${n.cor}`}>{tHonra(i, n.id, "nome", n.nome)}</span>{tHonra(i, n.id, "como", n.como)}</li>)}
           </ul>

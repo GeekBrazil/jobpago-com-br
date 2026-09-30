@@ -11,9 +11,9 @@ export async function generateMetadata(): Promise<Metadata> {
   return {
     title: L(i, "Parceiros da Expedição · JobPago.com.br", "Socios de la Expedición · JobPago.com.br", "Expedition partners · JobPago.com.br"),
     description: L(i,
-      "Quatro formas de fazer parte da Expedição JobPago, de Paraty a Fortaleza: permuta, parceiro local, patrocínio regional e master. Selo verificado em campo, com data.",
-      "Cuatro formas de ser parte de la Expedición JobPago, de Paraty a Fortaleza: canje, socio local, patrocinio regional y master. Sello verificado en el lugar, con fecha.",
-      "Four ways to be part of the JobPago Expedition, Paraty to Fortaleza: exchange, local partner, regional sponsorship and master. Seal verified on site, with a date."),
+      "Quatro formas de fazer parte da Expedição JobPago, de Paraty a Fortaleza: permuta, parceiro local, patrocínio regional e master. Registro de visita com data; parceiros pagantes sempre identificados.",
+      "Cuatro formas de ser parte de la Expedición JobPago, de Paraty a Fortaleza: canje, socio local, patrocinio regional y master. Registro de visita con fecha; los socios que pagan siempre identificados.",
+      "Four ways to be part of the JobPago Expedition, Paraty to Fortaleza: exchange, local partner, regional sponsorship and master. Visit record with a date; paying partners always labeled."),
     robots: { index: true, follow: true },
   };
 }
@@ -49,16 +49,16 @@ export default async function PlanosParceiroPage() {
           </h1>
 
           <p className="mt-5 text-sm sm:text-base text-slate-300 leading-relaxed">
-            {t("Estou percorrendo o litoral parando em pousadas, restaurantes de estrada, postos, oficinas e cafés. Onde eu paro, eu testo: ducha, tomada, Wi-Fi, pátio. O que passa no teste entra no mapa do JobPago com selo, data e a lista do que foi verificado.",
-              "Estoy recorriendo la costa parando en posadas, paradores, estaciones de servicio, talleres y cafés. Donde paro, pruebo: ducha, enchufe, Wi-Fi, patio. Lo que pasa la prueba entra en el mapa de JobPago con sello, fecha y la lista de lo verificado.",
-              "I'm travelling the coast stopping at guesthouses, roadside restaurants, gas stations, mechanics and cafés. Wherever I stop, I test: shower, power, Wi-Fi, yard. What passes goes on the JobPago map with a seal, a date and the list of what was checked.")}
+            {t("Estou percorrendo o litoral parando em pousadas, restaurantes de estrada, postos, oficinas e cafés. Onde eu paro, registro o que encontrei: ducha, tomada, Wi-Fi, pátio. O lugar entra no mapa com a data da visita e a lista do que havia no dia.",
+              "Estoy recorriendo la costa parando en posadas, paradores, estaciones de servicio, talleres y cafés. Donde paro, registro lo que encontré: ducha, enchufe, Wi-Fi, patio. El lugar entra en el mapa con la fecha de la visita y la lista de lo que había ese día.",
+              "I'm travelling the coast stopping at guesthouses, roadside restaurants, gas stations, mechanics and cafés. Wherever I stop, I record what I found: shower, power, Wi-Fi, yard. The place goes on the map with the visit date and the list of what was there that day.")}
           </p>
 
           <Link
             href="/certificados"
             className="mt-4 inline-flex items-center gap-1.5 text-xs font-bold text-amber-300 hover:underline"
           >
-            {t("Ver a lista de estabelecimentos já certificados →", "Ver la lista de establecimientos ya certificados →", "See the list of certified places →")}
+            {t("Ver lugares visitados →", "Ver lugares visitados →", "See visited places →")}
           </Link>
         </header>
 
@@ -68,12 +68,12 @@ export default async function PlanosParceiroPage() {
           className="mt-12 glass-panel rounded-3xl border border-white/10 p-6 sm:p-8"
         >
           <h2 id="selo" className="text-lg sm:text-xl font-black text-white">
-            {t("O que o selo significa", "Qué significa el sello", "What the seal means")}
+            {t("O que o registro significa", "Qué significa el registro", "What the record means")}
           </h2>
           <p className="mt-3 text-sm text-slate-300 leading-relaxed">
-            {t("Não é adesivo comprado. O selo diz que alguém esteve ali, testou a estrutura e anotou a data. Wi-Fi entra com velocidade medida e data da última verificação, não com “temos internet”. Se a estrutura mudar, o selo cai — é isso que faz ele valer alguma coisa para quem está na estrada.",
-              "No es un sticker comprado. El sello dice que alguien estuvo ahí, probó la estructura y anotó la fecha. El Wi-Fi figura con velocidad medida y fecha de la última verificación, no con “tenemos internet”. Si la estructura cambia, el sello se cae; eso es lo que le da valor para quien está en la ruta.",
-              "It's not a sticker you can buy. The seal means someone was there, tested the facilities and noted the date. Wi-Fi is listed with measured speed and the last check date, not “we have internet”. If the facilities change, the seal comes off — that's what makes it worth something to people on the road.")}
+            {t("Alguém da expedição esteve ali e anotou o que havia, com data. Wi-Fi entra com a velocidade medida naquele dia. É um registro, não uma garantia: confira sempre com o estabelecimento. O registro de visita não é vendido. Parceiros pagantes aparecem em destaque e são sempre identificados como Parceiro.",
+              "Alguien de la expedición estuvo ahí y anotó lo que había, con fecha. El Wi-Fi figura con la velocidad medida ese día. Es un registro, no una garantía: consultá siempre con el establecimiento. El registro de visita no se vende. Los socios que pagan aparecen destacados y siempre identificados como Socio.",
+              "Someone from the expedition was there and noted what they found, with the date. Wi-Fi is listed with the speed measured that day. It's a record, not a guarantee: always check with the business. The visit record isn't sold. Paying partners are featured and always labeled as Partner.")}
           </p>
         </section>
 
@@ -189,7 +189,7 @@ export default async function PlanosParceiroPage() {
             {t("Está na rota entre Paraty e Fortaleza?", "¿Estás en la ruta entre Paraty y Fortaleza?", "On the route between Paraty and Fortaleza?")}
           </h2>
           <p className="mt-3 text-sm text-slate-300 max-w-xl mx-auto leading-relaxed">
-            {t("Me chama no WhatsApp com o nome do estabelecimento e a cidade. Se estiver no caminho, eu passo, testo e a gente decide o nível olhando a estrutura.", "Escribime por WhatsApp con el nombre del establecimiento y la ciudad. Si está en el camino, paso, pruebo y decidimos el nivel mirando la estructura.", "Message me on WhatsApp with the place's name and town. If it's on the way, I'll stop by, test it and we'll pick the level by looking at the facilities.")}
+            {t("Me chama no WhatsApp com o nome do estabelecimento e a cidade. Se estiver no caminho, eu passo, registro o que encontrei e a gente decide o nível olhando a estrutura.", "Escribime por WhatsApp con el nombre del establecimiento y la ciudad. Si está en el camino, paso, registro lo que encontré y decidimos el nivel mirando la estructura.", "Message me on WhatsApp with the place's name and town. If it's on the way, I'll stop by, record what I find and we'll pick the level by looking at the facilities.")}
           </p>
           <a
             href={`https://wa.me/${WHATSAPP}?text=${encodeURIComponent(

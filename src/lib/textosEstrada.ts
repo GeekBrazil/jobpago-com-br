@@ -36,7 +36,7 @@ export const QUESTIONARIO: Pergunta[] = [
     o("200", "R$ 100 a 200", "R$ 100 a 200", "R$ 100 to 200"), o("mais", "Mais de R$ 200", "Más de R$ 200", "Over R$ 200"),
   ] },
   { id: "dificuldades", tipo: "varias", titulo: t("O que mais dificulta a sua viagem?", "¿Qué es lo que más te complica el viaje?", "What makes your trip hardest?"), opcoes: [
-    o("dormir", "Achar onde dormir com segurança", "Encontrar dónde dormir seguro", "Finding a safe place to sleep"),
+    o("dormir", "Achar onde dormir", "Encontrar dónde dormir", "Finding a place to sleep"),
     o("pix", "Pagar sem Pix ou sem CPF", "Pagar sin Pix o sin CPF", "Paying without Pix or a CPF"),
     o("chip", "Chip de celular e internet", "Chip de celular e internet", "SIM card and internet"),
     o("cambio", "Câmbio e dinheiro", "Cambio y efectivo", "Currency exchange and cash"),
@@ -57,7 +57,7 @@ export const QUESTIONARIO: Pergunta[] = [
   ] },
   { id: "habilidades", tipo: "texto", titulo: t("O que você sabe fazer que um negócio pagaria? (fotos, redes sociais, idiomas, reparos…)", "¿Qué sabés hacer que un negocio pagaría? (fotos, redes, idiomas, arreglos…)", "What can you do that a business would pay for? (photos, social media, languages, repairs…)") },
   { id: "pagaria", tipo: "varias", titulo: t("Pelo que você pagaria um pouco se existisse?", "¿Por qué pagarías algo si existiera?", "What would you pay a little for, if it existed?"), opcoes: [
-    o("refugios", "Lista de onde dormir verificada", "Lista verificada de dónde dormir", "A verified list of where to sleep"),
+    o("refugios", "Lista de lugares visitados para dormir", "Lista de lugares visitados para dormir", "A list of visited places to sleep"),
     o("combustivel", "Preço de combustível atualizado", "Precio de combustible actualizado", "Up-to-date fuel prices"),
     o("estrada", "Condição da estrada e acostamento", "Estado de la ruta y banquina", "Road and shoulder conditions"),
     o("sinal", "Mapa de sinal de celular", "Mapa de señal de celular", "Mobile signal map"),

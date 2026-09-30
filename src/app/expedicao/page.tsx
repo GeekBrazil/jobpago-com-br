@@ -36,7 +36,7 @@ export default async function ExpedicaoPage() {
         <p className="text-xs font-mono font-bold uppercase tracking-widest text-amber-400">{t("Expedição JobPago", "Expedición JobPago", "JobPago Expedition")}</p>
         <h1 className="mt-3 text-4xl sm:text-6xl font-black tracking-tight leading-[1.05]">{t("Paraty → Fortaleza, pelo litoral", "Paraty → Fortaleza, por la costa", "Paraty → Fortaleza, along the coast")}</h1>
         <p className="mt-5 max-w-2xl text-lg text-slate-300">
-          {nf.format(rota.km_total)} km, {rota.paradas.length} {t("paradas, visitando os negócios da estrada que pedem o selo de verificado.", "paradas, visitando los negocios de la ruta que piden el sello de verificado.", "stops, visiting roadside businesses that ask for the verified seal.")}{" "}
+          {nf.format(rota.km_total)} km, {rota.paradas.length} {t("paradas, visitando os negócios da rota que pedem a visita.", "paradas, visitando los negocios de la ruta que piden la visita.", "stops, visiting businesses along the route that ask for a visit.")}{" "}
           {t("O roteiro abaixo mostra rodovias, pedágios e onde há acostamento — para quem vai de carro, de carona ou a pé.", "La ruta de abajo muestra rutas, peajes y dónde hay banquina, para quien va en auto, a dedo o a pie.", "The route below shows highways, tolls and where there's a hard shoulder — for driving, hitchhiking or walking.")}
         </p>
 

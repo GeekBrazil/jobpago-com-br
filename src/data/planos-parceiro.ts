@@ -31,7 +31,7 @@ export const PLANOS: PlanoParceiro[] = [
     resumo:
       "Você oferece estrutura, eu ofereço visibilidade. Nenhum dos dois tira do bolso.",
     entregaveis: [
-      "Selo JobPago Verificado, com data da visita",
+      "Registro de visita, com data (todo lugar visitado recebe, pague ou não)",
       "Minisite básico no mapa da rede",
       "Menção nas redes durante a passagem pelo trecho",
     ],
@@ -48,7 +48,7 @@ export const PLANOS: PlanoParceiro[] = [
       "Minisite completo, com fotos, tags de infraestrutura e contato direto",
       "Otimização do seu perfil no Google Maps",
       "Um vídeo ou reel colaborativo, gravado no local",
-      "Selo JobPago Verificado, com data da visita",
+      "Destaque no mapa, sempre identificado como Parceiro",
     ],
     destaque: true,
     tom: "amber",

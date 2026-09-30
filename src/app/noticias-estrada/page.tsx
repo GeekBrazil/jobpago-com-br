@@ -34,7 +34,7 @@ export default async function NoticiasEstradaPage() {
         </h1>
 
         <p className="mt-5 text-sm sm:text-base text-slate-300 leading-relaxed">
-          {t("Atualizações reais da viagem, estabelecimentos recém-certificados e reconhecimento de quem apoiou a Expedição com uma", "Novedades reales del viaje, establecimientos recién certificados y reconocimiento a quienes apoyaron la Expedición con una", "Real trip updates, newly certified places and thanks to those who supported the Expedition with a")}{" "}
+          {t("Atualizações reais da viagem, lugares recém-visitados e reconhecimento de quem apoiou a Expedição com uma", "Novedades reales del viaje, lugares recién visitados y reconocimiento a quienes apoyaron la Expedición con una", "Real trip updates, newly visited places and thanks to those who supported the Expedition with a")}{" "}
           <Link href="/parceiros/planos" className="text-amber-400 underline hover:text-amber-300">
             {t("contribuição PIX", "contribución por PIX", "PIX contribution")}
           </Link>
@@ -51,7 +51,7 @@ export default async function NoticiasEstradaPage() {
                 {t("A estrada ainda não começou", "La ruta todavía no empezó", "The road hasn’t started yet")}
               </h3>
               <p className="text-sm text-slate-400 max-w-md">
-                {t("O primeiro post aparece aqui quando a Expedição sair do papel — atualização de trecho, selo novo ou apoiador reconhecido.", "El primer post aparece acá cuando la Expedición arranque: novedad de un tramo, sello nuevo o apoyo reconocido.", "The first post appears here once the Expedition gets going — a stretch update, a new seal or a supporter thanked.")}
+                {t("O primeiro post aparece aqui quando a Expedição sair do papel — atualização de trecho, lugar visitado ou apoiador reconhecido.", "El primer post aparece acá cuando la Expedición arranque: novedad de un tramo, lugar visitado o apoyo reconocido.", "The first post appears here once the Expedition gets going — a stretch update, a newly visited place or a supporter thanked.")}
               </p>
             </div>
           ) : (
