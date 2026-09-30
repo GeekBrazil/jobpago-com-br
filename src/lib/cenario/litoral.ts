@@ -72,7 +72,9 @@ function altura(x: number, z: number) {
     const dd = -d - MEIA_PISTA - 4;
     if (dd < 0) h = ALT_ESTRADA;
     else {
-      const serra = 18 + 95 * fbm(x * 0.005 + 3, z * 0.005) + dd * 0.12;
+      // perto do posto a serra fica baixa e recuada, para o céu do fim de tarde aparecer atrás da loja
+      const perto = 0.18 + 0.82 * suave(60, 340, Math.hypot(x - POSTO.x, z - POSTO.z));
+      const serra = (18 + 95 * fbm(x * 0.005 + 3, z * 0.005) + dd * 0.12) * perto;
       h = ALT_ESTRADA + serra * suave(0, 70, dd) + 1.2 * ruido(x * 0.08, z * 0.08) * suave(0, 10, dd);
     }
   }
@@ -139,7 +141,7 @@ export function iniciarCenario(canvas: HTMLCanvasElement, op: OpcoesCenario) {
       void main(){
         float h = clamp(vDir.y, -0.1, 1.0);
         vec3 topoT = vec3(0.12,0.28,0.6), horT = vec3(1.25,0.62,0.3);
-        vec3 topoN = vec3(0.02,0.03,0.09), horN = vec3(0.55,0.22,0.24);
+        vec3 topoN = vec3(0.1,0.12,0.3), horN = vec3(1.25,0.5,0.2);
         vec3 topo = mix(topoT, topoN, uNoite), hor = mix(horT, horN, uNoite);
         vec3 c = mix(hor, topo, pow(max(h,0.0), 0.55));
         float s = max(dot(normalize(vDir), uSol), 0.0);
@@ -221,8 +223,9 @@ export function iniciarCenario(canvas: HTMLCanvasElement, op: OpcoesCenario) {
         vec3 cL = texture2D(tCasc, uvw * 0.8).rgb;
         vec3 cM = cA * vec3(0.6, 0.57, 0.54);
         vec3 col = cA * vPeso.x + cG * vPeso.y + cL * vPeso.z + cM * vPeso.w;
-        col = mix(col, cR, smoothstep(0.32, 0.6, vInclina) * vPeso.y);
-        col *= 0.72 + 0.56 * mac;
+        col = mix(col, cR, smoothstep(0.5, 0.8, vInclina) * vPeso.y * 0.55);
+        col *= mix(vec3(1.0), vec3(0.8, 1.12, 0.72), vPeso.y); // mata atlântica mais verde
+        col *= 0.8 + 0.4 * mac;
         diffuseColor.rgb *= col;`);
   };
   cena.add(new THREE.Mesh(terGeo, terMat));
@@ -409,7 +412,7 @@ export function iniciarCenario(canvas: HTMLCanvasElement, op: OpcoesCenario) {
     if (Math.hypot(x - POSTO.x, z - POSTO.z) < 30) continue;
     const k = 1.6 + Math.random() * 2.6;
     copas.setMatrixAt(nc, m4.compose(p3.set(x, altura(x, z) + k * 0.4, z), q.setFromEuler(e.set(0, Math.random() * 6, 0)), s3.set(k, k * (0.8 + Math.random() * 0.5), k)));
-    copas.setColorAt(nc, corCopa.setHSL(0.2 + Math.random() * 0.1, 0.3, 0.72 + Math.random() * 0.26));
+    copas.setColorAt(nc, corCopa.setHSL(0.25 + Math.random() * 0.08, 0.5, 0.6 + Math.random() * 0.3));
     nc++;
   }
   copas.count = nc;
@@ -473,10 +476,10 @@ export function iniciarCenario(canvas: HTMLCanvasElement, op: OpcoesCenario) {
     // mais perto: o motorhome em primeiro plano e a conveniência atrás
     // perto: o motorhome ocupa metade da tela, a loja aparece atrás
     fimPos.copy(POSTO).add(new THREE.Vector3(7.5, 1.9, 19.5));
-    fimOlhar.copy(POSTO).add(new THREE.Vector3(-1.8, 1.5, 12.5));
+    fimOlhar.copy(POSTO).add(new THREE.Vector3(-1.8, 2.3, 12.5));
     // tela em pé: mais recuado e mirando entre o motorhome e a loja
     fimPosV.copy(POSTO).add(new THREE.Vector3(9, 2.3, 25));
-    fimOlharV.copy(POSTO).add(new THREE.Vector3(-1.6, 1.6, 13.2));
+    fimOlharV.copy(POSTO).add(new THREE.Vector3(-1.6, 2.4, 13.2));
   }
   function posicaoCamera(prog: number, destino: THREE.Vector3, visada: THREE.Vector3) {
     const ida = Math.min(1, prog / 0.8);

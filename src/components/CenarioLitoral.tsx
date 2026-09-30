@@ -9,6 +9,7 @@ import { useEffect, useRef, useState } from "react";
 export default function CenarioLitoral() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const vinhetaRef = useRef<HTMLDivElement>(null);
+  const faixaTopoRef = useRef<HTMLDivElement>(null);
   const [pronto, setPronto] = useState(false);
 
   useEffect(() => {
@@ -23,7 +24,10 @@ export default function CenarioLitoral() {
     };
     const vinheta = () => {
       const p = progresso();
-      if (vinhetaRef.current) vinhetaRef.current.style.opacity = String(1 - 0.4 * Math.min(1, Math.max(0, (p - 0.7) / 0.2)));
+      const fim = Math.min(1, Math.max(0, (p - 0.7) / 0.2));
+      // a faixa escura do topo (leitura do texto) some no fim, para o céu dourado aparecer
+      if (faixaTopoRef.current) faixaTopoRef.current.style.opacity = String(1 - fim);
+      if (vinhetaRef.current) vinhetaRef.current.style.opacity = String(1 - 0.35 * fim);
     };
     window.addEventListener("scroll", vinheta, { passive: true });
     vinheta();
@@ -63,9 +67,14 @@ export default function CenarioLitoral() {
         style={{ opacity: pronto ? 1 : 0 }}
       />
       <div
+        ref={faixaTopoRef}
+        className="absolute inset-0"
+        style={{ background: "linear-gradient(180deg, rgba(6,9,19,0.62) 0%, rgba(6,9,19,0.42) 45%, rgba(6,9,19,0.12) 75%)" }}
+      />
+      <div
         ref={vinhetaRef}
         className="absolute inset-0"
-        style={{ background: "linear-gradient(180deg, rgba(6,9,19,0.62) 0%, rgba(6,9,19,0.42) 45%, rgba(6,9,19,0.12) 75%), radial-gradient(ellipse at 50% 45%, rgba(6,9,19,0) 0%, rgba(6,9,19,0.6) 100%)" }}
+        style={{ background: "radial-gradient(ellipse at 50% 45%, rgba(6,9,19,0) 0%, rgba(6,9,19,0.6) 100%)" }}
       />
     </div>
   );
