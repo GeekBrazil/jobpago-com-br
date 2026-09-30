@@ -27,7 +27,7 @@ export default function CenarioLitoral() {
       const fim = Math.min(1, Math.max(0, (p - 0.7) / 0.2));
       // a faixa escura do topo (leitura do texto) some no fim, para o céu dourado aparecer
       if (faixaTopoRef.current) faixaTopoRef.current.style.opacity = String(1 - fim);
-      if (vinhetaRef.current) vinhetaRef.current.style.opacity = String(1 - 0.35 * fim);
+      if (vinhetaRef.current) vinhetaRef.current.style.opacity = String(1 - 0.8 * fim);
     };
     window.addEventListener("scroll", vinheta, { passive: true });
     vinheta();

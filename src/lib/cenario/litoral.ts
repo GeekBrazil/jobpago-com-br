@@ -131,7 +131,8 @@ export function iniciarCenario(canvas: HTMLCanvasElement, op: OpcoesCenario) {
   const camera = new THREE.PerspectiveCamera(50, 1, 0.3, 3000);
 
   /* céu: gradiente que vai da tarde dourada à noite, com o sol baixo sobre o mar */
-  const sol = new THREE.Vector3(0.82, 0.06, -0.57).normalize();
+  // o sol se põe atrás da serra (oeste, -x), à frente da câmera no fim: contraluz dourada
+  const sol = new THREE.Vector3(-0.78, 0.15, -0.6).normalize();
   const ceuMat = new THREE.ShaderMaterial({
     side: THREE.BackSide, depthWrite: false, fog: false,
     uniforms: { uNoite: { value: 0 }, uSol: { value: sol } },
@@ -140,13 +141,15 @@ export function iniciarCenario(canvas: HTMLCanvasElement, op: OpcoesCenario) {
       uniform float uNoite; uniform vec3 uSol; varying vec3 vDir;
       void main(){
         float h = clamp(vDir.y, -0.1, 1.0);
-        vec3 topoT = vec3(0.12,0.28,0.6), horT = vec3(1.25,0.62,0.3);
-        vec3 topoN = vec3(0.1,0.12,0.3), horN = vec3(1.25,0.5,0.2);
+        vec3 topoT = vec3(0.1,0.2,0.45), horT = vec3(0.85,0.38,0.12);
+        vec3 topoN = vec3(0.14,0.1,0.26), horN = vec3(0.8,0.26,0.07);
         vec3 topo = mix(topoT, topoN, uNoite), hor = mix(horT, horN, uNoite);
         vec3 c = mix(hor, topo, pow(max(h,0.0), 0.55));
         float s = max(dot(normalize(vDir), uSol), 0.0);
-        c += vec3(1.2,0.55,0.22) * (pow(s, 8.0) * 0.8 + pow(s, 600.0) * 6.0) * (1.0 - uNoite * 0.85);
-        gl_FragColor = vec4(c, 1.0);
+        // brilho do sol atrás da serra: halo largo alaranjado + núcleo quente (saturado, sem estourar no tone mapping)
+        c += vec3(0.9,0.28,0.04) * (pow(s, 5.0) * 0.55 + pow(s, 60.0) * 0.5) * (1.0 - uNoite * 0.3);
+        c += vec3(1.0,0.6,0.25) * pow(s, 700.0) * 3.0;
+        gl_FragColor = vec4(c * 0.9, 1.0);
       }`,
   });
   const ceu = new THREE.Mesh(new THREE.SphereGeometry(1500, 32, 16), ceuMat);
