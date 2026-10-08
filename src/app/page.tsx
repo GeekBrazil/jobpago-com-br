@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import RendaNaCidade from "@/components/RendaNaCidade";
+import EcossistemaIANegocios from "@/components/EcossistemaIANegocios";
 import { useIdioma } from "@/components/useIdioma";
 import { L } from "@/lib/i18n";
 import { tCategoria, tHonra } from "@/lib/traducoesCadastro";
@@ -355,6 +356,9 @@ export default function Home() {
           </div>
         </div>
       </section>
+
+      {/* ── SEÇÃO IA: ECOSSISTEMA DE IA DO PEQUENO NEGÓCIO ── */}
+      <EcossistemaIANegocios idioma={idioma} />
 
       {/* ── SEÇÃO 5: REFÚGIO DA ESTRADA — selo de lugar verificado para dormir ── */}
       <section id="refugio-estrada" className="pt-24 sm:pt-32 pb-32 sm:pb-40 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
