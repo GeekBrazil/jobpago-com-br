@@ -2,6 +2,7 @@ import type { Metadata, Viewport } from "next";
 import { Bricolage_Grotesque, Plus_Jakarta_Sans } from "next/font/google";
 import "./globals.css";
 import Script from "next/script";
+import { GoogleAnalytics } from "@next/third-parties/google";
 import AuthProvider from "@/components/AuthProvider";
 import IndicacaoNoWhats from "@/components/IndicacaoNoWhats";
 import IdiomaProvider from "@/components/IdiomaProvider";
@@ -62,6 +63,10 @@ export default async function RootLayout({
     >
       <body className="min-h-full flex flex-col relative">
         <CenarioLitoral />
+        {/* Google Analytics 4 */}
+        {(process.env.NEXT_PUBLIC_GA_ID || "G-8GECCQR1L0") && (
+          <GoogleAnalytics gaId={process.env.NEXT_PUBLIC_GA_ID || "G-8GECCQR1L0"} />
+        )}
         <div className="relative z-10 flex flex-col min-h-full">
           <AuthProvider>
             <IdiomaProvider inicial={idioma}>
