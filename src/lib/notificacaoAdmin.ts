@@ -88,3 +88,4 @@ export async function notificarAdminNovoCadastro(params: NotificacaoLeadParams):
     console.error("[notificacaoAdmin:email] Erro:", err)
   );
 }
+

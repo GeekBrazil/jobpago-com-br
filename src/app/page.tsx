@@ -82,12 +82,12 @@ export default function Home() {
   return (
     <div className="min-h-screen text-slate-100 selection:bg-amber-500 selection:text-black">
 
-      {/* ── HEADER RESPONSIVO ANTI-SOBREPOSIÇÃO ── */}
-      <header className="sticky top-0 z-40 glass-panel border-b border-white/5 backdrop-blur-xl">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between gap-2 sm:gap-3 overflow-hidden">
+      {/* ── HEADER RESPONSIVO ESTILO iOS / DESKTOP ── */}
+      <header className="sticky top-0 z-40 glass-panel border-b border-white/10 backdrop-blur-2xl bg-[#07090e]/80">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 sm:h-20 flex items-center justify-between gap-2 sm:gap-3">
           {/* LOGO */}
-          <Link href="/" className="flex items-center gap-3 group shrink-0">
-            <div className="w-10 h-10 rounded-2xl bg-amber-500/10 border border-amber-500/30 flex items-center justify-center p-1.5 shadow-[0_0_20px_rgba(245,158,11,0.25)] group-hover:border-amber-400 transition-colors">
+          <Link href="/" className="flex items-center gap-2.5 sm:gap-3 group shrink-0 active:scale-95 transition-transform">
+            <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-xl sm:rounded-2xl bg-amber-500/10 border border-amber-500/30 flex items-center justify-center p-1.5 shadow-[0_0_20px_rgba(245,158,11,0.25)] group-hover:border-amber-400 transition-colors">
               <img
                 src="/icon_flutuante-96.webp"
                 width={96}
@@ -100,7 +100,7 @@ export default function Home() {
               <span className="text-xl sm:text-2xl font-black tracking-tight text-white leading-none">
                 JobPago<span className="text-amber-400">.</span>
               </span>
-              <span className="hidden sm:block text-[9px] font-mono font-bold tracking-wider text-slate-400 uppercase mt-0.5">
+              <span className="text-[9px] font-mono font-bold tracking-wider text-slate-400 uppercase mt-0.5">
                 {L(idioma, "renda na viagem", "ingresos en el viaje", "income on the go")}
               </span>
             </div>
@@ -134,41 +134,38 @@ export default function Home() {
             </a>
           </nav>
 
-          {/* AÇÕES DIREITAS: PERFIL RPG + BOTÃO ANUNCIAR */}
-          <div className="flex items-center gap-2.5 sm:gap-3">
-
+          {/* AÇÕES DIREITAS: PERFIL VIAJANTE + BOTÕES DESKTOP */}
+          <div className="flex items-center gap-2 sm:gap-3">
             <Link
               href="/viajante"
-              className="flex items-center gap-2 glass-card rounded-2xl py-1.5 px-2.5 sm:px-3 hover:border-amber-500/40 border-white/10"
+              className="flex items-center gap-2 glass-card rounded-2xl py-1.5 px-3 hover:border-amber-500/40 border-white/10 active:scale-95 transition-transform"
               title={L(idioma, "Seu painel de viagem: contribua e suba de nível", "Tu panel de viaje: contribuí y subí de nivel", "Your travel dashboard: contribute and level up")}
             >
-              <div className="flex flex-col text-right">
-                <span className="hidden sm:block text-[11px] sm:text-xs font-black text-white truncate max-w-[120px]">
+              <Icon name="shield" width={20} height={20} />
+              <div className="flex flex-col text-left">
+                <span className="text-[11px] font-black text-white leading-tight truncate max-w-[110px]">
                   {viajante ? viajante.nome.split(" ")[0] : L(idioma, "Viajante", "Viajero", "Traveller")}
                 </span>
-                <span className="text-[9px] sm:text-[10px] text-amber-400 font-medium flex items-center gap-1 justify-end">
-                  <Icon name="shield" width={22} height={22} /> {viajante ? `${L(idioma, "Nível", "Nivel", "Level")} ${viajante.nivel}` : L(idioma, "Pontuar", "Sumar puntos", "Earn points")}
+                <span className="text-[9px] text-amber-400 font-bold leading-tight">
+                  {viajante ? `${L(idioma, "Nível", "Nivel", "Level")} ${viajante.nivel}` : L(idioma, "Pontuar", "Sumar puntos", "Earn points")}
                 </span>
               </div>
             </Link>
 
             <Link
               href="/refugio"
-              className="btn-secondary-glass text-xs sm:text-base px-3 sm:px-5 py-2 sm:py-3 rounded-2xl shrink-0 cursor-pointer whitespace-nowrap border-amber-500/30 hover:border-amber-400 text-amber-300 flex items-center gap-1.5"
+              className="hidden sm:inline-flex btn-secondary-glass text-sm px-4 py-2.5 rounded-2xl shrink-0 cursor-pointer whitespace-nowrap border-amber-500/30 hover:border-amber-400 text-amber-300 items-center gap-1.5 font-bold"
               title={L(idioma, "Receba a visita da expedição no seu estabelecimento", "Recibí la visita de la expedición en tu establecimiento", "Get an expedition visit at your business")}
             >
               <Icon name="tent" width={18} height={18} />
-              <span className="sm:hidden">{L(idioma, "Pedir Visita", "Pedir Visita", "Request Visit")}</span>
-              <span className="hidden sm:inline">{L(idioma, "Pedir Visita (Estabelecimento)", "Pedir Visita (Negocio)", "Request Visit (Business)")}</span>
+              <span>{L(idioma, "Pedir Visita (Estabelecimento)", "Pedir Visita (Negocio)", "Request Visit (Business)")}</span>
             </Link>
 
             <Link
               href="/disponibilidade"
-              className="btn-primary-amalfi text-xs sm:text-base px-3 sm:px-6 py-2 sm:py-3 rounded-2xl shrink-0 cursor-pointer whitespace-nowrap"
+              className="hidden sm:inline-flex btn-primary-amalfi text-sm px-5 py-2.5 rounded-2xl shrink-0 cursor-pointer whitespace-nowrap items-center gap-1.5 font-black"
             >
-              {/* rótulo curto no celular: o header não cabe em 388px com o texto longo */}
-              <span className="sm:hidden">{L(idioma, "Meu serviço", "Mi servicio", "My service")}</span>
-              <span className="hidden sm:inline">{L(idioma, "Oferecer meu serviço", "Ofrecer mi servicio", "Offer my service")}</span>
+              <span>{L(idioma, "Meu Serviço", "Mi Servicio", "My Service")}</span>
             </Link>
           </div>
         </div>
@@ -176,12 +173,12 @@ export default function Home() {
 
       <main>
       {/* ── HERO BANNER REFINED OBSIDIAN & EMERALD ── */}
-      <section className="relative hero-grid-pattern pt-6 sm:pt-20 pb-16 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto text-center overflow-hidden">
+      <section className="relative hero-grid-pattern pt-6 sm:pt-20 pb-12 sm:pb-16 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto text-center overflow-hidden">
         <div className="text-center max-w-4xl mx-auto relative z-10">
           {/* BADGE DE CONFIANÇA PIX DIRETO */}
-          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full glass-panel border border-amber-500/30 text-amber-300 text-[11px] sm:text-xs font-bold tracking-widest uppercase mb-6 shadow-xl">
-            <span className="w-2 h-2 rounded-full bg-amber-400 animate-pulse"></span>
-            {L(idioma, "PIX COMBINADO DIRETO ENTRE AS PARTES · 0% DE COMISSÕES", "PIX ACORDADO DIRECTO ENTRE LAS PARTES · 0% DE COMISIONES", "PIX PAID DIRECTLY BETWEEN THE PARTIES · 0% COMMISSION")}
+          <div className="inline-flex items-center gap-2 px-3.5 sm:px-4 py-1.5 rounded-full glass-panel border border-amber-500/30 text-amber-300 text-[10px] sm:text-xs font-bold tracking-wider sm:tracking-widest uppercase mb-5 sm:mb-6 shadow-xl">
+            <span className="w-2 h-2 rounded-full bg-amber-400 animate-pulse shrink-0"></span>
+            <span>{L(idioma, "PIX COMBINADO DIRETO ENTRE AS PARTES · 0% DE COMISSÕES", "PIX ACORDADO DIRECTO ENTRE LAS PARTES · 0% DE COMISIONES", "PIX PAID DIRECTLY BETWEEN THE PARTIES · 0% COMMISSION")}</span>
           </div>
 
           {/* HEADLINE PRINCIPAL */}
@@ -190,36 +187,45 @@ export default function Home() {
           </h1>
 
           {/* SUBHEADLINE */}
-          <p className="mt-5 text-slate-300 text-sm sm:text-base lg:text-lg leading-relaxed max-w-2xl mx-auto font-normal">
+          <p className="mt-4 sm:mt-5 text-slate-300 text-sm sm:text-base lg:text-lg leading-relaxed max-w-2xl mx-auto font-normal">
             {L(idioma, "De devs e criadores remotos a caminhoneiros, motorhomes e vans: quem trabalha e quem vive viajando, no mesmo lugar. PIX combinado direto entre as partes, sem taxa de intermediação.", "De devs y creadores remotos a camioneros, motorhomes y vans: quien trabaja y quien vive en la ruta, en un mismo lugar. PIX acordado directo entre las partes, sin comisión de intermediación.", "From remote devs and creators to truckers, motorhomes and vans: people who work and live on the move, in one place. PIX paid directly between the parties, no middleman fee.")}
           </p>
 
           {/* OS DOIS PÚBLICOS: quem paga (negócio) e quem faz (renda) */}
-          <div className="mt-10 grid gap-4 sm:grid-cols-2 text-left">
-            <div className="glass-panel rounded-3xl p-6 sm:p-7 border border-amber-500/25">
-              <p className="text-[11px] font-mono font-bold uppercase tracking-widest text-amber-400">{L(idioma, "Tenho um negócio", "Tengo un negocio", "I have a business")}</p>
-              <h2 className="mt-2 text-xl sm:text-2xl font-black text-white">{L(idioma, "Mais clientes no bairro e na rota", "Más clientes en el barrio y en la ruta", "More customers in the neighbourhood and along the route")}</h2>
-              <p className="mt-2 text-sm text-slate-300 leading-relaxed">
-                {L(idioma, "Diga a tarefa (fotos, Instagram, cardápio, frete, atendimento) e encontre quem faz, com Pix direto. Receba o registro de visita da expedição.", "Contá la tarea (fotos, Instagram, menú, flete, atención) y encontrá quién la hace, con Pix directo. Recibí el registro de visita de la expedición.", "Describe the task (photos, Instagram, menu, freight, customer service) and find who does it, paid by Pix. Get an expedition visit record.")}
-              </p>
-              <div className="mt-5 flex flex-wrap gap-3">
-                <Link href="/refugio" className="btn-primary-amalfi rounded-2xl px-5 py-3 text-sm font-black flex items-center gap-2">
+          <div className="mt-8 sm:mt-10 grid gap-4 sm:grid-cols-2 text-left">
+            <div className="glass-panel rounded-3xl p-5 sm:p-7 border border-amber-500/25 flex flex-col justify-between">
+              <div>
+                <p className="text-[11px] font-mono font-bold uppercase tracking-widest text-amber-400">{L(idioma, "Tenho um negócio", "Tengo un negocio", "I have a business")}</p>
+                <h2 className="mt-1.5 text-xl sm:text-2xl font-black text-white">{L(idioma, "Mais clientes no bairro e na rota", "Más clientes en el barrio y en la ruta", "More customers in the neighbourhood and along the route")}</h2>
+                <p className="mt-2 text-sm text-slate-300 leading-relaxed">
+                  {L(idioma, "Diga a tarefa (fotos, Instagram, cardápio, frete, atendimento) e encontre quem faz, com Pix direto. Receba o registro de visita da expedição.", "Contá la tarea (fotos, Instagram, menú, flete, atención) y encontrá quién la hace, con Pix directo. Recibí el registro de visita de la expedición.", "Describe the task (photos, Instagram, menu, freight, customer service) and find who does it, paid by Pix. Get an expedition visit record.")}
+                </p>
+              </div>
+              <div className="mt-5 flex flex-col sm:flex-row sm:flex-wrap gap-2.5">
+                <Link href="/refugio" className="btn-primary-amalfi rounded-2xl px-5 py-3.5 text-sm font-black flex items-center justify-center gap-2 w-full sm:w-auto active:scale-[0.98] transition-transform">
                   <Icon name="tent" width={20} height={20} />
                   <span>{L(idioma, "Pedir visita da expedição", "Pedir visita de la expedición", "Request expedition visit")}</span>
                 </Link>
-                <Link href="/cadastrar-servico?tipo=contratante" className="btn-secondary-glass rounded-2xl px-5 py-3 text-sm font-bold">{L(idioma, "Publicar uma tarefa", "Publicar una tarea", "Post a task")}</Link>
-                <Link href="/cidade" className="btn-secondary-glass rounded-2xl px-5 py-3 text-sm font-bold">{L(idioma, "Relatório da cidade", "Informe de la ciudad", "Town report")}</Link>
+                <div className="grid grid-cols-2 sm:flex gap-2.5 w-full sm:w-auto">
+                  <Link href="/cadastrar-servico?tipo=contratante" className="btn-secondary-glass rounded-2xl px-4 py-3 text-xs sm:text-sm font-bold text-center flex items-center justify-center active:scale-[0.98] transition-transform">{L(idioma, "Publicar tarefa", "Publicar tarea", "Post a task")}</Link>
+                  <Link href="/cidade" className="btn-secondary-glass rounded-2xl px-4 py-3 text-xs sm:text-sm font-bold text-center flex items-center justify-center active:scale-[0.98] transition-transform">{L(idioma, "Relatório cidade", "Informe ciudad", "Town report")}</Link>
+                </div>
               </div>
             </div>
-            <div className="glass-panel rounded-3xl p-6 sm:p-7">
-              <p className="text-[11px] font-mono font-bold uppercase tracking-widest text-amber-400">{L(idioma, "Quero renda", "Quiero ingresos", "I want income")}</p>
-              <h2 className="mt-2 text-xl sm:text-2xl font-black text-white">{L(idioma, "Trabalho de verdade, pago por Pix", "Trabajo de verdad, pagado por Pix", "Real work, paid by Pix")}</h2>
-              <p className="mt-2 text-sm text-slate-300 leading-relaxed">
-                {L(idioma, "Conte o que você faz e de onde atende (na sua cidade, remoto ou na estrada). Quando uma empresa precisar do seu serviço, o chamado vai direto para o seu WhatsApp.", "Contá qué hacés y desde dónde atendés (en tu ciudad, remoto o en la ruta). Cuando una empresa necesite tu servicio, el contacto va directo a tu WhatsApp.", "Tell us what you do and where you operate from (in town, remotely or on the road). When a business needs your work, the lead goes straight to your WhatsApp.")}
-              </p>
-              <div className="mt-5 flex flex-wrap gap-3">
-                <Link href="/disponibilidade" className="btn-primary-amalfi rounded-2xl px-5 py-3 text-sm font-black">{L(idioma, "Cadastrar meu serviço", "Registrar mi servicio", "Register my service")}</Link>
-                <a href="#renda-na-cidade" className="btn-secondary-glass rounded-2xl px-5 py-3 text-sm font-bold">{L(idioma, "Valores de referência", "Valores de referencia", "Reference rates")}</a>
+            <div className="glass-panel rounded-3xl p-5 sm:p-7 flex flex-col justify-between">
+              <div>
+                <p className="text-[11px] font-mono font-bold uppercase tracking-widest text-amber-400">{L(idioma, "Quero renda", "Quiero ingresos", "I want income")}</p>
+                <h2 className="mt-1.5 text-xl sm:text-2xl font-black text-white">{L(idioma, "Trabalho de verdade, pago por Pix", "Trabajo de verdad, pagado por Pix", "Real work, paid by Pix")}</h2>
+                <p className="mt-2 text-sm text-slate-300 leading-relaxed">
+                  {L(idioma, "Conte o que você faz e de onde atende (na sua cidade, remoto ou na estrada). Quando uma empresa precisar do seu serviço, o chamado vai direto para o seu WhatsApp.", "Contá qué hacés y desde dónde atendés (en tu ciudad, remoto o en la ruta). Cuando una empresa necesite tu servicio, el contacto va directo a tu WhatsApp.", "Tell us what you do and where you operate from (in town, remotely or on the road). When a business needs your work, the lead goes straight to your WhatsApp.")}
+                </p>
+              </div>
+              <div className="mt-5 flex flex-col sm:flex-row sm:flex-wrap gap-2.5">
+                <Link href="/disponibilidade" className="btn-primary-amalfi rounded-2xl px-5 py-3.5 text-sm font-black flex items-center justify-center gap-2 w-full sm:w-auto active:scale-[0.98] transition-transform">
+                  <Icon name="briefcase" width={18} height={18} />
+                  <span>{L(idioma, "Cadastrar meu serviço", "Registrar mi servicio", "Register my service")}</span>
+                </Link>
+                <a href="#renda-na-cidade" className="btn-secondary-glass rounded-2xl px-5 py-3 text-xs sm:text-sm font-bold text-center flex items-center justify-center w-full sm:w-auto active:scale-[0.98] transition-transform">{L(idioma, "Valores de referência", "Valores de referencia", "Reference rates")}</a>
               </div>
             </div>
           </div>
@@ -515,10 +521,10 @@ export default function Home() {
       {/* ── FOOTER ELEGANTE ── */}
       </main>
 
-      <footer className="border-t border-white/10 py-12 px-4 text-center text-xs text-slate-400">
+      <footer className="border-t border-white/10 pt-10 pb-28 sm:py-12 px-4 text-center text-xs text-slate-400">
         <div className="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4">
           <p>© {new Date().getFullYear()} JobPago.com.br · {L(idioma, "mantido por Allan Candido", "mantenido por Allan Candido", "run by Allan Candido")}.</p>
-          <div className="flex items-center gap-6 text-xs text-slate-400">
+          <div className="flex flex-wrap items-center justify-center gap-x-5 gap-y-2 text-xs text-slate-400">
             <Link href="/como-funciona" className="hover:text-amber-400 transition-colors">
               {L(idioma, "Como Funciona", "Cómo funciona", "How it works")}
             </Link>
@@ -538,6 +544,26 @@ export default function Home() {
         </div>
         <p className="max-w-7xl mx-auto mt-4 text-[11px] text-slate-500 leading-relaxed">62.685.514 ALLAN CANDIDO · CNPJ 62.685.514/0001-85 · Rua Leontino Antonio de Souza, 85, Água Santa, Angra dos Reis/RJ, CEP 23915-505</p>
       </footer>
+
+      {/* ── DOCK INFERIOR ESTILO iOS (MOBILE) ── */}
+      <div className="sm:hidden fixed bottom-0 left-0 right-0 z-50 bg-[#07090e]/85 backdrop-blur-2xl border-t border-white/15 px-3.5 pt-2.5 pb-[max(0.75rem,env(safe-area-inset-bottom))] shadow-[0_-12px_32px_rgba(0,0,0,0.65)]">
+        <div className="grid grid-cols-2 gap-2.5 max-w-md mx-auto">
+          <Link
+            href="/refugio"
+            className="btn-secondary-glass h-12 rounded-2xl border-amber-500/40 text-amber-300 font-black text-xs flex items-center justify-center gap-2 active:scale-95 transition-transform shadow-lg"
+          >
+            <Icon name="tent" width={18} height={18} />
+            <span>{L(idioma, "Pedir Visita", "Pedir Visita", "Request Visit")}</span>
+          </Link>
+          <Link
+            href="/disponibilidade"
+            className="btn-primary-amalfi h-12 rounded-2xl font-black text-xs flex items-center justify-center gap-2 active:scale-95 transition-transform shadow-lg"
+          >
+            <Icon name="briefcase" width={18} height={18} />
+            <span>{L(idioma, "Meu Serviço", "Mi Servicio", "My Service")}</span>
+          </Link>
+        </div>
+      </div>
     </div>
   );
 }
