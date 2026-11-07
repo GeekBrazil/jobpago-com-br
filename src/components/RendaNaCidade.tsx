@@ -1,13 +1,13 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import Link from "next/link";
 import { useIdioma } from "@/components/useIdioma";
 import { L } from "@/lib/i18n";
 import { tSecao, competenciaEm } from "@/lib/traducoesCadastro";
 
 /* "Valores de referência por setor na sua cidade" (salário de admissão) — número oficial
-   (salário médio de admissão do Novo CAGED, 12 meses) no lugar de promessa. */
+   (salário médio de admissão do Novo CAGED, 12 meses) com detecção por geolocalização. */
 
 interface Setor { secao: string; setor: string; salario: number; admissoes: number }
 interface Dados { ibge: string; cidade: string; uf: string; de: number; ate: number; media: number | null; setores: Setor[] }
@@ -15,6 +15,8 @@ interface Opcao { ibge: string; nome: string; uf: string }
 
 const brl = new Intl.NumberFormat("pt-BR", { style: "currency", currency: "BRL", minimumFractionDigits: 0, maximumFractionDigits: 0 });
 const nf = new Intl.NumberFormat("pt-BR", { maximumFractionDigits: 0 });
+
+const CHAVE_STORAGE = "jobpago_ibge_geoloc";
 
 export default function RendaNaCidade({ ibgeInicial = "3303807" }: { ibgeInicial?: string }) {
   const [idioma] = useIdioma();
@@ -26,7 +28,85 @@ export default function RendaNaCidade({ ibgeInicial = "3303807" }: { ibgeInicial
   const [busca, setBusca] = useState("");
   const [opcoes, setOpcoes] = useState<Opcao[]>([]);
   const [erro, setErro] = useState(false);
+  const [modoGeo, setModoGeo] = useState<"gps" | "ip" | null>(null);
+  const [carregandoGeo, setCarregandoGeo] = useState(false);
 
+  // Função para resolver coordenadas em município
+  const resolverCoordenadas = useCallback(async (lat: number, lng: number) => {
+    try {
+      setCarregandoGeo(true);
+      const res = await fetch(`/api/cidades/geolocalizar?lat=${lat}&lng=${lng}`);
+      if (!res.ok) return;
+      const json = await res.json();
+      if (json.ok && json.ibge) {
+        setIbge(json.ibge);
+        setModoGeo(json.metodo || "gps");
+        try { sessionStorage.setItem(CHAVE_STORAGE, json.ibge); } catch {}
+      }
+    } catch {
+      // Falha silenciosa
+    } finally {
+      setCarregandoGeo(false);
+    }
+  }, []);
+
+  // Solicitar permissão e posição via GPS do navegador
+  const pedirGps = useCallback(() => {
+    if (typeof window === "undefined" || !navigator.geolocation) return;
+    setCarregandoGeo(true);
+    navigator.geolocation.getCurrentPosition(
+      (pos) => {
+        resolverCoordenadas(pos.coords.latitude, pos.coords.longitude);
+      },
+      () => {
+        setCarregandoGeo(false);
+      },
+      { timeout: 8000, maximumAge: 300000, enableHighAccuracy: false }
+    );
+  }, [resolverCoordenadas]);
+
+  // Geolocalização inicial no mount: verifica cache, tenta IP ou GPS automático se consentido
+  useEffect(() => {
+    let salvo: string | null = null;
+    try { salvo = sessionStorage.getItem(CHAVE_STORAGE); } catch {}
+    if (salvo && /^\d{7}$/.test(salvo)) {
+      setIbge(salvo);
+      setModoGeo("gps");
+      return;
+    }
+
+    // Tenta primeiro detectar via header de IP (ultra rápido, sem popup)
+    fetch("/api/cidades/geolocalizar")
+      .then((r) => (r.ok ? r.json() : null))
+      .then((d) => {
+        if (d && d.ok && d.ibge) {
+          setIbge(d.ibge);
+          setModoGeo("ip");
+        }
+      })
+      .catch(() => {});
+
+    // Se o navegador já concedeu permissão antes, atualiza com precisão GPS
+    if (typeof navigator !== "undefined" && navigator.permissions?.query) {
+      navigator.permissions
+        .query({ name: "geolocation" as PermissionName })
+        .then((p) => {
+          if (p.state === "granted") {
+            pedirGps();
+          } else if (p.state === "prompt") {
+            // Dispara tentativa com timeout suave para usuários em mobile/desktop
+            pedirGps();
+          }
+        })
+        .catch(() => {
+          pedirGps();
+        });
+    } else {
+      pedirGps();
+    }
+  }, [pedirGps]);
+
+  // Carrega os dados econômicos da cidade
   useEffect(() => {
     let vivo = true;
     setErro(false);
@@ -55,7 +135,33 @@ export default function RendaNaCidade({ ibgeInicial = "3303807" }: { ibgeInicial
   return (
     <section id="renda-na-cidade" className="py-14 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto" aria-labelledby="renda-titulo">
       <div className="glass-panel rounded-[2rem] p-6 sm:p-10">
-        <p className="text-xs font-mono font-bold uppercase tracking-widest text-amber-400">{L(idioma, "Valores de referência por setor na sua cidade", "Valores de referencia por sector en tu ciudad", "Reference rates by sector in your town")}</p>
+        <div className="flex flex-wrap items-center justify-between gap-3 mb-2">
+          <p className="text-xs font-mono font-bold uppercase tracking-widest text-amber-400">
+            {L(idioma, "Valores de referência por setor na sua cidade", "Valores de referencia por sector en tu ciudad", "Reference rates by sector in your town")}
+          </p>
+
+          <div className="flex items-center gap-2">
+            {modoGeo && (
+              <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-amber-400/10 border border-amber-400/30 text-amber-300 text-xs font-mono">
+                <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
+                {modoGeo === "gps"
+                  ? L(idioma, "GPS ativo", "GPS activo", "GPS active")
+                  : L(idioma, "Detectado por IP", "Detectado por IP", "Detected via IP")}
+              </span>
+            )}
+            <button
+              type="button"
+              onClick={pedirGps}
+              disabled={carregandoGeo}
+              title={L(idioma, "Usar minha geolocalização atual", "Usar mi geolocalización actual", "Use my current geolocation")}
+              className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-white/5 hover:bg-white/10 border border-white/10 text-slate-300 text-xs font-medium transition-colors disabled:opacity-50"
+            >
+              <span>📍</span>
+              <span>{carregandoGeo ? L(idioma, "Localizando…", "Localizando…", "Locating…") : L(idioma, "Minha localização", "Mi ubicación", "My location")}</span>
+            </button>
+          </div>
+        </div>
+
         <h2 id="renda-titulo" className="mt-3 text-3xl sm:text-5xl font-black tracking-tight leading-tight">
           {L(idioma, "Salário de admissão em", "Salario de ingreso en", "Starting pay in")}{" "}
           <label className="sr-only" htmlFor="renda-setor">{L(idioma, "Setor", "Sector", "Sector")}</label>
@@ -69,7 +175,7 @@ export default function RendaNaCidade({ ibgeInicial = "3303807" }: { ibgeInicial
               <option key={s.secao} value={s.secao} className="bg-slate-900 text-base">{nomeSetor(s)}</option>
             ))}
           </select>{" "}
-          {L(idioma, "em", "en", "in")} {dados ? dados.cidade : "…"}
+          {L(idioma, "em", "en", "in")} {dados ? `${dados.cidade} - ${dados.uf}` : "…"}
         </h2>
 
         <div className="mt-8 grid gap-6 lg:grid-cols-[1fr_1fr] items-start">
@@ -103,7 +209,13 @@ export default function RendaNaCidade({ ibgeInicial = "3303807" }: { ibgeInicial
                   <li key={o.ibge}>
                     <button
                       type="button"
-                      onClick={() => { setIbge(o.ibge); setBusca(""); setOpcoes([]); }}
+                      onClick={() => {
+                        setIbge(o.ibge);
+                        setBusca("");
+                        setOpcoes([]);
+                        setModoGeo(null);
+                        try { sessionStorage.setItem(CHAVE_STORAGE, o.ibge); } catch {}
+                      }}
                       className="w-full text-left px-5 py-3 text-sm text-slate-100 hover:bg-amber-500/10 hover:text-amber-300"
                     >
                       {o.nome} <span className="text-slate-400">· {o.uf}</span>
