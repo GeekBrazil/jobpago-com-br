@@ -4,6 +4,8 @@ import { NextRequest, NextResponse } from "next/server";
 import bcrypt from "bcryptjs";
 import { getPool } from "@/lib/db";
 import { garantirColunasMaioridade, declarouMaioridade, ERRO_MAIORIDADE } from "@/lib/maioridade";
+import { verificarDominioMxServidor } from "@/lib/validacaoEmailServidor";
+import { enviarEmailBoasVindasConta } from "@/lib/email";
 
 export const runtime = "nodejs";
 
@@ -38,7 +40,13 @@ export async function POST(req: NextRequest) {
   const senha = String(body.senha ?? "");
 
   if (nome.length < 2) return NextResponse.json({ error: m("Nome inválido.", "Nombre inválido.", "Invalid name.") }, { status: 400 });
-  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) return NextResponse.json({ error: m("E-mail inválido.", "E-mail inválido.", "Invalid e-mail.") }, { status: 400 });
+
+  const checagemEmail = await verificarDominioMxServidor(email, body.idioma as string);
+  if (!checagemEmail.valido) {
+    return NextResponse.json({ error: checagemEmail.erro || m("E-mail inválido.", "E-mail inválido.", "Invalid e-mail.") }, { status: 400 });
+  }
+  const emailVerificado = checagemEmail.emailLimpo;
+
   // Brasil: DDD + número; estrangeiro: +código do país (lib/telefone)
   if (!telefone) return NextResponse.json({ error: m("Telefone inválido. Informe DDD + número.", "Teléfono inválido. Incluí el código de país.", "Invalid phone. Include the country code.") }, { status: 400 });
   if (senha.length < 8) return NextResponse.json({ error: m("Senha precisa ter no mínimo 8 caracteres.", "La contraseña necesita al menos 8 caracteres.", "Password must be at least 8 characters.") }, { status: 400 });
@@ -51,7 +59,7 @@ export async function POST(req: NextRequest) {
   await ensureUsuariosTable();
   await garantirColunasMaioridade(pool);
 
-  const { rows: existentes } = await pool.query(`SELECT id FROM usuarios WHERE email = $1`, [email]);
+  const { rows: existentes } = await pool.query(`SELECT id FROM usuarios WHERE email = $1`, [emailVerificado]);
   if (existentes.length > 0) {
     return NextResponse.json({ error: m("Já existe conta com esse e-mail. Faça login.", "Ya existe una cuenta con ese e-mail. Iniciá sesión.", "An account with this e-mail already exists. Please log in.") }, { status: 409 });
   }
@@ -59,8 +67,14 @@ export async function POST(req: NextRequest) {
   const senhaHash = await bcrypt.hash(senha, 12);
   await pool.query(
     `INSERT INTO usuarios (nome, email, telefone, senha_hash, provider, maior_18_em) VALUES ($1, $2, $3, $4, 'credentials', now())`,
-    [nome, email, telefone, senhaHash],
+    [nome, emailVerificado, telefone, senhaHash],
   );
+
+  enviarEmailBoasVindasConta({
+    nome,
+    email: emailVerificado,
+    telefone,
+  }).catch((err) => console.error("[api/auth/cadastro] Erro ao enviar boas-vindas de conta:", err));
 
   return NextResponse.json({ ok: true });
 }

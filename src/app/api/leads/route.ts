@@ -7,6 +7,8 @@ import { normalizarTelefone } from "@/lib/telefone";
 import { msg } from "@/lib/traducoesCadastro";
 import { termosParaRevisao } from "@/lib/moderacao";
 import { garantirColunasMaioridade, declarouMaioridade, ERRO_MAIORIDADE } from "@/lib/maioridade";
+import { verificarDominioMxServidor } from "@/lib/validacaoEmailServidor";
+import { enviarEmailBoasVindasLead } from "@/lib/email";
 
 // Fora de public/: se o banco cair, o lead (com WhatsApp e e-mail) não pode
 // ficar num diretório que o site serve.
@@ -16,7 +18,7 @@ interface LeadPayload {
   tipo: "prestador" | "contratante";
   nomeContratado: string;
   whatsappContratado: string;
-  emailContratado: string;
+  emailContratado?: string;
   nomeOuPerfilContratante: string;
   emailContratante?: string;
   whatsappContratante?: string;
@@ -42,9 +44,21 @@ const pool = process.env.DATABASE_URL
   ? new Pool({ connectionString: process.env.DATABASE_URL, max: 3 })
   : null;
 
+let colunaEmailNullableGarantida = false;
+async function garantirColunaEmailNullable(p: Pool) {
+  if (colunaEmailNullableGarantida) return;
+  try {
+    await p.query("ALTER TABLE leads ALTER COLUMN email_contratado DROP NOT NULL");
+    colunaEmailNullableGarantida = true;
+  } catch {
+    // se tabela ainda não existe ou coluna já for nullable, segue
+  }
+}
+
 async function gravarNoPostgres(lead: LeadRegistrado) {
   if (!pool) return false;
   await garantirColunasMaioridade(pool);
+  await garantirColunaEmailNullable(pool);
   await pool.query(
     `INSERT INTO leads (id, tipo, nome_contratado, whatsapp_contratado, email_contratado,
         nome_contratante, email_contratante, whatsapp_contratante, titulo_servico, categoria,
@@ -52,7 +66,7 @@ async function gravarNoPostgres(lead: LeadRegistrado) {
      VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,$15,$16,$17,$18,now())
      ON CONFLICT (id) DO NOTHING`,
     [
-      lead.id, lead.tipo, lead.nomeContratado, lead.whatsappContratado, lead.emailContratado,
+      lead.id, lead.tipo, lead.nomeContratado, lead.whatsappContratado, lead.emailContratado || null,
       lead.nomeOuPerfilContratante || null, lead.emailContratante || null, lead.whatsappContratante || null,
       lead.tituloServico, lead.categoria, lead.modalidade, lead.cidade || null,
       String(lead.valor ?? ""), lead.isCortesia, lead.descricao || null, lead.lgpdConsent,
@@ -114,11 +128,16 @@ export async function POST(req: Request) {
     }
     body.whatsappContratado = telefone;
 
-    // 3. Validação de E-mail
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!emailRegex.test(body.emailContratado.trim())) {
-      return NextResponse.json({ success: false, error: "E-mail inválido." }, { status: 400 });
+    // 3. Validação e verificação de E-mail (opcional, com verificação de sintaxe, erro de digitação e MX)
+    let emailFinal: string | undefined = undefined;
+    if (body.emailContratado && typeof body.emailContratado === "string" && body.emailContratado.trim().length > 0) {
+      const checagem = await verificarDominioMxServidor(body.emailContratado, idioma);
+      if (!checagem.valido) {
+        return NextResponse.json({ success: false, error: checagem.erro || "E-mail inválido." }, { status: 400 });
+      }
+      emailFinal = checagem.emailLimpo;
     }
+    body.emailContratado = emailFinal;
 
     // 4. Validação de Consentimento LGPD
     if (!body.lgpdConsent) {
@@ -173,6 +192,23 @@ export async function POST(req: Request) {
 
     logEventoLead({ tipo: body.tipo, categoria: body.categoria }); // fire-and-forget
 
+    // Disparo assíncrono do e-mail de boas-vindas se o e-mail foi informado
+    if (emailFinal) {
+      enviarEmailBoasVindasLead({
+        tipo: body.tipo,
+        nome: body.nomeContratado,
+        email: emailFinal,
+        whatsapp: body.whatsappContratado,
+        tituloServico: body.tituloServico,
+        categoria: body.categoria,
+        modalidade: body.modalidade,
+        cidade: body.cidade,
+        valor: body.valor,
+        isCortesia: body.isCortesia,
+        perfilBuscadoOuContratante: body.nomeOuPerfilContratante,
+      }).catch((err) => console.error("[api/leads] Erro ao enviar boas-vindas:", err));
+    }
+
     // 5. Formatação da mensagem para o WhatsApp do Allan (5524993326966)
     const valorTexto = body.isCortesia
       ? "🛡️ 100% CORTESIA (0800 Alta Honra)"
@@ -184,16 +220,18 @@ export async function POST(req: Request) {
       ? "📋 *AÇÃO:* Buscar profissional na rede pra atender esse pedido"
       : "📋 *AÇÃO:* Envio do serviço diretamente para o Contratante";
 
+    const emailExibicao = body.emailContratado ? body.emailContratado : "Não informado (contato via WhatsApp)";
+
     const blocoQuemPreencheu = isContratante
       ? `🏢 *DADOS DO CONTRATANTE (quem preencheu):*
 • Nome: ${body.nomeContratado}
 • WhatsApp: ${body.whatsappContratado}
-• E-mail: ${body.emailContratado}
+• E-mail: ${emailExibicao}
 • Localidade: ${body.cidade || "Não informada / Remoto"}`
       : `👤 *DADOS DO CONTRATADO (Prestador):*
 • Nome: ${body.nomeContratado}
 • WhatsApp: ${body.whatsappContratado}
-• E-mail: ${body.emailContratado}
+• E-mail: ${emailExibicao}
 • Localidade: ${body.cidade || "Não informada / Remoto"}`;
 
     const blocoDestino = isContratante

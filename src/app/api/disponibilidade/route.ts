@@ -5,6 +5,8 @@ import { termosParaRevisao } from "@/lib/moderacao";
 import { garantirColunasMaioridade, declarouMaioridade, ERRO_MAIORIDADE } from "@/lib/maioridade";
 import { msg } from "@/lib/traducoesCadastro";
 import { normalizarTelefone } from "@/lib/telefone";
+import { verificarDominioMxServidor } from "@/lib/validacaoEmailServidor";
+import { enviarEmailBoasVindasDisponibilidade } from "@/lib/email";
 
 export const runtime = "nodejs";
 
@@ -46,11 +48,16 @@ export async function POST(req: NextRequest) {
   const txt = (v: unknown, n: number) => (typeof v === "string" ? v.trim().slice(0, n) : "");
   const nome = txt(b.nome, 80);
   const whatsapp = normalizarTelefone(txt(b.whatsapp, 24));
-  const email = txt(b.email, 200);
+  let emailFinal: string | null = null;
+  const emailBruto = txt(b.email, 200);
+  if (emailBruto) {
+    const checagem = await verificarDominioMxServidor(emailBruto, b.idioma);
+    if (!checagem.valido) return NextResponse.json({ ok: false, erro: checagem.erro || m("E-mail inválido.", "E-mail inválido.", "Invalid e-mail.") }, { status: 400 });
+    emailFinal = checagem.emailLimpo;
+  }
   const categorias = (Array.isArray(b.categorias) ? b.categorias : []).map(String).filter((c: string) => CATS.has(c)).slice(0, 7);
   if (!nome) return NextResponse.json({ ok: false, erro: m("Diga seu nome.", "Decí tu nombre.", "Enter your name.") }, { status: 400 });
   if (!whatsapp) return NextResponse.json({ ok: false, erro: m("WhatsApp com DDD, por favor.", "WhatsApp con código de país y de área, por favor.", "WhatsApp with country and area code, please.") }, { status: 400 });
-  if (email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) return NextResponse.json({ ok: false, erro: m("E-mail inválido.", "E-mail inválido.", "Invalid e-mail.") }, { status: 400 });
   if (!categorias.length) return NextResponse.json({ ok: false, erro: m("Escolha pelo menos uma área.", "Elegí al menos un área.", "Choose at least one area.") }, { status: 400 });
   if (b.lgpd !== true) return NextResponse.json({ ok: false, erro: m("É preciso autorizar o contato (LGPD).", "Tenés que autorizar el contacto (LGPD).", "Please authorise us to contact you (LGPD).") }, { status: 400 });
 
@@ -64,8 +71,20 @@ export async function POST(req: NextRequest) {
   await pool.query(
     `INSERT INTO disponibilidades (nome, whatsapp, email, cidade, uf, na_estrada, categorias, faz, modo, quando, lgpd_consent, status, maior_18_em)
      VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,true,$11,now())`,
-    [nome, whatsapp, email || null, txt(b.cidade, 80) || null, txt(b.uf, 2).toUpperCase() || null, b.naEstrada === true,
+    [nome, whatsapp, emailFinal, txt(b.cidade, 80) || null, txt(b.uf, 2).toUpperCase() || null, b.naEstrada === true,
      categorias, txt(b.faz, 500) || null, MODOS.has(b.modo) ? b.modo : null, QUANDO.has(b.quando) ? b.quando : null, status]
   );
+
+  if (emailFinal) {
+    enviarEmailBoasVindasDisponibilidade({
+      nome,
+      email: emailFinal,
+      whatsapp,
+      cidade: txt(b.cidade, 80) || undefined,
+      uf: txt(b.uf, 2).toUpperCase() || undefined,
+      faz: txt(b.faz, 500) || undefined,
+    }).catch((err) => console.error("[api/disponibilidade] Erro ao enviar boas-vindas:", err));
+  }
+
   return NextResponse.json({ ok: true });
 }

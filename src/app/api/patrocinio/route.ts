@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { garantirTabelasExpedicoes } from "@/lib/expedicoes";
 import { msg } from "@/lib/traducoesCadastro";
+import { verificarDominioMxServidor } from "@/lib/validacaoEmailServidor";
 
 export const runtime = "nodejs";
 
@@ -16,9 +17,15 @@ export async function POST(req: NextRequest) {
   const b = await req.json().catch(() => ({}));
   const m = (pt: string, es: string, en: string) => msg(b.idioma, pt, es, en);
   const txt = (v: unknown, n: number) => (typeof v === "string" ? v.trim().slice(0, n) : "");
-  const slug = txt(b.slug, 60), patrocinador = txt(b.patrocinador, 160), contato = txt(b.contato, 160), email = txt(b.email, 200);
+  const slug = txt(b.slug, 60), patrocinador = txt(b.patrocinador, 160), contato = txt(b.contato, 160);
+  let emailFinal: string | null = null;
+  const emailBruto = txt(b.email, 200);
+  if (emailBruto) {
+    const checagem = await verificarDominioMxServidor(emailBruto, b.idioma);
+    if (!checagem.valido) return NextResponse.json({ ok: false, erro: checagem.erro || m("E-mail inválido.", "E-mail inválido.", "Invalid e-mail.") }, { status: 400 });
+    emailFinal = checagem.emailLimpo;
+  }
   if (!patrocinador || !contato) return NextResponse.json({ ok: false, erro: m("Informe a empresa e um contato.", "Indicá la empresa y un contacto.", "Enter the company and a contact.") }, { status: 400 });
-  if (email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) return NextResponse.json({ ok: false, erro: m("E-mail inválido.", "E-mail inválido.", "Invalid e-mail.") }, { status: 400 });
   if (b.lgpd !== true) return NextResponse.json({ ok: false, erro: m("É preciso autorizar o contato.", "Tenés que autorizar el contacto.", "Please authorise us to contact you.") }, { status: 400 });
   const pool = await garantirTabelasExpedicoes();
   if (!pool) return NextResponse.json({ ok: false, erro: "indisponível" }, { status: 503 });
@@ -26,6 +33,6 @@ export async function POST(req: NextRequest) {
   if (!rows[0]) return NextResponse.json({ ok: false, erro: m("Expedição não encontrada.", "Expedición no encontrada.", "Expedition not found.") }, { status: 404 });
   const valor = Number(String(b.valor ?? "").replace(/\./g, "").replace(",", "."));
   await pool.query(`INSERT INTO patrocinios (expedicao_id, patrocinador, contato, email, proposta, valor) VALUES ($1,$2,$3,$4,$5,$6)`,
-    [rows[0].id, patrocinador, contato, email || null, txt(b.proposta, 1500) || null, Number.isFinite(valor) && valor > 0 ? valor : null]);
+    [rows[0].id, patrocinador, contato, emailFinal, txt(b.proposta, 1500) || null, Number.isFinite(valor) && valor > 0 ? valor : null]);
   return NextResponse.json({ ok: true });
 }

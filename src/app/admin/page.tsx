@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { useEffect, useState } from "react";
 
 interface Lead {
@@ -96,10 +97,33 @@ export default function AdminPage() {
 
   return (
     <div style={{ minHeight: "100vh", background: "#07090e", color: "#f8fafc", padding: 24, fontFamily: "system-ui" }}>
-      <h1 style={{ fontSize: 22, fontWeight: 800, marginBottom: 4 }}>JobPago · Cadastros</h1>
-      <p style={{ color: "#94a3b8", fontSize: 13, marginBottom: 20 }}>
-        {leads.length} cadastro(s) no total — {totalContratantes} anunciante(s), {totalPrestadores} candidato(s)
-      </p>
+      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 16, flexWrap: "wrap", gap: 12 }}>
+        <div>
+          <h1 style={{ fontSize: 22, fontWeight: 800, marginBottom: 4 }}>JobPago · Cadastros</h1>
+          <p style={{ color: "#94a3b8", fontSize: 13 }}>
+            {leads.length} cadastro(s) no total — {totalContratantes} anunciante(s), {totalPrestadores} candidato(s)
+          </p>
+        </div>
+        <Link
+          href="/admin/dashboard"
+          style={{
+            padding: "8px 16px",
+            borderRadius: 8,
+            background: "linear-gradient(135deg, #3b82f6, #6366f1)",
+            color: "#fff",
+            textDecoration: "none",
+            fontWeight: 700,
+            fontSize: 13,
+            display: "inline-flex",
+            alignItems: "center",
+            gap: 6,
+            boxShadow: "0 2px 8px rgba(99,102,241,0.3)"
+          }}
+        >
+          📊 Central RAG, Telemetria & Território (Tema Claro) →
+        </Link>
+      </div>
+
 
       <div style={{ display: "flex", gap: 8, marginBottom: 20 }}>
         {(["todos", "contratante", "prestador"] as const).map((f) => (

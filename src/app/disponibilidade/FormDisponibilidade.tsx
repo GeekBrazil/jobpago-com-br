@@ -9,6 +9,7 @@ import { useIdioma } from "@/components/useIdioma";
 import SeletorIdioma from "@/components/SeletorIdioma";
 import { tCategoria } from "@/lib/traducoesCadastro";
 import type { Idioma } from "@/lib/textosEstrada";
+import { validarSintaxeEmail } from "@/lib/validacaoEmail";
 
 const L = (i: Idioma, pt: string, es: string, en: string) => (i === "es" ? es : i === "en" ? en : pt);
 
@@ -24,9 +25,20 @@ export default function FormDisponibilidade() {
   const [erro, setErro] = useState("");
   const alterna = (id: string) => setF((x) => ({ ...x, categorias: x.categorias.includes(id) ? x.categorias.filter((c) => c !== id) : [...x.categorias, id] }));
 
+  const checagemEmail = f.email.trim() ? validarSintaxeEmail(f.email, idioma) : null;
+
   async function enviar(e: React.FormEvent) {
     e.preventDefault();
     setErro("");
+
+    if (f.email.trim()) {
+      const v = validarSintaxeEmail(f.email, idioma);
+      if (!v.valido) {
+        setErro(v.erro || L(idioma, "E-mail inválido.", "E-mail inválido.", "Invalid e-mail."));
+        return;
+      }
+    }
+
     setEstado("enviando");
     try {
       const r = await fetch("/api/disponibilidade", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ ...f, idioma }) });
@@ -79,8 +91,19 @@ export default function FormDisponibilidade() {
         <label className="block"><span className="text-sm font-bold text-slate-300">{L(idioma, "WhatsApp com DDD", "WhatsApp (país y número)", "WhatsApp (country and number)")}</span>
           <CampoTelefone className="mt-2" onChange={(v) => setF((x) => ({ ...x, whatsapp: v }))} /></label>
       </div>
-      <label className="block"><span className="text-sm font-bold text-slate-300">{L(idioma, "E-mail (opcional)", "E-mail (opcional)", "E-mail (optional)")}</span>
-        <input type="email" maxLength={200} value={f.email} onChange={(e) => setF({ ...f, email: e.target.value })} className={campo + " mt-2"} autoComplete="email" /></label>
+      <div>
+        <label className="block"><span className="text-sm font-bold text-slate-300">{L(idioma, "E-mail (opcional)", "E-mail (opcional)", "E-mail (optional)")}</span>
+          <input type="email" maxLength={200} value={f.email} onChange={(e) => setF({ ...f, email: e.target.value })} className={campo + " mt-2"} autoComplete="email" /></label>
+        {checagemEmail?.sugestao && (
+          <button
+            type="button"
+            onClick={() => setF((prev) => ({ ...prev, email: checagemEmail.sugestao! }))}
+            className="mt-1.5 text-xs text-amber-400 hover:text-amber-300 underline block text-left"
+          >
+            {L(idioma, `Você quis dizer ${checagemEmail.sugestao}? Clique para corrigir.`, `¿Quisiste decir ${checagemEmail.sugestao}? Clic para corregir.`, `Did you mean ${checagemEmail.sugestao}? Click to fix.`)}
+          </button>
+        )}
+      </div>
 
       <fieldset>
         <legend className="text-sm font-bold text-slate-300">{L(idioma, "O que você faz", "Qué hacés", "What you do")}</legend>

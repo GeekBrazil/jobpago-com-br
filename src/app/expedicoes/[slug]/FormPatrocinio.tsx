@@ -4,6 +4,7 @@ import { useState } from "react";
 import Link from "next/link";
 import { useIdioma } from "@/components/useIdioma";
 import { L } from "@/lib/i18n";
+import { validarSintaxeEmail } from "@/lib/validacaoEmail";
 
 const campo = "w-full rounded-2xl bg-slate-900/80 border border-white/15 px-4 py-3 text-white placeholder:text-slate-500 focus:outline-none focus:border-amber-400";
 
@@ -13,9 +14,22 @@ export default function FormPatrocinio({ slug }: { slug: string }) {
   const [f, setF] = useState({ patrocinador: "", contato: "", email: "", valor: "", proposta: "", lgpd: false });
   const [estado, setEstado] = useState<"" | "enviando" | "ok">("");
   const [erro, setErro] = useState("");
+
+  const checagemEmail = f.email.trim() ? validarSintaxeEmail(f.email, i) : null;
+
   async function enviar(e: React.FormEvent) {
     e.preventDefault();
-    setErro(""); setEstado("enviando");
+    setErro("");
+
+    if (f.email.trim()) {
+      const v = validarSintaxeEmail(f.email, i);
+      if (!v.valido) {
+        setErro(v.erro || t("E-mail inválido.", "E-mail inválido.", "Invalid e-mail."));
+        return;
+      }
+    }
+
+    setEstado("enviando");
     const r = await fetch("/api/patrocinio", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ slug, ...f, idioma: i }) });
     const j = await r.json().catch(() => ({}));
     if (!r.ok || !j.ok) { setErro(j.erro || t("Não foi possível enviar.", "No se pudo enviar.", "Couldn't send.")); setEstado(""); return; }
@@ -28,7 +42,18 @@ export default function FormPatrocinio({ slug }: { slug: string }) {
       <div className="grid gap-3 sm:grid-cols-2">
         <input required maxLength={160} value={f.patrocinador} onChange={(e) => setF({ ...f, patrocinador: e.target.value })} placeholder={t("Empresa", "Empresa", "Company")} className={campo} />
         <input required maxLength={160} value={f.contato} onChange={(e) => setF({ ...f, contato: e.target.value })} placeholder={t("Seu nome e WhatsApp", "Tu nombre y WhatsApp", "Your name and WhatsApp")} className={campo} />
-        <input type="email" maxLength={200} value={f.email} onChange={(e) => setF({ ...f, email: e.target.value })} placeholder={t("E-mail (opcional)", "E-mail (opcional)", "E-mail (optional)")} className={campo} />
+        <div>
+          <input type="email" maxLength={200} value={f.email} onChange={(e) => setF({ ...f, email: e.target.value })} placeholder={t("E-mail (opcional)", "E-mail (opcional)", "E-mail (optional)")} className={campo} />
+          {checagemEmail?.sugestao && (
+            <button
+              type="button"
+              onClick={() => setF((prev) => ({ ...prev, email: checagemEmail.sugestao! }))}
+              className="mt-1.5 text-xs text-amber-400 hover:text-amber-300 underline block text-left"
+            >
+              {t(`Você quis dizer ${checagemEmail.sugestao}? Clique para corrigir.`, `¿Quisiste decir ${checagemEmail.sugestao}? Clic para corregir.`, `Did you mean ${checagemEmail.sugestao}? Click to fix.`)}
+            </button>
+          )}
+        </div>
         <input inputMode="decimal" value={f.valor} onChange={(e) => setF({ ...f, valor: e.target.value })} placeholder={t("Valor pensado, R$ (opcional)", "Monto pensado, R$ (opcional)", "Amount in mind, R$ (optional)")} className={campo} />
       </div>
       <textarea maxLength={1500} rows={3} value={f.proposta} onChange={(e) => setF({ ...f, proposta: e.target.value })} placeholder={t("O que você gostaria em troca (menção, vídeo, visita…)", "Qué te gustaría a cambio (mención, video, visita…)", "What you'd like in return (mention, video, visit…)")} className={campo} />

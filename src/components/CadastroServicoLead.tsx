@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import { CATEGORIAS, avisoCategoria } from "@/data/categorias";
 import DeclaracaoMaioridade from "@/components/DeclaracaoMaioridade";
 import Link from "next/link";
@@ -10,6 +10,7 @@ import { L } from "@/lib/i18n";
 import { tCategoria } from "@/lib/traducoesCadastro";
 import CampoTelefone from "@/components/CampoTelefone";
 import { normalizarTelefone } from "@/lib/telefone";
+import { validarSintaxeEmail } from "@/lib/validacaoEmail";
 
 interface CadastroServicoLeadProps {
   tipoInicial?: "prestador" | "contratante";
@@ -40,6 +41,12 @@ export default function CadastroServicoLead({ onSuccess, tipoInicial = "prestado
   const [error, setError] = useState<string | null>(null);
   const [successData, setSuccessData] = useState<{ whatsappUrl: string } | null>(null);
 
+  const analiseEmail = useMemo(() => {
+    const limpo = emailContratado.trim();
+    if (!limpo) return null;
+    return validarSintaxeEmail(limpo, idioma);
+  }, [emailContratado, idioma]);
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError(null);
@@ -49,10 +56,13 @@ export default function CadastroServicoLead({ onSuccess, tipoInicial = "prestado
       return;
     }
 
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!emailRegex.test(emailContratado.trim())) {
-      setError(L(idioma, "Por favor, insira um endereço de e-mail válido.", "Por favor, ingresá un e-mail válido.", "Please enter a valid e-mail address."));
-      return;
+    const emailLimpo = emailContratado.trim();
+    if (emailLimpo) {
+      const validacao = validarSintaxeEmail(emailLimpo, idioma);
+      if (!validacao.valido) {
+        setError(validacao.erro || L(idioma, "Por favor, insira um endereço de e-mail válido.", "Por favor, ingresá un e-mail válido.", "Please enter a valid e-mail address."));
+        return;
+      }
     }
 
     if (!maior18) {
@@ -296,17 +306,25 @@ export default function CadastroServicoLead({ onSuccess, tipoInicial = "prestado
 
               <div>
                 <label htmlFor="email-contratado" className="text-xs font-bold text-slate-300 block mb-1.5">
-                  {isContratante ? L(idioma, "E-mail de contato *", "E-mail de contacto *", "Contact e-mail *") : L(idioma, "E-mail profissional *", "E-mail profesional *", "Work e-mail *")}
+                  {isContratante ? L(idioma, "E-mail de contato (opcional)", "E-mail de contacto (opcional)", "Contact e-mail (optional)") : L(idioma, "E-mail profissional (opcional)", "E-mail profesional (opcional)", "Work e-mail (optional)")}
                 </label>
                 <input
                   type="email"
-                  required
                   placeholder="contato@exemplo.com"
                   id="email-contratado"
-                value={emailContratado}
+                  value={emailContratado}
                   onChange={(e) => setEmailContratado(e.target.value)}
                   className="w-full bg-black/30 border border-white/10 rounded-xl px-4 py-3 text-sm text-white placeholder-slate-500 focus:outline-none focus:border-amber-400 transition-colors font-mono"
                 />
+                {analiseEmail?.sugestao && (
+                  <button
+                    type="button"
+                    onClick={() => setEmailContratado(analiseEmail.sugestao!)}
+                    className="mt-1.5 text-xs text-amber-400 hover:text-amber-300 underline block text-left"
+                  >
+                    {L(idioma, `Você quis dizer ${analiseEmail.sugestao}? Clique para corrigir.`, `¿Quisiste decir ${analiseEmail.sugestao}? Clic para corregir.`, `Did you mean ${analiseEmail.sugestao}? Click to fix.`)}
+                  </button>
+                )}
               </div>
             </div>
           </div>

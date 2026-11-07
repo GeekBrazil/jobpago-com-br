@@ -8,6 +8,7 @@ import { useIdioma } from "@/components/useIdioma";
 import { L } from "@/lib/i18n";
 import CampoTelefone from "@/components/CampoTelefone";
 import DeclaracaoMaioridade from "@/components/DeclaracaoMaioridade";
+import { validarSintaxeEmail } from "@/lib/validacaoEmail";
 
 function FormularioCadastro() {
   const router = useRouter();
@@ -24,9 +25,18 @@ function FormularioCadastro() {
   const [erro, setErro] = useState("");
   const [enviando, setEnviando] = useState(false);
 
+  const checagemEmail = email.trim() ? validarSintaxeEmail(email, i) : null;
+
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
     setErro("");
+
+    const checagem = validarSintaxeEmail(email, i);
+    if (!checagem.valido) {
+      setErro(checagem.erro || t("E-mail inválido.", "E-mail inválido.", "Invalid e-mail."));
+      return;
+    }
+
     setEnviando(true);
 
     const res = await fetch("/api/auth/cadastro", {
@@ -70,14 +80,25 @@ function FormularioCadastro() {
             onChange={(e) => setNome(e.target.value)}
             className="bg-black/30 border border-white/10 rounded-xl px-4 py-2.5 text-sm text-white placeholder-slate-500 focus:outline-none focus:border-amber-400/50"
           />
-          <input
-            type="email"
-            required
-            placeholder="E-mail"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            className="bg-black/30 border border-white/10 rounded-xl px-4 py-2.5 text-sm text-white placeholder-slate-500 focus:outline-none focus:border-amber-400/50"
-          />
+          <div>
+            <input
+              type="email"
+              required
+              placeholder="E-mail"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              className="w-full bg-black/30 border border-white/10 rounded-xl px-4 py-2.5 text-sm text-white placeholder-slate-500 focus:outline-none focus:border-amber-400/50"
+            />
+            {checagemEmail?.sugestao && (
+              <button
+                type="button"
+                onClick={() => setEmail(checagemEmail.sugestao!)}
+                className="mt-1.5 text-xs text-amber-400 hover:text-amber-300 underline block text-left"
+              >
+                {t(`Você quis dizer ${checagemEmail.sugestao}? Clique para corrigir.`, `¿Quisiste decir ${checagemEmail.sugestao}? Clic para corregir.`, `Did you mean ${checagemEmail.sugestao}? Click to fix.`)}
+              </button>
+            )}
+          </div>
           <CampoTelefone onChange={setTelefone} />
           <input
             type="password"

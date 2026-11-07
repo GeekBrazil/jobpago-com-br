@@ -201,7 +201,7 @@ export default function Home() {
               <p className="text-[11px] font-mono font-bold uppercase tracking-widest text-amber-400">{L(idioma, "Quero renda", "Quiero ingresos", "I want income")}</p>
               <h2 className="mt-2 text-xl sm:text-2xl font-black text-white">{L(idioma, "Trabalho de verdade, pago por Pix", "Trabajo de verdad, pagado por Pix", "Real work, paid by Pix")}</h2>
               <p className="mt-2 text-sm text-slate-300 leading-relaxed">
-                {L(idioma, "Conte o que você sabe fazer e de onde trabalha — da cidade, remoto ou viajando. Quando um negócio precisar, você é chamado.", "Contá qué sabés hacer y desde dónde trabajás: en la ciudad, remoto o en la ruta. Cuando un negocio lo necesite, te llamamos.", "Tell us what you can do and where you work from — in town, remotely or while travelling. When a business needs it, we call you.")}
+                {L(idioma, "Conte o que você faz e de onde atende (na sua cidade, remoto ou na estrada). Quando uma empresa precisar do seu serviço, o chamado vai direto para o seu WhatsApp.", "Contá qué hacés y desde dónde atendés (en tu ciudad, remoto o en la ruta). Cuando una empresa necesite tu servicio, el contacto va directo a tu WhatsApp.", "Tell us what you do and where you operate from (in town, remotely or on the road). When a business needs your work, the lead goes straight to your WhatsApp.")}
               </p>
               <div className="mt-5 flex flex-wrap gap-3">
                 <Link href="/disponibilidade" className="btn-primary-amalfi rounded-2xl px-5 py-3 text-sm font-black">{L(idioma, "Cadastrar meu serviço", "Registrar mi servicio", "Register my service")}</Link>

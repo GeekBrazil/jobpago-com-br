@@ -26,7 +26,8 @@ function FormularioEntrar() {
     e.preventDefault();
     setErro("");
     setEnviando(true);
-    const res = await signIn("credentials", { email, senha, redirect: false });
+    const emailLimpo = email.trim().toLowerCase();
+    const res = await signIn("credentials", { email: emailLimpo, senha, redirect: false });
     setEnviando(false);
     if (res?.error) {
       setErro(t("E-mail ou senha incorretos.", "E-mail o contraseña incorrectos.", "Wrong e-mail or password."));

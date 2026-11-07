@@ -224,7 +224,7 @@ export default function EcossistemaIANegocios({ idioma }: Props) {
         </div>
 
         <h2 className="text-3xl sm:text-4xl lg:text-5xl font-black text-white tracking-tight leading-tight">
-          {L(idioma, "Ecossistema de IA do Pequeno Negócio", "Ecosistema de IA del Pequeño Negocio", "Small Business AI Operating Ecosystem")}
+          {L(idioma, "Automação e Atendimento Inteligente para Negócios Locais", "Automatización y Atención Inteligente para Negocios Locales", "Smart Automation & AI Support for Local Business")}
         </h2>
         <p className="mt-3 text-slate-300 text-sm sm:text-base leading-relaxed">
           {L(
@@ -356,7 +356,7 @@ export default function EcossistemaIANegocios({ idioma }: Props) {
 
                 <div>
                   <div className="flex justify-between text-xs mb-1">
-                    <span className="text-emerald-300 font-bold">Com Ecossistema IA JobPago (1 operador + Pix Direto)</span>
+                    <span className="text-emerald-300 font-bold">Com Atendimento Inteligente JobPago (1 operador + Pix Direto)</span>
                     <span className="text-emerald-400 font-mono font-black">R$ 850/mês</span>
                   </div>
                   <div className="w-full h-2.5 rounded-full bg-slate-800 overflow-hidden">

@@ -7,6 +7,7 @@ import { NIVEIS_HONRA, OFERECE, TIPOS_REFUGIO } from "@/data/honra";
 import { lerIndicacao } from "@/lib/indicacaoCliente";
 import { tTipo, tOferece, tHonra } from "@/lib/traducoesCadastro";
 import type { Idioma } from "@/lib/textosEstrada";
+import { validarSintaxeEmail } from "@/lib/validacaoEmail";
 
 const L = (i: Idioma, pt: string, es: string, en: string) => (i === "es" ? es : i === "en" ? en : pt);
 
@@ -19,9 +20,20 @@ export default function FormRefugio({ idioma }: { idioma: Idioma }) {
   const [erro, setErro] = useState("");
   const alterna = (v: string) => setF((x) => ({ ...x, oferece: x.oferece.includes(v) ? x.oferece.filter((o) => o !== v) : [...x.oferece, v] }));
 
+  const checagemEmail = f.email.trim() ? validarSintaxeEmail(f.email, idioma) : null;
+
   async function enviar(e: React.FormEvent) {
     e.preventDefault();
     setErro("");
+
+    if (f.email.trim()) {
+      const v = validarSintaxeEmail(f.email, idioma);
+      if (!v.valido) {
+        setErro(v.erro || L(idioma, "E-mail inválido.", "E-mail inválido.", "Invalid e-mail."));
+        return;
+      }
+    }
+
     setEstado("enviando");
     try {
       const r = await fetch("/api/refugios", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ ...f, indicador: lerIndicacao(), idioma }) });
@@ -93,8 +105,19 @@ export default function FormRefugio({ idioma }: { idioma: Idioma }) {
           <input maxLength={80} value={f.responsavel} onChange={(e) => setF({ ...f, responsavel: e.target.value })} className={campo + " mt-2"} autoComplete="name" /></label>
         <label className="block"><span className="text-sm font-bold text-slate-300">{L(idioma, "WhatsApp com DDD", "WhatsApp (país y número)", "WhatsApp (country and number)")}</span>
           <CampoTelefone className="mt-2" onChange={(v) => setF((x) => ({ ...x, whatsapp: v }))} /></label>
-        <label className="block"><span className="text-sm font-bold text-slate-300">{L(idioma, "E-mail (opcional)", "E-mail (opcional)", "E-mail (optional)")}</span>
-          <input type="email" maxLength={200} value={f.email} onChange={(e) => setF({ ...f, email: e.target.value })} className={campo + " mt-2"} autoComplete="email" /></label>
+        <div>
+          <label className="block"><span className="text-sm font-bold text-slate-300">{L(idioma, "E-mail (opcional)", "E-mail (opcional)", "E-mail (optional)")}</span>
+            <input type="email" maxLength={200} value={f.email} onChange={(e) => setF({ ...f, email: e.target.value })} className={campo + " mt-2"} autoComplete="email" /></label>
+          {checagemEmail?.sugestao && (
+            <button
+              type="button"
+              onClick={() => setF((prev) => ({ ...prev, email: checagemEmail.sugestao! }))}
+              className="mt-1.5 text-xs text-amber-400 hover:text-amber-300 underline block text-left"
+            >
+              {L(idioma, `Você quis dizer ${checagemEmail.sugestao}? Clique para corrigir.`, `¿Quisiste decir ${checagemEmail.sugestao}? Clic para corregir.`, `Did you mean ${checagemEmail.sugestao}? Click to fix.`)}
+            </button>
+          )}
+        </div>
         <label className="block"><span className="text-sm font-bold text-slate-300">{L(idioma, "Site ou Instagram (opcional)", "Sitio o Instagram (opcional)", "Website or Instagram (optional)")}</span>
           <input maxLength={200} value={f.site} onChange={(e) => setF({ ...f, site: e.target.value })} className={campo + " mt-2"} /></label>
       </div>
