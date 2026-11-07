@@ -59,13 +59,13 @@ export async function POST(req: NextRequest) {
   const txt = (v: unknown, n: number) => (typeof v === "string" ? v.trim().slice(0, n) : "");
   const nome = txt(b.nome, 120), cidade = txt(b.cidade, 80), uf = txt(b.uf, 2).toUpperCase();
   const whatsapp = normalizarTelefone(txt(b.whatsapp, 24));
-  let emailFinal: string | null = null;
   const emailBruto = txt(b.email, 200);
-  if (emailBruto) {
-    const checagem = await verificarDominioMxServidor(emailBruto, b.idioma);
-    if (!checagem.valido) return NextResponse.json({ ok: false, erro: checagem.erro || m("E-mail inválido.", "E-mail inválido.", "Invalid e-mail.") }, { status: 400 });
-    emailFinal = checagem.emailLimpo;
+  if (!emailBruto) {
+    return NextResponse.json({ ok: false, erro: m("E-mail é obrigatório.", "El e-mail es obligatorio.", "E-mail is required.") }, { status: 400 });
   }
+  const checagem = await verificarDominioMxServidor(emailBruto, b.idioma);
+  if (!checagem.valido) return NextResponse.json({ ok: false, erro: checagem.erro || m("E-mail inválido.", "E-mail inválido.", "Invalid e-mail.") }, { status: 400 });
+  const emailFinal = checagem.emailLimpo;
   if (!nome) return NextResponse.json({ ok: false, erro: m("Diga o nome do lugar.", "Decí el nombre del lugar.", "Enter the name of the place.") }, { status: 400 });
   if (!TIPOS.has(b.tipo)) return NextResponse.json({ ok: false, erro: m("Escolha o tipo de lugar.", "Elegí el tipo de lugar.", "Choose the type of place.") }, { status: 400 });
   if (!cidade || uf.length !== 2) return NextResponse.json({ ok: false, erro: m("Informe cidade e UF.", "Indicá ciudad y estado.", "Enter town and state.") }, { status: 400 });

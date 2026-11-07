@@ -93,3 +93,4 @@ function msgIdioma(idioma: string, pt: string, es: string, en: string): string {
   if (idioma === "en") return en;
   return pt;
 }
+

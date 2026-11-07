@@ -21,12 +21,14 @@ export default function FormPatrocinio({ slug }: { slug: string }) {
     e.preventDefault();
     setErro("");
 
-    if (f.email.trim()) {
-      const v = validarSintaxeEmail(f.email, i);
-      if (!v.valido) {
-        setErro(v.erro || t("E-mail inválido.", "E-mail inválido.", "Invalid e-mail."));
-        return;
-      }
+    if (!f.email.trim()) {
+      setErro(t("Por favor, informe seu e-mail.", "Por favor, ingresá tu e-mail.", "Please enter your e-mail."));
+      return;
+    }
+    const v = validarSintaxeEmail(f.email.trim(), i);
+    if (!v.valido) {
+      setErro(v.erro || t("E-mail inválido.", "E-mail inválido.", "Invalid e-mail."));
+      return;
     }
 
     setEstado("enviando");
@@ -43,7 +45,7 @@ export default function FormPatrocinio({ slug }: { slug: string }) {
         <input required maxLength={160} value={f.patrocinador} onChange={(e) => setF({ ...f, patrocinador: e.target.value })} placeholder={t("Empresa", "Empresa", "Company")} className={campo} />
         <input required maxLength={160} value={f.contato} onChange={(e) => setF({ ...f, contato: e.target.value })} placeholder={t("Seu nome e WhatsApp", "Tu nombre y WhatsApp", "Your name and WhatsApp")} className={campo} />
         <div>
-          <input type="email" maxLength={200} value={f.email} onChange={(e) => setF({ ...f, email: e.target.value })} placeholder={t("E-mail (opcional)", "E-mail (opcional)", "E-mail (optional)")} className={campo} />
+          <input required type="email" maxLength={200} value={f.email} onChange={(e) => setF({ ...f, email: e.target.value })} placeholder={t("E-mail *", "E-mail *", "E-mail *")} className={campo} />
           {checagemEmail?.sugestao && (
             <button
               type="button"

@@ -26,12 +26,14 @@ export default function FormRefugio({ idioma }: { idioma: Idioma }) {
     e.preventDefault();
     setErro("");
 
-    if (f.email.trim()) {
-      const v = validarSintaxeEmail(f.email, idioma);
-      if (!v.valido) {
-        setErro(v.erro || L(idioma, "E-mail inválido.", "E-mail inválido.", "Invalid e-mail."));
-        return;
-      }
+    if (!f.email.trim()) {
+      setErro(L(idioma, "Por favor, informe seu e-mail.", "Por favor, ingresá tu e-mail.", "Please enter your e-mail."));
+      return;
+    }
+    const v = validarSintaxeEmail(f.email.trim(), idioma);
+    if (!v.valido) {
+      setErro(v.erro || L(idioma, "E-mail inválido.", "E-mail inválido.", "Invalid e-mail."));
+      return;
     }
 
     setEstado("enviando");
@@ -106,8 +108,8 @@ export default function FormRefugio({ idioma }: { idioma: Idioma }) {
         <label className="block"><span className="text-sm font-bold text-slate-300">{L(idioma, "WhatsApp com DDD", "WhatsApp (país y número)", "WhatsApp (country and number)")}</span>
           <CampoTelefone className="mt-2" onChange={(v) => setF((x) => ({ ...x, whatsapp: v }))} /></label>
         <div>
-          <label className="block"><span className="text-sm font-bold text-slate-300">{L(idioma, "E-mail (opcional)", "E-mail (opcional)", "E-mail (optional)")}</span>
-            <input type="email" maxLength={200} value={f.email} onChange={(e) => setF({ ...f, email: e.target.value })} className={campo + " mt-2"} autoComplete="email" /></label>
+          <label className="block"><span className="text-sm font-bold text-slate-300">{L(idioma, "E-mail *", "E-mail *", "E-mail *")}</span>
+            <input required type="email" maxLength={200} value={f.email} onChange={(e) => setF({ ...f, email: e.target.value })} className={campo + " mt-2"} autoComplete="email" /></label>
           {checagemEmail?.sugestao && (
             <button
               type="button"

@@ -128,15 +128,19 @@ export async function POST(req: Request) {
     }
     body.whatsappContratado = telefone;
 
-    // 3. Validação e verificação de E-mail (opcional, com verificação de sintaxe, erro de digitação e MX)
-    let emailFinal: string | undefined = undefined;
-    if (body.emailContratado && typeof body.emailContratado === "string" && body.emailContratado.trim().length > 0) {
-      const checagem = await verificarDominioMxServidor(body.emailContratado, idioma);
-      if (!checagem.valido) {
-        return NextResponse.json({ success: false, error: checagem.erro || "E-mail inválido." }, { status: 400 });
-      }
-      emailFinal = checagem.emailLimpo;
+    // 3. Validação e verificação de E-mail (obrigatório, com verificação de sintaxe, erro de digitação e MX)
+    const emailBruto = typeof body.emailContratado === "string" ? body.emailContratado.trim() : "";
+    if (!emailBruto) {
+      return NextResponse.json(
+        { success: false, error: msg(idioma, "E-mail é obrigatório.", "El e-mail es obligatorio.", "E-mail is required.") },
+        { status: 400 }
+      );
     }
+    const checagem = await verificarDominioMxServidor(emailBruto, idioma);
+    if (!checagem.valido) {
+      return NextResponse.json({ success: false, error: checagem.erro || "E-mail inválido." }, { status: 400 });
+    }
+    const emailFinal = checagem.emailLimpo;
     body.emailContratado = emailFinal;
 
     // 4. Validação de Consentimento LGPD

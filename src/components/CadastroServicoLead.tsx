@@ -57,12 +57,14 @@ export default function CadastroServicoLead({ onSuccess, tipoInicial = "prestado
     }
 
     const emailLimpo = emailContratado.trim();
-    if (emailLimpo) {
-      const validacao = validarSintaxeEmail(emailLimpo, idioma);
-      if (!validacao.valido) {
-        setError(validacao.erro || L(idioma, "Por favor, insira um endereço de e-mail válido.", "Por favor, ingresá un e-mail válido.", "Please enter a valid e-mail address."));
-        return;
-      }
+    if (!emailLimpo) {
+      setError(L(idioma, "Por favor, informe seu endereço de e-mail.", "Por favor, ingresá tu e-mail.", "Please enter your e-mail address."));
+      return;
+    }
+    const validacao = validarSintaxeEmail(emailLimpo, idioma);
+    if (!validacao.valido) {
+      setError(validacao.erro || L(idioma, "Por favor, insira um endereço de e-mail válido.", "Por favor, ingresá un e-mail válido.", "Please enter a valid e-mail address."));
+      return;
     }
 
     if (!maior18) {
@@ -306,10 +308,11 @@ export default function CadastroServicoLead({ onSuccess, tipoInicial = "prestado
 
               <div>
                 <label htmlFor="email-contratado" className="text-xs font-bold text-slate-300 block mb-1.5">
-                  {isContratante ? L(idioma, "E-mail de contato (opcional)", "E-mail de contacto (opcional)", "Contact e-mail (optional)") : L(idioma, "E-mail profissional (opcional)", "E-mail profesional (opcional)", "Work e-mail (optional)")}
+                  {isContratante ? L(idioma, "E-mail de contato *", "E-mail de contacto *", "Contact e-mail *") : L(idioma, "E-mail profissional *", "E-mail profesional *", "Work e-mail *")}
                 </label>
                 <input
                   type="email"
+                  required
                   placeholder="contato@exemplo.com"
                   id="email-contratado"
                   value={emailContratado}
