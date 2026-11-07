@@ -65,17 +65,41 @@ export default async function RelatorioCidadePage({ params }: Props) {
 
         {/* NÚMEROS DE ABERTURA */}
         <section className="mt-8 grid gap-4 sm:grid-cols-3" aria-label={t("Resumo", "Resumen", "Summary")}>
-          <div className="glass-panel rounded-3xl p-6">
-            <p className="text-5xl font-black text-amber-400 tabular-nums">{n(tot?.novas_90d)}</p>
-            <p className="mt-2 text-sm text-slate-300">{t("negócios abertos nos últimos 90 dias", "negocios abiertos en los últimos 90 días", "businesses opened in the last 90 days")}</p>
+          <div className="glass-panel rounded-3xl p-6 flex flex-col justify-between">
+            <div>
+              <p className="text-5xl font-black text-amber-400 tabular-nums">{n(tot?.novas_90d)}</p>
+              <p className="mt-2 text-sm text-slate-300">{t("negócios abertos nos últimos 90 dias", "negocios abiertos en los últimos 90 días", "businesses opened in the last 90 days")}</p>
+            </div>
+            {(tot?.novas_90d ?? 0) > 0 && (
+              <a
+                href={`https://allancandido.com/novos-negocios?cidade=${ibge}&utm_source=jobpago&utm_medium=cidade&utm_campaign=novos_negocios`}
+                className="mt-4 inline-flex items-center justify-center gap-2 rounded-2xl bg-amber-400 hover:bg-amber-300 text-slate-950 font-bold px-4 py-2.5 text-xs transition-colors shadow-sm"
+              >
+                <span>🔍</span>
+                <span>{t("Ver comércios & WhatsApp (R$ 39,90)", "Ver comercios y WhatsApp (R$ 39,90)", "See businesses & WhatsApp (R$ 39.90)")}</span>
+              </a>
+            )}
           </div>
-          <div className="glass-panel rounded-3xl p-6">
-            <p className="text-5xl font-black text-white tabular-nums">{emp?.salario_medio_adm ? brl.format(emp.salario_medio_adm) : "—"}</p>
-            <p className="mt-2 text-sm text-slate-300">{t("salário médio de quem foi contratado nos últimos 12 meses", "sueldo medio de quienes fueron contratados en los últimos 12 meses", "average salary of people hired in the last 12 months")}</p>
+          <div className="glass-panel rounded-3xl p-6 flex flex-col justify-between">
+            <div>
+              <p className="text-5xl font-black text-white tabular-nums">{emp?.salario_medio_adm ? brl.format(emp.salario_medio_adm) : "—"}</p>
+              <p className="mt-2 text-sm text-slate-300">{t("salário médio de quem foi contratado nos últimos 12 meses", "sueldo medio de quienes fueron contratados en los últimos 12 meses", "average salary of people hired in the last 12 months")}</p>
+            </div>
           </div>
-          <div className="glass-panel rounded-3xl p-6">
-            <p className="text-5xl font-black text-white tabular-nums">{n(r.compras_abertas)}</p>
-            <p className="mt-2 text-sm text-slate-300">{t("compras públicas abertas na cidade agora", "compras públicas abiertas en la ciudad ahora", "public purchases open in town right now")}</p>
+          <div className="glass-panel rounded-3xl p-6 flex flex-col justify-between">
+            <div>
+              <p className="text-5xl font-black text-white tabular-nums">{n(r.compras_abertas)}</p>
+              <p className="mt-2 text-sm text-slate-300">{t("compras públicas abertas na cidade agora", "compras públicas abiertas en la ciudad ahora", "public purchases open in town right now")}</p>
+            </div>
+            {r.compras_abertas > 0 && (
+              <a
+                href={`https://allancandido.com/compras-publicas?cidade=${ibge}&utm_source=jobpago&utm_medium=cidade&utm_campaign=compras_card`}
+                className="mt-4 inline-flex items-center justify-center gap-2 rounded-2xl bg-white/10 hover:bg-white/20 text-white font-bold px-4 py-2.5 text-xs transition-colors border border-white/15"
+              >
+                <span>🏛️</span>
+                <span>{t("Ver compras da prefeitura", "Ver compras públicas", "See public purchases")}</span>
+              </a>
+            )}
           </div>
         </section>
         {tot && (
@@ -193,9 +217,9 @@ export default async function RelatorioCidadePage({ params }: Props) {
               </a>
             </div>
             <p className="mt-3 text-xs text-slate-400">
-              {t("Objeto, órgão, valor, prazo e edital de cada compra, com aviso por e-mail: R$ 79,90 por ano no Allan Candido — inteligência de dados públicos.",
-                "Objeto, organismo, valor, plazo y pliego de cada compra, con aviso por e-mail: R$ 79,90 por año en Allan Candido (sitio en portugués).",
-                "What, who, value, deadline and tender document of each purchase, with e-mail alerts: R$ 79.90 a year at Allan Candido (site in Portuguese).")}
+              {t("Objeto, órgão, valor, prazo e edital de cada compra, com aviso por e-mail: a partir de R$ 29,90/mês ou R$ 197/ano no Allan Candido — inteligência de dados públicos.",
+                "Objeto, organismo, valor, plazo y pliego de cada compra, con aviso por e-mail: desde R$ 29,90/mes o R$ 197/año en Allan Candido.",
+                "What, who, value, deadline and tender document of each purchase, with e-mail alerts: from R$ 29.90/mo or R$ 197/year at Allan Candido.")}
             </p>
           </section>
         )}
