@@ -12,11 +12,12 @@ export default async function CidadeTopo() {
           <img src="/icon_flutuante-96.webp" width={36} height={36} alt="" className="w-9 h-9 object-contain" />
           <span className="text-xl font-black tracking-tight text-white">JobPago<span className="text-amber-400">.</span></span>
         </Link>
-        <nav className="flex items-center gap-5 text-xs font-bold uppercase tracking-wider text-slate-300">
+        <nav className="flex items-center gap-3 sm:gap-5 text-xs font-bold uppercase tracking-wider text-slate-300">
+          <Link href="/refugio" className="text-amber-300 hover:text-amber-400 font-black">🏨 {L(i, "Pedir Visita", "Pedir Visita", "Request Visit")}</Link>
+          <Link href="/disponibilidade" className="hover:text-amber-400 hidden sm:inline">{L(i, "Meu Serviço", "Mi Servicio", "My Service")}</Link>
           <Link href="/cidade" className="hover:text-amber-400">{L(i, "Cidades", "Ciudades", "Towns")}</Link>
-          <Link href="/expedicao" className="hover:text-amber-400">{L(i, "Expedição", "Expedición", "Expedition")}</Link>
+          <Link href="/expedicao" className="hover:text-amber-400 hidden sm:inline">{L(i, "Expedição", "Expedición", "Expedition")}</Link>
           <Link href="/viajante" className="hover:text-amber-400 hidden sm:inline">{L(i, "Viajante", "Viajero", "Traveller")}</Link>
-          <Link href="/como-funciona" className="hover:text-amber-400 hidden sm:inline">{L(i, "Como funciona", "Cómo funciona", "How it works")}</Link>
         </nav>
       </div>
     </header>

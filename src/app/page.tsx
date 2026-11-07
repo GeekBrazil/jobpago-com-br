@@ -153,6 +153,16 @@ export default function Home() {
             </Link>
 
             <Link
+              href="/refugio"
+              className="btn-secondary-glass text-xs sm:text-base px-3 sm:px-5 py-2 sm:py-3 rounded-2xl shrink-0 cursor-pointer whitespace-nowrap border-amber-500/30 hover:border-amber-400 text-amber-300 flex items-center gap-1.5"
+              title={L(idioma, "Receba a visita da expedição no seu estabelecimento", "Recibí la visita de la expedición en tu establecimiento", "Get an expedition visit at your business")}
+            >
+              <Icon name="tent" width={18} height={18} />
+              <span className="sm:hidden">{L(idioma, "Pedir Visita", "Pedir Visita", "Request Visit")}</span>
+              <span className="hidden sm:inline">{L(idioma, "Pedir Visita (Estabelecimento)", "Pedir Visita (Negocio)", "Request Visit (Business)")}</span>
+            </Link>
+
+            <Link
               href="/disponibilidade"
               className="btn-primary-amalfi text-xs sm:text-base px-3 sm:px-6 py-2 sm:py-3 rounded-2xl shrink-0 cursor-pointer whitespace-nowrap"
             >
@@ -193,8 +203,12 @@ export default function Home() {
                 {L(idioma, "Diga a tarefa (fotos, Instagram, cardápio, frete, atendimento) e encontre quem faz, com Pix direto. Receba o registro de visita da expedição.", "Contá la tarea (fotos, Instagram, menú, flete, atención) y encontrá quién la hace, con Pix directo. Recibí el registro de visita de la expedición.", "Describe the task (photos, Instagram, menu, freight, customer service) and find who does it, paid by Pix. Get an expedition visit record.")}
               </p>
               <div className="mt-5 flex flex-wrap gap-3">
-                <Link href="/cadastrar-servico?tipo=contratante" className="btn-primary-amalfi rounded-2xl px-5 py-3 text-sm font-black">{L(idioma, "Publicar uma tarefa", "Publicar una tarea", "Post a task")}</Link>
-                <Link href="/cidade" className="btn-secondary-glass rounded-2xl px-5 py-3 text-sm font-bold">{L(idioma, "Relatório da minha cidade", "Informe de mi ciudad", "My town report")}</Link>
+                <Link href="/refugio" className="btn-primary-amalfi rounded-2xl px-5 py-3 text-sm font-black flex items-center gap-2">
+                  <Icon name="tent" width={20} height={20} />
+                  <span>{L(idioma, "Pedir visita da expedição", "Pedir visita de la expedición", "Request expedition visit")}</span>
+                </Link>
+                <Link href="/cadastrar-servico?tipo=contratante" className="btn-secondary-glass rounded-2xl px-5 py-3 text-sm font-bold">{L(idioma, "Publicar uma tarefa", "Publicar una tarea", "Post a task")}</Link>
+                <Link href="/cidade" className="btn-secondary-glass rounded-2xl px-5 py-3 text-sm font-bold">{L(idioma, "Relatório da cidade", "Informe de la ciudad", "Town report")}</Link>
               </div>
             </div>
             <div className="glass-panel rounded-3xl p-6 sm:p-7">

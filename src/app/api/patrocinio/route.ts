@@ -3,6 +3,7 @@ import { garantirTabelasExpedicoes } from "@/lib/expedicoes";
 import { msg } from "@/lib/traducoesCadastro";
 import { verificarDominioMxServidor } from "@/lib/validacaoEmailServidor";
 import { enviarEmail, molduraJobPago } from "@/lib/email";
+import { notificarAdminNovoCadastro } from "@/lib/notificacaoAdmin";
 
 export const runtime = "nodejs";
 
@@ -46,6 +47,14 @@ export async function POST(req: NextRequest) {
     <p style="margin:24px 0 0 0;color:#94a3b8">Atenciosamente,<br><strong style="color:#f8fafc">Allan Candido</strong><br>JobPago</p>
   `;
   enviarEmail(emailFinal, assunto, molduraJobPago(assunto, corpoHtml)).catch(() => {});
+
+  notificarAdminNovoCadastro({
+    formulario: "Proposta de Patrocínio da Expedição",
+    nome: patrocinador,
+    whatsapp: contato,
+    email: emailFinal,
+    detalhes: `Expedição: ${nomeExpedicao} | Valor sugerido: R$ ${valor || 0} | Proposta: ${txt(b.proposta, 300) || "Sem texto"}`,
+  }).catch((e) => console.error("[api/patrocinio] Erro ao notificar admin:", e));
 
   return NextResponse.json({ ok: true });
 }

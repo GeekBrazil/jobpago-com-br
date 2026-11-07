@@ -17,7 +17,17 @@ export default async function TopoSimples() {
             <span className="text-[9px] font-mono font-bold tracking-wider text-slate-400 uppercase mt-0.5">{L(i, "renda na viagem", "ingresos en el viaje", "income on the go")}</span>
           </div>
         </Link>
-        <Link href="/" className="btn-secondary-glass text-xs font-bold px-4 py-2 rounded-xl flex items-center gap-1.5">← {L(i, "Voltar para a Home", "Volver al inicio", "Back to home")}</Link>
+        <div className="flex items-center gap-2">
+          <Link href="/refugio" className="btn-secondary-glass text-xs font-bold px-3 py-2 rounded-xl text-amber-300 border-amber-500/30 hover:border-amber-400 flex items-center gap-1">
+            🏨 {L(i, "Pedir Visita", "Pedir Visita", "Request Visit")}
+          </Link>
+          <Link href="/disponibilidade" className="btn-primary-amalfi text-xs font-bold px-3 py-2 rounded-xl">
+            {L(i, "Meu Serviço", "Mi Servicio", "My Service")}
+          </Link>
+          <Link href="/" className="btn-secondary-glass text-xs font-bold px-3 py-2 rounded-xl hidden sm:flex items-center gap-1.5">
+            ← {L(i, "Home", "Inicio", "Home")}
+          </Link>
+        </div>
       </div>
     </header>
   );

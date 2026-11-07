@@ -6,6 +6,7 @@ import { msg } from "@/lib/traducoesCadastro";
 import { normalizarTelefone } from "@/lib/telefone";
 import { verificarDominioMxServidor } from "@/lib/validacaoEmailServidor";
 import { enviarEmailConfirmacaoRefugio } from "@/lib/email";
+import { notificarAdminNovoCadastro } from "@/lib/notificacaoAdmin";
 
 export const runtime = "nodejs";
 
@@ -96,6 +97,18 @@ export async function POST(req: NextRequest) {
       uf,
     }).catch((err) => console.error("[api/refugios] Erro ao enviar confirmação de refúgio:", err));
   }
+
+  // Notifica o Allan no Telegram e E-mail com o nome do formulário
+  notificarAdminNovoCadastro({
+    formulario: "Pedido de Visita (Estabelecimento / Refúgio)",
+    nome: `${nome}${txt(b.responsavel, 80) ? ` (Resp: ${txt(b.responsavel, 80)})` : ""}`,
+    whatsapp,
+    email: emailFinal,
+    cidade,
+    uf,
+    tipo: b.tipo,
+    detalhes: `Preço/Noite: ${txt(b.precoNoite, 40) || "N/A"} | Honra: ${b.honra || "N/A"} | Oferece: ${oferece.join(", ")} | Msg: ${txt(b.mensagem, 300) || "Sem mensagem"}`,
+  }).catch((err) => console.error("[api/refugios] Erro ao notificar admin:", err));
 
   return NextResponse.json({ ok: true });
 }

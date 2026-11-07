@@ -9,6 +9,7 @@ import { termosParaRevisao } from "@/lib/moderacao";
 import { garantirColunasMaioridade, declarouMaioridade, ERRO_MAIORIDADE } from "@/lib/maioridade";
 import { verificarDominioMxServidor } from "@/lib/validacaoEmailServidor";
 import { enviarEmailBoasVindasLead } from "@/lib/email";
+import { notificarAdminNovoCadastro } from "@/lib/notificacaoAdmin";
 
 // Fora de public/: se o banco cair, o lead (com WhatsApp e e-mail) não pode
 // ficar num diretório que o site serve.
@@ -275,6 +276,17 @@ ${blocoDestino}
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━`;
 
     const whatsappUrl = `https://wa.me/5524993326966?text=${encodeURIComponent(mensagemWhatsapp)}`;
+
+    // Notifica o Allan no Telegram e E-mail com o nome do formulário
+    notificarAdminNovoCadastro({
+      formulario: isContratante ? "Publicar Tarefa / Contratar Negócio" : "Cadastrar Serviço / Prestador",
+      nome: body.nomeContratado,
+      whatsapp: body.whatsappContratado,
+      email: emailExibicao,
+      cidade: body.cidade,
+      tipo: body.categoria,
+      detalhes: `Título: ${body.tituloServico} | Valor: ${valorTexto} | Modalidade: ${body.modalidade} | Descrição: ${body.descricao || "Sem descrição"}`,
+    }).catch((e) => console.error("[api/leads] Erro ao notificar admin:", e));
 
     return NextResponse.json({
       success: true,

@@ -7,6 +7,7 @@ import { msg } from "@/lib/traducoesCadastro";
 import { normalizarTelefone } from "@/lib/telefone";
 import { verificarDominioMxServidor } from "@/lib/validacaoEmailServidor";
 import { enviarEmailBoasVindasDisponibilidade } from "@/lib/email";
+import { notificarAdminNovoCadastro } from "@/lib/notificacaoAdmin";
 
 export const runtime = "nodejs";
 
@@ -85,6 +86,18 @@ export async function POST(req: NextRequest) {
       faz: txt(b.faz, 500) || undefined,
     }).catch((err) => console.error("[api/disponibilidade] Erro ao enviar boas-vindas:", err));
   }
+
+  // Notifica o Allan no Telegram e E-mail com o nome do formulário
+  notificarAdminNovoCadastro({
+    formulario: "Meu Serviço (Quero Renda / Profissional)",
+    nome,
+    whatsapp,
+    email: emailFinal,
+    cidade: txt(b.cidade, 80) || undefined,
+    uf: txt(b.uf, 2).toUpperCase() || undefined,
+    tipo: categorias.join(", "),
+    detalhes: `Faz: ${txt(b.faz, 500) || "N/A"} | Modo: ${b.modo || "N/A"} | Na estrada: ${b.naEstrada ? "Sim" : "Não"}`,
+  }).catch((err) => console.error("[api/disponibilidade] Erro ao notificar admin:", err));
 
   return NextResponse.json({ ok: true });
 }
