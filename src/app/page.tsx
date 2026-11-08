@@ -401,7 +401,7 @@ export default function Home() {
         {/* espaço limpo: aqui o cenário 3D do fundo enquadra o ponto de apoio (ilustração, não um lugar real) */}
         <div className="min-h-[70vh] sm:min-h-[80vh]" aria-hidden="true" />
         <p className="text-center text-[11px] text-slate-400">
-          {L(idioma, "Ilustração. Os primeiros lugares para dormir serão visitados na Expedição nº 01 · Paraty → Fortaleza, pelo litoral", "Ilustración. Los primeros lugares para dormir se visitarán en la Expedición nº 01 · Paraty → Fortaleza, por la costa", "Illustration. The first places to sleep will be visited on Expedition no. 01 · Paraty → Fortaleza, along the coast")}
+          {L(idioma, "Ilustração. Os primeiros lugares para dormir serão visitados na Expedição nº 01 · Fortaleza → Paraty, pelo litoral", "Ilustración. Los primeros lugares para dormir se visitarán en la Expedición nº 01 · Fortaleza → Paraty, por la costa", "Illustration. The first places to sleep will be visited on Expedition no. 01 · Fortaleza → Paraty, along the coast")}
         </p>
 
         {/* O QUE CONFERIMOS PARA DAR O SELO */}

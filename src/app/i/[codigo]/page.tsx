@@ -41,9 +41,9 @@ export default async function IndicacaoPage({ params }: { params: Promise<{ codi
         <p className="text-xs font-mono font-bold uppercase tracking-widest text-amber-400">{t("Indicação de", "Recomendación de", "Referral from")} {nome}</p>
         <h1 className="mt-3 text-4xl sm:text-5xl font-black tracking-tight leading-[1.05]">{t(`${nome} indicou o seu negócio para a JobPago`, `${nome} recomendó tu negocio a JobPago`, `${nome} referred your business to JobPago`)}</h1>
         <p className="mt-4 text-lg text-slate-300">
-          {t("A JobPago liga negócios locais e da rota a quem está passando e a quem faz as tarefas do dia a dia. Na Expedição nº 01 (Paraty → Fortaleza, saída em 15 de outubro), a gente visita e verifica os lugares da rota.",
-            "JobPago conecta negocios del barrio y de la ruta con quien está de paso y con quien hace las tareas del día a día. En la Expedición nº 01 (Paraty → Fortaleza, salida el 15 de octubre) visitamos y verificamos los lugares del recorrido.",
-            "JobPago connects local and roadside businesses with people passing through and people who do everyday tasks. On Expedition no. 01 (Paraty → Fortaleza, leaving 15 October), we visit and verify places along the route.")}
+          {t("A JobPago liga negócios locais e da rota a quem está passando e a quem faz as tarefas do dia a dia. Na Expedição nº 01 (Fortaleza → Paraty, pelo litoral), a gente visita e verifica os lugares da rota.",
+            "JobPago conecta negocios del barrio y de la ruta con quien está de paso y con quien hace las tareas del día a día. En la Expedición nº 01 (Fortaleza → Paraty, por la costa) visitamos y verificamos los lugares del recorrido.",
+            "JobPago connects local and roadside businesses with people passing through and people who do everyday tasks. On Expedition no. 01 (Fortaleza → Paraty, along the coast), we visit and verify places along the route.")}
         </p>
         <div className="mt-8 grid gap-4 sm:grid-cols-2">
           <Link href="/refugio" className="glass-panel rounded-3xl p-6 border border-amber-400/40 hover:border-amber-400">

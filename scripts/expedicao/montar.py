@@ -6,7 +6,7 @@ cidades=json.load(open("cidades.json"))
 try: pi=json.load(open("pista.json"))
 except FileNotFoundError: pi={"pista":"?"*len(km1),"km":{"d":0,"s":0,"?":len(km1)}}
 osrm=json.load(open("osrm.json"))
-PARADAS=[("Paraty","RJ","3303807"),("Angra dos Reis","RJ","3300100"),("Rio de Janeiro","RJ","3304557"),("Campos dos Goytacazes","RJ","3301009"),("Vitória","ES","3205309"),("Prado","BA","2925501"),("Porto Seguro","BA","2925303"),("Ilhéus","BA","2913606"),("Salvador","BA","2927408"),("Aracaju","SE","2800308"),("Maceió","AL","2704302"),("Recife","PE","2611606"),("João Pessoa","PB","2507507"),("Natal","RN","2408102"),("Fortaleza","CE","2304400")]
+PARADAS=[("Fortaleza","CE","2304400"),("Natal","RN","2408102"),("João Pessoa","PB","2507507"),("Recife","PE","2611606"),("Maceió","AL","2704302"),("Aracaju","SE","2800308"),("Salvador","BA","2927408"),("Ilhéus","BA","2913606"),("Porto Seguro","BA","2925303"),("Prado","BA","2925501"),("Vitória","ES","3205309"),("Campos dos Goytacazes","RJ","3301009"),("Rio de Janeiro","RJ","3304557"),("Angra dos Reis","RJ","3300100"),("Paraty","RJ","3303807")]
 wps=osrm["waypoints"]
 paradas=[{"nome":n,"uf":u,"ibge":i,"lat":round(w["location"][1],5),"lon":round(w["location"][0],5)} for (n,u,i),w in zip(PARADAS,wps)]
 c=psycopg2.connect(open('/home/allan/.config/pncp/database_url').read().strip()); cur=c.cursor()

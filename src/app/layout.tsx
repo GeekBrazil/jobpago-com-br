@@ -25,9 +25,9 @@ export async function generateMetadata(): Promise<Metadata> {
   const i = await idiomaServidor();
   const title = L(i, "JobPago · Renda na viagem para nômades e viajantes", "JobPago · Ingresos en el viaje para nómades y viajeros", "JobPago · Income on the go for nomads and travellers");
   const description = L(i,
-    "Negócios locais e da rota encontram quem resolve fotos, Instagram, cardápio, frete e apoio na viagem, com Pix direto e sem comissão. Relatório grátis da sua cidade e lugares visitados pela Expedição Paraty → Fortaleza.",
-    "Negocios locales y de la ruta encuentran quién hace la tarea (fotos, Instagram, menú, flete, apoyo en el viaje) con Pix directo y sin comisión. Informe gratis de tu ciudad y los lugares visitados por la Expedición Paraty → Fortaleza.",
-    "Local businesses along the route find people for photos, Instagram, menus, freight and travel support, with direct Pix and no commission. Free town reports and the places visited by the Paraty → Fortaleza Expedition.");
+    "Negócios locais e da rota encontram quem resolve fotos, Instagram, cardápio, frete e apoio na viagem, com Pix direto e sem comissão. Relatório grátis da sua cidade e lugares visitados pela Expedição Fortaleza → Paraty.",
+    "Negocios locales y de la ruta encuentran quién hace la tarea (fotos, Instagram, menú, flete, apoyo en el viaje) con Pix directo y sin comisión. Informe gratis de tu ciudad y los lugares visitados por la Expedición Fortaleza → Paraty.",
+    "Local businesses along the route find people for photos, Instagram, menus, freight and travel support, with direct Pix and no commission. Free town reports and the places visited by the Fortaleza → Paraty Expedition.");
   return {
   metadataBase: new URL("https://www.jobpago.com.br"),
   title,

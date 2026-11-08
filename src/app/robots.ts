@@ -17,3 +17,4 @@ export default function robots(): MetadataRoute.Robots {
     sitemap: "https://www.jobpago.com.br/sitemap.xml",
   };
 }
+

@@ -4,7 +4,7 @@ import { useEffect, useRef } from "react";
 import L from "leaflet";
 import type { Idioma } from "@/lib/textosEstrada";
 
-/* Mapa da Expedição (Paraty → Fortaleza): traçado colorido por pista duplicada/simples
+/* Mapa da Expedição (Fortaleza → Paraty): traçado colorido por pista duplicada/simples
    e trechos com acostamento confirmado no OpenStreetMap, praças de pedágio (ANTT) e paradas com link
    para o relatório da cidade. Sem prender o scroll no celular. */
 
@@ -70,5 +70,5 @@ export default function MapaRota({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [geometria, acostamento, pista, pedagios, paradas, idioma]);
 
-  return <div ref={ref} style={{ height: "min(72vh, 640px)", minHeight: 420 }} className="w-full rounded-3xl overflow-hidden border border-white/10" role="region" aria-label={t("Mapa do roteiro Paraty a Fortaleza", "Mapa de la ruta Paraty a Fortaleza", "Route map, Paraty to Fortaleza")} />;
+  return <div ref={ref} style={{ height: "min(72vh, 640px)", minHeight: 420 }} className="w-full rounded-3xl overflow-hidden border border-white/10" role="region" aria-label={t("Mapa do roteiro Fortaleza a Paraty", "Mapa de la ruta Fortaleza a Paraty", "Route map, Fortaleza to Paraty")} />;
 }

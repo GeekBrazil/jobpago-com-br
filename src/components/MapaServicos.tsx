@@ -109,7 +109,7 @@ export default function MapaServicos({
   useEffect(() => {
     if (!mapContainerRef.current || mapRef.current) return;
 
-    const initialCenter: [number, number] = [-23.006, -44.318]; // Centro em Angra dos Reis / Paraty (Costa Verde)
+    const initialCenter: [number, number] = [-3.7319, -38.5267]; // Centro em Fortaleza / CE (Partida da Expedição)
     const map = L.map(mapContainerRef.current, {
       center: initialCenter,
       zoom: 12,
@@ -469,7 +469,7 @@ export default function MapaServicos({
     const map = mapRef.current;
     if (!map) return;
 
-    const originCoords = userPos || [-23.000, -44.300];
+    const originCoords = userPos || [-3.7319, -38.5267];
 
     try {
       const url = `https://router.project-osrm.org/route/v1/driving/${originCoords[1]},${originCoords[0]};${destination.lng},${destination.lat}?overview=full&geometries=geojson`;

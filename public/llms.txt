@@ -1,11 +1,11 @@
 # JobPago — Renda na viagem e dados oficiais por cidade
 
-> Plataforma brasileira que conecta viajantes, nômades digitais e prestadores de serviço a estabelecimentos locais ao longo da rota costeira (Paraty → Fortaleza e todo o Brasil), com pagamento via Pix direto e zero comissão.
+> Plataforma brasileira que conecta viajantes, nômades digitais e prestadores de serviço a estabelecimentos locais ao longo da rota costeira (Fortaleza → Paraty e todo o Brasil), com pagamento via Pix direto e zero comissão.
 
 ## Principais Recursos e Mapas Públicos
 - [Mapa GPS da Rota](https://www.jobpago.com.br/#mapa-gps): Serviços presenciais e remotos, pontos de apoio nômade (água, energia, internet, pernoite) e fotos geolocalizadas.
 - [Relatório Oficial por Cidade](https://www.jobpago.com.br/cidade): Dados públicos atualizados mensalmente da Receita Federal (empresas abertas por setor em 90 dias e 12 meses), Novo CAGED (salário médio de admissão por setor) e PNCP (compras públicas abertas para pequenos negócios).
-- [Mapa da Expedição Paraty → Fortaleza](https://www.jobpago.com.br/expedicao): Roteiro costeiro com 13 paradas oficiais no RJ, ES, BA, SE, AL, PE, PB, RN e CE.
+- [Mapa da Expedição Fortaleza → Paraty](https://www.jobpago.com.br/expedicao): Roteiro costeiro com 15 paradas oficiais no CE, RN, PB, PE, AL, SE, BA, ES e RJ.
 - [Oferecer Meu Serviço](https://www.jobpago.com.br/disponibilidade): Cadastro gratuito de disponibilidade de viajantes e profissionais locais (fotos, vídeos, redes sociais, TI, manutenção, aulas, frete).
 - [Pedir Visita (Lugar para Dormir e Apoio)](https://www.jobpago.com.br/refugio): Cadastro de pousadas, campings, hostels, postos e pontos de apoio para receber a visita da expedição.
 - [Painel do Viajante](https://www.jobpago.com.br/viajante): Sistema de reputação por níveis e pontos por contribuições verificadas por GPS (condição da estrada, velocidade de internet, preço de combustível, pernoite e fachada).
@@ -13,3 +13,4 @@
 ## Contato e Operação
 - Site oficial: https://www.jobpago.com.br
 - Responsável: Allan Candido (https://allancandido.com)
+

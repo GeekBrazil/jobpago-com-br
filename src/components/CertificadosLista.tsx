@@ -44,9 +44,9 @@ export default function CertificadosLista() {
             {t("Nenhum lugar visitado ainda", "Todavía no hay lugares visitados", "No visited places yet")}
           </h3>
           <p className="text-sm text-slate-400 max-w-md">
-            {t("A Expedição Paraty → Fortaleza está começando. Os primeiros registros aparecem aqui assim que a expedição passar pelo local.",
-              "La Expedición Paraty → Fortaleza está empezando. Los primeros registros aparecen acá apenas la expedición pase por el lugar.",
-              "The Paraty → Fortaleza Expedition is just starting. The first records appear here as soon as the expedition passes through each place.")}
+            {t("A Expedição Fortaleza → Paraty está começando. Os primeiros registros aparecem aqui assim que a expedição passar pelo local.",
+              "La Expedición Fortaleza → Paraty está empezando. Los primeros registros aparecen acá apenas la expedición pase por el lugar.",
+              "The Fortaleza → Paraty Expedition is just starting. The first records appear here as soon as the expedition passes through each place.")}
           </p>
         </div>
       )}

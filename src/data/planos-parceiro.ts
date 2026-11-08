@@ -1,5 +1,5 @@
 /**
- * Níveis de parceria da Expedição JobPago (Paraty → Fortaleza, pelo litoral).
+ * Níveis de parceria da Expedição JobPago (Fortaleza → Paraty, pelo litoral).
  *
  * Conteúdo informativo: não há checkout aqui, e é de propósito. Cada acordo é
  * fechado por conversa, porque o que define o nível é o que o estabelecimento

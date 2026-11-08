@@ -15,15 +15,15 @@ export default function RefugioConteudo() {
   return (
     <>
       <div className="flex items-center justify-between gap-3 flex-wrap">
-        <p className="text-xs font-mono font-bold uppercase tracking-widest text-amber-400">{L(idioma, "Expedição nº 01 · saída 15 de outubro", "Expedición nº 01 · salida 15 de octubre", "Expedition no. 01 · departs 15 October")}</p>
+        <p className="text-xs font-mono font-bold uppercase tracking-widest text-amber-400">{L(idioma, "Expedição nº 01 · Fortaleza → Paraty", "Expedición nº 01 · Fortaleza → Paraty", "Expedition no. 01 · Fortaleza → Paraty")}</p>
         <SeletorIdioma idioma={idioma} onChange={setIdioma} />
       </div>
       <h1 className="mt-3 text-4xl sm:text-5xl font-black tracking-tight leading-[1.05]">{L(idioma, "Cadastre seu lugar para dormir", "Registrá tu lugar para dormir", "List your place to sleep")}</h1>
       <p className="mt-4 text-lg text-slate-300 max-w-2xl">
         {L(idioma,
-          "Camping, hostel, pousada, hotel ou pátio para motorhome entre Paraty e Fortaleza: peça a visita. A expedição passa por aí, registra o que havia no dia e seu lugar entra no mapa com a data da visita. É um registro, não uma garantia.",
-          "Camping, hostel, posada, hotel o patio para motorhome entre Paraty y Fortaleza: pedí la visita. La expedición pasa, registra lo que había ese día y tu lugar entra al mapa con la fecha de la visita. Es un registro, no una garantía.",
-          "Campsite, hostel, guesthouse, hotel or motorhome yard between Paraty and Fortaleza: ask for a visit. The expedition stops by, records what was there that day and your place goes on the map with the visit date. It's a record, not a guarantee.")}
+          "Camping, hostel, pousada, hotel ou pátio para motorhome entre Fortaleza e Paraty: peça a visita. A expedição passa por aí, registra o que havia no dia e seu lugar entra no mapa com a data da visita. É um registro, não uma garantia.",
+          "Camping, hostel, posada, hotel o patio para motorhome entre Fortaleza y Paraty: pedí la visita. La expedición pasa, registra lo que había ese día y tu lugar entra al mapa con la fecha de la visita. Es un registro, no una garantía.",
+          "Campsite, hostel, guesthouse, hotel or motorhome yard between Fortaleza and Paraty: ask for a visit. The expedition stops by, records what was there that day and your place goes on the map with the visit date. It's a record, not a guarantee.")}
       </p>
 
       <section className="mt-12" aria-labelledby="honra">

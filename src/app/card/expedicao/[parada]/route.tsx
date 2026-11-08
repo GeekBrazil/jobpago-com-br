@@ -4,7 +4,7 @@ import { card, formatoDe } from "@/lib/cards";
 
 const nf = new Intl.NumberFormat("pt-BR", { maximumFractionDigits: 0 });
 
-/* Card do diário da expedição: parada N (1 a 15) do roteiro Paraty → Fortaleza. */
+/* Card do diário da expedição: parada N (1 a 15) do roteiro Fortaleza → Paraty. */
 export async function GET(req: NextRequest, { params }: { params: Promise<{ parada: string }> }) {
   const { parada } = await params;
   const n = Number(parada);
@@ -16,8 +16,8 @@ export async function GET(req: NextRequest, { params }: { params: Promise<{ para
     selo: "Expedição nº 01",
     titulo: `Parada ${String(n).padStart(2, "0")} · ${p.nome}`,
     destaque: `${nf.format(km)} km`,
-    subtitulo: `de ${nf.format(rota.km_total)} · Paraty → Fortaleza, pelo litoral`,
-    linhas: proxima ? [`Próxima: ${proxima.nome} · ${nf.format(rota.legs[n - 1].km)} km`] : ["Chegada em Fortaleza"],
+    subtitulo: `de ${nf.format(rota.km_total)} · Fortaleza → Paraty, pelo litoral`,
+    linhas: proxima ? [`Próxima: ${proxima.nome} · ${nf.format(rota.legs[n - 1].km)} km`] : ["Chegada em Paraty"],
     rodape: "jobpago.com.br/expedicao · travessia de reconhecimento",
   });
 }

@@ -11,7 +11,7 @@ export async function generateMetadata(): Promise<Metadata> {
   const i = await idiomaServidor();
   return {
     title: L(i, "Notícias da Rota · JobPago · renda na viagem", "Noticias de la Ruta · JobPago · ingresos en el viaje", "Route News · JobPago · income on the go"),
-    description: L(i, "Atualizações da Expedição JobPago e reconhecimento de quem apoia — Paraty → Fortaleza.", "Novedades de la Expedición JobPago y reconocimiento a quienes apoyan, Paraty → Fortaleza.", "JobPago Expedition updates and thanks to our supporters — Paraty → Fortaleza."),
+    description: L(i, "Atualizações da Expedição JobPago e reconhecimento de quem apoia — Fortaleza → Paraty.", "Novedades de la Expedición JobPago y reconocimiento a quienes apoyan, Fortaleza → Paraty.", "JobPago Expedition updates and thanks to our supporters — Fortaleza → Paraty."),
     robots: { index: true, follow: true },
   };
 }
@@ -26,7 +26,7 @@ export default async function NoticiasEstradaPage() {
       <main className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-14 sm:py-20">
         <span className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full glass-panel border border-amber-500/30 text-amber-300 text-[10px] sm:text-xs font-black tracking-widest uppercase">
           <span className="w-1.5 h-1.5 rounded-full bg-amber-400 animate-pulse" />
-          {t("Expedição Paraty → Fortaleza", "Expedición Paraty → Fortaleza", "Paraty → Fortaleza Expedition")}
+          {t("Expedição Fortaleza → Paraty", "Expedición Fortaleza → Paraty", "Fortaleza → Paraty Expedition")}
         </span>
 
         <h1 className="mt-6 text-3xl sm:text-5xl font-black text-white leading-[1.12]">

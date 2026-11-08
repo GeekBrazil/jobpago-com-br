@@ -34,7 +34,7 @@ export default async function ExpedicoesPage() {
           <Link href="/expedicao" className="glass-panel rounded-3xl p-6 border border-amber-400/40 hover:border-amber-400">
             <p className="text-xs font-mono font-bold text-amber-400">Nº 01 · JobPago</p>
             <p className="mt-2 text-xl font-black">{t("Travessia de reconhecimento", "Travesía de reconocimiento", "Scouting crossing")}</p>
-            <p className="mt-1 text-sm text-slate-300">{t("Paraty → Fortaleza, pelo litoral · saída em 15 de outubro", "Paraty → Fortaleza, por la costa · salida el 15 de octubre", "Paraty → Fortaleza, along the coast · leaving 15 October")}</p>
+            <p className="mt-1 text-sm text-slate-300">{t("Fortaleza → Paraty, pelo litoral · em andamento", "Fortaleza → Paraty, por la costa · en curso", "Fortaleza → Paraty, along the coast · underway")}</p>
           </Link>
           {lista.map((e) => (
             <Link key={e.slug} href={`/expedicoes/${e.slug}`} className="glass-panel rounded-3xl p-6 border border-white/10 hover:border-amber-400/60">

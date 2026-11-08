@@ -10,7 +10,7 @@ import { L } from "@/lib/i18n";
 export async function generateMetadata(): Promise<Metadata> {
   const i = await idiomaServidor();
   return {
-    title: L(i, "Expedição JobPago nº 01 — travessia de reconhecimento, Paraty → Fortaleza", "Expedición JobPago nº 01 — travesía de reconocimiento, Paraty → Fortaleza", "JobPago Expedition no. 01 — scouting crossing, Paraty → Fortaleza"),
+    title: L(i, "Expedição JobPago nº 01 — travessia de reconhecimento, Fortaleza → Paraty", "Expedición JobPago nº 01 — travesía de reconocimiento, Fortaleza → Paraty", "JobPago Expedition no. 01 — scouting crossing, Fortaleza → Paraty"),
     description: L(i,
       "O roteiro da Expedição JobPago: 15 paradas, rodovias, praças de pedágio (ANTT) e onde há acostamento informado — pensado para quem vai de carro, de carona ou a pé.",
       "La ruta de la Expedición JobPago: 15 paradas, rutas, peajes (ANTT) y dónde hay banquina registrada, pensada para quien va en auto, a dedo o a pie.",
@@ -34,7 +34,7 @@ export default async function ExpedicaoPage() {
       <CidadeTopo />
       <main className="max-w-6xl mx-auto px-4 sm:px-6 py-12 sm:py-16">
         <p className="text-xs font-mono font-bold uppercase tracking-widest text-amber-400">{t("Expedição JobPago", "Expedición JobPago", "JobPago Expedition")}</p>
-        <h1 className="mt-3 text-4xl sm:text-6xl font-black tracking-tight leading-[1.05]">{t("Paraty → Fortaleza, pelo litoral", "Paraty → Fortaleza, por la costa", "Paraty → Fortaleza, along the coast")}</h1>
+        <h1 className="mt-3 text-4xl sm:text-6xl font-black tracking-tight leading-[1.05]">{t("Fortaleza → Paraty, pelo litoral", "Fortaleza → Paraty, por la costa", "Fortaleza → Paraty, along the coast")}</h1>
         <p className="mt-5 max-w-2xl text-lg text-slate-300">
           {nf.format(rota.km_total)} km, {rota.paradas.length} {t("paradas, visitando os negócios da rota que pedem a visita.", "paradas, visitando los negocios de la ruta que piden la visita.", "stops, visiting businesses along the route that ask for a visit.")}{" "}
           {t("O roteiro abaixo mostra rodovias, pedágios e onde há acostamento — para quem vai de carro, de carona ou a pé.", "La ruta de abajo muestra rutas, peajes y dónde hay banquina, para quien va en auto, a dedo o a pie.", "The route below shows highways, tolls and where there's a hard shoulder — for driving, hitchhiking or walking.")}
@@ -42,7 +42,7 @@ export default async function ExpedicaoPage() {
 
         <section className="mt-8 grid gap-4 grid-cols-2 lg:grid-cols-4" aria-label={t("Resumo do roteiro", "Resumen de la ruta", "Route summary")}>
           {[
-            [nf.format(rota.km_total) + " km", t("de Paraty a Fortaleza", "de Paraty a Fortaleza", "from Paraty to Fortaleza")],
+            [nf.format(rota.km_total) + " km", t("de Fortaleza a Paraty", "de Fortaleza a Paraty", "from Fortaleza to Paraty")],
             [`${nf.format(rota.horas_carro)} h`, t("de carro, sem paradas", "en auto, sin paradas", "by car, non-stop")],
             [String(rota.pedagios.length), t("praças de pedágio federais", "peajes federales", "federal toll plazas")],
             [`${nf.format(rota.rodovias[0]?.km ?? 0)} km`, `${t("pela", "por la", "on the")} ${rota.rodovias[0]?.rodovia ?? "BR-101"}`],

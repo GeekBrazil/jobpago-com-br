@@ -31,8 +31,8 @@ export default function MenuNavegacao() {
         {
           href: "/expedicao",
           icone: "🧭",
-          nome: L(idioma, "Mapa da Expedição (Paraty → Fortaleza)", "Mapa de la Expedición", "Expedition Map (Paraty → Fortaleza)"),
-          desc: L(idioma, "As 13 paradas oficiais pelo litoral brasileiro", "Las 13 paradas oficiales por la costa", "The 13 official coastal stops"),
+          nome: L(idioma, "Mapa da Expedição (Fortaleza → Paraty)", "Mapa de la Expedición", "Expedition Map (Fortaleza → Paraty)"),
+          desc: L(idioma, "As 15 paradas oficiais pelo litoral brasileiro", "Las 15 paradas oficiales por la costa", "The 15 official coastal stops"),
         },
         {
           href: "/cidade",
@@ -131,7 +131,7 @@ export default function MenuNavegacao() {
           href: "/blog",
           icone: "📖",
           nome: L(idioma, "Blog da Expedição", "Blog de la Expedición", "Expedition Blog"),
-          desc: L(idioma, "Artigos e relatos da jornada Paraty → Fortaleza", "Artículos y relatos del viaje", "Articles and stories from the journey"),
+          desc: L(idioma, "Artigos e relatos da jornada Fortaleza → Paraty", "Artículos y relatos del viaje", "Articles and stories from the journey"),
         },
         {
           href: "/entrar",
@@ -219,3 +219,4 @@ export default function MenuNavegacao() {
     </>
   );
 }
+

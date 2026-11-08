@@ -10,7 +10,7 @@ export async function generateMetadata(): Promise<Metadata> {
   const i = await idiomaServidor();
   return {
     title: L(i, "Lugares visitados · JobPago · renda na viagem", "Lugares visitados · JobPago · ingresos en el viaje", "Visited places · JobPago · income on the go"),
-    description: L(i, "Camping, hostel, pousada, hotel e postos por onde a Expedição JobPago Paraty → Fortaleza passou, com a data e o que havia no dia da visita.", "Camping, hostel, posada, hotel y estaciones por donde pasó la Expedición JobPago Paraty → Fortaleza, con la fecha y lo que había el día de la visita.", "Campsites, hostels, guesthouses, hotels and gas stations the JobPago Expedition, Paraty → Fortaleza, passed through, with the date and what was there on the day."),
+    description: L(i, "Camping, hostel, pousada, hotel e postos por onde a Expedição JobPago Fortaleza → Paraty passou, com a data e o que havia no dia da visita.", "Camping, hostel, posada, hotel y estaciones por donde pasó la Expedición JobPago Fortaleza → Paraty, con la fecha y lo que había el día de la visita.", "Campsites, hostels, guesthouses, hotels and gas stations the JobPago Expedition, Fortaleza → Paraty, passed through, with the date and what was there on the day."),
     robots: { index: true, follow: true },
   };
 }

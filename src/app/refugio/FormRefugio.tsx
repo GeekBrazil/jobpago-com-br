@@ -54,7 +54,7 @@ export default function FormRefugio({ idioma }: { idioma: Idioma }) {
     return (
       <div className="mt-8 glass-panel rounded-3xl p-7">
         <h3 className="text-2xl font-black text-white">{L(idioma, "Recebido.", "Recibido.", "Received.")}</h3>
-        <p className="mt-2 text-slate-300">{L(idioma, `Se ${f.nome} estiver no caminho da Expedição nº 01 (saída de Paraty em 15 de outubro), a gente chama no WhatsApp para combinar a visita.`, `Si ${f.nome} está en el camino de la Expedición nº 01 (salida de Paraty el 15 de octubre), te escribimos por WhatsApp para acordar la visita.`, `If ${f.nome} is on the route of Expedition no. 01 (leaving Paraty on 15 October), we'll message you on WhatsApp to arrange the visit.`)}</p>
+        <p className="mt-2 text-slate-300">{L(idioma, `Se ${f.nome} estiver no caminho da Expedição nº 01 (Fortaleza → Paraty), a gente chama no WhatsApp para combinar a visita.`, `Si ${f.nome} está en el camino de la Expedición nº 01 (Fortaleza → Paraty), te escribimos por WhatsApp para acordar la visita.`, `If ${f.nome} is on the route of Expedition no. 01 (Fortaleza → Paraty), we'll message you on WhatsApp to arrange the visit.`)}</p>
         <p className="mt-4 text-sm text-slate-400">{L(idioma, "Enquanto isso, veja o", "Mientras tanto, mirá la", "Meanwhile, see the")} <Link href="/expedicao" className="underline hover:text-amber-400">{L(idioma, "roteiro completo", "ruta completa", "full route")}</Link>.</p>
       </div>
     );

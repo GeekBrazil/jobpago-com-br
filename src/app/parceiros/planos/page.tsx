@@ -11,9 +11,9 @@ export async function generateMetadata(): Promise<Metadata> {
   return {
     title: L(i, "Parceiros da Expedição · JobPago.com.br", "Socios de la Expedición · JobPago.com.br", "Expedition partners · JobPago.com.br"),
     description: L(i,
-      "Quatro formas de fazer parte da Expedição JobPago, de Paraty a Fortaleza: permuta, parceiro local, patrocínio regional e master. Registro de visita com data; parceiros pagantes sempre identificados.",
-      "Cuatro formas de ser parte de la Expedición JobPago, de Paraty a Fortaleza: canje, socio local, patrocinio regional y master. Registro de visita con fecha; los socios que pagan siempre identificados.",
-      "Four ways to be part of the JobPago Expedition, Paraty to Fortaleza: exchange, local partner, regional sponsorship and master. Visit record with a date; paying partners always labeled."),
+      "Quatro formas de fazer parte da Expedição JobPago, de Fortaleza a Paraty: permuta, parceiro local, patrocínio regional e master. Registro de visita com data; parceiros pagantes sempre identificados.",
+      "Cuatro formas de ser parte de la Expedición JobPago, de Fortaleza a Paraty: canje, socio local, patrocinio regional y master. Registro de visita con fecha; los socios que pagan siempre identificados.",
+      "Four ways to be part of the JobPago Expedition, Fortaleza to Paraty: exchange, local partner, regional sponsorship and master. Visit record with a date; paying partners always labeled."),
     robots: { index: true, follow: true },
   };
 }
@@ -41,7 +41,7 @@ export default async function PlanosParceiroPage() {
         <header className="max-w-3xl">
           <span className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full glass-panel border border-amber-500/30 text-amber-300 text-[10px] sm:text-xs font-black tracking-widest uppercase">
             <span className="w-1.5 h-1.5 rounded-full bg-amber-400 animate-pulse" />
-            Paraty → Fortaleza
+            Fortaleza → Paraty
           </span>
 
           <h1 className="mt-6 text-3xl sm:text-5xl font-black text-white leading-[1.12]">
@@ -186,7 +186,7 @@ export default async function PlanosParceiroPage() {
         {/* ── FECHO ── */}
         <section className="mt-14 text-center">
           <h2 className="text-xl sm:text-2xl font-black text-white">
-            {t("Está na rota entre Paraty e Fortaleza?", "¿Estás en la ruta entre Paraty y Fortaleza?", "On the route between Paraty and Fortaleza?")}
+            {t("Está na rota entre Fortaleza e Paraty?", "¿Estás en la ruta entre Fortaleza y Paraty?", "On the route between Fortaleza and Paraty?")}
           </h2>
           <p className="mt-3 text-sm text-slate-300 max-w-xl mx-auto leading-relaxed">
             {t("Me chama no WhatsApp com o nome do estabelecimento e a cidade. Se estiver no caminho, eu passo, registro o que encontrei e a gente decide o nível olhando a estrutura.", "Escribime por WhatsApp con el nombre del establecimiento y la ciudad. Si está en el camino, paso, registro lo que encontré y decidimos el nivel mirando la estructura.", "Message me on WhatsApp with the place's name and town. If it's on the way, I'll stop by, record what I find and we'll pick the level by looking at the facilities.")}
