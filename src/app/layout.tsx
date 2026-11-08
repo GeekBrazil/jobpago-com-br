@@ -23,12 +23,31 @@ const fontSans = Plus_Jakarta_Sans({
 
 export async function generateMetadata(): Promise<Metadata> {
   const i = await idiomaServidor();
-  return {
-  title: L(i, "JobPago · Renda na viagem para nômades e viajantes", "JobPago · Ingresos en el viaje para nómades y viajeros", "JobPago · Income on the go for nomads and travellers"),
-  description: L(i,
+  const title = L(i, "JobPago · Renda na viagem para nômades e viajantes", "JobPago · Ingresos en el viaje para nómades y viajeros", "JobPago · Income on the go for nomads and travellers");
+  const description = L(i,
     "Negócios locais e da rota encontram quem resolve fotos, Instagram, cardápio, frete e apoio na viagem, com Pix direto e sem comissão. Relatório grátis da sua cidade e lugares visitados pela Expedição Paraty → Fortaleza.",
     "Negocios locales y de la ruta encuentran quién hace la tarea (fotos, Instagram, menú, flete, apoyo en el viaje) con Pix directo y sin comisión. Informe gratis de tu ciudad y los lugares visitados por la Expedición Paraty → Fortaleza.",
-    "Local businesses along the route find people for photos, Instagram, menus, freight and travel support, with direct Pix and no commission. Free town reports and the places visited by the Paraty → Fortaleza Expedition."),
+    "Local businesses along the route find people for photos, Instagram, menus, freight and travel support, with direct Pix and no commission. Free town reports and the places visited by the Paraty → Fortaleza Expedition.");
+  return {
+  metadataBase: new URL("https://www.jobpago.com.br"),
+  title,
+  description,
+  alternates: { canonical: "https://www.jobpago.com.br" },
+  openGraph: {
+    title,
+    description,
+    url: "https://www.jobpago.com.br",
+    siteName: "JobPago",
+    locale: i === "es" ? "es_AR" : i === "en" ? "en_US" : "pt_BR",
+    type: "website",
+    images: [{ url: "/icon_flutuante.png", width: 512, height: 512, alt: "JobPago — Renda na viagem" }],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title,
+    description,
+    images: ["/icon_flutuante.png"],
+  },
   icons: {
     icon: "/icon.png",
     shortcut: "/icon.png",
@@ -56,12 +75,41 @@ export default async function RootLayout({
   children: React.ReactNode;
 }>) {
   const idioma = await idiomaServidor();
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "WebSite",
+        "@id": "https://www.jobpago.com.br/#website",
+        url: "https://www.jobpago.com.br",
+        name: "JobPago",
+        description: "Renda na viagem para nômades e viajantes, serviços locais com Pix direto e relatório oficial por cidade.",
+        inLanguage: ["pt-BR", "es", "en"],
+        potentialAction: {
+          "@type": "SearchAction",
+          target: "https://www.jobpago.com.br/cidade?q={search_term_string}",
+          "query-input": "required name=search_term_string",
+        },
+      },
+      {
+        "@type": "Organization",
+        "@id": "https://www.jobpago.com.br/#organization",
+        name: "JobPago",
+        url: "https://www.jobpago.com.br",
+        logo: "https://www.jobpago.com.br/icon_flutuante.png",
+      },
+    ],
+  };
   return (
     <html
       lang={idioma === "pt" ? "pt-BR" : idioma}
       className={`${fontDisplay.variable} ${fontSans.variable} h-full antialiased dark`}
     >
       <body className="min-h-full flex flex-col relative">
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+        />
         <CenarioLitoral />
         {/* Google Analytics 4 */}
         {(process.env.NEXT_PUBLIC_GA_ID || "G-8GECCQR1L0") && (

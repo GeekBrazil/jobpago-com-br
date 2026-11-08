@@ -6,6 +6,7 @@ import { getPool } from "@/lib/db";
 import { garantirColunasMaioridade, declarouMaioridade, ERRO_MAIORIDADE } from "@/lib/maioridade";
 import { verificarDominioMxServidor } from "@/lib/validacaoEmailServidor";
 import { enviarEmailBoasVindasConta } from "@/lib/email";
+import { notificarAdminNovoCadastro } from "@/lib/notificacaoAdmin";
 
 export const runtime = "nodejs";
 
@@ -75,6 +76,15 @@ export async function POST(req: NextRequest) {
     email: emailVerificado,
     telefone,
   }).catch((err) => console.error("[api/auth/cadastro] Erro ao enviar boas-vindas de conta:", err));
+
+  notificarAdminNovoCadastro({
+    formulario: "Nova Conta de Viajante (/cadastrar)",
+    nome,
+    whatsapp: telefone,
+    email: emailVerificado,
+    tipo: "Conta Viajante",
+    detalhes: "Cadastro de conta criado com sucesso.",
+  }).catch((err) => console.error("[api/auth/cadastro] Erro ao notificar admin:", err));
 
   return NextResponse.json({ ok: true });
 }

@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { usuarioLogado, garantirTabelasViajante } from "@/lib/viajante";
 import { PONTOS, type TipoContribuicao } from "@/lib/reputacao";
 import { QUESTIONARIO, idiomaValido } from "@/lib/textosEstrada";
+import { notificarAdminNovoCadastro } from "@/lib/notificacaoAdmin";
 
 export const runtime = "nodejs";
 
@@ -58,7 +59,9 @@ export async function POST(req: NextRequest) {
   }
   const pool = await garantirTabelasViajante();
   if (!pool) return NextResponse.json({ ok: false, erro: "indisponível" }, { status: 503 });
-  const auto = tipo === "questionario";
+  const pontosGanhos = PONTOS[tipo] ?? 30;
+  const cidadeLimpa = typeof b.cidade === "string" ? b.cidade.slice(0, 80) : null;
+  const ufLimpa = typeof b.uf === "string" ? b.uf.slice(0, 2).toUpperCase() : null;
   try {
     await pool.query(
       `INSERT INTO contribuicoes (usuario_id, tipo, dados, lat, lng, precisao_m, foto_url, foto_ponto_id, cidade, uf, idioma, status, pontos, revisado_em)
@@ -66,12 +69,24 @@ export async function POST(req: NextRequest) {
       [u.id, tipo, dados, temLocal ? lat : null, temLocal ? lng : null, Number.isFinite(Number(b.precisao)) ? Math.round(Number(b.precisao)) : null,
        tipo === "fachada" || (typeof b.fotoUrl === "string" && b.fotoUrl.startsWith("https://res.cloudinary.com/")) ? b.fotoUrl : null,
        Number.isInteger(b.fotoPontoId) ? b.fotoPontoId : null,
-       typeof b.cidade === "string" ? b.cidade.slice(0, 80) : null, typeof b.uf === "string" ? b.uf.slice(0, 2).toUpperCase() : null,
-       idiomaValido(b.idioma), auto ? "confirmada" : "pendente", auto ? PONTOS.questionario : 0, auto ? new Date() : null]
+       cidadeLimpa, ufLimpa,
+       idiomaValido(b.idioma), "confirmada", pontosGanhos, new Date()]
     );
   } catch (e) {
     if (String(e).includes("contribuicoes_questionario")) return NextResponse.json({ ok: false, erro: "Questionário já respondido." }, { status: 409 });
     throw e;
   }
-  return NextResponse.json({ ok: true, pontos: auto ? PONTOS.questionario : 0, pendente: !auto });
+
+  notificarAdminNovoCadastro({
+    formulario: tipo === "questionario" ? "Questionário do Viajante (+150 pts)" : `Contribuição do Viajante (${tipo} · +${pontosGanhos} pts)`,
+    nome: u.nome,
+    whatsapp: String(dados.whatsapp || dados.redes || "Conta Logada"),
+    email: u.email,
+    cidade: cidadeLimpa || (temLocal ? `GPS ${lat.toFixed(4)}, ${lng.toFixed(4)}` : "Rota"),
+    uf: ufLimpa || undefined,
+    tipo: `+${pontosGanhos} pontos (${tipo})`,
+    detalhes: JSON.stringify(dados).slice(0, 280),
+  }).catch((err) => console.error("[api/contribuicoes] Erro ao notificar admin:", err));
+
+  return NextResponse.json({ ok: true, pontos: pontosGanhos, pendente: false });
 }

@@ -12,6 +12,7 @@ import dynamic from "next/dynamic";
 import type { MapPoint } from "@/components/MapaServicos";
 import { FILTROS } from "@/data/categorias";
 import { Icon } from "@/components/Icons";
+import MenuNavegacao from "@/components/MenuNavegacao";
 
 const MapaServicos = dynamic(() => import("@/components/MapaServicos"), {
   ssr: false,
@@ -167,6 +168,8 @@ export default function Home() {
             >
               <span>{L(idioma, "Oferecer meu serviço", "Ofrecer mi servicio", "Offer my service")}</span>
             </Link>
+
+            <MenuNavegacao />
           </div>
         </div>
       </header>

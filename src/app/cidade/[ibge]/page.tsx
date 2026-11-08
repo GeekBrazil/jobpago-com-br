@@ -35,7 +35,13 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       `Relatório grátis de ${nome}: quem está abrindo negócio por setor, valores de referência de cada setor e compras da prefeitura abertas. Dados da Receita Federal, CAGED e PNCP.`,
       `Informe gratis de ${nome}: quién abre negocios por sector, valores de referencia de cada sector y compras públicas abiertas. Datos oficiales de Brasil.`,
       `Free report for ${nome}: who is opening businesses by sector, reference rates for each sector and open public purchases. Official Brazilian data.`),
-    alternates: { canonical: `https://jobpago.com.br/cidade/${ibge}` },
+    alternates: { canonical: `https://www.jobpago.com.br/cidade/${ibge}` },
+    openGraph: {
+      title: `${nome}: negócios e valores de referência · JobPago`,
+      description: `Empresas abertas nos últimos 90 dias (Receita Federal), salário médio por setor (CAGED) e compras públicas em ${nome}.`,
+      url: `https://www.jobpago.com.br/cidade/${ibge}`,
+      type: "article",
+    },
   };
 }
 
@@ -54,8 +60,33 @@ export default async function RelatorioCidadePage({ params }: Props) {
   const maxNovas = Math.max(1, ...categorias.map((c) => c.novas_90d ?? 0));
   const setores = (emp?.setores ?? []).filter((s) => s.salario_medio_adm).slice(0, 8);
 
+  const schemaCidade = {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "Dataset",
+        name: `Relatório de Negócios, Emprego e Compras Públicas de ${cidade} (${m.uf})`,
+        description: `Dados oficiais da Receita Federal (empresas ativas e abertas nos últimos 90 dias), Novo CAGED (salário médio de admissão) e PNCP para o município de ${cidade} (${m.uf}), código IBGE ${ibge}.`,
+        url: `https://www.jobpago.com.br/cidade/${ibge}`,
+        keywords: [`empresas abertas ${cidade}`, `negócios ${cidade} ${m.uf}`, `salário médio ${cidade}`, `compras públicas ${cidade}`],
+        creator: { "@type": "Organization", name: "JobPago", url: "https://www.jobpago.com.br" },
+        spatialCoverage: { "@type": "Place", name: `${cidade}, ${m.uf}, Brasil` },
+        isAccessibleForFree: true,
+      },
+      {
+        "@type": "BreadcrumbList",
+        itemListElement: [
+          { "@type": "ListItem", position: 1, name: "JobPago", item: "https://www.jobpago.com.br" },
+          { "@type": "ListItem", position: 2, name: "Cidades", item: "https://www.jobpago.com.br/cidade" },
+          { "@type": "ListItem", position: 3, name: `${cidade} (${m.uf})`, item: `https://www.jobpago.com.br/cidade/${ibge}` },
+        ],
+      },
+    ],
+  };
+
   return (
     <div className="min-h-screen text-slate-100">
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(schemaCidade) }} />
       <CidadeTopo />
       <main className="max-w-6xl mx-auto px-4 sm:px-6 py-12 sm:py-16">
         <p className="text-xs font-mono font-bold uppercase tracking-widest text-amber-400">

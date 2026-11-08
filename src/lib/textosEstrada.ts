@@ -75,8 +75,8 @@ export const TXT = {
     pendente: "aguardando confirmação", confirmada: "confirmada", recusada: "recusada",
     avisoGps: "Vamos pedir a localização do seu celular para confirmar que a foto é do lugar. Ela só é usada para isso e fica guardada junto da contribuição.",
     permitirGps: "Permitir localização e tirar a foto", semGps: "Sem a localização não dá para confirmar o lugar. Ative a localização do navegador e tente de novo.",
-    enviar: "Enviar", enviado: "Recebido! Os pontos entram assim que a contribuição for confirmada.", obrigado: "Obrigado!",
-    questionarioFeito: "Questionário respondido — seus pontos já entraram.",
+    enviar: "Enviar", enviado: "Recebido! Seus pontos já entraram no seu painel.", obrigado: "Obrigado!",
+    questionarioFeito: "Questionário respondido. Seus pontos já entraram.",
   },
   es: {
     painel: "Tu panel en la ruta", nivel: "Nivel", pontos: "puntos", proximo: "para el próximo nivel",
@@ -84,8 +84,8 @@ export const TXT = {
     pendente: "esperando confirmación", confirmada: "confirmada", recusada: "rechazada",
     avisoGps: "Vamos a pedir la ubicación de tu celular para confirmar que la foto es del lugar. Solo se usa para eso y queda guardada con la contribución.",
     permitirGps: "Permitir ubicación y sacar la foto", semGps: "Sin la ubicación no podemos confirmar el lugar. Activá la ubicación del navegador y probá de nuevo.",
-    enviar: "Enviar", enviado: "¡Recibido! Los puntos se suman cuando la contribución sea confirmada.", obrigado: "¡Gracias!",
-    questionarioFeito: "Cuestionario respondido — tus puntos ya se sumaron.",
+    enviar: "Enviar", enviado: "¡Recibido! Tus puntos ya se sumaron en tu panel.", obrigado: "¡Gracias!",
+    questionarioFeito: "Cuestionario respondido. Tus puntos ya se sumaron.",
   },
   en: {
     painel: "Your travel dashboard", nivel: "Level", pontos: "points", proximo: "to the next level",
@@ -93,8 +93,8 @@ export const TXT = {
     pendente: "awaiting confirmation", confirmada: "confirmed", recusada: "rejected",
     avisoGps: "We'll ask for your phone's location to confirm the photo was taken at the place. It's only used for that and is stored with your contribution.",
     permitirGps: "Allow location and take the photo", semGps: "Without your location we can't confirm the place. Turn on location in your browser and try again.",
-    enviar: "Send", enviado: "Received! Points are added once the contribution is confirmed.", obrigado: "Thank you!",
-    questionarioFeito: "Questionnaire answered — your points are in.",
+    enviar: "Send", enviado: "Received! Your points have been added to your dashboard.", obrigado: "Thank you!",
+    questionarioFeito: "Questionnaire answered. Your points are in.",
   },
 } as const;
 

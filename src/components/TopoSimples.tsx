@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { idiomaServidor } from "@/lib/idiomaServidor";
 import { L } from "@/lib/i18n";
+import MenuNavegacao from "@/components/MenuNavegacao";
 
 /* Cabeçalho das páginas internas (logo + voltar), no idioma do site. */
 export default async function TopoSimples() {
@@ -28,6 +29,7 @@ export default async function TopoSimples() {
           <Link href="/" className="btn-secondary-glass text-xs font-bold px-3 py-2 rounded-xl hidden sm:flex items-center gap-1.5">
             ← {L(i, "Home", "Inicio", "Home")}
           </Link>
+          <MenuNavegacao />
         </div>
       </div>
     </header>

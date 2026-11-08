@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { idiomaServidor } from "@/lib/idiomaServidor";
 import { L } from "@/lib/i18n";
+import MenuNavegacao from "@/components/MenuNavegacao";
 
 /* Cabeçalho das páginas de cidade — mesmo padrão de /como-funciona. */
 export default async function CidadeTopo() {
@@ -18,6 +19,7 @@ export default async function CidadeTopo() {
           <Link href="/cidade" className="hover:text-amber-400 hidden md:inline">{L(i, "Cidades", "Ciudades", "Towns")}</Link>
           <Link href="/expedicao" className="hover:text-amber-400 hidden md:inline">{L(i, "Expedição", "Expedición", "Expedition")}</Link>
           <Link href="/viajante" className="hover:text-amber-400 hidden sm:inline">{L(i, "Viajante", "Viajero", "Traveller")}</Link>
+          <MenuNavegacao />
         </nav>
       </div>
     </header>

@@ -26,6 +26,18 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
   // recusa toda chamada com UntrustedHost (500 em /api/auth/session)
   trustHost: true,
   session: { strategy: "jwt" },
+  cookies: process.env.NODE_ENV === "production" ? {
+    sessionToken: {
+      name: "__Secure-authjs.session-token",
+      options: {
+        httpOnly: true,
+        sameSite: "lax",
+        path: "/",
+        secure: true,
+        domain: ".jobpago.com.br",
+      },
+    },
+  } : undefined,
   pages: { signIn: "/entrar" },
   providers: [
     Credentials({

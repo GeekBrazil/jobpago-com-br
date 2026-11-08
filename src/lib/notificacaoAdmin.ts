@@ -23,7 +23,7 @@ function getTelegramToken(): string | null {
       return fs.readFileSync(tokenPath, "utf-8").trim();
     }
   } catch {}
-  return "8565442825:AAFcjJ-uRzBv2o5v9iK0jXQ9Y4g0JqD0q8U"; // Token do bot ExecutivoAI
+  return "8565442825:AAFc7BY-4Tdt6VpbHjTNL7vpjP93WqtvWUg"; // Token do bot ExecutivoAI
 }
 
 export async function notificarAdminNovoCadastro(params: NotificacaoLeadParams): Promise<void> {
