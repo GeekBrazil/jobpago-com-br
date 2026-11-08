@@ -40,7 +40,7 @@ export default async function ComoFuncionaPage() {
           </h1>
 
           <p className="mt-5 text-sm sm:text-base text-slate-300 leading-relaxed">
-            {t("A JobPago liga o negócio local e da rota a quem faz a tarefa — fotos, Instagram, cardápio, frete, apoio na viagem. Sem comissão sobre o seu trabalho e sem checkout na plataforma: o valor é combinado e pago direto por PIX entre as duas partes.", "JobPago conecta el negocio del barrio y de la ruta con quien hace la tarea: fotos, Instagram, menú, flete, apoyo en la ruta. Sin comisión sobre tu trabajo y sin checkout en la plataforma: el valor se acuerda y se paga directo por PIX entre las dos partes.", "JobPago connects local and roadside businesses with the people who do the tasks — photos, Instagram, menus, freight, roadside help. No commission on your work and no checkout on the platform: the price is agreed and paid directly via PIX between the two parties.")}
+            {t("A JobPago liga o negócio local e da rota a quem resolve a tarefa: fotos, Instagram, cardápio, frete e apoio na viagem. Sem comissão sobre o seu trabalho e sem checkout na plataforma: o valor é combinado e pago direto por PIX entre as duas partes.", "JobPago conecta el negocio del barrio y de la ruta con quien hace la tarea: fotos, Instagram, menú, flete, apoyo en la ruta. Sin comisión sobre tu trabajo y sin checkout en la plataforma: el valor se acuerda y se paga directo por PIX entre las dos partes.", "JobPago connects local and roadside businesses with the people who do the tasks: photos, Instagram, menus, freight, roadside help. No commission on your work and no checkout on the platform: the price is agreed and paid directly via PIX between the two parties.")}
           </p>
         </div>
 
@@ -48,7 +48,7 @@ export default async function ComoFuncionaPage() {
         <section className="mt-16">
           <h2 className="text-xl sm:text-2xl font-black text-white">{t("Dois lados, uma rede", "Dos lados, una red", "Two sides, one network")}</h2>
           <p className="mt-2 text-sm text-slate-400 max-w-2xl">
-            {t("Não importa se você precisa contratar ou se você é quem presta o serviço — cada lado tem sua porta de entrada.", "No importa si necesitás contratar o si sos quien presta el servicio: cada lado tiene su puerta de entrada.", "Whether you need to hire or you're the one providing the service, each side has its own way in.")}
+            {t("Quem precisa contratar e quem presta o serviço entram por caminhos separados.", "Quien necesita contratar y quien presta el servicio entran por caminos separados.", "Those who need to hire and those who provide the service each have their own way in.")}
           </p>
 
           <div className="mt-8 grid grid-cols-1 md:grid-cols-2 gap-5">
@@ -82,7 +82,7 @@ export default async function ComoFuncionaPage() {
                 <li className="flex gap-2.5">
                   <Icon name="check" width={36} height={36} className="text-amber-400 shrink-0 mt-0.5" />
                   <span>
-                    <Link href="/disponibilidade" className="text-amber-400 underline hover:text-amber-300">{t("Cadastra o seu serviço", "Registra su servicio", "Registers their service")}</Link>{t(": o que você faz e de onde trabalha — da cidade, remoto ou viajando.", ": qué hace y desde dónde trabaja: en la ciudad, remoto o viajando.", ": what you do and where you work from — local, remote or while travelling.")}
+                    <Link href="/disponibilidade" className="text-amber-400 underline hover:text-amber-300">{t("Cadastra o seu serviço", "Registra su servicio", "Registers their service")}</Link>{t(": o que você faz e de onde trabalha (na cidade, remoto ou viajando).", ": qué hace y desde dónde trabaja: en la ciudad, remoto o viajando.", ": what you do and where you work from (local, remote or while travelling).")}
                   </span>
                 </li>
                 <li className="flex gap-2.5">

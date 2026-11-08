@@ -34,22 +34,22 @@ const NEGOCIOS: NegocioTipo[] = [
       en: "Hospitality & Coastal Tours",
     },
     dorPrincipal: {
-      pt: "Perda de 18% a 25% de comissão no Booking e demora no atendimento de WhatsApp à noite.",
-      es: "Pérdida de 18% a 25% de comisión en plataformas y demoras de atención en WhatsApp.",
-      en: "Losing 18% to 25% in OTA commissions and slow WhatsApp responses at night.",
+      pt: "Comissão de 18% a 25% nas plataformas de reserva e demora para responder no WhatsApp à noite.",
+      es: "Comisión de 18% a 25% en plataformas y demoras de atención en WhatsApp por la noche.",
+      en: "Paying 18% to 25% in booking platform commissions and slow WhatsApp replies at night.",
     },
     solucaoIA: {
-      pt: "Agente SDR 24h envia fotos dos quartos certos, orça a diária e gera chave Pix com confirmação instantânea.",
-      es: "Agente IA 24/7 envía fotos de habitaciones, cotiza y cobra por Pix al instante.",
-      en: "24/7 AI agent sends room photos, calculates nightly rates, and collects instant Pix.",
+      pt: "Atendimento 24h no WhatsApp envia fotos dos quartos disponíveis, calcula a diária e gera a chave Pix na hora.",
+      es: "Atención 24/7 en WhatsApp envía fotos de habitaciones, cotiza y cobra por Pix al instante.",
+      en: "24/7 WhatsApp booking sends room photos, calculates nightly rates, and collects instant Pix.",
     },
     fluxo: [
-      { etapa: "1. Contato", desc: { pt: "Cliente pede quarto no feriado", es: "Huésped consulta fechas", en: "Guest asks for dates" } },
-      { etapa: "2. Triagem", desc: { pt: "IA checa leitos e envia fotos reais", es: "IA verifica camas y envía fotos", en: "AI checks inventory & photos" } },
-      { etapa: "3. Reserva", desc: { pt: "Gera Pix Copia e Cola dinâmico", es: "Genera código Pix dinámico", en: "Generates dynamic Pix payment" } },
-      { etapa: "4. Pós-Venda", desc: { pt: "Envia Maps e guia da cidade no check-in", es: "Envía Maps y guía de la ciudad", en: "Sends Maps & local travel guide" } },
+      { etapa: "1. Contato", desc: { pt: "Cliente consulta datas no WhatsApp", es: "Huésped consulta fechas", en: "Guest asks for dates" } },
+      { etapa: "2. Quartos", desc: { pt: "Checa vagas e envia fotos reais", es: "Verifica camas y envía fotos", en: "Checks inventory & photos" } },
+      { etapa: "3. Reserva", desc: { pt: "Gera Pix Copia e Cola direto", es: "Genera código Pix directo", en: "Generates direct Pix payment" } },
+      { etapa: "4. Check-in", desc: { pt: "Envia localização e guia da cidade", es: "Envía ubicación y guía local", en: "Sends location & local guide" } },
     ],
-    economia: "R$ 3.800/mês economizados em comissões e recepção",
+    economia: "Reservas diretas no WhatsApp sem comissão de plataforma",
   },
   {
     id: "tecnicos",
@@ -65,22 +65,22 @@ const NEGOCIOS: NegocioTipo[] = [
       en: "Field Techs & Home Repairs",
     },
     dorPrincipal: {
-      pt: "Perder tempo respondendo orçamentos enquanto está no telhado ou trabalhando na obra.",
-      es: "Perder tiempo respondiendo mensajes mientras está trabajando en la obra.",
-      en: "Wasting time answering calls and quotes while on the job or on a ladder.",
+      pt: "Parar o serviço na escada ou na obra toda hora para responder pedidos de orçamento no celular.",
+      es: "Interrumpir el trabajo en la obra para responder presupuestos por teléfono.",
+      en: "Stopping work on a ladder or job site to answer quote requests.",
     },
     solucaoIA: {
-      pt: "IA escuta o áudio do cliente, calcula o valor do deslocamento por Km e agenda o horário disponível na rota.",
-      es: "IA escucha audios del cliente, calcula desplazamiento y agenda el horario libre.",
-      en: "AI transcribes voice notes, calculates travel fee per km, and books open slots.",
+      pt: "Transcreve o áudio do cliente, calcula o deslocamento por quilômetro e agenda no primeiro horário livre.",
+      es: "Transcribe el audio del cliente, calcula el desplazamiento y agenda el primer turno libre.",
+      en: "Transcribes client voice notes, calculates travel fee per km, and books open slots.",
     },
     fluxo: [
-      { etapa: "1. Áudio", desc: { pt: "Cliente manda áudio do problema", es: "Cliente envía audio del fallo", en: "Client sends audio of issue" } },
-      { etapa: "2. Cálculo", desc: { pt: "IA orça estimativa + Km de deslocamento", es: "IA estima costo y kilometraje", en: "AI estimates labor + km distance" } },
-      { etapa: "3. Agenda", desc: { pt: "Bloqueia horário no calendário do técnico", es: "Reserva hora en el calendario", en: "Locks time slot on schedule" } },
-      { etapa: "4. Recibo", desc: { pt: "Dispara recibo Pix e garantia em PDF", es: "Envía recibo Pix y garantía PDF", en: "Sends Pix receipt & PDF warranty" } },
+      { etapa: "1. Áudio", desc: { pt: "Cliente manda áudio explicando o defeito", es: "Cliente envía audio del fallo", en: "Client sends audio of issue" } },
+      { etapa: "2. Cálculo", desc: { pt: "Orça visita + quilometragem da rota", es: "Estima visita y kilometraje", en: "Estimates visit + km distance" } },
+      { etapa: "3. Agenda", desc: { pt: "Reserva o horário no calendário", es: "Reserva hora en el calendario", en: "Locks time slot on schedule" } },
+      { etapa: "4. Recibo", desc: { pt: "Envia recibo Pix e termo de garantia", es: "Envía recibo Pix y garantía", en: "Sends Pix receipt & warranty" } },
     ],
-    economia: "Até 12 horas livres por semana sem atendimento manual",
+    economia: "Agenda preenchida enquanto você executa o serviço",
   },
   {
     id: "gastronomia",
@@ -88,7 +88,7 @@ const NEGOCIOS: NegocioTipo[] = [
     titulo: {
       pt: "Restaurantes, Cafés & Marmitarias",
       es: "Restaurantes, Cafeterías y Viandas",
-      en: "Restaurants, Cafes & Cloud Kitchens",
+      en: "Restaurants, Cafes & Kitchens",
     },
     subtitulo: {
       pt: "Alimentação & Delivery Local",
@@ -96,22 +96,22 @@ const NEGOCIOS: NegocioTipo[] = [
       en: "Food Delivery & Local Dining",
     },
     dorPrincipal: {
-      pt: "Taxas de 27% no iFood que engolem o lucro e mensagens acumuladas nos horários de pico.",
-      es: "Comisiones abusivas de apps de delivery y saturación en WhatsApp en horas pico.",
-      en: "27% platform delivery fees eating profit margins and peak-hour WhatsApp chaos.",
+      pt: "Taxas de até 27% nos aplicativos de entrega e fila de mensagens no horário de almoço e jantar.",
+      es: "Comisiones altas en apps de delivery y mensajes acumulados en horas pico.",
+      en: "Up to 27% delivery app fees and message bottlenecks at lunch and dinner.",
     },
     solucaoIA: {
-      pt: "Cardápio inteligente no WhatsApp com carrinho de compras, cálculo de entrega por CEP e Pix direto.",
-      es: "Menú interactivo en WhatsApp, cálculo de delivery y cobro directo por Pix.",
-      en: "Smart WhatsApp menu with checkout, delivery fee calculation, and direct Pix.",
+      pt: "Cardápio direto no WhatsApp com cálculo de entrega por endereço e pagamento via Pix sem intermediário.",
+      es: "Menú directo en WhatsApp, cálculo de envío por dirección y cobro por Pix.",
+      en: "Direct WhatsApp menu with delivery calculation by address and Pix checkout.",
     },
     fluxo: [
-      { etapa: "1. Cardápio", desc: { pt: "IA apresenta opções e adicionais", es: "Menú interactivo guiado por IA", en: "AI presents menu & add-ons" } },
-      { etapa: "2. Pedido", desc: { pt: "Calcula frete e endereço exato", es: "Calcula costo de envío por zona", en: "Calculates delivery by address" } },
-      { etapa: "3. Baixa", desc: { pt: "Pix direto sem taxa de aplicativo", es: "Pix sin comisiones de apps", en: "Direct Pix with 0% commission" } },
-      { etapa: "4. Cozinha", desc: { pt: "Imprime comanda e avisa motoboy", es: "Envía comanda a cocina y cadete", en: "Prints ticket & alerts driver" } },
+      { etapa: "1. Cardápio", desc: { pt: "Mostra pratos do dia e adicionais", es: "Muestra platos del día y extras", en: "Shows daily dishes & add-ons" } },
+      { etapa: "2. Entrega", desc: { pt: "Calcula taxa de entrega pelo endereço", es: "Calcula envío por dirección", en: "Calculates delivery by address" } },
+      { etapa: "3. Pix", desc: { pt: "Recebe direto na conta do restaurante", es: "Cobro directo sin comisión", en: "Direct Pix with 0% commission" } },
+      { etapa: "4. Cozinha", desc: { pt: "Gera o pedido pronto para preparo", es: "Envía pedido listo a cocina", en: "Sends order ready for kitchen" } },
     ],
-    economia: "+22% de margem líquida recuperada sobre as vendas",
+    economia: "Venda direta no WhatsApp sem taxa sobre o pedido",
   },
   {
     id: "beleza",
@@ -127,22 +127,22 @@ const NEGOCIOS: NegocioTipo[] = [
       en: "Personal Care & Appointments",
     },
     dorPrincipal: {
-      pt: "Faltas sem aviso prévio (no-show) e recepcionista atendendo telefone durante o dia.",
-      es: "Clientes que faltan sin avisar y teléfono sonando sin parar.",
-      en: "No-shows hurting revenue and phone ringing non-stop during client treatments.",
+      pt: "Cliente que marca horário, não aparece e deixa a cadeira vazia no melhor turno do dia.",
+      es: "Clientes que faltan sin avisar y dejan turnos vacíos.",
+      en: "No-shows leaving chairs empty during peak hours.",
     },
     solucaoIA: {
-      pt: "Agendamento autônomo com sinal via Pix de 30%, lembrete 2h antes e remarcação sem atrito.",
-      es: "Agendamiento con seña por Pix, recordatorio 2h antes y reprogramación automática.",
-      en: "Self-booking with 30% Pix deposit, 2-hour reminder, and frictionless rescheduling.",
+      pt: "Agendamento com sinal via Pix, lembrete automático 2 horas antes e remarcação rápida pelo WhatsApp.",
+      es: "Reserva con seña por Pix, recordatorio 2h antes y reprogramación rápida.",
+      en: "Booking with Pix deposit, 2-hour reminder, and easy rescheduling.",
     },
     fluxo: [
-      { etapa: "1. Vagas", desc: { pt: "Cliente escolhe profissional e hora", es: "Elige profesional y turno libre", en: "Client picks staff and time slot" } },
-      { etapa: "2. Sinal", desc: { pt: "Cobra sinal Pix de R$ 20 para segurar vaga", es: "Cobra seña para asegurar turno", en: "Collects deposit to hold slot" } },
-      { etapa: "3. Lembrete", desc: { pt: "Confirmação 2h antes no WhatsApp", es: "Recordatorio 2h antes por chat", en: "WhatsApp alert 2 hours prior" } },
-      { etapa: "4. Fidelidade", desc: { pt: "Reativação a cada 20 dias com desconto", es: "Recurrencia cada 20 días con promo", en: "Auto-re-engagement every 20 days" } },
+      { etapa: "1. Horário", desc: { pt: "Cliente escolhe profissional e horário", es: "Elige profesional y turno libre", en: "Client picks staff and time slot" } },
+      { etapa: "2. Sinal", desc: { pt: "Cobra sinal via Pix para confirmar vaga", es: "Cobra seña para confirmar turno", en: "Collects deposit to hold slot" } },
+      { etapa: "3. Lembrete", desc: { pt: "Aviso no WhatsApp 2h antes do atendimento", es: "Aviso 2h antes por WhatsApp", en: "WhatsApp alert 2 hours prior" } },
+      { etapa: "4. Retorno", desc: { pt: "Convite para agendar o próximo retorno", es: "Aviso para agendar próximo turno", en: "Follow-up for next appointment" } },
     ],
-    economia: "Redução de 92% das faltas e cadeiras vazias",
+    economia: "Cadeiras ocupadas com horário confirmado por sinal",
   },
   {
     id: "fretes",
@@ -158,22 +158,22 @@ const NEGOCIOS: NegocioTipo[] = [
       en: "Road Haulage & Regional Transit",
     },
     dorPrincipal: {
-      pt: "Voltar com o caminhão ou van vazio na estrada sem saber onde tem carga para pegar.",
-      es: "Volver con el vehículo vacío en la ruta sin encontrar fletes de regreso.",
-      en: "Deadheading (empty return trips) along highway routes without return loads.",
+      pt: "Voltar com o caminhão ou a van vazia na estrada por falta de contato nas cidades do trecho.",
+      es: "Volver con el vehículo vacío en la ruta sin carga de regreso.",
+      en: "Returning with an empty truck or van along the highway.",
     },
     solucaoIA: {
-      pt: "Radar de fretes na rota da expedição: a IA cruza sua cidade de destino com negócios precisando de frete.",
-      es: "Cruce inteligente de rutas y cargas entre viajeros y negocios locales.",
-      en: "AI route matchmaking: pairs your highway trajectory with local transport tasks.",
+      pt: "Cruza a sua cidade de destino com comércios e moradores do trecho que precisam enviar carga ou mudança.",
+      es: "Conecta tu ciudad de destino con negocios del tramo que necesitan flete.",
+      en: "Matches your destination town with local businesses needing freight.",
     },
     fluxo: [
-      { etapa: "1. Rota", desc: { pt: "Motorista declara cidade de ida e volta", es: "Conductor marca origen y destino", en: "Driver declares origin & route" } },
-      { etapa: "2. Match", desc: { pt: "IA conecta frete na mesma direção", es: "IA conecta cargas en el camino", en: "AI matches pickups along route" } },
-      { etapa: "3. Sinal", desc: { pt: "Pix antecipado para abastecimento", es: "Pix inicial para combustible", en: "Advance Pix for fuel costs" } },
-      { etapa: "4. Entrega", desc: { pt: "Quitação com foto do canhoto assinado", es: "Saldo al entregar con foto de remito", en: "Final payout on signed POD photo" } },
+      { etapa: "1. Rota", desc: { pt: "Motorista informa cidade de saída e destino", es: "Conductor marca origen y destino", en: "Driver posts origin & destination" } },
+      { etapa: "2. Chamado", desc: { pt: "Conecta pedidos de frete na mesma direção", es: "Conecta cargas en el camino", en: "Matches pickups along route" } },
+      { etapa: "3. Sinal", desc: { pt: "Pix combinado direto entre as partes", es: "Pix acordado entre las partes", en: "Direct Pix agreed between parties" } },
+      { etapa: "4. Entrega", desc: { pt: "Saldo quitado na entrega da carga", es: "Saldo al entregar la carga", en: "Balance paid upon delivery" } },
     ],
-    economia: "Eliminação de viagens vazias na estrada",
+    economia: "Aproveitamento da viagem de volta com frete combinado",
   },
   {
     id: "comercio",
@@ -189,22 +189,22 @@ const NEGOCIOS: NegocioTipo[] = [
       en: "Brick-and-Mortar & Online Showcases",
     },
     dorPrincipal: {
-      pt: "Não ser encontrado no Google Maps por turistas e moradores que pesquisam no celular.",
-      es: "No aparecer en búsquedas de Google Maps de turistas y vecinos.",
-      en: "Being invisible on Google Maps searches when tourists and locals look on mobile.",
+      pt: "Turistas e moradores passam pela cidade sem encontrar sua loja ou seus produtos na busca do celular.",
+      es: "Turistas y vecinos pasan por la ciudad sin encontrar tu tienda en el celular.",
+      en: "Tourists and locals search on mobile without finding your shop or products.",
     },
     solucaoIA: {
-      pt: "Vitrine web rápida gerada em 1 hora, catálogo fotográfico e motor de avaliações 5 estrelas.",
-      es: "Página web de alta conversión en 1 hora con reseñas 5 estrellas en Google.",
-      en: "High-speed storefront generated in 1 hour with 5-star Google review engine.",
+      pt: "Vitrine leve com fotos, preços e botão direto para o seu WhatsApp, além de convite para avaliação no Google.",
+      es: "Vitrina rápida con fotos, precios, botón a WhatsApp y enlace de reseñas en Google.",
+      en: "Fast storefront with photos, prices, direct WhatsApp button, and Google review link.",
     },
     fluxo: [
-      { etapa: "1. Vitrine", desc: { pt: "Página leve com SEO local em Prado/Rota", es: "Página con SEO local optimizado", en: "Fast page with local SEO" } },
-      { etapa: "2. Catálogo", desc: { pt: "Fotos e preços com botão WhatsApp", es: "Fotos y precios directos al chat", en: "Photos & pricing with direct chat" } },
-      { etapa: "3. Pix", desc: { pt: "Pagamento presencial ou remoto", es: "Cobro presencial o a distancia", en: "In-person or remote Pix checkout" } },
-      { etapa: "4. Review", desc: { pt: "Convite automático de avaliação Google", es: "Solicitud de reseña 5 estrellas", en: "Automated 5-star Google review invite" } },
+      { etapa: "1. Vitrine", desc: { pt: "Página rápida encontrada na busca da cidade", es: "Página encontrada en búsquedas locales", en: "Fast page found in local search" } },
+      { etapa: "2. Catálogo", desc: { pt: "Fotos e preços com botão para o WhatsApp", es: "Fotos y precios directos al chat", en: "Photos & prices with direct chat" } },
+      { etapa: "3. Pix", desc: { pt: "Pagamento no balcão ou na entrega", es: "Cobro en tienda o a domicilio", en: "In-store or delivery Pix payment" } },
+      { etapa: "4. Avaliação", desc: { pt: "Link direto para o cliente avaliar no Google", es: "Enlace para evaluar en Google", en: "Direct link for Google review" } },
     ],
-    economia: "+45% de clientes novos vindos da busca orgânica",
+    economia: "Presença nas buscas locais da cidade e da rota",
   },
 ];
 
@@ -220,18 +220,18 @@ export default function EcossistemaIANegocios({ idioma }: Props) {
       <div className="text-center max-w-3xl mx-auto relative z-10 mb-12">
         <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full border border-amber-500/30 bg-amber-500/10 text-amber-300 text-xs font-bold uppercase tracking-widest mb-4">
           <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
-          <span>{L(idioma, "Engenharia de IA para Negócios Locais", "Ingeniería de IA para Negocios Locales", "AI Engineering for Local Businesses")}</span>
+          <span>{L(idioma, "Ferramentas para Negócios da Rota", "Herramientas para Negocios de la Ruta", "Tools for Local Businesses")}</span>
         </div>
 
         <h2 className="text-3xl sm:text-4xl lg:text-5xl font-black text-white tracking-tight leading-tight">
-          {L(idioma, "Automação e Atendimento Inteligente para Negócios Locais", "Automatización y Atención Inteligente para Negocios Locales", "Smart Automation & AI Support for Local Business")}
+          {L(idioma, "Atendimento 24h, Reservas e Pix Direto no WhatsApp", "Atención 24h, Reservas y Pix Directo en WhatsApp", "24/7 Support, Bookings & Direct Pix on WhatsApp")}
         </h2>
         <p className="mt-3 text-slate-300 text-sm sm:text-base leading-relaxed">
           {L(
             idioma,
-            "Mais do que um site: uma esteira autônoma que atende 24h por dia no WhatsApp, bloqueia overbooking, cobra via Pix com 0% de comissão e conquista avaliações 5 estrelas no Google.",
-            "Más que una web: un sistema autónomo que atiende 24/7 en WhatsApp, cobra por Pix con 0% de comisión y genera reseñas 5 estrellas.",
-            "More than a website: an autonomous engine operating 24/7 on WhatsApp, collecting Pix with 0% commission, and earning 5-star Google reviews."
+            "Página própria e atendimento automático no WhatsApp para responder clientes a qualquer hora, organizar reservas e receber por Pix sem comissão de aplicativo.",
+            "Página propia y atención automática en WhatsApp para responder a cualquier hora, organizar reservas y cobrar por Pix sin comisión.",
+            "Your own page and automated WhatsApp booking to answer customers anytime, manage reservations, and get paid via Pix with zero commission."
           )}
         </p>
       </div>
@@ -276,7 +276,7 @@ export default function EcossistemaIANegocios({ idioma }: Props) {
             <div className="space-y-3">
               <div className="rounded-2xl bg-rose-950/20 border border-rose-500/20 p-4">
                 <span className="text-[10px] font-mono uppercase tracking-wider text-rose-400 font-bold block mb-1">
-                  {L(idioma, "A DOR QUE DRENA SEU LUCRO", "EL PROBLEMA QUE FRENA TU GANANCIA", "THE PROBLEM DRAINING PROFIT")}
+                  {L(idioma, "ONDE O NEGÓCIO PERDE VENDA", "DÓNDE PIERDE VENTAS EL NEGOCIO", "WHERE SALES ARE LOST")}
                 </span>
                 <p className="text-xs sm:text-sm text-rose-200/90 leading-relaxed">
                   {L(idioma, selecionado.dorPrincipal.pt, selecionado.dorPrincipal.es, selecionado.dorPrincipal.en)}
@@ -285,7 +285,7 @@ export default function EcossistemaIANegocios({ idioma }: Props) {
 
               <div className="rounded-2xl bg-emerald-950/25 border border-emerald-500/30 p-4">
                 <span className="text-[10px] font-mono uppercase tracking-wider text-emerald-400 font-bold block mb-1">
-                  {L(idioma, "A SOLUÇÃO COM ENGENHARIA DE IA", "LA SOLUCIÓN CON INGENIERÍA DE IA", "THE AI SOLUTION")}
+                  {L(idioma, "COMO RESOLVEMOS NO WHATSAPP", "CÓMO LO RESOLVEMOS EN WHATSAPP", "HOW IT WORKS ON WHATSAPP")}
                 </span>
                 <p className="text-xs sm:text-sm text-emerald-100 leading-relaxed font-medium">
                   {L(idioma, selecionado.solucaoIA.pt, selecionado.solucaoIA.es, selecionado.solucaoIA.en)}
@@ -296,7 +296,7 @@ export default function EcossistemaIANegocios({ idioma }: Props) {
             {/* Destaque de Economia */}
             <div className="flex items-center gap-3 pt-2">
               <div className="w-10 h-10 rounded-2xl bg-amber-500/10 border border-amber-500/30 flex items-center justify-center text-amber-400 font-black text-base shrink-0">
-                💰
+                ✓
               </div>
               <span className="text-xs sm:text-sm font-bold text-amber-300">
                 {selecionado.economia}
@@ -304,14 +304,14 @@ export default function EcossistemaIANegocios({ idioma }: Props) {
             </div>
           </div>
 
-          {/* Lado Direito: Gráfico de Fluxo Autônomo das 4 Etapas */}
+          {/* Lado Direito: Fluxo das 4 Etapas */}
           <div className="lg:col-span-7 bg-slate-950/60 rounded-2xl border border-white/10 p-6 sm:p-8 space-y-6">
             <div className="flex items-center justify-between border-b border-white/10 pb-4">
               <span className="text-xs font-mono font-bold uppercase tracking-wider text-slate-400">
-                {L(idioma, "CICLO DE EXECUÇÃO AUTOMÁTICA", "CICLO DE EJECUCIÓN AUTOMÁTICA", "AUTOMATED EXECUTION CYCLE")}
+                {L(idioma, "PASSO A PASSO DO ATENDIMENTO", "PASO A PASO DE LA ATENCIÓN", "STEP-BY-STEP WORKFLOW")}
               </span>
               <span className="text-xs font-mono text-emerald-400 font-bold">
-                100% Autônomo · Sem Funcionário Noturno
+                {L(idioma, "Funciona 24h · Pix Direto", "Funciona 24h · Pix Directo", "24/7 · Direct Pix")}
               </span>
             </div>
 
@@ -337,45 +337,16 @@ export default function EcossistemaIANegocios({ idioma }: Props) {
               ))}
             </div>
 
-            {/* Comparativo de Custos: Tradicional vs Com IA */}
-            <div className="pt-4 border-t border-white/10">
-              <span className="text-[11px] font-mono text-slate-400 uppercase tracking-wider block mb-3 font-bold">
-                {L(idioma, "Comparativo Mensal de Custo Operacional", "Comparativo Mensual de Costo Operativo", "Monthly Operational Cost Benchmark")}
-              </span>
-
-              <div className="space-y-3">
-                <div>
-                  <div className="flex justify-between text-xs mb-1">
-                    <span className="text-slate-400">Tradicional (2 recepcionistas + comissões de app)</span>
-                    <span className="text-rose-400 font-mono font-bold">R$ 5.800/mês</span>
-                  </div>
-                  <div className="w-full h-2.5 rounded-full bg-slate-800 overflow-hidden">
-                    <div className="h-full bg-rose-500 rounded-full w-[88%]" />
-                  </div>
-                </div>
-
-                <div>
-                  <div className="flex justify-between text-xs mb-1">
-                    <span className="text-emerald-300 font-bold">Com Atendimento Inteligente JobPago (1 operador + Pix Direto)</span>
-                    <span className="text-emerald-400 font-mono font-black">R$ 850/mês</span>
-                  </div>
-                  <div className="w-full h-2.5 rounded-full bg-slate-800 overflow-hidden">
-                    <div className="h-full bg-emerald-400 rounded-full w-[16%]" />
-                  </div>
-                </div>
-              </div>
-            </div>
-
             {/* CTA Integrado */}
-            <div className="pt-4 flex flex-wrap items-center justify-between gap-4">
+            <div className="pt-4 border-t border-white/10 flex flex-wrap items-center justify-between gap-4">
               <div className="text-xs text-slate-400">
-                <span>Disponível para qualquer negócio da rota ou remoto.</span>
+                <span>{L(idioma, "Disponível para comércios, pousadas e serviços da rota.", "Disponible para comercios, posadas y servicios de la ruta.", "Available for local shops, inns, and service providers.")}</span>
               </div>
               <Link
                 href="/cadastrar-servico?tipo=contratante"
                 className="btn-primary-amalfi rounded-xl px-5 py-2.5 text-xs font-black shadow-lg shadow-amber-500/20"
               >
-                {L(idioma, "Ativar meu Mini-Sistema de IA", "Activar mi Mini-Sistema de IA", "Activate my Business AI System")} →
+                {L(idioma, "Solicitar para o meu negócio", "Solicitar para mi negocio", "Request for my business")} →
               </Link>
             </div>
           </div>

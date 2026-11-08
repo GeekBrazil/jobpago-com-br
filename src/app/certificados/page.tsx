@@ -34,9 +34,9 @@ export default async function CertificadosPage() {
           </h1>
 
           <p className="mt-5 text-sm sm:text-base text-slate-300 leading-relaxed">
-            {t("Alguém da expedição esteve ali e anotou o que havia — chuveiro, tomada, Wi-Fi, pátio — com data. Wi-Fi entra com a velocidade medida naquele dia. É um registro, não uma garantia: confira sempre com o estabelecimento. Lugares para passar a noite (camping, hostel, pousada, hotel) aparecem como Lugar para dormir. O registro de visita não é vendido; parceiros pagantes aparecem sempre identificados como Parceiro. Cada pin âmbar no mapa da home é um lugar assim.",
+            {t("Alguém da expedição esteve no local e anotou com data o que encontrou: chuveiro, tomada, Wi-Fi medido na hora e pátio. É um registro da visita, não uma garantia; confira sempre com o estabelecimento. Lugares para passar a noite (camping, hostel, pousada, hotel) aparecem como Lugar para dormir. O registro de visita não é vendido; parceiros pagantes aparecem sempre identificados como Parceiro. Cada pin âmbar no mapa da home é um lugar assim.",
               "Alguien de la expedición estuvo ahí y anotó lo que había (ducha, enchufe, Wi-Fi, patio), con fecha. El Wi-Fi entra con la velocidad medida ese día. Es un registro, no una garantía: consultá siempre con el establecimiento. Los lugares para pasar la noche (camping, hostel, posada, hotel) aparecen como Lugar para dormir. El registro de visita no se vende; los socios que pagan aparecen siempre identificados como Socio. Cada pin ámbar en el mapa de la home es un lugar así.",
-              "Someone from the expedition was there and noted what they found — shower, power, Wi-Fi, yard — with the date. Wi-Fi is listed with the speed measured that day. It's a record, not a guarantee: always check with the business. Places to spend the night (campsite, hostel, guesthouse, hotel) are listed as Places to sleep. The visit record isn't sold; paying partners are always labeled as Partner. Every amber pin on the home map is one of these places.")}
+              "Someone from the expedition visited the place and noted with the date what they found: shower, power, Wi-Fi measured on site, and yard. It's a visit record, not a guarantee: always check with the business. Places to spend the night (campsite, hostel, guesthouse, hotel) are listed as Places to sleep. The visit record isn't sold; paying partners are always labeled as Partner. Every amber pin on the home map is one of these places.")}
           </p>
         </div>
 
@@ -52,9 +52,9 @@ export default async function CertificadosPage() {
           <div>
             <h2 className="text-lg font-black text-white">{t("O QR code do adesivo", "El código QR del sticker", "The sticker’s QR code")}</h2>
             <p className="mt-2 text-sm text-slate-300 leading-relaxed max-w-lg">
-              {t("Um único QR code, o mesmo em todo adesivo físico entregue na rota. Ele sempre aponta pra esta página — quem escaneia vê a lista completa de lugares visitados, então o mesmo adesivo serve pra qualquer parceiro sem precisar gerar um código por local.",
+              {t("Um único QR code, o mesmo em todo adesivo físico entregue na rota. Ele aponta para esta página: quem escaneia vê a lista completa de lugares visitados, então o mesmo adesivo serve para qualquer parceiro sem precisar gerar um código por local.",
                 "Un único código QR, el mismo en todos los stickers entregados en la ruta. Siempre apunta a esta página: quien lo escanea ve la lista completa de lugares visitados, así el mismo sticker sirve para cualquier socio.",
-                "One single QR code, the same on every sticker handed out along the route. It always points to this page — whoever scans it sees the full list of visited places, so the same sticker works for any partner.")}
+                "One single QR code, the same on every sticker handed out along the route. It points to this page: whoever scans it sees the full list of visited places, so the same sticker works for any partner.")}
             </p>
             <a
               href="/qrcode-certificados.png"

@@ -165,7 +165,7 @@ export default function Home() {
               href="/disponibilidade"
               className="hidden sm:inline-flex btn-primary-amalfi text-sm px-5 py-2.5 rounded-2xl shrink-0 cursor-pointer whitespace-nowrap items-center gap-1.5 font-black"
             >
-              <span>{L(idioma, "Meu Serviço", "Mi Servicio", "My Service")}</span>
+              <span>{L(idioma, "Oferecer meu serviço", "Ofrecer mi servicio", "Offer my service")}</span>
             </Link>
           </div>
         </div>
@@ -240,7 +240,7 @@ export default function Home() {
         <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4 mb-6">
           <div>
             <span className="text-xs font-black text-amber-400 uppercase tracking-widest">
-              {L(idioma, "Geolocalização Ativa & OSRM Routing", "Geolocalización y rutas", "Geolocation & routing")}
+              {L(idioma, "Rotas e serviços pelo caminho", "Rutas y servicios en el camino", "Routes & services along the way")}
             </span>
             <h2 className="text-2xl sm:text-3xl font-black text-white mt-1">
               {L(idioma, "Mapa GPS de serviços e rotas", "Mapa GPS de servicios y rutas", "GPS map of services and routes")}
@@ -296,7 +296,7 @@ export default function Home() {
               <Link href="/refugio" className="text-amber-400 underline hover:text-amber-300">
                 {L(idioma, "Peça a visita", "Pedí la visita", "Ask for a visit")}
               </Link>{" "}
-              {L(idioma, "e vire Parceiro JobPago — ou entre na lista de onde dormir, se tiver hospedagem.", "y sé Socio JobPago — o entrá en la lista de dónde dormir, si tenés alojamiento.", "and become a JobPago Partner — or join the where-to-sleep list, if you offer a place to stay.")}
+              {L(idioma, "para virar Parceiro JobPago ou entrar na lista de hospedagem da rota.", "para ser Socio JobPago o entrar en la lista de dónde dormir.", "to become a JobPago Partner or join the where-to-sleep list.")}
             </p>
 
             <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 mt-6">
@@ -352,7 +352,7 @@ export default function Home() {
                 {L(idioma, "Alta Honra: como o lugar apoia a expedição", "Alto Honor: cómo el lugar apoya la expedición", "High Honour: how the place supports the expedition")}
               </h2>
               <p className="text-xs sm:text-sm text-slate-300 mt-1 max-w-2xl">
-                {L(idioma, "O registro de visita não é vendido. Parceiros pagantes aparecem em destaque e são sempre identificados como Parceiro. A Honra mostra quanto o lugar apoia a expedição — dinheiro e permuta no topo, depois só dinheiro, depois só permuta.", "El registro de visita no se vende. Los socios que pagan aparecen destacados y siempre identificados como Socio. El Honor muestra cuánto apoya el lugar a la expedición: dinero y canje arriba, después solo dinero, después solo canje.", "The visit record isn't sold. Paying partners are featured and always labeled as Partner. Honour shows how much the place supports the expedition — money plus exchange at the top, then money only, then exchange only.")}
+                {L(idioma, "O registro de visita não é vendido. Parceiros pagantes aparecem em destaque e são sempre identificados como Parceiro. A Honra mostra como cada lugar apoia a expedição: dinheiro e permuta no topo, seguido de apoio em dinheiro e apoio em permuta.", "El registro de visita no se vende. Los socios que pagan aparecen destacados y siempre identificados como Socio. El Honor muestra cuánto apoya el lugar a la expedición: dinero y canje arriba, después solo dinero, después solo canje.", "The visit record isn't sold. Paying partners are featured and always labeled as Partner. Honour shows how each place supports the expedition: money plus exchange at the top, then money only, then exchange only.")}
               </p>
             </div>
 
@@ -413,10 +413,10 @@ export default function Home() {
             {([
               ["lock", L(idioma, "Acesso e estacionamento", "Acceso y estacionamiento", "Access and parking"), L(idioma, "Se havia portão, recepção ou vigia no dia da visita, e onde havia espaço para carro, moto ou motorhome.", "Si había portón, recepción o sereno el día de la visita, y dónde había lugar para auto, moto o motorhome.", "Whether there was a gate, reception or night guard on the day of the visit, and where there was room for a car, bike or motorhome.")],
               ["shower", L(idioma, "Banho quente e banheiro limpo", "Ducha caliente y baño limpio", "Hot shower and clean bathroom"), L(idioma, "Registrado no dia da visita.", "Registrado el día de la visita.", "Recorded on the day of the visit.")],
-              ["plug", L(idioma, "Energia", "Energía", "Power"), L(idioma, "Tomada para carregar celular e notebook; ponto 220V para motorhome e van, quando houver — anotamos a amperagem.", "Enchufe para cargar celular y notebook; toma 220V para motorhome y van, si hay: anotamos el amperaje.", "Sockets for phones and laptops; a 220V hookup for motorhomes and vans where available — we note the amperage.")],
+              ["plug", L(idioma, "Energia", "Energía", "Power"), L(idioma, "Tomada para carregar celular e notebook; ponto 220V para motorhome e van, quando houver, com a amperagem anotada.", "Enchufe para cargar celular y notebook; toma 220V para motorhome y van, si hay: anotamos el amperaje.", "Sockets for phones and laptops; a 220V hookup for motorhomes and vans where available, with the amperage noted.")],
               ["wifi", L(idioma, "Internet que funciona", "Internet que funciona", "Internet that works"), L(idioma, "Velocidade medida no dia da visita, no quarto ou na área comum.", "Velocidad medida el día de la visita, en la habitación o en el área común.", "Speed measured on the day of the visit, in the room or common area.")],
               ["water", L(idioma, "Água e cozinha", "Agua y cocina", "Water and kitchen"), L(idioma, "Água potável; cozinha ou refeição por perto; descarte para motorhome, quando houver.", "Agua potable; cocina o comida cerca; descarga para motorhome, si hay.", "Drinking water; a kitchen or meals nearby; a motorhome dump point where available.")],
-              ["ticket", L(idioma, "Preço claro", "Precio claro", "Clear price"), L(idioma, "Anotamos quanto custou a noite e o que estava incluído — sem letra miúda.", "Anotamos cuánto costó la noche y qué incluía, sin letra chica.", "We note what the night cost and what was included — no fine print.")],
+              ["ticket", L(idioma, "Preço claro", "Precio claro", "Clear price"), L(idioma, "Anotamos quanto custou a noite e o que estava incluído, direto ao ponto.", "Anotamos cuánto costó la noche y qué incluía, sin letra chica.", "We note what the night cost and what was included, with no fine print.")],
             ] as const).map(([icone, titulo, texto]) => (
               <div key={titulo} className="glass-card p-6 rounded-2xl border border-amber-400/20">
                 <div className="w-12 h-12 rounded-xl bg-amber-500/10 border border-amber-500/30 flex items-center justify-center text-amber-400 mb-4">
