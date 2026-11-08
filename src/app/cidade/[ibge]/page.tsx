@@ -4,6 +4,7 @@ import { notFound } from "next/navigation";
 import CidadeTopo from "../CidadeTopo";
 import { relatorioCidade, SETORES, nomeSetor } from "@/lib/relatorioCidade";
 import Compartilhar from "@/components/Compartilhar";
+import rota from "@/data/expedicao-rota.json";
 import { idiomaServidor } from "@/lib/idiomaServidor";
 import { L } from "@/lib/i18n";
 import { tSetor, tTarefas, tSecao, competenciaEm } from "@/lib/traducoesCadastro";
@@ -55,6 +56,8 @@ export default async function RelatorioCidadePage({ params }: Props) {
 
   const { municipio: m, negocios_total: tot, emprego: emp } = r;
   const cidade = m.municipio_nome;
+  const paradaExpedicao = rota.paradas.findIndex((p) => p.ibge === ibge);
+  const ehParada = paradaExpedicao >= 0;
   // todos os setores com empresa ativa: o link "#setor-{categoria}" do e-mail cai no card certo
   const categorias = r.categorias.filter((c) => (c.ativas ?? 0) > 0);
   const maxNovas = Math.max(1, ...categorias.map((c) => c.novas_90d ?? 0));
@@ -94,6 +97,56 @@ export default async function RelatorioCidadePage({ params }: Props) {
         </p>
         <h1 className="mt-3 text-4xl sm:text-6xl font-black tracking-tight leading-[1.05]">{cidade}</h1>
 
+        {ehParada && (
+          <div className="mt-6 flex flex-wrap items-center justify-between gap-4 p-5 rounded-2xl bg-gradient-to-r from-amber-500/12 via-amber-500/6 to-transparent border border-amber-400/30">
+            <div className="flex items-center gap-3">
+              <span className="text-3xl">🧭</span>
+              <div>
+                <span className="font-mono text-xs font-bold uppercase tracking-wider text-amber-400">
+                  {t(
+                    `Parada Oficial nº ${String(paradaExpedicao + 1).padStart(2, "0")} · Expedição Fortaleza → Paraty`,
+                    `Parada Oficial nº ${String(paradaExpedicao + 1).padStart(2, "0")} · Expedición Fortaleza → Paraty`,
+                    `Official Stop no. ${String(paradaExpedicao + 1).padStart(2, "0")} · Fortaleza → Paraty Expedition`
+                  )}
+                </span>
+                <p className="text-sm text-slate-200 font-semibold mt-0.5">
+                  {t(
+                    `${cidade} faz parte da rota oficial de 4.417 km pelo litoral. Negócios e serviços locais mapeados.`,
+                    `${cidade} forma parte de la ruta oficial de 4.417 km por la costa. Negocios y servicios locales mapeados.`,
+                    `${cidade} is part of the 4,417 km coastal expedition route. Local businesses and services mapped.`
+                  )}
+                </p>
+              </div>
+            </div>
+            <div className="flex flex-wrap items-center gap-2">
+              <a
+                href={`/card/expedicao/${paradaExpedicao + 1}?formato=story`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="btn-secondary-glass rounded-xl px-3.5 py-2 text-xs font-bold flex items-center gap-1.5 border-amber-400/40 text-amber-300 hover:bg-amber-400/10"
+              >
+                <span>📱</span>
+                <span>{t("Card Stories (1080×1920)", "Card Stories (1080×1920)", "Stories Card (1080×1920)")}</span>
+              </a>
+              <a
+                href={`/card/expedicao/${paradaExpedicao + 1}?formato=feed`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="btn-secondary-glass rounded-xl px-3.5 py-2 text-xs font-bold flex items-center gap-1.5 border-amber-400/40 text-amber-300 hover:bg-amber-400/10"
+              >
+                <span>📸</span>
+                <span>{t("Card Feed", "Card Feed", "Feed Card")}</span>
+              </a>
+              <Link
+                href="/expedicao"
+                className="text-xs font-bold text-slate-400 hover:text-white px-2 py-1"
+              >
+                {t("Ver rota completa →", "Ver ruta completa →", "See full route →")}
+              </Link>
+            </div>
+          </div>
+        )}
+
         {/* NÚMEROS DE ABERTURA */}
         <section className="mt-8 grid gap-4 sm:grid-cols-3" aria-label={t("Resumo", "Resumen", "Summary")}>
           <div className="glass-panel rounded-3xl p-6 flex flex-col justify-between">
@@ -107,7 +160,7 @@ export default async function RelatorioCidadePage({ params }: Props) {
                 className="mt-4 inline-flex items-center justify-center gap-2 rounded-2xl bg-amber-400 hover:bg-amber-300 text-slate-950 font-bold px-4 py-2.5 text-xs transition-colors shadow-sm"
               >
                 <span>🔍</span>
-                <span>{t("Ver comércios & WhatsApp (R$ 39,90)", "Ver comercios y WhatsApp (R$ 39,90)", "See businesses & WhatsApp (R$ 39.90)")}</span>
+                <span>{t("Ver comércios & WhatsApp (a partir de R$ 19,90)", "Ver comercios y WhatsApp (desde R$ 19,90)", "See businesses & WhatsApp (from R$ 19.90)")}</span>
               </a>
             )}
           </div>
