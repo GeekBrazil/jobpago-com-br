@@ -32,8 +32,12 @@ echo "==> [2/6] Build local da imagem $IMAGE (a partir do commit)..."
 # --network=host: a rede padrão do Docker neste PC não sai para a internet
 git -C "$ROOT_DIR" archive --format=tar HEAD | docker build --network=host -t "$IMAGE" -
 
-echo "==> [3/6] Enviando imagem para o VPS (zstd multi-thread)..."
-docker save "$IMAGE" | zstd -T0 -3 | ssh -o ConnectTimeout=10 "$VPS" "zstd -d | docker load"
+echo "==> [3/6] Enviando imagem para o VPS (rsync com zstd)..."
+TMP_IMG="/tmp/jobpago-img.tar.zst"
+docker save "$IMAGE" | zstd -T0 -3 > "$TMP_IMG"
+rsync -P -e "ssh -o ServerAliveInterval=15 -o ServerAliveCountMax=3" "$TMP_IMG" "$VPS:$TMP_IMG"
+ssh "$VPS" "zstd -dc '$TMP_IMG' | docker load && rm -f '$TMP_IMG'"
+rm -f "$TMP_IMG"
 # helpers órfãos no VPS (o nome é uuid; 'coolify-helper' só aparece na imagem)
 ssh "$VPS" "docker ps -a --format '{{.ID}} {{.Image}}' | awk '/coolify-helper/ {print \$1}' | xargs -r docker rm -f > /dev/null 2>&1 || true"
 
