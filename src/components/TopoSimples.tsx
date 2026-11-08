@@ -18,15 +18,15 @@ export default async function TopoSimples() {
             <span className="hidden sm:block text-[9px] font-mono font-bold tracking-wider text-slate-400 uppercase mt-0.5">{L(i, "renda na viagem", "ingresos en el viaje", "income on the go")}</span>
           </div>
         </Link>
-        <div className="flex items-center gap-1.5 sm:gap-2">
-          <Link href="/refugio" className="btn-secondary-glass text-[11px] sm:text-xs font-bold px-2.5 sm:px-3.5 py-2 rounded-xl text-amber-300 border-amber-500/30 hover:border-amber-400 flex items-center gap-1 whitespace-nowrap shrink-0 active:scale-95 transition-transform">
+        <div className="flex items-center gap-1.5 sm:gap-2 shrink-0">
+          <Link href="/refugio" className="hidden sm:flex btn-secondary-glass text-xs font-bold px-3.5 py-2 rounded-xl text-amber-300 border-amber-500/30 hover:border-amber-400 items-center gap-1 whitespace-nowrap shrink-0 active:scale-95 transition-transform">
             <span>🏨</span>
             <span>{L(i, "Pedir Visita", "Pedir Visita", "Request Visit")}</span>
           </Link>
-          <Link href="/disponibilidade" className="btn-primary-amalfi text-[11px] sm:text-xs font-bold px-2.5 sm:px-3.5 py-2 rounded-xl whitespace-nowrap shrink-0 active:scale-95 transition-transform">
+          <Link href="/disponibilidade" className="hidden sm:flex btn-primary-amalfi text-xs font-bold px-3.5 py-2 rounded-xl whitespace-nowrap shrink-0 active:scale-95 transition-transform">
             {L(i, "Meu Serviço", "Mi Servicio", "My Service")}
           </Link>
-          <Link href="/" className="btn-secondary-glass text-xs font-bold px-3 py-2 rounded-xl hidden sm:flex items-center gap-1.5">
+          <Link href="/" className="btn-secondary-glass text-xs font-bold px-3 py-2 rounded-xl hidden md:flex items-center gap-1.5">
             ← {L(i, "Home", "Inicio", "Home")}
           </Link>
           <MenuNavegacao />

@@ -101,7 +101,7 @@ export default function Home() {
               <span className="text-xl sm:text-2xl font-black tracking-tight text-white leading-none">
                 JobPago<span className="text-amber-400">.</span>
               </span>
-              <span className="text-[9px] font-mono font-bold tracking-wider text-slate-400 uppercase mt-0.5">
+              <span className="hidden sm:block text-[9px] font-mono font-bold tracking-wider text-slate-400 uppercase mt-0.5">
                 {L(idioma, "renda na viagem", "ingresos en el viaje", "income on the go")}
               </span>
             </div>
@@ -136,15 +136,15 @@ export default function Home() {
           </nav>
 
           {/* AÇÕES DIREITAS: PERFIL VIAJANTE + BOTÕES DESKTOP */}
-          <div className="flex items-center gap-2 sm:gap-3">
+          <div className="flex items-center gap-1.5 sm:gap-3 shrink-0">
             <Link
               href="/viajante"
-              className="flex items-center gap-2 glass-card rounded-2xl py-1.5 px-3 hover:border-amber-500/40 border-white/10 active:scale-95 transition-transform"
+              className="flex items-center gap-1.5 sm:gap-2 glass-card rounded-2xl py-1.5 px-2 sm:px-3 hover:border-amber-500/40 border-white/10 active:scale-95 transition-transform shrink-0"
               title={L(idioma, "Seu painel de viagem: contribua e suba de nível", "Tu panel de viaje: contribuí y subí de nivel", "Your travel dashboard: contribute and level up")}
             >
               <Icon name="shield" width={20} height={20} />
               <div className="flex flex-col text-left">
-                <span className="text-[11px] font-black text-white leading-tight truncate max-w-[110px]">
+                <span className="text-[11px] font-black text-white leading-tight truncate max-w-[65px] sm:max-w-[110px]">
                   {viajante ? viajante.nome.split(" ")[0] : L(idioma, "Viajante", "Viajero", "Traveller")}
                 </span>
                 <span className="text-[9px] text-amber-400 font-bold leading-tight">

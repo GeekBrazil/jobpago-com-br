@@ -37,7 +37,7 @@ export async function usuarioLogado(): Promise<{ id: number; nome: string; email
   return rows[0] ?? null;
 }
 
-export async function perfilViajante(usuarioId: number) {
+export async function perfilViajante(usuarioId: number, email?: string) {
   const pool = (await garantirTabelasViajante())!;
   const { rows: soma } = await pool.query(
     `SELECT COALESCE(SUM(pontos) FILTER (WHERE status = 'confirmada'), 0)::int pontos,
@@ -48,7 +48,22 @@ export async function perfilViajante(usuarioId: number) {
   const { rows: recentes } = await pool.query(
     `SELECT id, tipo, status, pontos, dados->>'nome' nome, cidade, uf, to_char(criado_em, 'DD/MM') quando
      FROM contribuicoes WHERE usuario_id = $1 ORDER BY criado_em DESC LIMIT 20`, [usuarioId]);
+
+  let servicos: { id: number; faz: string; categorias: string[]; modo: string | null; quando: string | null; status: string; quando_cadastrado: string }[] = [];
+  if (email) {
+    try {
+      const { rows: rowsServ } = await pool.query(
+        `SELECT id, faz, categorias, modo, quando, status, to_char(criado_em, 'DD/MM/YYYY') AS quando_cadastrado
+         FROM disponibilidades WHERE lower(email) = lower($1) ORDER BY id DESC`,
+        [email]
+      );
+      servicos = rowsServ;
+    } catch {
+      // tabela pode não existir ainda em ambiente limpo
+    }
+  }
+
   const pontos = soma[0].pontos as number;
   const n = nivelDe(pontos);
-  return { pontos, ...n, titulo: tituloDe(n.nivel), confirmadas: soma[0].confirmadas, pendentes: soma[0].pendentes, questionario: !!soma[0].questionario, recentes };
+  return { pontos, ...n, titulo: tituloDe(n.nivel), confirmadas: soma[0].confirmadas, pendentes: soma[0].pendentes, questionario: !!soma[0].questionario, recentes, servicos };
 }

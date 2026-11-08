@@ -8,9 +8,20 @@ import SeletorIdioma from "@/components/SeletorIdioma";
 import { TXT, CONTRIBUICOES } from "@/lib/textosEstrada";
 import { RECOMPENSAS, PONTOS, pontosParaNivel } from "@/lib/reputacao";
 
+interface ServicoViajante {
+  id: number;
+  faz: string;
+  categorias: string[];
+  modo: string | null;
+  quando: string | null;
+  status: string;
+  quando_cadastrado: string;
+}
+
 interface Perfil {
   logado: boolean; nome?: string; maior18?: boolean; pontos: number; nivel: number; titulo: string; base: number; proximo: number; progresso: number;
   confirmadas: number; pendentes: number; questionario: boolean;
+  servicos?: ServicoViajante[];
   recentes: { id: number; tipo: string; status: "pendente" | "confirmada" | "recusada"; pontos: number; nome: string | null; cidade: string | null; uf: string | null; quando: string }[];
 }
 const nf = new Intl.NumberFormat("pt-BR");
@@ -109,6 +120,74 @@ export default function PainelViajante() {
               <p className="text-sm text-slate-300 mt-1">{idioma === "es" ? "Contanos cómo viajás y qué te cuesta más. 5 minutos." : idioma === "en" ? "Tell us how you travel and what's hardest. 5 minutes." : "Conte como você viaja e o que é mais difícil. 5 minutos."}</p>
             </Link>
           )}
+
+          {/* SERVIÇO CADASTRADO DO VIAJANTE (DISPONIBILIDADE) */}
+          <div className="mt-8 glass-panel rounded-3xl p-6 border border-amber-500/30">
+            <div className="flex items-center justify-between gap-3 flex-wrap">
+              <div>
+                <span className="text-[10px] font-mono font-bold uppercase tracking-widest text-amber-400">
+                  {idioma === "es" ? "Tu perfil profissional" : idioma === "en" ? "Your professional profile" : "Seu Perfil Profissional"}
+                </span>
+                <h2 className="text-xl font-black text-white mt-0.5">
+                  {idioma === "es" ? "Servicio que ofrecés en la ruta" : idioma === "en" ? "Service you offer on the route" : "Meu Serviço / O que Sei Fazer"}
+                </h2>
+              </div>
+              <Link
+                href="/disponibilidade"
+                className="btn-primary-amalfi text-xs font-black px-4 py-2 rounded-xl active:scale-95 transition-transform"
+              >
+                {p.servicos && p.servicos.length > 0
+                  ? (idioma === "es" ? "Atualizar serviço" : idioma === "en" ? "Update service" : "Atualizar serviço")
+                  : (idioma === "es" ? "+ Ofrecer servicio" : idioma === "en" ? "+ Offer service" : "+ Cadastrar o que sei fazer")}
+              </Link>
+            </div>
+
+            {p.servicos && p.servicos.length > 0 ? (
+              <div className="mt-5 space-y-4">
+                {p.servicos.map((s) => (
+                  <div key={s.id} className="rounded-2xl bg-white/[0.04] border border-white/10 p-5">
+                    <div className="flex items-center justify-between gap-3 flex-wrap mb-3">
+                      <div className="flex items-center gap-2 flex-wrap">
+                        {s.categorias && s.categorias.map((cat) => (
+                          <span key={cat} className="px-2.5 py-1 rounded-full bg-amber-500/15 border border-amber-500/30 text-amber-300 text-xs font-bold uppercase">
+                            {cat}
+                          </span>
+                        ))}
+                      </div>
+                      <span className="text-xs font-mono text-emerald-400 bg-emerald-500/10 border border-emerald-500/20 px-2.5 py-1 rounded-full font-bold">
+                        ● {idioma === "es" ? "Activo en el radar" : idioma === "en" ? "Active on radar" : "Ativo no radar de trabalhos"}
+                      </span>
+                    </div>
+                    <p className="text-sm sm:text-base text-slate-100 leading-relaxed font-normal whitespace-pre-line">
+                      "{s.faz}"
+                    </p>
+                    <div className="mt-4 pt-3 border-t border-white/10 flex items-center justify-between gap-2 text-xs text-slate-400 flex-wrap">
+                      <span>
+                        {s.modo ? `Modo: ${s.modo}` : ""} {s.quando ? `· ${s.quando}` : ""}
+                      </span>
+                      <span>Cadastrado em {s.quando_cadastrado}</span>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            ) : (
+              <div className="mt-4 p-5 rounded-2xl bg-white/[0.03] border border-dashed border-white/15 text-center">
+                <p className="text-sm text-slate-300">
+                  {idioma === "es"
+                    ? "Todavía no registraste qué sabés hacer. Contanos tus habilidades para recibir avisos de negocios y contrataciones directas por Pix."
+                    : idioma === "en"
+                    ? "You haven't listed what you do yet. Tell us your skills to receive direct contract opportunities via Pix."
+                    : "Você ainda não cadastrou o que sabe fazer. Avise suas habilidades (vídeos, fotos, design, TI, frete) para receber propostas com Pix direto!"}
+                </p>
+                <Link
+                  href="/disponibilidade"
+                  className="mt-4 inline-flex btn-primary-amalfi text-xs font-black px-5 py-2.5 rounded-xl"
+                >
+                  {idioma === "es" ? "Ofrecer mi servicio ahora" : idioma === "en" ? "Offer my service now" : "Cadastrar meu serviço agora"}
+                </Link>
+              </div>
+            )}
+          </div>
 
           <h2 className="mt-10 text-xl font-black">{T.contribuir}</h2>
           <div className="mt-4 grid gap-3 sm:grid-cols-2">

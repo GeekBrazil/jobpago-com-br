@@ -11,11 +11,20 @@ export default function MenuNavegacao() {
 
   useEffect(() => {
     if (!aberto) return;
+    const scrollBarWidth = window.innerWidth - document.documentElement.clientWidth;
+    const prevOverflow = document.body.style.overflow;
+    const prevPadding = document.body.style.paddingRight;
+    document.body.style.overflow = "hidden";
+    if (scrollBarWidth > 0) document.body.style.paddingRight = `${scrollBarWidth}px`;
     const onKey = (e: KeyboardEvent) => {
       if (e.key === "Escape") setAberto(false);
     };
     window.addEventListener("keydown", onKey);
-    return () => window.removeEventListener("keydown", onKey);
+    return () => {
+      document.body.style.overflow = prevOverflow;
+      document.body.style.paddingRight = prevPadding;
+      window.removeEventListener("keydown", onKey);
+    };
   }, [aberto]);
 
   const secoes = [
@@ -149,19 +158,20 @@ export default function MenuNavegacao() {
         type="button"
         onClick={() => setAberto(true)}
         aria-label={L(idioma, "Abrir menu completo e mapas", "Abrir menú completo y mapas", "Open full menu and maps")}
-        className="inline-flex items-center gap-1.5 rounded-full bg-white/[0.08] hover:bg-white/[0.14] border border-white/15 hover:border-amber-400/50 px-3 sm:px-3.5 py-2 text-xs font-black text-white active:scale-95 transition-all shrink-0"
+        className="inline-flex items-center gap-1.5 rounded-full bg-white/[0.08] hover:bg-white/[0.14] border border-white/15 hover:border-amber-400/50 px-2.5 sm:px-3.5 py-1.5 sm:py-2 text-xs font-black text-white active:scale-95 transition-all shrink-0 cursor-pointer shadow-sm"
       >
         <span className="text-amber-400 text-sm leading-none">☰</span>
-        <span>{L(idioma, "Menu & Mapas", "Menú y Mapas", "Menu & Maps")}</span>
+        <span className="hidden xs:inline sm:inline">{L(idioma, "Menu & Mapas", "Menú y Mapas", "Menu & Maps")}</span>
+        <span className="xs:hidden sm:hidden">{L(idioma, "Menu", "Menú", "Menu")}</span>
       </button>
 
       {aberto && (
         <div
-          className="fixed inset-0 z-[100] flex justify-end bg-black/75 backdrop-blur-md animate-fadeIn"
+          className="fixed inset-0 z-[120] flex justify-end bg-black/80 backdrop-blur-md"
           onClick={() => setAberto(false)}
         >
           <div
-            className="relative w-full max-w-md h-full bg-[#07090e]/95 border-l border-white/15 shadow-2xl overflow-y-auto p-5 sm:p-6 pb-28 text-slate-100"
+            className="relative w-full max-w-md h-[100dvh] max-h-[100dvh] bg-[#07090e] border-l border-white/15 shadow-2xl overflow-y-auto overscroll-contain p-5 sm:p-6 pb-36 text-slate-100 flex flex-col"
             onClick={(e) => e.stopPropagation()}
           >
             <div className="flex items-center justify-between gap-3 pb-4 border-b border-white/10 sticky top-0 bg-[#07090e]/95 backdrop-blur-xl z-10 pt-1">
