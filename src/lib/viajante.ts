@@ -25,7 +25,7 @@ export async function garantirTabelasViajante() {
 }
 
 /** id e nome do usuário logado (a sessão JWT só traz e-mail e nome). */
-export async function usuarioLogado(): Promise<{ id: number; nome: string; email: string; maior18: boolean } | null> {
+export async function usuarioLogado(): Promise<{ id: number; nome: string; email: string; telefone?: string; maior18: boolean } | null> {
   const s = await auth();
   const email = s?.user?.email?.toLowerCase();
   if (!email) return null;
@@ -33,11 +33,11 @@ export async function usuarioLogado(): Promise<{ id: number; nome: string; email
   if (!pool) return null;
   await garantirColunasMaioridade(pool);
   const { rows } = await pool.query(
-    `SELECT id, nome, email, maior_18_em IS NOT NULL AS "maior18" FROM usuarios WHERE lower(email) = $1`, [email]);
+    `SELECT id, nome, email, telefone, maior_18_em IS NOT NULL AS "maior18" FROM usuarios WHERE lower(email) = $1`, [email]);
   return rows[0] ?? null;
 }
 
-export async function perfilViajante(usuarioId: number, email?: string) {
+export async function perfilViajante(usuarioId: number, email?: string, telefone?: string) {
   const pool = (await garantirTabelasViajante())!;
   const { rows: soma } = await pool.query(
     `SELECT COALESCE(SUM(pontos) FILTER (WHERE status = 'confirmada'), 0)::int pontos,
@@ -50,14 +50,35 @@ export async function perfilViajante(usuarioId: number, email?: string) {
      FROM contribuicoes WHERE usuario_id = $1 ORDER BY criado_em DESC LIMIT 20`, [usuarioId]);
 
   let servicos: { id: number; faz: string; categorias: string[]; modo: string | null; quando: string | null; status: string; quando_cadastrado: string }[] = [];
-  if (email) {
+  let estabelecimentos: { id: number; nome: string; tipo: string; cidade: string; uf: string; responsavel: string | null; whatsapp: string; site: string | null; oferece: string[]; preco_noite: string | null; mensagem: string | null; status: string; quando_cadastrado: string }[] = [];
+
+  const telDigitos = (telefone || "").replace(/\D/g, "");
+
+  if (email || telDigitos) {
     try {
       const { rows: rowsServ } = await pool.query(
         `SELECT id, faz, categorias, modo, quando, status, to_char(criado_em, 'DD/MM/YYYY') AS quando_cadastrado
-         FROM disponibilidades WHERE lower(email) = lower($1) ORDER BY id DESC`,
-        [email]
+         FROM disponibilidades
+         WHERE (lower(email) = lower($1) OR ($1 <> '' AND lower(email) LIKE '%' || split_part(lower($1), '@', 1) || '%'))
+            OR ($2 <> '' AND replace(replace(replace(whatsapp, '-', ''), ' ', ''), '+', '') LIKE '%' || $2 || '%')
+         ORDER BY id DESC`,
+        [email || "", telDigitos]
       );
       servicos = rowsServ;
+    } catch {
+      // tabela pode não existir ainda em ambiente limpo
+    }
+
+    try {
+      const { rows: rowsEst } = await pool.query(
+        `SELECT id, nome, tipo, cidade, uf, responsavel, whatsapp, site, oferece, preco_noite, mensagem, status, to_char(criado_em, 'DD/MM/YYYY') AS quando_cadastrado
+         FROM refugios
+         WHERE (lower(email) = lower($1) OR ($1 <> '' AND lower(email) LIKE '%' || split_part(lower($1), '@', 1) || '%'))
+            OR ($2 <> '' AND replace(replace(replace(whatsapp, '-', ''), ' ', ''), '+', '') LIKE '%' || $2 || '%')
+         ORDER BY id DESC`,
+        [email || "", telDigitos]
+      );
+      estabelecimentos = rowsEst;
     } catch {
       // tabela pode não existir ainda em ambiente limpo
     }
@@ -65,5 +86,5 @@ export async function perfilViajante(usuarioId: number, email?: string) {
 
   const pontos = soma[0].pontos as number;
   const n = nivelDe(pontos);
-  return { pontos, ...n, titulo: tituloDe(n.nivel), confirmadas: soma[0].confirmadas, pendentes: soma[0].pendentes, questionario: !!soma[0].questionario, recentes, servicos };
+  return { pontos, ...n, titulo: tituloDe(n.nivel), confirmadas: soma[0].confirmadas, pendentes: soma[0].pendentes, questionario: !!soma[0].questionario, recentes, servicos, estabelecimentos };
 }

@@ -127,7 +127,7 @@ export default function MenuNavegacao() {
         {
           href: "/como-funciona",
           icone: "❓",
-          nome: L(idioma, "Como Funciona a JobPago", "Cómo Funciona JobPago", "How JobPago Works"),
+          nome: L(idioma, "Como Funciona o JobPago", "Cómo Funciona JobPago", "How JobPago Works"),
           desc: L(idioma, "Guia rápido para viajantes e negócios locais", "Guía rápida para viajeros y negocios", "Quick guide for travellers and businesses"),
         },
         {

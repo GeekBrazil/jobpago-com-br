@@ -18,10 +18,27 @@ interface ServicoViajante {
   quando_cadastrado: string;
 }
 
+interface EstabelecimentoViajante {
+  id: number;
+  nome: string;
+  tipo: string;
+  cidade: string;
+  uf: string;
+  responsavel: string | null;
+  whatsapp: string;
+  site: string | null;
+  oferece: string[];
+  preco_noite: string | null;
+  mensagem: string | null;
+  status: string;
+  quando_cadastrado: string;
+}
+
 interface Perfil {
   logado: boolean; nome?: string; maior18?: boolean; pontos: number; nivel: number; titulo: string; base: number; proximo: number; progresso: number;
   confirmadas: number; pendentes: number; questionario: boolean;
   servicos?: ServicoViajante[];
+  estabelecimentos?: EstabelecimentoViajante[];
   recentes: { id: number; tipo: string; status: "pendente" | "confirmada" | "recusada"; pontos: number; nome: string | null; cidade: string | null; uf: string | null; quando: string }[];
 }
 const nf = new Intl.NumberFormat("pt-BR");
@@ -184,6 +201,97 @@ export default function PainelViajante() {
                   className="mt-4 inline-flex btn-primary-amalfi text-xs font-black px-5 py-2.5 rounded-xl"
                 >
                   {idioma === "es" ? "Ofrecer mi servicio ahora" : idioma === "en" ? "Offer my service now" : "Cadastrar meu serviço agora"}
+                </Link>
+              </div>
+            )}
+          </div>
+
+          {/* ESTABELECIMENTO CADASTRADO DO VIAJANTE (REFÚGIO / POUSADA) */}
+          <div className="mt-8 glass-panel rounded-3xl p-6 border border-emerald-500/30">
+            <div className="flex items-center justify-between gap-3 flex-wrap">
+              <div>
+                <span className="text-[10px] font-mono font-bold uppercase tracking-widest text-emerald-400">
+                  {idioma === "es" ? "Hospedaje & Punto de Apoyo" : idioma === "en" ? "Lodging & Support Point" : "Hospedagem & Ponto de Apoio"}
+                </span>
+                <h2 className="text-xl font-black text-white mt-0.5">
+                  {idioma === "es" ? "Mi Establecimiento en la Ruta" : idioma === "en" ? "My Business on the Route" : "Meu Estabelecimento na Rota"}
+                </h2>
+              </div>
+              <Link
+                href="/refugio"
+                className="btn-secondary-glass text-xs font-bold px-4 py-2 rounded-xl text-emerald-300 border-emerald-500/30 hover:border-emerald-400 active:scale-95 transition-transform"
+              >
+                {p.estabelecimentos && p.estabelecimentos.length > 0
+                  ? (idioma === "es" ? "Pedir visita da expedição" : idioma === "en" ? "Request visit" : "Pedir visita da expedição")
+                  : (idioma === "es" ? "+ Registrar posada o punto" : idioma === "en" ? "+ Register place to sleep" : "+ Cadastrar pousada ou apoio")}
+              </Link>
+            </div>
+
+            {p.estabelecimentos && p.estabelecimentos.length > 0 ? (
+              <div className="mt-5 space-y-4">
+                {p.estabelecimentos.map((est) => (
+                  <div key={est.id} className="rounded-2xl bg-white/[0.04] border border-white/10 p-5">
+                    <div className="flex items-center justify-between gap-3 flex-wrap mb-3">
+                      <div>
+                        <span className="text-lg font-black text-white">{est.nome}</span>
+                        <span className="ml-2 text-xs font-mono text-slate-400 uppercase">
+                          ({est.tipo} · {est.cidade}/{est.uf})
+                        </span>
+                      </div>
+                      <span className={`text-xs font-mono px-2.5 py-1 rounded-full font-bold border ${est.status === "verificado" ? "bg-emerald-500/15 border-emerald-500/30 text-emerald-300" : "bg-amber-500/15 border-amber-500/30 text-amber-300"}`}>
+                        ● {est.status === "verificado" ? "Selo Verificado" : "Candidato a Selo Refúgio (Aguardando Visita)"}
+                      </span>
+                    </div>
+
+                    {est.oferece && est.oferece.length > 0 && (
+                      <div className="flex items-center gap-1.5 flex-wrap mb-3">
+                        {est.oferece.map((o) => (
+                          <span key={o} className="text-[11px] font-bold px-2 py-0.5 rounded-lg bg-white/[0.06] text-slate-300 border border-white/10 uppercase">
+                            ✓ {o}
+                          </span>
+                        ))}
+                      </div>
+                    )}
+
+                    {est.mensagem && (
+                      <p className="text-sm text-slate-200 leading-relaxed font-normal italic mb-3">
+                        "{est.mensagem}"
+                      </p>
+                    )}
+
+                    <div className="pt-3 border-t border-white/10 flex items-center justify-between gap-3 text-xs text-slate-400 flex-wrap">
+                      <div className="flex items-center gap-3">
+                        {est.preco_noite && <span className="font-bold text-amber-300">R$ {est.preco_noite} / noite</span>}
+                        {est.site && <span className="text-slate-300">{est.site}</span>}
+                      </div>
+                      <div className="flex items-center gap-2">
+                        <Link
+                          href={`/card/refugio/${est.id}`}
+                          target="_blank"
+                          className="text-amber-400 hover:underline font-bold text-xs"
+                        >
+                          Ver Cartão do Refúgio ↗
+                        </Link>
+                        <span>· Cadastrado em {est.quando_cadastrado}</span>
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            ) : (
+              <div className="mt-4 p-5 rounded-2xl bg-white/[0.03] border border-dashed border-white/15 text-center">
+                <p className="text-sm text-slate-300">
+                  {idioma === "es"
+                    ? "Tenés posada, camping, hostel o punto de apoyo en la costa? Recibí la visita de la expedición con QR Code oficial."
+                    : idioma === "en"
+                    ? "Own a guesthouse, camping or support point on the coast? Get an official expedition visit."
+                    : "Você tem pousada, camping, hostel ou ponto de apoio na rota? Receba a visita da nossa expedição e ganhe destaque no mapa!"}
+                </p>
+                <Link
+                  href="/refugio"
+                  className="mt-4 inline-flex btn-secondary-glass text-xs font-bold text-emerald-300 border-emerald-500/30 px-5 py-2.5 rounded-xl"
+                >
+                  {idioma === "es" ? "Registrar establecimiento" : idioma === "en" ? "Register establishment" : "Cadastrar meu estabelecimento"}
                 </Link>
               </div>
             )}
