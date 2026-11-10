@@ -23,12 +23,13 @@ async function tabela() {
   const pool = getPool();
   if (!pool || pronta) return pool;
   await pool.query(`CREATE TABLE IF NOT EXISTS refugios (
-    id SERIAL PRIMARY KEY, nome VARCHAR(120) NOT NULL, tipo VARCHAR(20) NOT NULL, cidade VARCHAR(80) NOT NULL, uf CHAR(2) NOT NULL,
-    responsavel VARCHAR(80), whatsapp VARCHAR(20) NOT NULL, email VARCHAR(200), site VARCHAR(200),
+    id SERIAL PRIMARY KEY, nome VARCHAR(120) NOT NULL, tipo VARCHAR(30) NOT NULL, cidade VARCHAR(80) NOT NULL, uf CHAR(2) NOT NULL,
+    responsavel VARCHAR(80), whatsapp VARCHAR(20) NOT NULL, email VARCHAR(200), site VARCHAR(200), sites_links TEXT[] DEFAULT '{}',
     oferece TEXT[] DEFAULT '{}', preco_noite VARCHAR(40), honra_desejada VARCHAR(20), mensagem TEXT,
     status VARCHAR(20) NOT NULL DEFAULT 'candidato', honra VARCHAR(20), verificado_em DATE, notas TEXT,
     lgpd_consent BOOLEAN NOT NULL, indicador_codigo VARCHAR(12), criado_em TIMESTAMPTZ DEFAULT now(), atualizado_em TIMESTAMPTZ DEFAULT now())`);
   await pool.query(`ALTER TABLE refugios ADD COLUMN IF NOT EXISTS indicador_codigo VARCHAR(12)`);
+  await pool.query(`ALTER TABLE refugios ADD COLUMN IF NOT EXISTS sites_links TEXT[] DEFAULT '{}'`);
   pronta = true;
   return pool;
 }
@@ -81,10 +82,15 @@ export async function POST(req: NextRequest) {
     const r = await pool.query(`SELECT 1 FROM indicadores WHERE codigo = $1`, [b.indicador]).catch(() => ({ rowCount: 0 }));
     if (r.rowCount) indicador = b.indicador;
   }
+  const sitesLinks = (Array.isArray(b.sitesLinks) ? b.sitesLinks : [])
+    .map((s: unknown) => txt(s, 200))
+    .filter(Boolean)
+    .slice(0, 9);
+  const sitePrincipal = txt(b.site, 200) || sitesLinks[0] || null;
   await pool.query(
-    `INSERT INTO refugios (nome, tipo, cidade, uf, responsavel, whatsapp, email, site, oferece, preco_noite, honra_desejada, mensagem, lgpd_consent, indicador_codigo)
-     VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,true,$13)`,
-    [nome, b.tipo, cidade, uf, txt(b.responsavel, 80) || null, whatsapp, emailFinal, txt(b.site, 200) || null, oferece,
+    `INSERT INTO refugios (nome, tipo, cidade, uf, responsavel, whatsapp, email, site, sites_links, oferece, preco_noite, honra_desejada, mensagem, lgpd_consent, indicador_codigo)
+     VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,true,$14)`,
+    [nome, b.tipo, cidade, uf, txt(b.responsavel, 80) || null, whatsapp, emailFinal, sitePrincipal, sitesLinks, oferece,
      txt(b.precoNoite, 40) || null, HONRAS.has(b.honra) ? b.honra : null, txt(b.mensagem, 600) || null, indicador]
   );
 

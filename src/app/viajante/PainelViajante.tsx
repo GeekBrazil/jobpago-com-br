@@ -8,7 +8,8 @@ import SeletorIdioma from "@/components/SeletorIdioma";
 import { TXT, CONTRIBUICOES } from "@/lib/textosEstrada";
 import { RECOMPENSAS, PONTOS, pontosParaNivel } from "@/lib/reputacao";
 import { CATEGORIAS } from "@/data/categorias";
-import { TIPOS_REFUGIO, OFERECE } from "@/data/honra";
+import { TIPOS_REFUGIO, TIPOS_NEGOCIO_ONLINE, OFERECE } from "@/data/honra";
+import { VitrineSitesCards, CampoSitesPortfolio } from "@/components/VitrineSitesCards";
 
 interface ServicoViajante {
   id: number;
@@ -16,6 +17,7 @@ interface ServicoViajante {
   categorias: string[];
   modo: string | null;
   quando: string | null;
+  sites_links?: string[];
   status: string;
   quando_cadastrado: string;
 }
@@ -29,6 +31,7 @@ interface EstabelecimentoViajante {
   responsavel: string | null;
   whatsapp: string;
   site: string | null;
+  sites_links?: string[];
   oferece: string[];
   preco_noite: string | null;
   mensagem: string | null;
@@ -65,7 +68,7 @@ interface Perfil {
 
 const nf = new Intl.NumberFormat("pt-BR");
 
-const UFS = "AC AL AP AM BA CE DF ES GO MA MT MS MG PA PB PR PE PI RJ RN RS RO RR SC SP SE TO".split(" ");
+const UFS = "BR AC AL AP AM BA CE DF ES GO MA MT MS MG PA PB PR PE PI RJ RN RS RO RR SC SP SE TO".split(" ");
 const MODOS_OPCOES = [
   { id: "ambos", rotulo: "Remoto ou Presencial" },
   { id: "remoto", rotulo: "Apenas Remoto" },
@@ -98,6 +101,7 @@ export default function PainelViajante() {
     categorias: string[];
     modo: string;
     quando: string;
+    sites_links: string[];
   } | null>(null);
   const [salvandoServico, setSalvandoServico] = useState(false);
   const [erroServico, setErroServico] = useState("");
@@ -112,6 +116,7 @@ export default function PainelViajante() {
     responsavel: string;
     whatsapp: string;
     site: string;
+    sites_links: string[];
     oferece: string[];
     preco_noite: string;
     mensagem: string;
@@ -180,6 +185,7 @@ export default function PainelViajante() {
       categorias: s.categorias || [],
       modo: s.modo || "ambos",
       quando: s.quando || "agora",
+      sites_links: s.sites_links || [],
     });
   }
 
@@ -235,6 +241,7 @@ export default function PainelViajante() {
       responsavel: est.responsavel || "",
       whatsapp: est.whatsapp || "",
       site: est.site || "",
+      sites_links: est.sites_links || (est.site && est.site.includes(".") ? [est.site] : []),
       oferece: est.oferece || [],
       preco_noite: est.preco_noite || "",
       mensagem: est.mensagem || "",
@@ -454,6 +461,10 @@ export default function PainelViajante() {
                     <p className="text-sm sm:text-base text-slate-100 leading-relaxed font-normal whitespace-pre-line">
                       "{s.faz}"
                     </p>
+                    <VitrineSitesCards
+                      sites={s.sites_links}
+                      tituloSecao="Sites & Projetos Desenvolvidos (Print Automático)"
+                    />
                     <div className="mt-4 pt-3 border-t border-white/10 flex items-center justify-between gap-2 text-xs text-slate-400 flex-wrap">
                       <span>
                         {s.modo ? `Modo: ${s.modo}` : ""} {s.quando ? `· ${s.quando}` : ""}
@@ -552,6 +563,11 @@ export default function PainelViajante() {
                         "{est.mensagem}"
                       </p>
                     )}
+
+                    <VitrineSitesCards
+                      sites={est.sites_links && est.sites_links.length > 0 ? est.sites_links : est.site ? [est.site] : []}
+                      tituloSecao="Vitrine Online do Negócio (Print Automático)"
+                    />
 
                     <div className="pt-3 border-t border-white/10 flex items-center justify-between gap-3 text-xs text-slate-400 flex-wrap">
                       <div className="flex items-center gap-3">
@@ -828,6 +844,11 @@ export default function PainelViajante() {
                 </div>
               </div>
 
+              <CampoSitesPortfolio
+                sites={editServico.sites_links}
+                onChange={(novos) => setEditServico({ ...editServico, sites_links: novos })}
+              />
+
               <div className="flex items-center justify-end gap-3 pt-4 border-t border-white/10">
                 <button
                   type="button"
@@ -892,7 +913,16 @@ export default function PainelViajante() {
                   </label>
                   <select
                     value={editEst.tipo}
-                    onChange={(e) => setEditEst({ ...editEst, tipo: e.target.value })}
+                    onChange={(e) => {
+                      const novoTipo = e.target.value;
+                      const ehOnline = TIPOS_NEGOCIO_ONLINE.has(novoTipo);
+                      setEditEst({
+                        ...editEst,
+                        tipo: novoTipo,
+                        cidade: ehOnline ? "100% Online" : editEst.cidade,
+                        uf: ehOnline ? "BR" : editEst.uf,
+                      });
+                    }}
                     className="w-full rounded-xl bg-slate-950/80 border border-white/15 p-2.5 text-xs text-white focus:outline-none focus:border-amber-400"
                   >
                     {TIPOS_REFUGIO.map(([id, label]) => (
@@ -1021,10 +1051,16 @@ export default function PainelViajante() {
                   maxLength={1000}
                   value={editEst.mensagem}
                   onChange={(e) => setEditEst({ ...editEst, mensagem: e.target.value })}
-                  placeholder="Conte mais sobre o local, regras de convivência, se aceita pets..."
+                  placeholder="Conte mais sobre o local ou negócio online..."
                   className="w-full rounded-2xl bg-slate-950/80 border border-white/15 p-3 text-xs text-white placeholder:text-slate-500 focus:outline-none focus:border-amber-400 leading-relaxed"
                 />
               </div>
+
+              <CampoSitesPortfolio
+                sites={editEst.sites_links}
+                onChange={(novos) => setEditEst({ ...editEst, sites_links: novos })}
+                rotulo="Sites, Loja Online ou Portfólio do Negócio (Print Automático)"
+              />
 
               <div className="flex items-center justify-end gap-3 pt-4 border-t border-white/10">
                 <button

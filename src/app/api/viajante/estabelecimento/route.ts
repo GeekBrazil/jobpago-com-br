@@ -32,7 +32,11 @@ export async function PUT(req: NextRequest) {
   const whatsapp = normalizarTelefone(txt(b.whatsapp, 24));
   if (!whatsapp) return NextResponse.json({ ok: false, erro: "WhatsApp válido é obrigatório." }, { status: 400 });
 
-  const site = txt(b.site, 200) || null;
+  const sitesLinks = (Array.isArray(b.sites_links) ? b.sites_links : [])
+    .map((s: unknown) => txt(s, 200))
+    .filter(Boolean)
+    .slice(0, 9);
+  const site = txt(b.site, 200) || sitesLinks[0] || null;
   const precoNoite = txt(b.preco_noite, 40) || null;
   const mensagem = txt(b.mensagem, 1000) || null;
 
@@ -43,22 +47,24 @@ export async function PUT(req: NextRequest) {
   const pool = getPool();
   if (!pool) return NextResponse.json({ ok: false, erro: "Banco de dados indisponível." }, { status: 503 });
 
+  await pool.query(`ALTER TABLE refugios ADD COLUMN IF NOT EXISTS sites_links TEXT[] DEFAULT '{}'`);
+
   const telDigitos = (u.telefone || "").replace(/\D/g, "");
 
   // Atualiza garantindo que o estabelecimento pertença ao usuário logado
   const { rows } = await pool.query(
     `UPDATE refugios
      SET nome = $1, tipo = $2, cidade = $3, uf = $4, responsavel = $5,
-         whatsapp = $6, site = $7, oferece = $8, preco_noite = $9, mensagem = $10,
+         whatsapp = $6, site = $7, sites_links = $8, oferece = $9, preco_noite = $10, mensagem = $11,
          atualizado_em = now()
-     WHERE id = $11
+     WHERE id = $12
        AND (
-         lower(email) = lower($12)
-         OR ($12 <> '' AND lower(email) LIKE '%' || split_part(lower($12), '@', 1) || '%')
-         OR ($13 <> '' AND replace(replace(replace(whatsapp, '-', ''), ' ', ''), '+', '') LIKE '%' || $13 || '%')
+         lower(email) = lower($13)
+         OR ($13 <> '' AND lower(email) LIKE '%' || split_part(lower($13), '@', 1) || '%')
+         OR ($14 <> '' AND replace(replace(replace(whatsapp, '-', ''), ' ', ''), '+', '') LIKE '%' || $14 || '%')
        )
-     RETURNING id, nome, tipo, cidade, uf, responsavel, whatsapp, site, oferece, preco_noite, mensagem, status, to_char(criado_em, 'DD/MM/YYYY') AS quando_cadastrado`,
-    [nome, tipo, cidade, uf, responsavel, whatsapp, site, oferece, precoNoite, mensagem, id, u.email, telDigitos]
+     RETURNING id, nome, tipo, cidade, uf, responsavel, whatsapp, site, COALESCE(sites_links, '{}') AS sites_links, oferece, preco_noite, mensagem, status, to_char(criado_em, 'DD/MM/YYYY') AS quando_cadastrado`,
+    [nome, tipo, cidade, uf, responsavel, whatsapp, site, sitesLinks, oferece, precoNoite, mensagem, id, u.email, telDigitos]
   );
 
   if (!rows.length) {

@@ -35,24 +35,30 @@ export async function PUT(req: NextRequest) {
 
   const modo = MODOS.has(b.modo) ? b.modo : "ambos";
   const quando = QUANDO.has(b.quando) ? b.quando : "agora";
+  const sitesLinks = (Array.isArray(b.sites_links) ? b.sites_links : [])
+    .map((s: unknown) => (typeof s === "string" ? s.trim().slice(0, 200) : ""))
+    .filter(Boolean)
+    .slice(0, 9);
 
   const pool = getPool();
   if (!pool) return NextResponse.json({ ok: false, erro: "Banco de dados indisponível." }, { status: 503 });
+
+  await pool.query(`ALTER TABLE disponibilidades ADD COLUMN IF NOT EXISTS sites_links TEXT[] DEFAULT '{}'`);
 
   const telDigitos = (u.telefone || "").replace(/\D/g, "");
 
   // Atualiza garantindo que o registro pertença ao usuário logado
   const { rows } = await pool.query(
     `UPDATE disponibilidades
-     SET faz = $1, categorias = $2, modo = $3, quando = $4
-     WHERE id = $5
+     SET faz = $1, categorias = $2, modo = $3, quando = $4, sites_links = $5
+     WHERE id = $6
        AND (
-         lower(email) = lower($6)
-         OR ($6 <> '' AND lower(email) LIKE '%' || split_part(lower($6), '@', 1) || '%')
-         OR ($7 <> '' AND replace(replace(replace(whatsapp, '-', ''), ' ', ''), '+', '') LIKE '%' || $7 || '%')
+         lower(email) = lower($7)
+         OR ($7 <> '' AND lower(email) LIKE '%' || split_part(lower($7), '@', 1) || '%')
+         OR ($8 <> '' AND replace(replace(replace(whatsapp, '-', ''), ' ', ''), '+', '') LIKE '%' || $8 || '%')
        )
-     RETURNING id, faz, categorias, modo, quando, status, to_char(criado_em, 'DD/MM/YYYY') AS quando_cadastrado`,
-    [faz, categorias, modo, quando, id, u.email, telDigitos]
+     RETURNING id, faz, categorias, modo, quando, COALESCE(sites_links, '{}') AS sites_links, status, to_char(criado_em, 'DD/MM/YYYY') AS quando_cadastrado`,
+    [faz, categorias, modo, quando, sitesLinks, id, u.email, telDigitos]
   );
 
   if (!rows.length) {

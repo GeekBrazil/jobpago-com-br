@@ -10,6 +10,7 @@ import SeletorIdioma from "@/components/SeletorIdioma";
 import { tCategoria } from "@/lib/traducoesCadastro";
 import type { Idioma } from "@/lib/textosEstrada";
 import { validarSintaxeEmail } from "@/lib/validacaoEmail";
+import { CampoSitesPortfolio } from "@/components/VitrineSitesCards";
 
 const L = (i: Idioma, pt: string, es: string, en: string) => (i === "es" ? es : i === "en" ? en : pt);
 
@@ -20,7 +21,7 @@ const campo = "w-full rounded-2xl bg-slate-900/80 border border-white/15 px-4 py
 
 export default function FormDisponibilidade() {
   const [idioma, setIdioma] = useIdioma();
-  const [f, setF] = useState({ nome: "", whatsapp: "", email: "", cidade: "", uf: "", naEstrada: false, categorias: [] as string[], faz: "", modo: "ambos", quando: "agora", lgpd: false, maior18: false });
+  const [f, setF] = useState({ nome: "", whatsapp: "", email: "", cidade: "", uf: "", naEstrada: false, categorias: [] as string[], faz: "", sitesLinks: [] as string[], modo: "ambos", quando: "agora", lgpd: false, maior18: false });
   const [estado, setEstado] = useState<"" | "enviando" | "ok">("");
   const [erro, setErro] = useState("");
   const alterna = (id: string) => setF((x) => ({ ...x, categorias: x.categorias.includes(id) ? x.categorias.filter((c) => c !== id) : [...x.categorias, id] }));
@@ -123,6 +124,23 @@ export default function FormDisponibilidade() {
         <textarea maxLength={500} value={f.faz} onChange={(e) => setF({ ...f, faz: e.target.value })} rows={3}
           placeholder={L(idioma, "Em uma frase: ex. edito vídeo curto para Instagram, tenho drone, faço frete de retorno SP–RJ…", "En una frase: ej. edito videos cortos para Instagram, tengo dron, hago fletes de vuelta SP–RJ…", "In one line: e.g. I edit short videos for Instagram, I have a drone, I do return freight SP–RJ…")} className={campo + " mt-3"} />
       </fieldset>
+
+      <CampoSitesPortfolio
+        sites={f.sitesLinks}
+        onChange={(novos) => setF((prev) => ({ ...prev, sitesLinks: novos }))}
+        rotulo={L(
+          idioma,
+          "Seus Sites Desenvolvidos ou Portfólio Online (Print Automático em Cards)",
+          "Tus Sitios Desarrollados o Portafolio Online (Captura Automática en Tarjetas)",
+          "Your Developed Websites or Online Portfolio (Automatic Screenshot Cards)"
+        )}
+        subtitulo={L(
+          idioma,
+          "Tem sites que você criou ou portfólio no ar? Adicione os links abaixo: o JobPago tira o print da tela automaticamente e deixa tudo disposto em cards interativos no seu perfil (igual ao jobpago.com.br/allan).",
+          "¿Tenés sitios que creaste o portafolio online? Agregá los links abajo: JobPago toma la captura automáticamente y arma tarjetas interactivas en tu perfil.",
+          "Have websites you built or a live portfolio? Add the links below: JobPago automatically takes a screenshot and arranges them as interactive cards on your profile."
+        )}
+      />
 
       <fieldset>
         <legend className="text-sm font-bold text-slate-300">{L(idioma, "De onde você trabalha", "Desde dónde trabajás", "Where you work from")}</legend>

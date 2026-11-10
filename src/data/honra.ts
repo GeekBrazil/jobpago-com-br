@@ -59,7 +59,12 @@ export const TIPOS_REFUGIO = [
   ["pousada", "Pousada"],
   ["hotel", "Hotel"],
   ["patio", "Pátio de posto / área de motorhome"],
+  ["ecommerce", "Loja Online / E-commerce (100% Digital)"],
+  ["saas_digital", "Plataforma / SaaS / Agência Digital (100% Online)"],
+  ["servicos_online", "Consultoria / Educação / Serviços Remotos (100% Online)"],
 ] as const;
+
+export const TIPOS_NEGOCIO_ONLINE = new Set(["ecommerce", "saas_digital", "servicos_online"]);
 
 export const OFERECE = [
   ["seguro", "Portão, recepção ou vigia no dia da visita"],
@@ -69,4 +74,7 @@ export const OFERECE = [
   ["internet", "Internet"],
   ["cozinha", "Cozinha ou refeição no local"],
   ["agua", "Água potável / descarte para motorhome"],
+  ["cupom_viajante", "Desconto ou benefício exclusivo para membros da rede"],
+  ["atendimento_remoto", "Atendimento 100% online para todo o Brasil"],
+  ["parceria_comercial", "Parceria comercial / comissão por indicação na rota"],
 ] as const;

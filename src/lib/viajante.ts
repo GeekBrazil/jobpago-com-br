@@ -49,15 +49,16 @@ export async function perfilViajante(usuarioId: number, email?: string, telefone
     `SELECT id, tipo, status, pontos, dados->>'nome' nome, cidade, uf, to_char(criado_em, 'DD/MM') quando
      FROM contribuicoes WHERE usuario_id = $1 ORDER BY criado_em DESC LIMIT 20`, [usuarioId]);
 
-  let servicos: { id: number; faz: string; categorias: string[]; modo: string | null; quando: string | null; status: string; quando_cadastrado: string }[] = [];
-  let estabelecimentos: { id: number; nome: string; tipo: string; cidade: string; uf: string; responsavel: string | null; whatsapp: string; site: string | null; oferece: string[]; preco_noite: string | null; mensagem: string | null; status: string; quando_cadastrado: string }[] = [];
+  let servicos: { id: number; faz: string; categorias: string[]; modo: string | null; quando: string | null; sites_links: string[]; status: string; quando_cadastrado: string }[] = [];
+  let estabelecimentos: { id: number; nome: string; tipo: string; cidade: string; uf: string; responsavel: string | null; whatsapp: string; site: string | null; sites_links: string[]; oferece: string[]; preco_noite: string | null; mensagem: string | null; status: string; quando_cadastrado: string }[] = [];
 
   const telDigitos = (telefone || "").replace(/\D/g, "");
 
   if (email || telDigitos) {
     try {
+      await pool.query(`ALTER TABLE disponibilidades ADD COLUMN IF NOT EXISTS sites_links TEXT[] DEFAULT '{}'`);
       const { rows: rowsServ } = await pool.query(
-        `SELECT id, faz, categorias, modo, quando, status, to_char(criado_em, 'DD/MM/YYYY') AS quando_cadastrado
+        `SELECT id, faz, categorias, modo, quando, COALESCE(sites_links, '{}') AS sites_links, status, to_char(criado_em, 'DD/MM/YYYY') AS quando_cadastrado
          FROM disponibilidades
          WHERE (lower(email) = lower($1) OR ($1 <> '' AND lower(email) LIKE '%' || split_part(lower($1), '@', 1) || '%'))
             OR ($2 <> '' AND replace(replace(replace(whatsapp, '-', ''), ' ', ''), '+', '') LIKE '%' || $2 || '%')
@@ -70,8 +71,9 @@ export async function perfilViajante(usuarioId: number, email?: string, telefone
     }
 
     try {
+      await pool.query(`ALTER TABLE refugios ADD COLUMN IF NOT EXISTS sites_links TEXT[] DEFAULT '{}'`);
       const { rows: rowsEst } = await pool.query(
-        `SELECT id, nome, tipo, cidade, uf, responsavel, whatsapp, site, oferece, preco_noite, mensagem, status, to_char(criado_em, 'DD/MM/YYYY') AS quando_cadastrado
+        `SELECT id, nome, tipo, cidade, uf, responsavel, whatsapp, site, COALESCE(sites_links, '{}') AS sites_links, oferece, preco_noite, mensagem, status, to_char(criado_em, 'DD/MM/YYYY') AS quando_cadastrado
          FROM refugios
          WHERE (lower(email) = lower($1) OR ($1 <> '' AND lower(email) LIKE '%' || split_part(lower($1), '@', 1) || '%'))
             OR ($2 <> '' AND replace(replace(replace(whatsapp, '-', ''), ' ', ''), '+', '') LIKE '%' || $2 || '%')

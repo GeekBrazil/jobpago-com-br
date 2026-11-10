@@ -26,8 +26,9 @@ async function garantirTabela() {
   await pool.query(`CREATE TABLE IF NOT EXISTS disponibilidades (
     id SERIAL PRIMARY KEY, nome VARCHAR(80) NOT NULL, whatsapp VARCHAR(20) NOT NULL, email VARCHAR(200),
     cidade VARCHAR(80), uf CHAR(2), na_estrada BOOLEAN DEFAULT FALSE, categorias TEXT[] NOT NULL,
-    faz TEXT, modo VARCHAR(12), quando VARCHAR(20), lgpd_consent BOOLEAN NOT NULL,
+    faz TEXT, modo VARCHAR(12), quando VARCHAR(20), sites_links TEXT[] DEFAULT '{}', lgpd_consent BOOLEAN NOT NULL,
     status VARCHAR(20) DEFAULT 'nova', criado_em TIMESTAMPTZ DEFAULT now())`);
+  await pool.query(`ALTER TABLE disponibilidades ADD COLUMN IF NOT EXISTS sites_links TEXT[] DEFAULT '{}'`);
   tabelaPronta = true;
   return pool;
 }
@@ -68,12 +69,16 @@ export async function POST(req: NextRequest) {
   if (!pool) return NextResponse.json({ ok: false, erro: m("Cadastro indisponível agora. Tente mais tarde.", "Registro no disponible ahora. Probá más tarde.", "Sign-up unavailable right now. Try later.") }, { status: 503 });
   // Filtro de termos (src/config/termos-revisao.ts): segura para revisão manual.
   await garantirColunasMaioridade(pool);
+  const sitesLinks = (Array.isArray(b.sitesLinks) ? b.sitesLinks : [])
+    .map((s: unknown) => txt(s, 200))
+    .filter(Boolean)
+    .slice(0, 9);
   const status = termosParaRevisao(nome, txt(b.faz, 500)).length ? "revisao" : "nova";
   await pool.query(
-    `INSERT INTO disponibilidades (nome, whatsapp, email, cidade, uf, na_estrada, categorias, faz, modo, quando, lgpd_consent, status, maior_18_em)
-     VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,true,$11,now())`,
+    `INSERT INTO disponibilidades (nome, whatsapp, email, cidade, uf, na_estrada, categorias, faz, modo, quando, sites_links, lgpd_consent, status, maior_18_em)
+     VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,true,$12,now())`,
     [nome, whatsapp, emailFinal, txt(b.cidade, 80) || null, txt(b.uf, 2).toUpperCase() || null, b.naEstrada === true,
-     categorias, txt(b.faz, 500) || null, MODOS.has(b.modo) ? b.modo : null, QUANDO.has(b.quando) ? b.quando : null, status]
+     categorias, txt(b.faz, 500) || null, MODOS.has(b.modo) ? b.modo : null, QUANDO.has(b.quando) ? b.quando : null, sitesLinks, status]
   );
 
   if (emailFinal) {

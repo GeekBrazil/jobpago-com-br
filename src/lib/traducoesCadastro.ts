@@ -12,6 +12,9 @@ const TIPOS: Tr = {
   pousada: { es: "Posada", en: "Guesthouse" },
   hotel: { es: "Hotel", en: "Hotel" },
   patio: { es: "Patio de estación / área para motorhome", en: "Gas station yard / motorhome area" },
+  ecommerce: { es: "Tienda Online / E-commerce (100% Digital)", en: "Online Store / E-commerce (100% Digital)" },
+  saas_digital: { es: "Plataforma / SaaS / Agencia Digital (100% Online)", en: "Platform / SaaS / Digital Agency (100% Online)" },
+  servicos_online: { es: "Consultoría / Educación / Servicios Remotos (100% Online)", en: "Consulting / Education / Remote Services (100% Online)" },
 };
 const OFERECE: Tr = {
   seguro: { es: "Portón, recepción o sereno el día de la visita", en: "Gate, reception or night guard on the day of the visit" },
@@ -21,6 +24,9 @@ const OFERECE: Tr = {
   internet: { es: "Internet", en: "Internet" },
   cozinha: { es: "Cocina o comida en el lugar", en: "Kitchen or meals on site" },
   agua: { es: "Agua potable / descarga para motorhome", en: "Drinking water / motorhome dump" },
+  cupom_viajante: { es: "Descuento o beneficio exclusivo para miembros de la red", en: "Exclusive discount or perk for network members" },
+  atendimento_remoto: { es: "Atención 100% online para todo el país", en: "100% online service nationwide" },
+  parceria_comercial: { es: "Alianza comercial / comisión por recomendación", en: "Commercial partnership / referral commission" },
 };
 const HONRA_NOME: Tr = {
   ouro: { es: "Socio · Honor Oro", en: "Partner · Gold Honour" },

@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 import { useIdioma } from "@/components/useIdioma";
 import { L } from "@/lib/i18n";
@@ -14,11 +14,52 @@ function abrirWhats(msg: string) {
   else window.open(url, "_blank", "noopener,noreferrer");
 }
 
+const CENAS_KEYNOTE = [
+  {
+    tempo: 0,
+    tag: "01 · RÉPLICA 3D + PIX DIRETO",
+    titulo: "Cassa Rosa 3D",
+    sub: "Seu cliente gira o chalé em 3D, ouve o mar e reserva no seu Pix sem comissão",
+    href: "/cassarosa",
+  },
+  {
+    tempo: 3.5,
+    tag: "02 · GLOBO 3D INTERATIVO",
+    titulo: "CarbonTrace 3D",
+    sub: "Planeta 3D em tempo real no navegador com milhares de pontos clicáveis",
+    href: "https://allancandido.com/portfolio/carbontrace/",
+  },
+  {
+    tempo: 7.0,
+    tag: "03 · O CAMPUS & MOTORES 3D",
+    titulo: "O Campus & Masterclass 3D",
+    sub: "Ambiente de ensino interativo e 6 arquiteturas 3D rodando a 120 FPS",
+    href: "https://allancandido.com/portfolio/masterclass-3d/",
+  },
+  {
+    tempo: 10.5,
+    tag: "04 · DASHBOARDS AUTOMÁTICOS",
+    titulo: "Painéis & Mapas de Calor",
+    sub: "Gráficos, preços e alertas que se atualizam sozinhos todos os dias",
+    href: "https://allancandido.com/ferramentas",
+  },
+  {
+    tempo: 14.0,
+    tag: "05 · PLATAFORMAS COM MAPA GPS",
+    titulo: "JobPago & VisitePrado",
+    sub: "Portais completos com login, mapa ao vivo, QR Code e print automático de sites",
+    href: "/",
+  },
+];
+
 export default function PerfilAllanClient() {
   const [idioma] = useIdioma();
   const [xrayActive, setXrayActive] = useState(false);
   const [fps, setFps] = useState(120);
   const [abaAtiva, setAbaAtiva] = useState<"todos" | "software" | "ia" | "drone" | "foto360">("todos");
+  const [cenaAtiva, setCenaAtiva] = useState(0);
+  const [comSomKeynote, setComSomKeynote] = useState(false);
+  const videoRef = useRef<HTMLVideoElement | null>(null);
 
   useEffect(() => {
     let frameCount = 0;
@@ -41,9 +82,27 @@ export default function PerfilAllanClient() {
 
   const t = (pt: string, es: string, en: string) => L(idioma, pt, es, en);
 
+  function irParaCena(idx: number) {
+    setCenaAtiva(idx);
+    if (videoRef.current) {
+      videoRef.current.currentTime = CENAS_KEYNOTE[idx].tempo;
+      videoRef.current.play().catch(() => {});
+    }
+  }
+
+  function alternarSomKeynote() {
+    if (!videoRef.current) return;
+    const novoSom = !comSomKeynote;
+    videoRef.current.muted = !novoSom;
+    if (novoSom) {
+      videoRef.current.play().catch(() => {});
+    }
+    setComSomKeynote(novoSom);
+  }
+
   return (
     <div className="relative">
-      {/* OVERLAY MODO RAIO-X DE ENGENHARIA */}
+      {/* OVERLAY MODO RAIO-X (SÓ APARECE QUANDO QUEM É TÉCNICO CLICA NO BOTÃO) */}
       {xrayActive && (
         <div
           className="fixed inset-0 pointer-events-none z-30"
@@ -60,11 +119,11 @@ export default function PerfilAllanClient() {
         <div className="fixed bottom-5 left-1/2 -translate-x-1/2 z-50 bg-slate-950/95 border border-cyan-400/50 rounded-2xl px-4 py-2.5 shadow-[0_0_30px_rgba(6,182,212,0.3)] flex flex-wrap items-center justify-center gap-4 text-xs font-mono text-cyan-300">
           <span className="flex items-center gap-1.5">
             <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
-            RENDER: <strong>{fps} FPS</strong>
+            TAXA DE QUADROS: <strong>{fps} FPS</strong>
           </span>
-          <span>STACK: <strong>Next.js + Three.js WebGL + Blender</strong></span>
-          <span>INFRA: <strong>Hetzner VPS + Docker + Traefik v3</strong></span>
-          <span>LIQUIDAÇÃO: <strong>PIX Direto (0% taxa)</strong></span>
+          <span>BASTIDORES TÉCNICOS: <strong>Next.js + Three.js WebGL + Blender</strong></span>
+          <span>SERVIDOR PRÓPRIO: <strong>Docker + VPS Dedicada</strong></span>
+          <span>RECEBIMENTO: <strong>PIX Direto (0% comissão)</strong></span>
         </div>
       )}
 
@@ -99,28 +158,28 @@ export default function PerfilAllanClient() {
             </h1>
             <p className="mt-2 text-base sm:text-xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-amber-300 via-cyan-300 to-emerald-300">
               {t(
-                "Engenharia de Software Sob Medida · Sistemas Autônomos de IA · Filmagens com Drone 4K · Fotografia 360°",
-                "Ingeniería de Software a Medida · Sistemas Autónomos de IA · Filmación con Dron 4K · Fotografía 360°",
-                "Custom Software Engineering · Autonomous AI Systems · 4K Drone Filming · 360° Photography"
+                "Sites 3D & Sistemas Prontos para Vender · Atendimento Autônomo 24h com IA · Drone 4K · Tour Virtual 360°",
+                "Sitios 3D y Sistemas Listos para Vender · Atención Autónoma 24h con IA · Dron 4K · Tour Virtual 360°",
+                "3D Websites & Ready-to-Sell Systems · 24/7 Autonomous AI · 4K Drone · 360° Virtual Tours"
               )}
             </p>
 
             <p className="mt-4 text-sm sm:text-base text-slate-300 leading-relaxed">
               {t(
-                "Desenvolvedor full-stack, arquiteto de sistemas autônomos e produtor audiovisual em expedição pelo litoral brasileiro (Fortaleza → Paraty). Construo desde plataformas completas, portais de reserva direta e sites 3D a 120 FPS até assistentes operacionais que atendem e vendem 24h no WhatsApp, aliados à captação presencial com Drone 4K e Tours Virtuais em 360° para pousadas, hotéis, marinas e empresas.",
-                "Desarrollador full-stack, arquitecto de sistemas autónomos y productor audiovisual en expedición por la costa brasileña (Fortaleza → Paraty). Construyo desde plataformas completas, portales de reserva directa y sitios 3D a 120 FPS hasta asistentes operativos que atienden y venden 24h por WhatsApp, junto con filmación en Dron 4K y Tours Virtuales 360°.",
-                "Full-stack software engineer, autonomous systems architect and audiovisual producer on an expedition along the Brazilian coast (Fortaleza → Paraty). I build everything from custom SaaS platforms, direct booking portals and 120 FPS 3D websites to 24/7 WhatsApp operational AI systems, combined with on-site 4K Drone filming and interactive 360° Virtual Tours."
+                "Você não precisa entender de programação para ter um sistema de alto nível trabalhando pela sua empresa. Eu entrego tudo pronto, testado e rodando no seu próprio endereço: desde sites onde seu cliente gira sua pousada ou produto em 3D e paga direto no seu Pix (sem pagar comissão para plataformas), até assistentes que respondem áudios no WhatsApp e atendem ligações 24h por dia, somados a filmagens aéreas com Drone 4K e Tours Virtuais 360°.",
+                "No necesitás saber de programación para tener un sistema de primer nivel trabajando para tu empresa. Entrego todo listo y funcionando: desde sitios donde tu cliente gira tu posada o producto en 3D y paga directo por Pix, hasta asistentes que responden audios por WhatsApp las 24h, filmación con Dron 4K y Tours Virtuales 360°.",
+                "You don't need to know tech jargon to have a world-class system working for your business. I deliver everything ready and running on your own domain: from 3D interactive websites with direct Pix booking (zero platform commissions) to 24/7 WhatsApp & phone AI receptionists, plus 4K Drone filming and 360° Virtual Tours."
               )}
             </p>
 
             {/* TAGS DAS TRIBOS / CATEGORIAS NO JOBPAGO */}
             <div className="mt-5 flex flex-wrap gap-2">
               {[
-                ["💻 Tecnologia & Software Sob Medida", "bg-cyan-500/15 border-cyan-500/35 text-cyan-300"],
-                ["🤖 Sistemas Autônomos & IA Operacional", "bg-emerald-500/15 border-emerald-500/35 text-emerald-300"],
+                ["💻 Sites 3D & Sistemas Entregues Prontos", "bg-cyan-500/15 border-cyan-500/35 text-cyan-300"],
+                ["🤖 Atendimento Autônomo 24h (WhatsApp & Voz)", "bg-emerald-500/15 border-emerald-500/35 text-emerald-300"],
                 ["🚁 Filmagem Aérea com Drone 4K", "bg-amber-500/15 border-amber-500/35 text-amber-300"],
                 ["🌐 Fotografia 360° & Tour Virtual", "bg-purple-500/15 border-purple-500/35 text-purple-300"],
-                ["🎨 WebGL 3D & Design 120 FPS", "bg-pink-500/15 border-pink-500/35 text-pink-300"],
+                ["📊 Painéis que Buscam Dados Sozinhos", "bg-pink-500/15 border-pink-500/35 text-pink-300"],
               ].map(([rotulo, cor]) => (
                 <span key={rotulo} className={`px-3 py-1.5 rounded-xl border text-xs font-bold ${cor}`}>
                   {rotulo}
@@ -145,14 +204,14 @@ export default function PerfilAllanClient() {
                       : "bg-white/[0.06] text-cyan-300 border-cyan-500/30 hover:border-cyan-400"
                   }`}
                 >
-                  🩻 {xrayActive ? "Raio-X ON" : "Modo Raio-X"}
+                  🩻 {xrayActive ? "Bastidores ON" : "Ver Bastidores"}
                 </button>
               </div>
 
               <div className="mt-3 space-y-2 text-xs text-slate-300">
                 <p className="flex items-center justify-between">
                   <span className="text-slate-400">Modalidade:</span>
-                  <strong className="text-white">100% Remoto ou Na Rota</strong>
+                  <strong className="text-white">100% Online ou Na Rota</strong>
                 </p>
                 <p className="flex items-center justify-between">
                   <span className="text-slate-400">Pagamento:</span>
@@ -163,7 +222,7 @@ export default function PerfilAllanClient() {
                   <strong className="text-emerald-300">Fortaleza → Paraty</strong>
                 </p>
                 <p className="flex items-center justify-between">
-                  <span className="text-slate-400">Permuta de Hospedagem:</span>
+                  <span className="text-slate-400">Permuta de Estadia:</span>
                   <strong className="text-white">Aceita na Expedição</strong>
                 </p>
               </div>
@@ -174,7 +233,7 @@ export default function PerfilAllanClient() {
                 type="button"
                 onClick={() =>
                   abrirWhats(
-                    "Olá Allan! Vi seu perfil profissional no JobPago (Software, Sistemas Autônomos de IA, Drone e Foto 360°) e gostaria de conversar sobre um projeto."
+                    "Olá Allan! Vi seu perfil no JobPago e quero conversar sobre um projeto para o meu negócio."
                   )
                 }
                 className="w-full btn-primary-amalfi py-3.5 px-4 rounded-xl text-xs sm:text-sm font-black flex items-center justify-center gap-2 cursor-pointer active:scale-95 transition-transform"
@@ -185,7 +244,7 @@ export default function PerfilAllanClient() {
                 href="/refugio"
                 className="w-full btn-secondary-glass py-2.5 px-4 rounded-xl text-xs font-bold text-amber-300 border-amber-500/30 hover:border-amber-400 flex items-center justify-center gap-1.5"
               >
-                <span>🏨 Pedir Visita no Meu Estabelecimento</span>
+                <span>🏨 Cadastrar Meu Negócio (Físico ou Online)</span>
               </Link>
             </div>
           </div>
@@ -194,9 +253,9 @@ export default function PerfilAllanClient() {
         {/* BARRA DE FILTRO RÁPIDO DAS 4 FRENTES DE ATUAÇÃO */}
         <div className="mt-8 pt-6 border-t border-white/10 flex flex-wrap items-center gap-2">
           {[
-            { id: "todos", label: "⚡ Visão Completa (4 Frentes)" },
-            { id: "software", label: "💻 1. Software Sob Medida & Web 120 FPS" },
-            { id: "ia", label: "🤖 2. Sistemas Autônomos & Operação IA" },
+            { id: "todos", label: "⚡ Visão Completa (Tudo o que Entrego Pronto)" },
+            { id: "software", label: "💻 1. Sites 3D, Portais & Painéis Prontos" },
+            { id: "ia", label: "🤖 2. Atendimento 24h no WhatsApp & Telefone" },
             { id: "drone", label: "🚁 3. Filmagens com Drone 4K" },
             { id: "foto360", label: "🌐 4. Fotografia 360° & Tour Virtual" },
           ].map((aba) => (
@@ -217,118 +276,273 @@ export default function PerfilAllanClient() {
       </section>
 
       {/* ====================================================================
-          FRENTE 1: DESENVOLVIMENTO DE SOFTWARE PERSONALIZADO & WEB 3D 120 FPS
+          KEYNOTE SHOWCASE VIDEO (ESTILO APPLE / TESLA LAUNCH)
+          Projetos 3D, Dashboards, O Campus e Portais rolando e sendo clicados
+          ==================================================================== */}
+      <section id="keynote-video" className="mt-10 glass-panel rounded-3xl p-5 sm:p-8 border border-cyan-500/35 shadow-2xl relative overflow-hidden">
+        <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-5">
+          <div>
+            <span className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-cyan-500/15 border border-cyan-500/35 text-cyan-300 text-[11px] font-mono font-bold uppercase tracking-wider">
+              🎬 APRESENTAÇÃO KEYNOTE · PROJETOS EM AÇÃO NO NAVEGADOR
+            </span>
+            <h2 className="text-xl sm:text-3xl font-black text-white mt-2">
+              Veja os Sites 3D, os Dashboards e O Campus Funcionando na Prática
+            </h2>
+            <p className="text-xs sm:text-sm text-slate-300 mt-1">
+              Assista aos projetos rolando e sendo clicados em tempo real (com trilha sonora estilo Keynote) ou clique em qualquer cena abaixo para pular direto.
+            </p>
+          </div>
+
+          <div className="flex items-center gap-2 shrink-0 flex-wrap">
+            <button
+              type="button"
+              onClick={alternarSomKeynote}
+              className={`px-4 py-2.5 rounded-xl text-xs font-black border transition-all cursor-pointer flex items-center gap-2 ${
+                comSomKeynote
+                  ? "bg-amber-400 text-slate-950 border-amber-300 shadow-lg"
+                  : "bg-white/[0.06] text-amber-300 border-amber-500/40 hover:border-amber-400"
+              }`}
+            >
+              <span>{comSomKeynote ? "🔊 Música Keynote Ativa" : "🔈 Ativar Música de Keynote"}</span>
+            </button>
+            <a
+              href="/vitrine/keynote-allan-3d.mp4"
+              download="Keynote-Projetos-Allan-Candido.mp4"
+              className="btn-secondary-glass px-4 py-2.5 rounded-xl text-xs font-bold text-slate-200 border-white/15 hover:border-white/40"
+            >
+              ⬇ Baixar Vídeo (.MP4)
+            </a>
+          </div>
+        </div>
+
+        {/* PLAYER DE VÍDEO KEYNOTE */}
+        <div className="rounded-2xl overflow-hidden border border-white/15 bg-slate-950 shadow-2xl relative">
+          <video
+            ref={videoRef}
+            src="/vitrine/keynote-allan-3d.mp4"
+            autoPlay
+            loop
+            muted={!comSomKeynote}
+            playsInline
+            controls
+            onTimeUpdate={(e) => {
+              const tAtual = e.currentTarget.currentTime;
+              const idx = Math.min(CENAS_KEYNOTE.length - 1, Math.floor(tAtual / 3.5));
+              if (idx !== cenaAtiva) setCenaAtiva(idx);
+            }}
+            className="w-full h-auto max-h-[540px] object-contain mx-auto"
+          />
+        </div>
+
+        {/* SELETOR DE CENAS DO KEYNOTE (CLIQUE PARA PULAR OU ABRIR O PROJETO) */}
+        <div className="mt-5 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-3">
+          {CENAS_KEYNOTE.map((c, idx) => {
+            const ativo = cenaAtiva === idx;
+            return (
+              <div
+                key={c.titulo}
+                onClick={() => irParaCena(idx)}
+                className={`rounded-2xl p-3.5 border transition-all cursor-pointer flex flex-col justify-between ${
+                  ativo
+                    ? "bg-cyan-500/15 border-cyan-400 shadow-[0_0_20px_rgba(6,182,212,0.2)]"
+                    : "bg-white/[0.03] border-white/10 hover:border-white/30"
+                }`}
+              >
+                <div>
+                  <span className="text-[10px] font-mono font-bold text-cyan-300 uppercase block">{c.tag}</span>
+                  <p className="text-sm font-black text-white mt-1">{c.titulo}</p>
+                  <p className="text-[11px] text-slate-300 mt-1 leading-snug">{c.sub}</p>
+                </div>
+                <div className="mt-3 pt-2 border-t border-white/10 flex items-center justify-between text-[11px] font-mono">
+                  <span className="text-amber-300">{ativo ? "▶ Passando agora" : "⏭ Ver no vídeo"}</span>
+                  <a
+                    href={c.href}
+                    target={c.href.startsWith("http") ? "_blank" : undefined}
+                    rel={c.href.startsWith("http") ? "noopener noreferrer" : undefined}
+                    onClick={(e) => e.stopPropagation()}
+                    className="text-cyan-300 hover:underline font-bold"
+                  >
+                    Abrir site ↗
+                  </a>
+                </div>
+              </div>
+            );
+          })}
+        </div>
+      </section>
+
+      {/* ====================================================================
+          FRENTE 1: O QUE EU DEIXO PRONTO E FUNCIONANDO PARA O SEU NEGÓCIO
+          (Linguagem clara para empresários e leigos, focada nos resultados reais)
           ==================================================================== */}
       {(abaAtiva === "todos" || abaAtiva === "software") && (
-        <section id="software-personalizado" className="mt-12 scroll-mt-24">
+        <section id="software-personalizado" className="mt-14 scroll-mt-24">
           <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 mb-6">
             <div>
               <span className="text-xs font-mono font-bold uppercase tracking-widest text-cyan-400">
-                01 · ENGENHARIA DE SOFTWARE & SISTEMAS SOB MEDIDA
+                01 · SITES 3D, SISTEMAS DE RESERVA, DASHBOARDS & PLATAFORMAS PRONTAS
               </span>
               <h2 className="text-2xl sm:text-4xl font-black text-white mt-1">
-                Desenvolvimento de Software Personalizado & Sites 3D a 120 FPS
+                O Que Eu Entrego Pronto e Funcionando para a Sua Empresa
               </h2>
               <p className="text-sm sm:text-base text-slate-300 mt-2 max-w-3xl">
-                Aplicações web modernas, plataformas SaaS, motores de reserva direta sem comissão e experiências interativas 3D esculpidas no Blender — sem templates prontos e sem lentidão.
+                Em vez de falar difícil com siglas de informática, veja na prática o que eu construo e entrego pronto no endereço da sua empresa (`.com.br`), igual ao que já roda nos meus próprios negócios:
               </p>
             </div>
             <button
               type="button"
               onClick={() =>
                 abrirWhats(
-                  "Olá Allan! Vi seu perfil no JobPago e quero conversar sobre desenvolvimento de software personalizado / site de alta conversão."
+                  "Olá Allan! Vi seu perfil no JobPago e quero conversar sobre criar um site 3D / sistema sob medida para o meu negócio."
                 )
               }
               className="btn-secondary-glass px-5 py-2.5 rounded-xl text-xs font-bold text-cyan-300 border-cyan-500/30 hover:border-cyan-400 shrink-0 cursor-pointer"
             >
-              Solicitar Orçamento de Software →
+              Pedir Orçamento para o Meu Negócio →
             </button>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5">
-            <div className="glass-panel rounded-3xl p-6 border border-cyan-500/25 flex flex-col justify-between">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            {/* ENTREGA PRONTA 1: MAQUETE 3D + RESERVA PIX DIRETO */}
+            <div className="glass-panel rounded-3xl p-6 sm:p-7 border border-pink-500/30 flex flex-col justify-between">
               <div>
-                <div className="flex items-center justify-between mb-4">
-                  <span className="text-2xl">⚙️</span>
-                  <span className="text-[10px] font-mono font-bold uppercase px-2.5 py-1 rounded-full bg-cyan-500/15 text-cyan-300 border border-cyan-500/30">
-                    FULL-STACK & SAAS
+                <div className="flex items-center justify-between mb-4 flex-wrap gap-2">
+                  <span className="px-3 py-1 rounded-full bg-pink-500/15 border border-pink-500/30 text-pink-300 text-xs font-mono font-bold uppercase">
+                    🏡 PARA POUSADAS, CHALÉS, HOTÉIS, BARCOS & PRODUTOS
                   </span>
+                  <span className="text-xs font-mono text-emerald-300 font-bold">Zero comissão de terceiros</span>
                 </div>
-                <h3 className="text-lg font-black text-white">
-                  Sistemas Web Personalizados & Portais
+                <h3 className="text-xl sm:text-2xl font-black text-white">
+                  1. Site com Réplica 3D do Seu Espaço + Reserva Direta no Seu Pix
                 </h3>
-                <p className="mt-2 text-xs sm:text-sm text-slate-300 leading-relaxed">
-                  Desenvolvimento de plataformas do zero em Next.js, React, Node.js, Python e PostgreSQL: áreas de membros, painéis operacionais, gestão de pedidos, controle de frotas, assinaturas e integração direta com Pix (Mercado Pago, Asaas, bancos) e ERPs.
+                <p className="mt-3 text-xs sm:text-sm text-slate-300 leading-relaxed">
+                  <strong>O que você recebe pronto:</strong> Eu recrio o seu chalé, pousada, barco ou produto em <strong>3D idêntico às suas fotos reais</strong>. Quando o cliente abre o seu site no celular, a câmera passeia pelo seu espaço conforme ele rola a tela, ele escuta o som ambiente (como o barulho do mar), assiste aos vídeos reais lado a lado e já clica para <strong>reservar e pagar direto no seu Pix</strong> — sem você perder 15% a 20% de comissão para sites de reserva.
                 </p>
+                <ul className="mt-4 space-y-1.5 text-xs text-slate-200">
+                  <li>✓ Réplica 3D fiel da sua arquitetura que abre leve em qualquer celular</li>
+                  <li>✓ Vídeos verticais lado a lado, galeria de fotos reais e som ambiente</li>
+                  <li>✓ Botões estilo jogo / aplicativo que levam o cliente direto para o seu WhatsApp e Pix</li>
+                </ul>
               </div>
-              <p className="mt-4 pt-3 border-t border-white/10 text-[11px] font-mono text-cyan-300">
-                ✓ Código próprio · Zero mensalidade de plataforma alugada
-              </p>
+              <div className="mt-6 pt-4 border-t border-white/10 flex items-center justify-between flex-wrap gap-3">
+                <span className="text-xs text-slate-400">
+                  Prova real pronta: <strong className="text-white">Cassa Rosa</strong>
+                </span>
+                <Link
+                  href="/cassarosa"
+                  className="btn-secondary-glass px-4 py-2 rounded-xl text-xs font-bold text-pink-300 border-pink-500/35 hover:border-pink-400"
+                >
+                  Testar Réplica 3D Cassa Rosa ao Vivo →
+                </Link>
+              </div>
             </div>
 
-            <div className="glass-panel rounded-3xl p-6 border border-cyan-500/25 flex flex-col justify-between">
+            {/* ENTREGA PRONTA 2: PLATAFORMAS COMPLETAS, MAPA GPS E VITRINE COM PRINT AUTOMÁTICO */}
+            <div className="glass-panel rounded-3xl p-6 sm:p-7 border border-amber-500/30 flex flex-col justify-between">
               <div>
-                <div className="flex items-center justify-between mb-4">
-                  <span className="text-2xl">🧊</span>
-                  <span className="text-[10px] font-mono font-bold uppercase px-2.5 py-1 rounded-full bg-pink-500/15 text-pink-300 border border-pink-500/30">
-                    BLENDER + WEBGL 120 FPS
+                <div className="flex items-center justify-between mb-4 flex-wrap gap-2">
+                  <span className="px-3 py-1 rounded-full bg-amber-500/15 border border-amber-500/30 text-amber-300 text-xs font-mono font-bold uppercase">
+                    🗺️ PARA REDES DE NEGÓCIOS, TURISMO & MARKETPLACES
                   </span>
+                  <span className="text-xs font-mono text-amber-300 font-bold">Com login, mapa e QR Code</span>
                 </div>
-                <h3 className="text-lg font-black text-white">
-                  Réplicas 3D & Sites Cinematográficos
+                <h3 className="text-xl sm:text-2xl font-black text-white">
+                  2. Portais Completos com Mapa GPS, Cadastro de Clientes e Vitrine Automática
                 </h3>
-                <p className="mt-2 text-xs sm:text-sm text-slate-300 leading-relaxed">
-                  Modelagem 3D fiel da arquitetura da sua pousada, produto ou empreendimento no Blender e renderização interativa no navegador com Three.js a 120 FPS, áudio espacial e rolagem fluida (como no projeto Cassa Rosa).
+                <p className="mt-3 text-xs sm:text-sm text-slate-300 leading-relaxed">
+                  <strong>O que você recebe pronto:</strong> Uma plataforma completa com a sua marca onde seus clientes ou parceiros entram com login do Google, cadastram serviços ou estabelecimentos (físicos ou 100% online), colam os links dos sites deles (e o sistema <strong>tira o print da tela sozinho e monta os cards</strong>), aparecem no mapa interativo por cidade e recebem cartões digitais com QR Code.
                 </p>
+                <ul className="mt-4 space-y-1.5 text-xs text-slate-200">
+                  <li>✓ Mapa ao vivo com rotas, cálculo de combustível/pedágio e guia de cidades</li>
+                  <li>✓ Sistema de pontuação, níveis, selos de verificação e indicação premiada</li>
+                  <li>✓ Funciona em português, espanhol e inglês com um clique</li>
+                </ul>
               </div>
-              <Link
-                href="/cassarosa"
-                className="mt-4 pt-3 border-t border-white/10 text-[11px] font-mono font-bold text-pink-300 hover:underline flex items-center justify-between"
-              >
-                <span>Ver réplica 3D Cassa Rosa ao vivo</span>
-                <span>↗</span>
-              </Link>
+              <div className="mt-6 pt-4 border-t border-white/10 flex items-center justify-between flex-wrap gap-3">
+                <span className="text-xs text-slate-400">
+                  Provas reais: <strong className="text-white">JobPago & VisitePrado</strong>
+                </span>
+                <a
+                  href="https://www.visiteprado.com.br"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="btn-secondary-glass px-4 py-2 rounded-xl text-xs font-bold text-amber-300 border-amber-500/35 hover:border-amber-400"
+                >
+                  Ver Portal VisitePrado.com.br ↗
+                </a>
+              </div>
             </div>
 
-            <div className="glass-panel rounded-3xl p-6 border border-cyan-500/25 flex flex-col justify-between">
+            {/* ENTREGA PRONTA 3: PAINÉIS DE CONTROLE (DASHBOARDS) QUE BUSCAM DADOS SOZINHOS */}
+            <div className="glass-panel rounded-3xl p-6 sm:p-7 border border-cyan-500/30 flex flex-col justify-between">
               <div>
-                <div className="flex items-center justify-between mb-4">
-                  <span className="text-2xl">📡</span>
-                  <span className="text-[10px] font-mono font-bold uppercase px-2.5 py-1 rounded-full bg-emerald-500/15 text-emerald-300 border border-emerald-500/30">
-                    PIPELINES & APIS
+                <div className="flex items-center justify-between mb-4 flex-wrap gap-2">
+                  <span className="px-3 py-1 rounded-full bg-cyan-500/15 border border-cyan-500/30 text-cyan-300 text-xs font-mono font-bold uppercase">
+                    📊 PARA QUEM QUER SAIR DAS PLANILHAS MANUAIS
                   </span>
+                  <span className="text-xs font-mono text-cyan-300 font-bold">Atualiza sozinho todo dia</span>
                 </div>
-                <h3 className="text-lg font-black text-white">
-                  Engenharia de Dados & Integrações
+                <h3 className="text-xl sm:text-2xl font-black text-white">
+                  3. Painéis de Controle (Dashboards) e Mapas Inteligentes em Tempo Real
                 </h3>
-                <p className="mt-2 text-xs sm:text-sm text-slate-300 leading-relaxed">
-                  Coletores automatizados (ETL), integração de múltiplas APIs REST/GraphQL, cruzamento geoespacial (PostGIS / OpenStreetMap / OSRM), geração dinâmica de cards e relatórios automatizados em tempo real.
+                <p className="mt-3 text-xs sm:text-sm text-slate-300 leading-relaxed">
+                  <strong>O que você recebe pronto:</strong> Em vez de perder horas copiando informações de vários sites para uma planilha, eu deixo pronto um painel visual no seu celular e computador que <strong>busca os dados sozinho todos os dias</strong>, organiza tudo em gráficos fáceis de ler, pinta mapas de calor por cidade ou região e avisa você no WhatsApp quando aparece uma oportunidade nova.
                 </p>
+                <ul className="mt-4 space-y-1.5 text-xs text-slate-200">
+                  <li>✓ Filtros rápidos por cidade, estado, faixa de preço e categoria</li>
+                  <li>✓ Comparador lado a lado com geração de imagem pronta para compartilhar</li>
+                  <li>✓ Globo 3D e mapas interativos que mostram milhares de registros sem travar</li>
+                </ul>
               </div>
-              <p className="mt-4 pt-3 border-t border-white/10 text-[11px] font-mono text-emerald-300">
-                ✓ PostgreSQL · PostGIS · Webhooks em tempo real
-              </p>
+              <div className="mt-6 pt-4 border-t border-white/10 flex items-center justify-between flex-wrap gap-3">
+                <span className="text-xs text-slate-400">
+                  Prova real: <strong className="text-white">CarbonTrace 3D & Painéis ao Vivo</strong>
+                </span>
+                <a
+                  href="https://allancandido.com/portfolio/carbontrace/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="btn-secondary-glass px-4 py-2 rounded-xl text-xs font-bold text-cyan-300 border-cyan-500/35 hover:border-cyan-400"
+                >
+                  Abrir Globo 3D CarbonTrace ↗
+                </a>
+              </div>
             </div>
 
-            <div className="glass-panel rounded-3xl p-6 border border-cyan-500/25 flex flex-col justify-between">
+            {/* ENTREGA PRONTA 4: O CAMPUS, ÁREA DE MEMBROS & CATÁLOGOS DE MILHARES DE ITENS */}
+            <div className="glass-panel rounded-3xl p-6 sm:p-7 border border-emerald-500/30 flex flex-col justify-between">
               <div>
-                <div className="flex items-center justify-between mb-4">
-                  <span className="text-2xl">🛡️</span>
-                  <span className="text-[10px] font-mono font-bold uppercase px-2.5 py-1 rounded-full bg-amber-500/15 text-amber-300 border border-amber-500/30">
-                    DOCKER & VPS
+                <div className="flex items-center justify-between mb-4 flex-wrap gap-2">
+                  <span className="px-3 py-1 rounded-full bg-emerald-500/15 border border-emerald-500/30 text-emerald-300 text-xs font-mono font-bold uppercase">
+                    🎓 PARA ESCOLAS, MENTORIAS, INFOPRODUTOS & LOJAS ONLINE
                   </span>
+                  <span className="text-xs font-mono text-emerald-300 font-bold">Sem mensalidade de plataforma</span>
                 </div>
-                <h3 className="text-lg font-black text-white">
-                  Infraestrutura Dedicada & Deploy Contínuo
+                <h3 className="text-xl sm:text-2xl font-black text-white">
+                  4. O Campus (Área de Alunos Interativa), Livros Digitais & Catálogos de Lojas
                 </h3>
-                <p className="mt-2 text-xs sm:text-sm text-slate-300 leading-relaxed">
-                  Arquitetura conteinerizada em Docker sobre servidores Linux dedicados (Hetzner VPS), com proxy reverso Traefik v3, certificados SSL automáticos, proteção Cloudflare e alta velocidade de carregamento (100 PageSpeed).
+                <p className="mt-3 text-xs sm:text-sm text-slate-300 leading-relaxed">
+                  <strong>O que você recebe pronto:</strong> Uma plataforma de ensino e demonstração estilo <strong>O Campus</strong> ou uma vitrine comercial para milhares de produtos. Seus alunos ou clientes acessam aulas, apostilas interativas, calculadoras práticas e demonstrações ao vivo direto no navegador, ou compram produtos do seu catálogo com rapidez — tudo seu, sem ficar refém de mensalidades caras.
                 </p>
+                <ul className="mt-4 space-y-1.5 text-xs text-slate-200">
+                  <li>✓ Leitor de livros e materiais didáticos online com sumário inteligente</li>
+                  <li>✓ Laboratório interativo onde o aluno testa ferramentas em tempo real</li>
+                  <li>✓ Vitrine comercial organizada para +5.000 itens com busca instantânea</li>
+                </ul>
               </div>
-              <p className="mt-4 pt-3 border-t border-white/10 text-[11px] font-mono text-amber-300">
-                ✓ Sub-50ms TTFB · Zero Downtime Deploy
-              </p>
+              <div className="mt-6 pt-4 border-t border-white/10 flex items-center justify-between flex-wrap gap-3">
+                <span className="text-xs text-slate-400">
+                  Prova real: <strong className="text-white">Masterclass 3D & O Campus</strong>
+                </span>
+                <a
+                  href="https://allancandido.com/portfolio/masterclass-3d/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="btn-secondary-glass px-4 py-2 rounded-xl text-xs font-bold text-emerald-300 border-emerald-500/35 hover:border-emerald-400"
+                >
+                  Explorar Masterclass 3D Ao Vivo ↗
+                </a>
+              </div>
             </div>
           </div>
         </section>
@@ -336,10 +550,9 @@ export default function PerfilAllanClient() {
 
       {/* ====================================================================
           FRENTE 2: SISTEMAS AUTÔNOMOS DE ATENDIMENTO, VENDAS & OPERAÇÃO (IA)
-          (Termo executivo e prático no lugar de jargão genérico "agentes de IA")
           ==================================================================== */}
       {(abaAtiva === "todos" || abaAtiva === "ia") && (
-        <section id="sistemas-autonomos-ia" className="mt-14 scroll-mt-24">
+        <section id="ia" className="mt-14 scroll-mt-24">
           <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 mb-6">
             <div>
               <span className="text-xs font-mono font-bold uppercase tracking-widest text-emerald-400">
@@ -349,14 +562,14 @@ export default function PerfilAllanClient() {
                 Atendimento 24h no WhatsApp, Recepção no 1º Toque & Automação Operacional
               </h2>
               <p className="text-sm sm:text-base text-slate-300 mt-2 max-w-3xl">
-                Mais do que robôs de menu engessado: construo sistemas autônomos treinados nas regras da sua empresa que ouvem áudios, tiram dúvidas específicas, consultam agenda, calculam propostas e preparam o fechamento no Pix 24 horas por dia.
+                Esqueça aqueles robôs irritantes de "digite 1, digite 2". Eu deixo pronto um assistente inteligente treinado com os preços e regras da sua empresa que escuta áudios longos, responde clientes de madrugada, agenda horários e prepara o fechamento no seu Pix.
               </p>
             </div>
             <button
               type="button"
               onClick={() =>
                 abrirWhats(
-                  "Olá Allan! Vi seu perfil no JobPago e quero implantar um Sistema Autônomo de Atendimento e Operação com IA na minha empresa."
+                  "Olá Allan! Vi seu perfil no JobPago e quero implantar um Sistema Autônomo de Atendimento 24h na minha empresa."
                 )
               }
               className="btn-secondary-glass px-5 py-2.5 rounded-xl text-xs font-bold text-emerald-300 border-emerald-500/30 hover:border-emerald-400 shrink-0 cursor-pointer"
@@ -379,12 +592,12 @@ export default function PerfilAllanClient() {
                   Central Autônoma de Atendimento & Reservas no WhatsApp
                 </h3>
                 <p className="mt-3 text-xs sm:text-sm text-slate-300 leading-relaxed">
-                  Treinado com as tarifas, fotos, regras e catálogo real do seu negócio. Transcreve áudios longos de clientes em segundos, responde em português, espanhol ou inglês, calcula o valor exato da estadia ou serviço e encaminha o resumo pronto para você receber no Pix.
+                  Treinado com as tarifas, fotos, regras e catálogo real do seu negócio. Escuta áudios de clientes em segundos, responde em português, espanhol ou inglês, calcula o valor exato da estadia ou serviço e encaminha o resumo pronto para você receber no Pix.
                 </p>
                 <ul className="mt-4 space-y-1.5 text-xs text-slate-300">
-                  <li>✓ Transcrição instantânea de mensagens de voz</li>
-                  <li>✓ Envio contextual de fotos, vídeos e localização</li>
-                  <li>✓ Triagem completa antes de acionar o dono</li>
+                  <li>✓ Ouve e entende mensagens de voz dos clientes</li>
+                  <li>✓ Envia fotos, vídeos e localização automaticamente</li>
+                  <li>✓ Tira todas as dúvidas antes de passar o pedido pronto para você</li>
                 </ul>
               </div>
               <button
@@ -413,12 +626,12 @@ export default function PerfilAllanClient() {
                   Atendimento que Não Perde Ligação + Agenda Integrada
                 </h3>
                 <p className="mt-3 text-xs sm:text-sm text-slate-300 leading-relaxed">
-                  Todo telefone que toca sem resposta durante uma reunião, na estrada ou fora do horário comercial é um cliente indo para o concorrente. O sistema entra como encaminhamento no seu próprio número, conversa naturalmente com o cliente e agenda direto no seu calendário ou CRM.
+                  Todo telefone que toca sem resposta durante uma reunião, na estrada ou fora do horário comercial é um cliente indo para o concorrente. O sistema atende no seu próprio número, conversa naturalmente com o cliente, anota o pedido e já marca na sua agenda.
                 </p>
                 <ul className="mt-4 space-y-1.5 text-xs text-slate-300">
-                  <li>✓ Mantém o seu número atual (encaminhamento inteligente)</li>
-                  <li>✓ Integração direta com Google Calendar e CRM</li>
-                  <li>✓ Setup a partir de R$ 1.500 + acompanhamento direto</li>
+                  <li>✓ Você continua usando o seu número de telefone atual</li>
+                  <li>✓ Marca compromissos direto na sua agenda do celular</li>
+                  <li>✓ Manda o resumo de quem ligou no seu WhatsApp na mesma hora</li>
                 </ul>
               </div>
               <button
@@ -439,27 +652,27 @@ export default function PerfilAllanClient() {
               <div>
                 <div className="flex items-center justify-between gap-2 mb-4">
                   <span className="px-3 py-1 rounded-full bg-purple-500/15 border border-purple-500/30 text-purple-300 text-xs font-mono font-bold uppercase">
-                    PROSPECÇÃO B2B & CRM
+                    PROSPECÇÃO & ROTINAS AUTOMÁTICAS
                   </span>
-                  <span className="text-xs font-mono text-slate-400">Dados Oficiais</span>
+                  <span className="text-xs font-mono text-slate-400">Zero trabalho repetitivo</span>
                 </div>
                 <h3 className="text-xl font-black text-white">
-                  Esteiras de Vendas B2B & Automação de Processos Internos
+                  Busca Automática de Novos Clientes & Organização Interna
                 </h3>
                 <p className="mt-3 text-xs sm:text-sm text-slate-300 leading-relaxed">
-                  Conexão direta entre bases públicas (Receita Federal, Cadastur, CAGED) e fluxos automatizados (n8n, Python, APIs) para encontrar empresas reais do seu setor, enriquecer contatos PJ em conformidade com a LGPD e eliminar tarefas repetitivas de planilha.
+                  Deixo pronto um sistema que encontra novas empresas abrindo na sua cidade ou setor, organiza a lista de contatos comerciais, dispara lembretes, orçamentos e avisos automaticamente e mostra num painel simples quem respondeu e quem fechou.
                 </p>
                 <ul className="mt-4 space-y-1.5 text-xs text-slate-300">
-                  <li>✓ Mapeamento de novos negócios abrindo por cidade</li>
-                  <li>✓ Disparo de relatórios, cobranças e avisos por e-mail/WhatsApp</li>
-                  <li>✓ Painel próprio de acompanhamento de conversão</li>
+                  <li>✓ Encontra empresas do setor que você atende por cidade</li>
+                  <li>✓ Envia relatórios, cobranças e avisos sem você precisar lembrar</li>
+                  <li>✓ Painel simples para acompanhar cada venda do início ao Pix</li>
                 </ul>
               </div>
               <button
                 type="button"
                 onClick={() =>
                   abrirWhats(
-                    "Olá Allan! Gostaria de conversar sobre automação operacional e esteiras de prospecção B2B para minha empresa."
+                    "Olá Allan! Gostaria de conversar sobre automação de tarefas e busca de clientes para minha empresa."
                   )
                 }
                 className="mt-6 w-full btn-secondary-glass py-3 rounded-xl text-xs font-bold text-purple-300 border-purple-500/30 hover:border-purple-400 cursor-pointer"
@@ -485,7 +698,7 @@ export default function PerfilAllanClient() {
                     03 · CAPTAÇÃO AÉREA 4K HDR
                   </span>
                   <span className="text-xs font-mono text-emerald-300 bg-emerald-500/10 border border-emerald-500/25 px-2.5 py-1 rounded-full">
-                    SISANT / ANAC · DECEA
+                    Voo Homologado ANAC / DECEA
                   </span>
                 </div>
 
@@ -500,20 +713,16 @@ export default function PerfilAllanClient() {
                   <div className="rounded-2xl bg-white/[0.04] border border-white/10 p-4">
                     <p className="text-xs font-mono font-bold text-amber-300 uppercase">Reels, Shorts & Anúncios</p>
                     <p className="mt-1 text-xs text-slate-300 leading-relaxed">
-                      Vídeos verticais (9:16) prontos para Instagram/TikTok e vídeos horizontais (16:9) para o topo do seu site oficial.
+                      Vídeos verticais prontos para Instagram/TikTok e vídeos horizontais de cinema para a capa do seu site oficial.
                     </p>
                   </div>
                   <div className="rounded-2xl bg-white/[0.04] border border-white/10 p-4">
                     <p className="text-xs font-mono font-bold text-amber-300 uppercase">Obras, Fazendas & Inspeção</p>
                     <p className="mt-1 text-xs text-slate-300 leading-relaxed">
-                      Acompanhamento periódico de evolução de obras, demarcação visual de áreas rurais/costeiras e inspeção de coberturas.
+                      Acompanhamento de evolução de obras, demarcação visual de áreas rurais/costeiras e inspeção de telhados/estruturas.
                     </p>
                   </div>
                 </div>
-
-                <p className="mt-4 text-[11px] text-slate-400">
-                  * Voos comerciais realizados com equipamento homologado (ANATEL), cadastro no SISANT (ANAC) e autorização de espaço aéreo no SARPAS (DECEA). Disponível nas paradas da Expedição Fortaleza → Paraty ou sob agendamento.
-                </p>
               </div>
 
               <div className="mt-6 pt-4 border-t border-white/10 flex flex-wrap items-center justify-between gap-3">
@@ -544,7 +753,7 @@ export default function PerfilAllanClient() {
                     04 · IMERSÃO INTERATIVA 360°
                   </span>
                   <span className="text-xs font-mono text-purple-300 bg-purple-500/10 border border-purple-500/25 px-2.5 py-1 rounded-full">
-                    WEB · MOBILE · VR
+                    CELULAR · COMPUTADOR · VR
                   </span>
                 </div>
 
@@ -552,27 +761,23 @@ export default function PerfilAllanClient() {
                   🌐 Fotografia 360° & Tours Virtuais Interativos
                 </h2>
                 <p className="mt-3 text-sm text-slate-300 leading-relaxed">
-                  Permita que o seu cliente entre dentro da sua pousada, chalé, restaurante, barco ou espaço de eventos direto pela tela do celular antes de reservar. O Tour Virtual 360° elimina a insegurança de quem compra à distância e multiplica as reservas diretas.
+                  Permita que o seu cliente entre dentro da sua pousada, chalé, restaurante, barco ou espaço de eventos direto pela tela do celular antes de reservar. O Tour Virtual 360° elimina a dúvida de quem compra à distância e multiplica as reservas diretas.
                 </p>
 
                 <div className="mt-5 grid grid-cols-1 sm:grid-cols-2 gap-3">
                   <div className="rounded-2xl bg-white/[0.04] border border-white/10 p-4">
-                    <p className="text-xs font-mono font-bold text-purple-300 uppercase">Navegação Cômodo a Cômodo</p>
+                    <p className="text-xs font-mono font-bold text-purple-300 uppercase">Passeio Cômodo a Cômodo</p>
                     <p className="mt-1 text-xs text-slate-300 leading-relaxed">
-                      Hotspots interativos ligando a recepção, piscina, varanda, quartos e praia, com giro livre em 360 graus no dedo ou no mouse.
+                      Setas interativas ligando a recepção, piscina, varanda, quartos e praia, com giro livre em 360 graus no dedo ou no mouse.
                     </p>
                   </div>
                   <div className="rounded-2xl bg-white/[0.04] border border-white/10 p-4">
-                    <p className="text-xs font-mono font-bold text-purple-300 uppercase">Integrado ao Site & Google</p>
+                    <p className="text-xs font-mono font-bold text-purple-300 uppercase">No Seu Site & no Google Maps</p>
                     <p className="mt-1 text-xs text-slate-300 leading-relaxed">
-                      Publicação das fotos esféricas 360° no Google Street View / Meu Negócio e player leve embutido direto no seu site com botão de reserva.
+                      Publicação das fotos 360° no Google Meu Negócio / Street View e tela interativa embutida no seu site com botão de reserva.
                     </p>
                   </div>
                 </div>
-
-                <p className="mt-4 text-[11px] text-slate-400">
-                  * Ideal para combinar no mesmo dia da visita presencial: captação em Drone 4K + Fotos 360° dos quartos + implantação do site próprio com reservas por Pix direto.
-                </p>
               </div>
 
               <div className="mt-6 pt-4 border-t border-white/10 flex flex-wrap items-center justify-between gap-3">
@@ -598,86 +803,96 @@ export default function PerfilAllanClient() {
 
       {/* ====================================================================
           VITRINE DE PROJETOS, SISTEMAS E EXPERIÊNCIAS 3D EM PRODUÇÃO
+          (Mesmo formato de Cards com Print Automático disponível para todos os
+          viajantes e donos de negócios no JobPago!)
           ==================================================================== */}
       <section id="vitrine-projetos" className="mt-16 scroll-mt-24">
-        <div className="mb-8">
-          <span className="text-xs font-mono font-bold uppercase tracking-widest text-amber-400">
-            PROVAS REAIS EM PRODUÇÃO · CÓDIGO E DESIGN AUTORAIS
-          </span>
-          <h2 className="text-2xl sm:text-4xl font-black text-white mt-1">
-            Sistemas, Portais & Experiências 3D Construídos por Allan Cândido
-          </h2>
-          <p className="text-sm sm:text-base text-slate-300 mt-2 max-w-3xl">
-            Cada projeto abaixo está rodando ao vivo. Clique para abrir e testar a velocidade, a fluidez a 120 FPS e os fluxos de conversão no celular ou no computador.
-          </p>
+        <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 mb-8">
+          <div>
+            <span className="text-xs font-mono font-bold uppercase tracking-widest text-amber-400">
+              VITRINE DE SITES COM PRINT AUTOMÁTICO · PROVAS REAIS NO AR
+            </span>
+            <h2 className="text-2xl sm:text-4xl font-black text-white mt-1">
+              Projetos 3D, Portais, Dashboards & O Campus Construídos por Mim
+            </h2>
+            <p className="text-sm sm:text-base text-slate-300 mt-2 max-w-3xl">
+              Clique em qualquer card abaixo para abrir o projeto funcionando ao vivo. <strong>Nota:</strong> qualquer viajante ou dono de negócio (físico ou 100% online) também pode adicionar os links dos seus próprios sites no cadastro do JobPago e ter cards com print automático exatamente como estes!
+            </p>
+          </div>
+          <Link
+            href="/disponibilidade"
+            className="btn-secondary-glass px-4 py-2.5 rounded-xl text-xs font-bold text-amber-300 border-amber-500/35 hover:border-amber-400 shrink-0"
+          >
+            + Adicionar Meus Sites no Meu Perfil →
+          </Link>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {[
             {
-              tag: "BLENDER 3D + RESERVAS PIX DIRETO",
-              titulo: "Cassa Rosa · Refúgio Pé na Areia",
+              tag: "RÉPLICA 3D + RESERVA DIRETA PIX",
+              titulo: "Cassa Rosa · Refúgio Pé na Areia 3D",
               url: "jobpago.com.br/cassarosa",
               href: "/cassarosa",
-              imagem: "/vitrine/visiteprado-720.webp",
+              imagem: "/vitrine/cassarosa-hero.webp",
               cor: "border-pink-500/40",
-              desc: "Réplica arquitetônica 3D fiel do chalé esculpida no Blender e renderizada em tempo real com Three.js, som estéreo das ondas do mar, vídeos verticais lado a lado e motor de reserva direta sem taxas.",
+              desc: "O visitante gira o chalé em 3D pelo celular, escuta o som das ondas do mar, assiste aos vídeos verticais lado a lado e faz a reserva direto no Pix da pousada, sem pagar comissão.",
               cta: "Abrir Cassa Rosa 3D →",
               externo: false,
             },
             {
-              tag: "PLATAFORMA P2P · MAPA GPS & DADOS",
-              titulo: "JobPago.com.br · Renda na Viagem",
+              tag: "GLOBO 3D EM TEMPO REAL NO NAVEGADOR",
+              titulo: "CarbonTrace · Planeta 3D Interativo",
+              url: "allancandido.com/portfolio/carbontrace",
+              href: "https://allancandido.com/portfolio/carbontrace/",
+              imagem: "/vitrine/carbontrace-earthrise.webp",
+              cor: "border-cyan-500/40",
+              desc: "Globo terrestre 3D interativo que mostra milhares de pontos no mapa mundial em tempo real. Você gira o planeta, clica em qualquer ponto e vê o painel completo na hora.",
+              cta: "Abrir Globo 3D ao Vivo ↗",
+              externo: true,
+            },
+            {
+              tag: "O CAMPUS & 6 MOTORES 3D A 120 FPS",
+              titulo: "O Campus & Masterclass 3D",
+              url: "allancandido.com/portfolio/masterclass-3d",
+              href: "https://allancandido.com/portfolio/masterclass-3d/",
+              imagem: "/vitrine/campus-cards.webp",
+              cor: "border-emerald-500/40",
+              desc: "Ambiente de ensino prático e vitrine de 6 estilos de sites 3D interativos (objetos que desmontam ao rolar a página, mapas em relevo e telas com som reativo).",
+              cta: "Testar O Campus & Motores 3D ↗",
+              externo: true,
+            },
+            {
+              tag: "DASHBOARDS QUE ATUALIZAM SOZINHOS",
+              titulo: "Painéis de Controle & Mapas de Calor",
+              url: "allancandido.com/ferramentas",
+              href: "https://allancandido.com/ferramentas",
+              imagem: "/vitrine/ferramentas-720.webp",
+              cor: "border-amber-500/40",
+              desc: "Painéis visuais que buscam informações oficiais todos os dias sozinhos, pintam mapas de calor das 5.570 cidades brasileiras e comparam municípios lado a lado.",
+              cta: "Ver Dashboards ao Vivo ↗",
+              externo: true,
+            },
+            {
+              tag: "PLATAFORMA COM MAPA GPS & QR CODE",
+              titulo: "JobPago.com.br · Rede de Negócios & Renda",
               url: "jobpago.com.br",
               href: "/",
               imagem: "/vitrine/jobpago-720.webp",
               cor: "border-amber-500/40",
-              desc: "Ecossistema completo conectando viajantes, profissionais remotos e negócios da rota Fortaleza → Paraty. Inclui mapa GPS com OSRM, relatórios por município, emissão de QR Code de visita e gamificação.",
+              desc: "Conecta viajantes, profissionais remotos e negócios físicos ou 100% online. Inclui mapa GPS da rota Fortaleza → Paraty, vitrine automática de sites e contratação por Pix.",
               cta: "Explorar Plataforma →",
               externo: false,
             },
             {
-              tag: "PORTAL TURÍSTICO & CARTOGRAFIA",
+              tag: "PORTAL DE TURISMO & MAPA DE PRAIAS",
               titulo: "VisitePrado.com.br · Costa das Baleias",
               url: "visiteprado.com.br",
               href: "https://www.visiteprado.com.br",
               imagem: "/vitrine/visiteprado-720.webp",
               cor: "border-cyan-500/40",
-              desc: "Guia independente e cartografia interativa de praias, falésias e passeios em Prado, Cumuruxatiba e Corumbau (BA), integrado ao OpenStreetMap.",
+              desc: "Portal turístico completo com mapa interativo de praias, falésias, pousadas e passeios de barco em Prado, Cumuruxatiba e Corumbau (BA).",
               cta: "Visitar Portal ao Vivo ↗",
-              externo: true,
-            },
-            {
-              tag: "BENCHMARK 6 MOTORES 3D · 120 FPS",
-              titulo: "Masterclass 3D Scrollytelling",
-              url: "allancandido.com/portfolio/masterclass-3d",
-              href: "https://allancandido.com/portfolio/masterclass-3d/",
-              imagem: "/vitrine/masterclass-3d.webp",
-              cor: "border-emerald-500/40",
-              desc: "Demonstração técnica ao vivo das 6 arquiteturas de animação 3D e WebGL na web: Canvas 2D a 120 FPS, Raymarching, CAD Clipping, SkinnedMesh, GPU Geospatial e Shaders táteis com áudio procedural.",
-              cta: "Testar Benchmark 3D ↗",
-              externo: true,
-            },
-            {
-              tag: "TELEMETRIA & SHADERS WEBGL",
-              titulo: "CarbonTrace Terminal 3D",
-              url: "allancandido.com/portfolio/carbontrace",
-              href: "https://allancandido.com/portfolio/carbontrace/",
-              imagem: "/vitrine/carbontrace-720.webp",
-              cor: "border-cyan-500/30",
-              desc: "Interface interativa de rastreamento de emissões e logística global com visualização 3D acelerada por GPU e rolagem sincronizada a 120 FPS.",
-              cta: "Abrir CarbonTrace 3D ↗",
-              externo: true,
-            },
-            {
-              tag: "E-COMMERCE · +5.000 PRODUTOS",
-              titulo: "Vitrine Oficial Shopee (+5.000 Itens)",
-              url: "shopee.com.br/allancandido",
-              href: "https://shopee.com.br/shop/1231340512",
-              imagem: "/vitrine/ferramentas-720.webp",
-              cor: "border-orange-500/40",
-              desc: "Operação comercial multimercado com mais de 5.000 itens catalogados (eletrônicos, ferramentas, camping, automotivo e utilidades) com despacho nacional em 24h.",
-              cta: "Acessar Loja Oficial ↗",
               externo: true,
             },
           ].map((proj) => (
@@ -740,42 +955,38 @@ export default function PerfilAllanClient() {
       </section>
 
       {/* ====================================================================
-          CHAMADA FINAL DE CONTRATAÇÃO DIRETA (SEM INTERMEDIÁRIOS)
+          CTA FINAL DE CONTRATAÇÃO DIRETA NO PIX
           ==================================================================== */}
-      <section className="mt-16 glass-panel rounded-3xl p-7 sm:p-10 border border-amber-500/35 text-center">
-        <span className="text-xs font-mono font-bold uppercase tracking-widest text-amber-400">
-          CONTATO DIRETO COM QUEM CONSTRÓI · 0% TAXA DE INTERMEDIAÇÃO
-        </span>
-        <h2 className="mt-2 text-2xl sm:text-4xl font-black text-white max-w-2xl mx-auto">
-          Precisa de um sistema sob medida, automação de atendimento com IA, filmagem com drone ou tour 360°?
-        </h2>
-        <p className="mt-3 text-sm sm:text-base text-slate-300 max-w-2xl mx-auto leading-relaxed">
-          Fale direto comigo no WhatsApp. Combinamos o escopo, o prazo e o pagamento direto via Pix (ou permuta de estadia e parceria ao longo da Expedição Fortaleza → Paraty).
-        </p>
+      <section className="mt-16 glass-panel rounded-3xl p-6 sm:p-10 border border-amber-500/40 bg-gradient-to-r from-slate-950 via-slate-900 to-slate-950 flex flex-col lg:flex-row items-start lg:items-center justify-between gap-6 shadow-2xl">
+        <div className="max-w-2xl">
+          <span className="text-xs font-mono font-bold uppercase tracking-widest text-amber-400">
+            CONTRATAÇÃO DIRETA · SEM INTERMEDIÁRIOS · PIX OU PERMUTA NA ROTA
+          </span>
+          <h2 className="text-2xl sm:text-3xl font-black text-white mt-2">
+            Quer um site 3D, um painel automático, atendimento 24h no WhatsApp ou captação em Drone 4K e 360°?
+          </h2>
+          <p className="mt-2 text-sm text-slate-300 leading-relaxed">
+            Fale diretamente comigo no WhatsApp. Explico tudo de forma simples, mostro exemplos funcionando na hora e entrego o sistema pronto para você usar.
+          </p>
+        </div>
 
-        <div className="mt-6 flex flex-wrap items-center justify-center gap-3">
+        <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 w-full lg:w-auto shrink-0">
           <button
             type="button"
             onClick={() =>
               abrirWhats(
-                "Olá Allan! Estou no seu perfil no JobPago e gostaria de solicitar um orçamento."
+                "Olá Allan! Vi seu perfil e o vídeo Keynote no JobPago e quero conversar sobre um projeto para o meu negócio."
               )
             }
-            className="btn-primary-amalfi px-7 py-4 rounded-2xl text-sm font-black cursor-pointer active:scale-95 transition-transform"
+            className="btn-primary-amalfi px-7 py-4 rounded-2xl text-sm font-black cursor-pointer text-center"
           >
-            💬 Chamar Allan no WhatsApp Agora
+            💬 Chamar Allan no WhatsApp →
           </button>
           <Link
-            href="/cadastrar-servico?tipo=contratante"
-            className="btn-secondary-glass px-6 py-4 rounded-2xl text-xs sm:text-sm font-bold text-white"
-          >
-            📋 Publicar Demanda na Rede JobPago
-          </Link>
-          <Link
             href="/viajante"
-            className="btn-secondary-glass px-6 py-4 rounded-2xl text-xs sm:text-sm font-bold text-slate-300"
+            className="btn-secondary-glass px-6 py-4 rounded-2xl text-xs font-bold text-slate-200 text-center"
           >
-            🛡️ Ir para o Painel do Viajante
+            Voltar ao Painel do Viajante
           </Link>
         </div>
       </section>
