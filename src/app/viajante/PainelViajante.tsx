@@ -320,6 +320,9 @@ export default function PainelViajante() {
             <Link href="/cadastrar" className="btn-secondary-glass rounded-2xl px-6 py-3 text-sm font-bold">
               {idioma === "es" ? "Crear cuenta" : idioma === "en" ? "Create account" : "Criar conta"}
             </Link>
+            <Link href="/allan" className="btn-secondary-glass rounded-2xl px-6 py-3 text-sm font-bold text-amber-300 border-amber-500/35 hover:border-amber-400">
+              ⚡ {idioma === "es" ? "Ver Perfil Allan Cândido (Software, IA, Dron y 360°)" : idioma === "en" ? "View Allan Cândido Profile (Software, AI, Drone & 360°)" : "Ver Perfil Allan Cândido (Software, IA, Drone & 360°)"} →
+            </Link>
           </div>
         </div>
       )}
@@ -403,12 +406,20 @@ export default function PainelViajante() {
                   {idioma === "es" ? "Servicio que ofrecés en la ruta" : idioma === "en" ? "Service you offer on the route" : "Meu Serviço / O que Sei Fazer"}
                 </h2>
               </div>
-              <Link
-                href="/disponibilidade"
-                className="btn-secondary-glass text-xs font-bold px-4 py-2 rounded-xl active:scale-95 transition-transform"
-              >
-                + Cadastrar outro serviço
-              </Link>
+              <div className="flex items-center gap-2 flex-wrap">
+                <Link
+                  href="/allan"
+                  className="btn-secondary-glass text-xs font-bold px-4 py-2 rounded-xl text-cyan-300 border-cyan-500/30 hover:border-cyan-400 active:scale-95 transition-transform"
+                >
+                  ⚡ Ver Perfil Completo Allan (Software, IA, Drone & 360°) ↗
+                </Link>
+                <Link
+                  href="/disponibilidade"
+                  className="btn-secondary-glass text-xs font-bold px-4 py-2 rounded-xl active:scale-95 transition-transform"
+                >
+                  + Cadastrar outro serviço
+                </Link>
+              </div>
             </div>
 
             {p.servicos && p.servicos.length > 0 ? (
@@ -768,8 +779,8 @@ export default function PainelViajante() {
                   O que você faz / Como você trabalha
                 </label>
                 <textarea
-                  rows={4}
-                  maxLength={500}
+                  rows={5}
+                  maxLength={1200}
                   required
                   value={editServico.faz}
                   onChange={(e) => setEditServico({ ...editServico, faz: e.target.value })}
@@ -777,7 +788,7 @@ export default function PainelViajante() {
                   className="w-full rounded-2xl bg-slate-950/80 border border-white/15 p-3 text-sm text-white placeholder:text-slate-500 focus:outline-none focus:border-amber-400 leading-relaxed"
                 />
                 <span className="text-[11px] text-slate-500 block text-right mt-1">
-                  {editServico.faz.length}/500 caracteres
+                  {editServico.faz.length}/1200 caracteres
                 </span>
               </div>
 

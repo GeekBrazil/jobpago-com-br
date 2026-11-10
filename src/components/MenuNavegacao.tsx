@@ -96,6 +96,12 @@ export default function MenuNavegacao() {
       titulo: L(idioma, "Para Estabelecimentos e Negócios", "Para Establecimientos y Negocios", "For Local Businesses"),
       itens: [
         {
+          href: "/allan",
+          icone: "⚡",
+          nome: L(idioma, "Perfil Allan Cândido (Software, IA, Drone & 360°)", "Perfil Allan Cândido (Software, IA, Dron y 360°)", "Allan Cândido Profile (Software, AI, Drone & 360°)"),
+          desc: L(idioma, "Desenvolvimento sob medida, sistemas autônomos de IA, filmagem drone 4K e tour 360°", "Software a medida, sistemas autónomos de IA, dron 4K y tour 360°", "Custom software, autonomous AI systems, 4K drone filming and 360° tours"),
+        },
+        {
           href: "/refugio",
           icone: "🏨",
           nome: L(idioma, "Pedir Visita (Lugar para Dormir / Apoio)", "Pedir Visita (Dónde Dormir)", "Request Visit (Place to Sleep)"),

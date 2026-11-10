@@ -19,7 +19,7 @@ export async function PUT(req: NextRequest) {
     return NextResponse.json({ ok: false, erro: "ID do serviço inválido." }, { status: 400 });
   }
 
-  const faz = typeof b.faz === "string" ? b.faz.trim().slice(0, 500) : "";
+  const faz = typeof b.faz === "string" ? b.faz.trim().slice(0, 1200) : "";
   if (!faz) {
     return NextResponse.json({ ok: false, erro: "Descreva o que você sabe fazer." }, { status: 400 });
   }

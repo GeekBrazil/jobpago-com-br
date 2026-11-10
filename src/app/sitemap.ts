@@ -7,6 +7,8 @@ const BASE = "https://www.jobpago.com.br";
 
 const staticRoutes = [
   { path: "", priority: 1.0, changeFrequency: "daily" as const },
+  { path: "/allan", priority: 0.95, changeFrequency: "weekly" as const },
+  { path: "/cassarosa", priority: 0.9, changeFrequency: "weekly" as const },
   { path: "/cidade", priority: 0.95, changeFrequency: "daily" as const },
   { path: "/disponibilidade", priority: 0.9, changeFrequency: "daily" as const },
   { path: "/refugio", priority: 0.9, changeFrequency: "daily" as const },
