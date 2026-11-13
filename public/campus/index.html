@@ -1,0 +1,158 @@
+<!doctype html>
+<html lang="pt-BR" data-periodo="manha">
+<head>
+  <meta charset="utf-8">
+  <base href="/campus/">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, interactive-widget=resizes-content">
+  <meta name="theme-color" content="#f8d9b4">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <meta name="apple-mobile-web-app-title" content="Campus">
+  <meta name="description" content="O campus das agentes do Allan: cada sistema é uma pessoa trabalhando.">
+  <title>Campus — Allan</title>
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="icon" type="image/png" sizes="192x192" href="icones/icone-192.png">
+  <link rel="apple-touch-icon" href="icones/apple-touch-icon.png">
+  <link rel="stylesheet" href="css/campus.css">
+  <script>
+    // período do dia antes de pintar (evita piscar claro à noite)
+    (function () {
+      try {
+        var q = new URLSearchParams(location.search).get('hora');
+        var h = q != null && q !== '' ? parseFloat(q) : new Date().getHours() + new Date().getMinutes() / 60;
+        document.documentElement.dataset.periodo = (h >= 19 || h < 5) ? 'noite' : (h >= 12 ? 'tarde' : 'manha');
+      } catch (e) {}
+    })();
+  </script>
+</head>
+<body>
+  <canvas id="cena" tabindex="-1" aria-label="Campus em 3D com as agentes"></canvas>
+  <div id="baloes" aria-hidden="true"></div>
+
+  <header id="hud" class="hud vidro escondido" aria-label="Painel do campus">
+    <div class="hud-linha">
+      <div class="hud-saudacao">
+        <p class="hud-ola" id="hud-ola">Bom dia, Allan</p>
+        <p class="hud-sub"><time id="hud-relogio">--:--</time> · <span id="hud-data"></span></p>
+      </div>
+      <div class="hud-botoes">
+        <button class="btn-redondo" id="btn-quadro" type="button" aria-label="Quadro do dinheiro">💰</button>
+        <button class="btn-redondo" id="btn-ajustes" type="button" aria-label="Ajustes" aria-expanded="false" aria-controls="ajustes">⚙︎</button>
+      </div>
+    </div>
+    <div class="hud-contagens" id="hud-contagens">
+      <button class="conta" type="button" data-tipo="ok" data-filtro="acordadas"><b id="n-ok">0</b><span><i></i>acordadas</span></button>
+      <button class="conta" type="button" data-tipo="sono" data-filtro="dormindo"><b id="n-sono">0</b><span><i></i>dormindo</span></button>
+      <button class="conta" type="button" data-tipo="prob" data-filtro="problema"><b id="n-prob">0</b><span><i></i>com problema</span></button>
+      <button class="btn-sol" id="btn-bomdia" type="button"><span class="sol-ico" aria-hidden="true">☀️</span><span>Bom dia</span></button>
+    </div>
+  </header>
+
+  <div id="offline" class="offline vidro" role="alert" hidden>
+    <p><strong>O PC dormiu ou o Tailscale caiu</strong><span>Mostrando o campus de memória — todo mundo dormindo.</span></p>
+    <button class="btn btn-pequeno" id="btn-tentar" type="button">Tentar de novo</button>
+  </div>
+
+  <div id="veu" class="veu"></div>
+
+  <section id="folha" class="folha" role="dialog" aria-modal="false" aria-labelledby="folha-nome" aria-hidden="true">
+    <div class="folha-alca" id="folha-alca"><span></span></div>
+    <div class="folha-topo" id="folha-topo">
+      <div class="avatar" id="folha-avatar" aria-hidden="true"></div>
+      <div class="folha-ident">
+        <div class="linha-nome"><h2 id="folha-nome"></h2><span id="folha-status" class="folha-status"></span></div>
+        <p id="folha-funcao"></p>
+      </div>
+      <button class="btn-fechar" id="folha-fechar" type="button" aria-label="Fechar">×</button>
+    </div>
+    <div class="abas" id="folha-abas" role="tablist" hidden>
+      <button class="aba" role="tab" id="aba-btn-conversa" aria-selected="true" aria-controls="aba-conversa" type="button">Conversa</button>
+      <button class="aba" role="tab" id="aba-btn-prospectar" aria-selected="false" aria-controls="aba-prospectar" type="button">Prospectar</button>
+    </div>
+    <div class="folha-corpo" id="folha-corpo">
+      <div id="aba-conversa" role="tabpanel" aria-labelledby="aba-btn-conversa"></div>
+      <div id="aba-prospectar" role="tabpanel" aria-labelledby="aba-btn-prospectar" hidden></div>
+    </div>
+    <form class="folha-entrada" id="folha-form" autocomplete="off">
+      <label class="sr-only" for="folha-input">Mensagem</label>
+      <input id="folha-input" type="text" enterkeyhint="send" placeholder="Fala com ela…" maxlength="600">
+      <button class="btn-enviar" type="submit" aria-label="Enviar">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h13M13 6l6 6-6 6"/></svg>
+      </button>
+    </form>
+  </section>
+
+  <section id="quadro" class="painel" role="dialog" aria-modal="true" aria-labelledby="quadro-titulo" aria-hidden="true">
+    <div class="painel-topo">
+      <h2 id="quadro-titulo">💰 Onde tá o dinheiro</h2>
+      <button class="btn-fechar" type="button" data-fechar aria-label="Fechar">×</button>
+    </div>
+    <div class="painel-corpo" id="quadro-corpo"></div>
+  </section>
+
+  <section id="equipe" class="painel" role="dialog" aria-modal="true" aria-labelledby="equipe-titulo" aria-hidden="true">
+    <div class="painel-topo">
+      <h2 id="equipe-titulo">A equipe</h2>
+      <button class="btn-fechar" type="button" data-fechar aria-label="Fechar">×</button>
+    </div>
+    <div class="painel-corpo" id="equipe-corpo"></div>
+  </section>
+
+  <section id="ajustes" class="ajustes vidro" aria-label="Ajustes" aria-hidden="true">
+    <h2>Ajustes</h2>
+    <div class="ajuste">
+      <div><strong>Acordar sozinhas ao abrir</strong><small>Na 1ª abertura do dia, entre 5h e 12h</small></div>
+      <label class="chave"><input type="checkbox" id="aj-acordar" aria-label="Acordar sozinhas ao abrir"><span></span></label>
+    </div>
+    <div class="ajuste">
+      <div><strong>Voz das agentes</strong><small>Elas leem a resposta em voz alta</small></div>
+      <label class="chave"><input type="checkbox" id="aj-voz" aria-label="Voz das agentes"><span></span></label>
+    </div>
+    <div class="ajuste">
+      <div><strong>Qualidade</strong><small id="aj-qualidade-nota">Celular economiza bateria</small></div>
+      <div class="seg2" role="group" aria-label="Qualidade">
+        <button type="button" data-q="celular" aria-pressed="true">Celular</button>
+        <button type="button" data-q="pc" aria-pressed="false">PC</button>
+      </div>
+    </div>
+    <p class="rodape" id="aj-rodape">Campus · as agentes acordam quando os serviços sobem.</p>
+  </section>
+
+  <div id="toasts" class="toasts" role="status" aria-live="polite"></div>
+
+  <div id="loader" class="loader" role="status" aria-live="polite">
+    <div class="loader-conteudo">
+      <svg class="emblema" viewBox="0 0 168 120" aria-hidden="true">
+        <defs>
+          <radialGradient id="g-sol" cx="42%" cy="38%" r="62%">
+            <stop offset="0" stop-color="#ffe7ad"/><stop offset=".55" stop-color="#f4a43c"/><stop offset="1" stop-color="#ec8424"/>
+          </radialGradient>
+          <mask id="m-horizonte">
+            <rect x="0" y="0" width="168" height="84" fill="#fff"/>
+            <ellipse cx="84" cy="84" rx="72.5" ry="28.5" fill="#000"/>
+          </mask>
+        </defs>
+        <g mask="url(#m-horizonte)">
+          <g class="raios" stroke="#f2a33a" stroke-opacity=".55" stroke-width="3.2" stroke-linecap="round">
+            <path d="M84 6v9M52 16l5 7.5M116 16l-5 7.5M30 38l8 4M138 38l-8 4M22 62h9M146 62h-9"/>
+          </g>
+          <circle class="sol" cx="84" cy="58" r="25" fill="url(#g-sol)"/>
+        </g>
+        <ellipse cx="84" cy="87" rx="66" ry="22" fill="none" stroke="#b07a4c" stroke-opacity=".22" stroke-width="13"/>
+        <ellipse cx="84" cy="84" rx="66" ry="22" fill="none" stroke="#fffaf2" stroke-width="13"/>
+        <ellipse cx="84" cy="84" rx="66" ry="22" fill="none" stroke="#efdcc3" stroke-width="2.4"/>
+        <ellipse cx="84" cy="84" rx="72.5" ry="28.5" fill="none" stroke="#b8865a" stroke-opacity=".4" stroke-width="1.1"/>
+        <ellipse cx="84" cy="84" rx="59.5" ry="15.5" fill="none" stroke="#b8865a" stroke-opacity=".4" stroke-width="1.1"/>
+      </svg>
+      <h1>Acordando o campus…</h1>
+      <p id="loader-passo">Abrindo as persianas</p>
+      <div class="barra" aria-hidden="true"><i id="loader-barra"></i></div>
+    </div>
+  </div>
+
+  <noscript><p style="position:fixed;inset:auto 16px 16px;padding:12px;background:#fff;border-radius:12px">O campus precisa de JavaScript ligado.</p></noscript>
+  <script src="/three.min.js"></script>
+  <script type="module" src="js/app.js"></script>
+</body>
+</html>

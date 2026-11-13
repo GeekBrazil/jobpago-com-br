@@ -1,0 +1,220 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Campus · provador das agentes</title>
+<link rel="icon" href="data:,">
+<style>
+  :root { --bg: #f6e7d4; --ink: #2b2230; --muted: #7a6a72; --glass: rgba(255,250,244,.86); --line: rgba(60,40,50,.14); --accent: #f2a33a; }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; height: 100%; background: var(--bg); color: var(--ink); font: 14px/1.35 system-ui, -apple-system, "Segoe UI", sans-serif; overflow: hidden; }
+  canvas { display: block; width: 100vw; height: 100vh; touch-action: none; }
+  #painel { position: fixed; left: 0; right: 0; bottom: 0; padding: 8px 16px calc(8px + env(safe-area-inset-bottom)); background: var(--glass); border-top: 1px solid var(--line); backdrop-filter: blur(10px); max-height: 46vh; overflow-y: auto; }
+  #painel.recolhido .grupo { display: none; }
+  .linha { display: flex; gap: 6px; flex-wrap: wrap; align-items: center; margin: 4px 0; }
+  .rotulo { font-size: 11px; text-transform: uppercase; letter-spacing: .06em; color: var(--muted); width: 100%; margin-top: 4px; }
+  button { border: 1px solid var(--line); background: #fff; color: var(--ink); border-radius: 999px; padding: 6px 11px; font: inherit; font-size: 13px; cursor: pointer; }
+  button.on { background: var(--ink); color: #fff; border-color: var(--ink); }
+  #info { position: fixed; top: 10px; left: 16px; right: 16px; display: flex; justify-content: space-between; gap: 8px; pointer-events: none; font-size: 12px; color: var(--muted); }
+  #info b { color: var(--ink); }
+  #nome { position: fixed; top: 34px; left: 16px; font-size: 20px; font-weight: 700; pointer-events: none; }
+</style>
+</head>
+<body>
+<canvas id="c" aria-label="Provador das personagens"></canvas>
+<div id="info"><span id="fps">— fps</span><span id="stats"></span></div>
+<div id="nome"></div>
+<div id="painel">
+  <div class="linha"><button id="recolher" type="button">▾ painel</button><button id="b-lineup" type="button" class="on">Fila</button><button id="b-ant" type="button">◀</button><button id="b-close" type="button">Close</button><button id="b-prox" type="button">▶</button><button id="b-corpo" type="button">Corpo</button><button id="b-andar" type="button">Andar</button><button id="b-falar" type="button">Falar</button><button id="b-dest" type="button">Destaque</button><button id="b-moveis" type="button" class="on">Móveis</button></div>
+  <div class="grupo"><div class="rotulo">Roupa</div><div class="linha" id="roupas"></div></div>
+  <div class="grupo"><div class="rotulo">Atividade</div><div class="linha" id="ativs"></div></div>
+</div>
+<script src="/three.min.js"></script>
+<script type="module">
+import { criarPersonagem, ATIVIDADES } from '../js/personagem.js';
+
+const qs = new URLSearchParams(location.search);
+const canvas = document.getElementById('c');
+const renderer = new THREE.WebGLRenderer({ canvas, antialias: true });
+renderer.setPixelRatio(Math.min(devicePixelRatio || 1, 1.75));
+renderer.outputEncoding = THREE.sRGBEncoding;
+renderer.shadowMap.enabled = true; renderer.shadowMap.type = THREE.PCFShadowMap;
+const scene = new THREE.Scene();
+scene.background = new THREE.Color(0xf6e2c6);
+const camera = new THREE.PerspectiveCamera(32, 1, 0.05, 200);
+
+const hemi = new THREE.HemisphereLight(0xffffff, 0x777777, 0.6);
+const sol = new THREE.DirectionalLight(0xffffff, 0.8);
+sol.position.set(6, 11, 9); sol.castShadow = true; sol.shadow.mapSize.set(1024, 1024);
+Object.assign(sol.shadow.camera, { left: -9, right: 9, top: 9, bottom: -9, near: 1, far: 40 });
+sol.shadow.bias = -0.0006; sol.shadow.normalBias = 0.04;
+scene.add(hemi, sol);
+const chao = new THREE.Mesh(new THREE.PlaneGeometry(60, 60), new THREE.MeshLambertMaterial({ color: 0xc9b08c }));
+chao.rotation.x = -Math.PI / 2; chao.receiveShadow = true; scene.add(chao);
+const grade = new THREE.GridHelper(20, 40, 0xb39a76, 0xbda582); grade.position.y = 0.002; scene.add(grade);
+
+const resp = await fetch('/data/campus/agentes.json', { cache: 'no-store' });
+const roster = (await resp.json()).agentes;
+const N = Math.min(roster.length, +qs.get('n') || roster.length);
+const Q = qs.get('q') === 'pc' ? 'pc' : 'celular';
+
+const pers = []; const erros = [];
+const ESP = 0.78, porLinha = Math.ceil(N / 2);
+for (let i = 0; i < N; i++) {
+  const f = roster[i];
+  try {
+    const p = criarPersonagem(f, { qualidade: Q });
+    const fila = i < porLinha ? 0 : 1, k = fila ? i - porLinha : i, nl = fila ? N - porLinha : porLinha;
+    const base = new THREE.Vector3((k - (nl - 1) / 2) * ESP, 0, fila ? -1.9 : 0);
+    p.base = base; p.group.position.copy(base);
+    scene.add(p.group);
+    pers.push(p);
+  } catch (e) { erros.push(`${f.slug}: ${e && e.message}`); console.error('[provador]', f.slug, e); }
+}
+
+// ------------------------------------------------------------------ móveis de referência (convenções do CONTRATO)
+const mm = (c) => new THREE.MeshLambertMaterial({ color: c });
+const M_MADEIRA = mm(0xc79a6a), M_ESC = mm(0x2f3238), M_CLARO = mm(0xe9e4dc), M_TELA = mm(0x9fd0ff), M_PUFE = mm(0xc9b6ff), M_TRAV = mm(0xfffaf2), M_LAR = mm(0xff7a3d);
+const caixa = (G, x, y0, z, w, h, d, m) => { const o = new THREE.Mesh(new THREE.BoxGeometry(w, h, d), m); o.position.set(x, y0 + h / 2, z); o.castShadow = o.receiveShadow = true; G.add(o); return o; };
+const SENTADAS = new Set(['computador', 'biblioteca-lendo', 'fones-transcrevendo', 'cafe', 'lendo-banco']);
+function moveis(ativ) {
+  const G = new THREE.Group();
+  if (SENTADAS.has(ativ)) {
+    if (ativ === 'lendo-banco') { caixa(G, 0, 0, 0, 1.3, 0.46, 0.44, M_MADEIRA); caixa(G, 0, 0.46, -0.24, 1.3, 0.4, 0.05, M_MADEIRA); }
+    else {
+      caixa(G, 0, 0.42, 0, 0.44, 0.04, 0.42, M_ESC); caixa(G, 0, 0, 0, 0.06, 0.42, 0.06, M_ESC); caixa(G, 0, 0.46, -0.22, 0.42, 0.42, 0.04, M_ESC);
+      const larg = ativ === 'cafe' ? 0.6 : 1.1;
+      caixa(G, 0, 0.71, 0.35 + 0.3, larg, 0.03, 0.6, M_MADEIRA);
+      caixa(G, -larg / 2 + 0.04, 0, 0.9, 0.04, 0.71, 0.04, M_MADEIRA); caixa(G, larg / 2 - 0.04, 0, 0.9, 0.04, 0.71, 0.04, M_MADEIRA);
+      if (ativ === 'computador' || ativ === 'fones-transcrevendo') { caixa(G, 0, 0.74, 0.82, 0.56, 0.34, 0.03, M_ESC); caixa(G, 0, 0.78, 0.8, 0.52, 0.28, 0.035, M_TELA); caixa(G, 0, 0.74, 0.5, 0.36, 0.015, 0.12, M_CLARO); }
+    }
+  } else if (ativ === 'dormindo') {
+    caixa(G, 0, 0, 0, 0.9, 0.2, 1.92, M_MADEIRA); caixa(G, 0, 0.2, 0, 0.82, 0.12, 1.84, M_PUFE); caixa(G, 0, 0.32, -0.7, 0.5, 0.08, 0.28, M_TRAV);
+  } else if (ativ === 'bicicleta') {
+    caixa(G, 0, 0, 0.1, 0.12, 0.07, 1.15, M_ESC); caixa(G, 0, 0.05, -0.04, 0.06, 0.68, 0.06, M_ESC);
+    caixa(G, 0, 0.72, 0, 0.17, 0.06, 0.27, M_ESC);
+    caixa(G, 0, 0.05, 0.5, 0.06, 0.9, 0.06, M_ESC); caixa(G, 0, 0.96, 0.52, 0.46, 0.04, 0.06, M_ESC);
+    const v = new THREE.Mesh(new THREE.CylinderGeometry(0.24, 0.24, 0.07, 18), M_LAR); v.rotation.z = Math.PI / 2; v.position.set(0, 0.36, 0.36); G.add(v);
+    const e = new THREE.Mesh(new THREE.CylinderGeometry(0.05, 0.05, 0.3, 8), M_CLARO); e.rotation.z = Math.PI / 2; e.position.set(0, 0.3, 0); G.add(e);
+  } else if (ativ === 'esteira') {
+    caixa(G, 0, -0.18, -0.1, 0.8, 0.12, 1.8, M_ESC); caixa(G, 0, -0.06, -0.1, 0.6, 0.06, 1.62, mm(0x1b1c20));
+    caixa(G, -0.36, -0.06, 0.74, 0.05, 1.1, 0.06, M_CLARO); caixa(G, 0.36, -0.06, 0.74, 0.05, 1.1, 0.06, M_CLARO);
+    caixa(G, -0.36, 0.82, 0.45, 0.05, 0.05, 0.6, M_CLARO); caixa(G, 0.36, 0.82, 0.45, 0.05, 0.05, 0.6, M_CLARO);
+    caixa(G, 0, 1.0, 0.82, 0.74, 0.3, 0.1, M_ESC);
+  } else if (ativ === 'quadro-reuniao') {
+    caixa(G, -0.75, 0.8, 0.4, 1.2, 0.8, 0.04, M_TRAV);
+  } else if (ativ === 'caixa-registradora' || ativ === 'recepcao') {
+    caixa(G, 0, 0, 0.6, 1.0, 0.95, 0.4, M_MADEIRA);
+  }
+  return G;
+}
+let ativAtual = qs.get('ativ') || 'parada', roupaAtual = qs.get('roupa') || 'trabalho', mostrarMoveis = qs.get('moveis') !== '0';
+function aplicar() {
+  for (const p of pers) {
+    if (p.moveisObj) { scene.remove(p.moveisObj); p.moveisObj = null; }
+    p.group.position.copy(p.base); p.group.rotation.y = 0;
+    if (ativAtual === 'esteira') p.group.position.y = 0.18;
+    p.setRoupa(roupaAtual); p.setAtividade(ativAtual);
+    if (mostrarMoveis) { const G = moveis(ativAtual); G.position.set(p.base.x, ativAtual === 'esteira' ? 0.18 : 0, p.base.z); G.visible = p.group.visible; scene.add(G); p.moveisObj = G; }
+  }
+  marcar();
+}
+
+// ------------------------------------------------------------------ câmera
+let modo = qs.get('close') !== null ? 'close' : qs.get('corpo') !== null ? 'corpo' : 'lineup';
+let foco = Math.max(0, pers.findIndex((p) => p.slug === qs.get('close') || p.slug === qs.get('corpo')));
+if (/^\d+$/.test(qs.get('close') || qs.get('corpo') || '')) foco = +(qs.get('close') || qs.get('corpo'));
+let yawCam = +(qs.get('yaw') || 0), pitchCam = +(qs.get('pitch') || 0);
+const alvo = new THREE.Vector3(), tmp = new THREE.Vector3();
+function posCamera() {
+  const asp = camera.aspect;
+  if (modo === 'lineup') {
+    const larg = porLinha * ESP + 0.8; const dist = Math.max(6, (larg / 2) / Math.tan(THREE.MathUtils.degToRad(camera.fov / 2)) / asp * 1.05);
+    alvo.set(0, ativAtual === 'dormindo' ? 0.3 : 0.85, -0.9);
+    const el = (ativAtual === 'dormindo' ? 0.75 : 0.2) + pitchCam;
+    camera.position.set(Math.sin(yawCam) * dist * Math.cos(el), alvo.y + Math.sin(el) * dist, -0.9 + Math.cos(yawCam) * dist * Math.cos(el));
+  } else {
+    const p = pers[foco]; if (!p) return;
+    p.group.updateMatrixWorld(true);
+    if (modo === 'close') { p.cabeca.getWorldPosition(alvo); alvo.y -= 0.02; }
+    else { p.group.getWorldPosition(alvo); alvo.y += ativAtual === 'dormindo' ? 0.4 : 0.85; }
+    const d = modo === 'close' ? (asp < 1 ? 0.95 : 0.75) : (asp < 1 ? 4.4 : 3.1);
+    const el = (ativAtual === 'dormindo' && modo === 'close' ? 1.25 : modo === 'close' ? 0.05 : 0.15) + pitchCam;
+    const yaw = p.group.rotation.y + yawCam;
+    camera.position.set(alvo.x + Math.sin(yaw) * Math.cos(el) * d, alvo.y + Math.sin(el) * d, alvo.z + Math.cos(yaw) * Math.cos(el) * d);
+  }
+  camera.lookAt(alvo);
+}
+
+// arrastar gira a câmera
+let arr = null;
+canvas.addEventListener('pointerdown', (e) => { arr = { x: e.clientX, y: e.clientY, yaw: yawCam, pitch: pitchCam }; });
+addEventListener('pointerup', () => { arr = null; });
+addEventListener('pointermove', (e) => { if (!arr) return; yawCam = arr.yaw - (e.clientX - arr.x) * 0.008; pitchCam = THREE.MathUtils.clamp(arr.pitch + (e.clientY - arr.y) * 0.005, -0.6, 1.2); });
+
+// ------------------------------------------------------------------ UI
+const $ = (id) => document.getElementById(id);
+for (const r of ['trabalho', 'academia', 'pijama']) { const b = document.createElement('button'); b.type = 'button'; b.textContent = r; b.dataset.roupa = r; b.onclick = () => { roupaAtual = r; aplicar(); }; $('roupas').append(b); }
+for (const a of ATIVIDADES) { const b = document.createElement('button'); b.type = 'button'; b.textContent = a; b.dataset.ativ = a; b.onclick = () => { ativAtual = a; aplicar(); }; $('ativs').append(b); }
+function marcar() {
+  document.querySelectorAll('[data-roupa]').forEach((b) => b.classList.toggle('on', b.dataset.roupa === roupaAtual));
+  document.querySelectorAll('[data-ativ]').forEach((b) => b.classList.toggle('on', b.dataset.ativ === ativAtual));
+  $('b-lineup').classList.toggle('on', modo === 'lineup'); $('b-close').classList.toggle('on', modo === 'close'); $('b-corpo').classList.toggle('on', modo === 'corpo');
+  $('b-moveis').classList.toggle('on', mostrarMoveis);
+  const p = pers[foco];
+  $('nome').textContent = modo === 'lineup' ? '' : p ? `${p.ficha.nome} · ${p.ficha.cabelo?.estilo || ''}` : '';
+  if (p && p.estatisticas) { const s = p.estatisticas(); $('stats').innerHTML = `<b>${p.ficha.nome}</b> ${s.malhas} malhas · ${s.triangulos} tri`; }
+}
+$('recolher').onclick = () => $('painel').classList.toggle('recolhido');
+$('b-lineup').onclick = () => { modo = 'lineup'; marcar(); };
+$('b-close').onclick = () => { modo = 'close'; marcar(); };
+$('b-corpo').onclick = () => { modo = 'corpo'; marcar(); };
+$('b-ant').onclick = () => { foco = (foco + pers.length - 1) % pers.length; marcar(); };
+$('b-prox').onclick = () => { foco = (foco + 1) % pers.length; marcar(); };
+$('b-moveis').onclick = () => { mostrarMoveis = !mostrarMoveis; aplicar(); };
+let falando = false, destaque = false;
+$('b-falar').onclick = () => { falando = !falando; pers.forEach((p) => p.setFalando(falando)); $('b-falar').classList.toggle('on', falando); };
+$('b-dest').onclick = () => { destaque = !destaque; pers.forEach((p, i) => p.setDestaque(destaque && (modo === 'lineup' || i === foco))); $('b-dest').classList.toggle('on', destaque); };
+function andarDemo() {
+  for (const p of pers) {
+    const b = p.base; const pts = [new THREE.Vector3(b.x, 0, b.z + 1.2), new THREE.Vector3(b.x + 0.6, 0, b.z + 1.6), new THREE.Vector3(b.x, 0, b.z + 2.0), new THREE.Vector3(b.x - 0.4, 0, b.z + 0.6), b.clone()];
+    p.setAtividade('andando'); p.andarPara(pts, () => { p.group.rotation.y = 0; p.setAtividade(ativAtual); });
+  }
+}
+$('b-andar').onclick = andarDemo;
+
+// ------------------------------------------------------------------ laço
+let quadros = 0, t0 = performance.now(), fps = 0, ult = performance.now();
+const relogio = new THREE.Clock();
+function redimensionar() { const w = innerWidth, h = innerHeight; renderer.setSize(w, h, false); camera.aspect = w / h; camera.updateProjectionMatrix(); }
+addEventListener('resize', redimensionar); redimensionar();
+function quadro() {
+  const dt = Math.min(relogio.getDelta(), 0.1), t = relogio.elapsedTime;
+  for (const p of pers) p.update(dt, t);
+  posCamera();
+  renderer.render(scene, camera);
+  quadros++; const agora = performance.now();
+  if (agora - t0 > 1000) { fps = Math.round(quadros * 1000 / (agora - t0)); quadros = 0; t0 = agora; $('fps').textContent = `${fps} fps · ${renderer.info.render.calls} draws · ${Math.round(renderer.info.render.triangles / 1000)}k tri`; }
+  requestAnimationFrame(quadro);
+}
+aplicar();
+if (qs.get('painel') === '0') $('painel').style.display = 'none';
+requestAnimationFrame(quadro);
+
+window.__dev = {
+  pers, erros, renderer, scene, camera, ATIVIDADES,
+  get fps() { return fps; },
+  setAtividade(a) { ativAtual = a; aplicar(); },
+  setRoupa(r) { roupaAtual = r; aplicar(); },
+  modo(m, i, yaw = 0, pitch = 0) { modo = m; if (i !== undefined) foco = typeof i === 'number' ? i : Math.max(0, pers.findIndex((p) => p.slug === i)); yawCam = yaw; pitchCam = pitch; marcar(); },
+  moveis(b) { mostrarMoveis = !!b; aplicar(); },
+  andarDemo, falar(b) { pers.forEach((p) => p.setFalando(!!b)); },
+  destaque(b, i) { pers.forEach((p, k) => p.setDestaque(!!b && (i === undefined || i === k))); },
+  stats() { return pers.map((p) => ({ slug: p.slug, ...(p.estatisticas ? p.estatisticas() : {}) })); },
+  solo(i) { pers.forEach((p, k) => { const v = i === undefined || i === null || k === i; p.group.visible = v; if (p.moveisObj) p.moveisObj.visible = v; }); },
+  ready: true,
+};
+</script>
+</body>
+</html>

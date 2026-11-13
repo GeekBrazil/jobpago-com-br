@@ -1,0 +1,301 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Campus · bancada do mundo</title>
+  <link rel="icon" href="data:,">
+  <style>
+    :root { --bg: #f6e6cf; --ink: #2b2723; --vidro: rgba(255, 250, 242, 0.82); --linha: rgba(43, 39, 35, 0.12); --acento: #f2a33a; }
+    @media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) { --bg: #141a26; --ink: #f4ece0; --vidro: rgba(26, 30, 40, 0.82); --linha: rgba(255, 255, 255, 0.14); } }
+    :root[data-theme="dark"] { --bg: #141a26; --ink: #f4ece0; --vidro: rgba(26, 30, 40, 0.82); --linha: rgba(255, 255, 255, 0.14); }
+    html, body { margin: 0; height: 100%; background: var(--bg); color: var(--ink); overflow: hidden; font: 13px/1.35 system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; }
+    canvas { display: block; width: 100vw; height: 100vh; touch-action: none; }
+    #info { position: fixed; left: 16px; top: 16px; padding: 8px 10px; border-radius: 12px; background: var(--vidro); border: 1px solid var(--linha);
+      font: 600 12px/1.4 ui-monospace, SFMono-Regular, Menlo, monospace; white-space: pre; pointer-events: none; backdrop-filter: blur(8px); }
+    #barra { position: fixed; left: 16px; right: 16px; bottom: 16px; display: flex; flex-wrap: wrap; gap: 6px; }
+    #barra button { flex: 0 0 auto; border: 1px solid var(--linha); background: var(--vidro); color: var(--ink); border-radius: 999px; padding: 7px 11px; font: 600 12px system-ui, sans-serif; }
+    #barra button[aria-pressed="true"] { background: var(--acento); color: #2b1a08; }
+    #saida { position: fixed; right: 16px; top: 16px; max-width: min(520px, calc(100vw - 32px)); max-height: 70vh; overflow: auto; padding: 8px 10px; border-radius: 12px;
+      background: var(--vidro); border: 1px solid var(--linha); font: 11px/1.35 ui-monospace, Menlo, monospace; white-space: pre-wrap; display: none; }
+  </style>
+</head>
+<body>
+  <canvas id="cena"></canvas>
+  <div id="info">carregando…</div>
+  <pre id="saida"></pre>
+  <div id="barra"></div>
+  <script src="/three.min.js"></script>
+  <script type="module">
+    // Bancada do mundo: ?qualidade=celular|pc · ?hora=7.5 · ?vista=obliqua|topo|<zonaId> · ?orbit=0 · ?teste=1 · ?bonecas=1 · ?postos=1
+    import { criarMundo } from '../js/mundo.js';
+    const THREE = window.THREE;
+    const P = new URLSearchParams(location.search);
+    const qualidade = P.get('qualidade') === 'pc' ? 'pc' : 'celular';
+    const canvas = document.getElementById('cena');
+    const renderer = new THREE.WebGLRenderer({ canvas, antialias: qualidade === 'pc', powerPreference: 'high-performance' });
+    renderer.setPixelRatio(Math.min(devicePixelRatio || 1, qualidade === 'pc' ? 1.75 : 1.5));
+    renderer.outputEncoding = THREE.sRGBEncoding;
+    renderer.shadowMap.enabled = true;
+    renderer.shadowMap.type = qualidade === 'pc' ? THREE.PCFSoftShadowMap : THREE.PCFShadowMap;
+    renderer.info.autoReset = false;
+    const scene = new THREE.Scene();
+    const camera = new THREE.PerspectiveCamera(50, 1, 0.3, 900);
+    window.__erros = [];
+    let mundo;
+    const t0 = performance.now();
+    try { mundo = criarMundo(scene, renderer, { qualidade, hora: P.has('hora') ? parseFloat(P.get('hora')) : 8 }); }
+    catch (e) { window.__erros.push(String(e && e.stack || e)); document.getElementById('info').textContent = 'ERRO: ' + e; throw e; }
+    const tCriar = performance.now() - t0;
+    window.mundo = mundo; window.renderer = renderer; window.scene = scene; window.camera = camera;
+    if (P.has('hora')) mundo.setHora(parseFloat(P.get('hora')));
+
+    // ---------------------------------------------------------------- câmera
+    const alvo = new THREE.Vector3();
+    const esf = new THREE.Spherical();
+    function vista(v) {
+      const z = mundo.zonas[v];
+      if (v === 'topo') { alvo.set(0, 0, 0); esf.set(102, 0.001, 0); }
+      else if (v === 'longe') { alvo.set(0, 0, 0); esf.set(118, 0.62 * 1, 0.4); }
+      else if (z) {
+        alvo.copy(z.centro); alvo.y = 0.6;
+        const ang = Math.atan2(z.centro.x, z.centro.z);
+        const r = Math.hypot(z.centro.x, z.centro.z);
+        // câmera do lado do pátio (a frente aberta dos pavilhões olha pro centro)
+        esf.set(v === 'praca' ? 22 : v === 'jardim' ? 24 : 19, 0.8, r < 1 ? 0.5 : ang + Math.PI);
+      } else { // oblíqua (~45°) igual à câmera inicial do app
+        const ci = mundo.camerainicial; alvo.copy(ci.alvo);
+        esf.setFromVector3(ci.pos.clone().sub(ci.alvo));
+      }
+      atual = v;
+      document.querySelectorAll('#barra button[data-v]').forEach((b) => b.setAttribute('aria-pressed', String(b.dataset.v === v)));
+    }
+    let atual = P.get('vista') || 'obliqua';
+    let orbita = P.get('orbit') !== '0';
+
+    // arrastar gira, roda aproxima
+    let arr = null;
+    canvas.addEventListener('pointerdown', (e) => { arr = { x: e.clientX, y: e.clientY }; orbita = false; canvas.setPointerCapture(e.pointerId); });
+    canvas.addEventListener('pointermove', (e) => { if (!arr) return; esf.theta -= (e.clientX - arr.x) * 0.006; esf.phi = Math.min(1.5, Math.max(0.05, esf.phi - (e.clientY - arr.y) * 0.006)); arr = { x: e.clientX, y: e.clientY }; });
+    canvas.addEventListener('pointerup', () => { arr = null; });
+    canvas.addEventListener('wheel', (e) => { esf.radius = Math.min(300, Math.max(3, esf.radius * (1 + Math.sign(e.deltaY) * 0.1))); }, { passive: true });
+
+    // ---------------------------------------------------------------- barra
+    const barra = document.getElementById('barra');
+    const botao = (rot, fn, data) => { const b = document.createElement('button'); b.type = 'button'; b.textContent = rot; if (data) b.dataset.v = data; b.onclick = fn; barra.appendChild(b); return b; };
+    ['obliqua', 'topo', 'praca', 'academia', 'biblioteca', 'escritorio-aberto', 'dormitorio', 'cafe', 'estudio', 'jardim'].forEach((v) => botao(v, () => vista(v), v));
+    let hora = P.has('hora') ? parseFloat(P.get('hora')) : 8;
+    botao('☀️ 7h', () => { hora = 7; mundo.setHora(hora); });
+    botao('🌇 17h30', () => { hora = 17.5; mundo.setHora(hora); });
+    botao('🌙 21h', () => { hora = 21; mundo.setHora(hora); });
+    botao('⟳', () => { orbita = !orbita; });
+    vista(atual);
+    if (P.has('theta')) esf.theta = parseFloat(P.get('theta'));
+    if (P.has('phi')) esf.phi = parseFloat(P.get('phi'));
+    if (P.has('raio')) esf.radius = parseFloat(P.get('raio'));
+    if (P.has('alvo')) alvo.fromArray(P.get('alvo').split(',').map(Number));
+
+    function redim() {
+      const w = innerWidth, h = innerHeight;
+      renderer.setSize(w, h, false);
+      camera.aspect = w / h; camera.fov = w / h < 0.7 ? 50 : 42; camera.updateProjectionMatrix();
+    }
+    addEventListener('resize', redim); redim();
+
+    // ---------------------------------------------------------------- bonecas de teste nos postos (?bonecas=1) e marcadores (?postos=1)
+    const SENTADA = new Set(['computador', 'biblioteca-lendo', 'fones-transcrevendo', 'cafe', 'lendo-banco']);
+    function boneca(posto, cor) {
+      const g = new THREE.Group();
+      const m = new THREE.MeshLambertMaterial({ color: cor });
+      const pele = new THREE.MeshLambertMaterial({ color: '#f1c9a5' });
+      const add = (geo, x, y, z, rx = 0, mm = m) => { const o = new THREE.Mesh(geo, mm); o.position.set(x, y, z); o.rotation.x = rx; o.castShadow = true; g.add(o); return o; };
+      const a = posto.atividade;
+      if (a === 'dormindo') {
+        add(new THREE.CapsuleGeometry(0.16, 1.2, 3, 8), 0, 0.32 + 0.16, 0.05, Math.PI / 2);
+        add(new THREE.SphereGeometry(0.13, 12, 8), 0, 0.32 + 0.13, -0.72, 0, pele);
+      } else if (SENTADA.has(a) || a === 'bicicleta') {
+        const s = a === 'bicicleta' ? 0.78 : 0.46;
+        add(new THREE.BoxGeometry(0.34, 0.14, 0.42), 0, s + 0.07, 0.12);            // coxas
+        add(new THREE.BoxGeometry(0.3, 0.42, 0.12), 0, s / 2, 0.36);                 // canelas
+        add(new THREE.CapsuleGeometry(0.16, 0.36, 3, 8), 0, s + 0.38, -0.05);        // tronco
+        add(new THREE.SphereGeometry(0.13, 12, 8), 0, s + 0.78, -0.03, 0, pele);
+      } else {
+        const y0 = 0;
+        add(new THREE.CapsuleGeometry(0.12, 0.62, 3, 8), 0, y0 + 0.43, 0);
+        add(new THREE.CapsuleGeometry(0.16, 0.36, 3, 8), 0, y0 + 1.1, 0);
+        add(new THREE.SphereGeometry(0.13, 12, 8), 0, y0 + 1.5, 0.02, 0, pele);
+        add(new THREE.BoxGeometry(0.06, 0.06, 0.25), 0, y0 + 1.5, 0.15, 0, pele); // nariz = pra onde olha
+      }
+      g.position.copy(posto.pos); g.rotation.y = posto.rotY;
+      scene.add(g);
+      return g;
+    }
+    const CORES = ['#e0566d', '#5b6ee1', '#f2a33a', '#9a6bff', '#3f8f4a', '#ff7a3d', '#2f5d8a'];
+    if (P.has('bonecas') && mundo.listarPostos) {
+      const lista = mundo.listarPostos();
+      const vistos = {};
+      lista.forEach((p, i) => { vistos[p.atividade] = (vistos[p.atividade] || 0) + 1; if (P.get('bonecas') === 'todas' || vistos[p.atividade] <= 2 || p.atividade === 'dormindo') boneca(p, CORES[i % CORES.length]); });
+    }
+    if (P.has('postos') && mundo.listarPostos) {
+      const lista = mundo.listarPostos();
+      const im = new THREE.InstancedMesh(new THREE.ConeGeometry(0.12, 0.4, 6).rotateX(Math.PI / 2), new THREE.MeshBasicMaterial({ color: '#ff2fa0' }), lista.length);
+      lista.forEach((p, i) => im.setMatrixAt(i, new THREE.Matrix4().compose(p.pos.clone().setY(p.pos.y + 0.05), new THREE.Quaternion().setFromEuler(new THREE.Euler(0, p.rotY, 0)), new THREE.Vector3(1, 1, 1))));
+      scene.add(im);
+    }
+    if (P.has('nav') && mundo._nav) {
+      const o = mundo._nav.obst, pos = [];
+      for (let i = 0; i < o.length; i += 4) pos.push(o[i], 0.08, o[i + 1], o[i + 2], 0.08, o[i + 3]);
+      const g = new THREE.BufferGeometry(); g.setAttribute('position', new THREE.Float32BufferAttribute(pos, 3));
+      scene.add(new THREE.LineSegments(g, new THREE.LineBasicMaterial({ color: '#ff2020', depthTest: false })));
+      const pn = []; mundo._nav.nos.forEach((n) => pn.push(n.x, 0.1, n.z));
+      const gn = new THREE.BufferGeometry(); gn.setAttribute('position', new THREE.Float32BufferAttribute(pn, 3));
+      scene.add(new THREE.Points(gn, new THREE.PointsMaterial({ color: '#0050ff', size: 5, sizeAttenuation: false, depthTest: false })));
+    }
+
+    // ---------------------------------------------------------------- teste da interface (?teste=1)
+    const ATIV = ['computador', 'biblioteca-lendo', 'telefone-andando', 'observatorio', 'fones-transcrevendo', 'quadro-reuniao', 'recepcao',
+      'fotografando-campo', 'sala-servidores', 'arquivo-cartas', 'gestos-holograma', 'caixa-registradora',
+      'esteira', 'halteres', 'yoga', 'cafe', 'lendo-banco', 'caminhando-jardim', 'alongando', 'bicicleta', 'dormindo'];
+    // superfície medida RELATIVA a pos.y (a esteira tem pos.y = 0.18, o próprio deck)
+    const ALTURA_ESPERADA = { computador: 0.46, 'biblioteca-lendo': 0.46, 'fones-transcrevendo': 0.46, cafe: 0.46, 'lendo-banco': 0.46, bicicleta: 0.78, dormindo: 0.32, esteira: 0 };
+    const POS_Y = { esteira: 0.18 };
+    const ZONAS_OBRIG = ['escritorio-aberto', 'biblioteca', 'academia', 'cafe', 'auditorio', 'jardim', 'observatorio', 'sala-servidores', 'recepcao', 'estudio', 'dormitorio', 'praca'];
+    function testar() {
+      const R = { ok: true, falhas: [], tCriarMs: Math.round(tCriar) };
+      const falha = (m) => { R.ok = false; R.falhas.push(m); };
+      const V = (v) => v && v.isVector3;
+      // membros
+      if (!V(mundo.pontoAllan) || Math.abs(mundo.pontoAllan.y) > 1e-6) falha('pontoAllan');
+      R.pontoAllan = mundo.pontoAllan && mundo.pontoAllan.toArray();
+      if (!mundo.camerainicial || !V(mundo.camerainicial.pos) || !V(mundo.camerainicial.alvo)) falha('camerainicial');
+      else { const d = mundo.camerainicial.pos.clone().sub(mundo.camerainicial.alvo); R.cameraElevacaoGraus = Math.round(Math.atan2(d.y, Math.hypot(d.x, d.z)) * 180 / Math.PI); }
+      ['reservarPosto', 'liberarPosto', 'caminho', 'setHora', 'update'].forEach((k) => { if (typeof mundo[k] !== 'function') falha('falta ' + k); });
+      if (!Array.isArray(mundo.objetosClicaveis)) falha('objetosClicaveis'); else R.clicaveis = mundo.objetosClicaveis.map((o) => o.userData && o.userData.acao);
+      R.zonas = {};
+      ZONAS_OBRIG.forEach((z) => { const Z = mundo.zonas[z]; if (!Z || typeof Z.nome !== 'string' || !V(Z.centro) || !(Z.raio > 0)) falha('zona ' + z); else R.zonas[z] = [Z.nome, Z.centro.toArray().map((v) => +v.toFixed(1)), +Z.raio.toFixed(1)]; });
+      // raycast pra medir a superfície sob cada posto
+      const solidos = [];
+      mundo.raiz.traverse((o) => { if (o.isMesh && !o.isInstancedMesh && o.material && !o.material.transparent && o.material.type !== 'ShaderMaterial' && o.geometry.index && o.geometry.attributes.position.count > 5000) solidos.push(o); });
+      const ray = new THREE.Raycaster();
+      const superficie = (p, y0) => { ray.set(new THREE.Vector3(p.x, y0, p.z), new THREE.Vector3(0, -1, 0)); ray.far = y0 + 1; const h = ray.intersectObjects(solidos, false); return h.length ? h[0].point.y : null; };
+      // postos por atividade
+      const todos = mundo.listarPostos ? mundo.listarPostos() : [];
+      R.postos = {};
+      ATIV.forEach((a) => {
+        const reais = todos.filter((p) => p.atividade === a);
+        const min = a === 'dormindo' ? 20 : 3;
+        // reserva até esgotar
+        const res = [];
+        for (let i = 0; i < reais.length + 3; i++) { const r = mundo.reservarPosto(a, `t-${a}-${i}`); res.push(r); }
+        const exatos = res.filter((r) => r && r.atividade === a).length;
+        const outros = res.filter((r) => r && r.atividade !== a).length;
+        const nulos = res.filter((r) => !r).length;
+        if (exatos < min) falha(`${a}: só ${exatos} postos (mín ${min})`);
+        // formato
+        res.filter(Boolean).forEach((r) => { if (!V(r.pos) || typeof r.rotY !== 'number' || typeof r.zona !== 'string' || !r.atividade) falha(a + ': formato'); });
+        // alturas
+        const alt = reais.map((p) => {
+          const esperado = ALTURA_ESPERADA[a];
+          const y0 = p.pos.y + (esperado != null ? esperado + 0.25 : 0.3);
+          const s = superficie(p.pos, y0);
+          return s == null ? null : +(s - p.pos.y).toFixed(3);
+        });
+        const esp = ALTURA_ESPERADA[a] ?? 0;
+        const ruins = alt.filter((h) => h == null || Math.abs(h - esp) > 0.035).length;
+        if (ruins) falha(`${a}: ${ruins}/${alt.length} postos com superfície ≠ ${esp} (medido ${JSON.stringify(alt)})`);
+        const yEsp = POS_Y[a] ?? 0;
+        if (reais.some((p) => Math.abs(p.pos.y - yEsp) > 0.001)) falha(`${a}: pos.y ≠ ${yEsp}`);
+        // mesa à frente (tampo 0.74, borda a +0.35) e guidão da bike (+0.5 Z, 1.0 de altura)
+        const frente = { computador: [0.40, 0.74], 'fones-transcrevendo': [0.40, 0.74], cafe: [0.40, 0.74], bicicleta: [0.52, 1.0] }[a];
+        if (frente) {
+          const medidas = reais.map((p) => { const q = new THREE.Vector3(Math.sin(p.rotY) * frente[0], 0, Math.cos(p.rotY) * frente[0]).add(p.pos); const s = superficie(q, p.pos.y + frente[1] + 0.12); return s == null ? null : +(s - p.pos.y).toFixed(3); });
+          const ruinsM = medidas.filter((h) => h == null || Math.abs(h - frente[1]) > 0.03).length;
+          if (ruinsM) falha(`${a}: ${ruinsM}/${medidas.length} sem mesa/guidão a ${frente[1]} em +${frente[0]} Z (medido ${JSON.stringify(medidas)})`);
+          // e nada na frente a +0.30 (onde ficam as pernas) acima do assento
+          const pernas = reais.map((p) => { const q = new THREE.Vector3(Math.sin(p.rotY) * 0.22, 0, Math.cos(p.rotY) * 0.22).add(p.pos); const s = superficie(q, p.pos.y + 0.7); return s == null ? null : +(s - p.pos.y).toFixed(2); });
+          if (a !== 'bicicleta' && pernas.some((h) => h != null && h > 0.47)) falha(`${a}: algo no lugar das pernas ${JSON.stringify(pernas)}`);
+        }
+        R.postos[a] = { postos: reais.length, exatos, outros, nulos, zona: [...new Set(reais.map((p) => p.zona))].join(','), y: [...new Set(reais.map((p) => +p.pos.y.toFixed(2)))].join(','), superf: [...new Set(alt)].slice(0, 6).join(',') };
+        for (let i = 0; i < reais.length + 3; i++) mundo.liberarPosto(`t-${a}-${i}`);
+      });
+      // liberarPosto e reserva repetida
+      const r1 = mundo.reservarPosto('cafe', 'kira'); const r2 = mundo.reservarPosto('cafe', 'kira');
+      if (!r1 || !r2 || r1.pos.distanceTo(r2.pos) > 1e-6) falha('reserva repetida não devolve o mesmo posto');
+      mundo.liberarPosto('kira');
+      if (mundo.listarPostos && mundo.listarPostos().some((p) => p.ocupante === 'kira')) falha('liberarPosto');
+      if (mundo.listarPostos && mundo.listarPostos().some((p) => p.ocupante)) falha('sobrou posto ocupado depois dos testes');
+      // caminhos: todos os pares (amostra) entre postos e a praça, checando obstáculos e o anel do prédio
+      const livre = mundo._nav && mundo._nav.livre;
+      const amostra = todos.filter((p, i) => i % 3 === 0).map((p) => p.pos);
+      amostra.push(mundo.pontoAllan.clone());
+      let nCam = 0, ruinsCam = 0, maxPts = 0, tCam = 0, exemplo = null, dentroPredio = 0, compr = 0;
+      const tc0 = performance.now();
+      for (let i = 0; i < amostra.length; i++) for (let j = 0; j < amostra.length; j += 3) {
+        if (i === j) continue;
+        const de = amostra[i], para = amostra[j];
+        const c = mundo.caminho(de.clone(), para.clone());
+        nCam++;
+        if (!Array.isArray(c) || !c.length || !V(c[c.length - 1])) { ruinsCam++; continue; }
+        const fim = c[c.length - 1];
+        if (fim.distanceTo(para) > 1e-4) { ruinsCam++; if (!exemplo) exemplo = 'fim≠para'; }
+        maxPts = Math.max(maxPts, c.length);
+        const pts = [de, ...c];
+        for (let k = 0; k < pts.length - 1; k++) {
+          const a = pts[k], b = pts[k + 1];
+          compr += a.distanceTo(b);
+          const r = Math.hypot(b.x, b.z); if (r > 29 && r < 39) dentroPredio++;
+          // ignora o primeiro e o último trecho (saindo/chegando no posto: cadeira, cama…)
+          if (k === 0 || k === pts.length - 2) continue;
+          if (livre && !livre(a.x, a.z, b.x, b.z, 0.12)) { ruinsCam++; if (!exemplo) exemplo = { de: de.toArray().map((v) => +v.toFixed(2)), para: para.toArray().map((v) => +v.toFixed(2)), trecho: [a.x, a.z, b.x, b.z].map((v) => +v.toFixed(2)) }; break; }
+        }
+      }
+      tCam = performance.now() - tc0;
+      R.caminhos = { n: nCam, ruins: ruinsCam, maxPts, msPorCaminho: +(tCam / nCam).toFixed(2), dentroPredio, comprMedio: +(compr / nCam).toFixed(1), exemplo };
+      if (ruinsCam) falha(`caminho: ${ruinsCam}/${nCam} atravessam obstáculo`);
+      if (dentroPredio) falha('caminho entra no prédio em anel');
+      // setHora / update
+      try { [0, 5.5, 7, 12, 17.8, 19, 23.9, 30, -1, NaN].forEach((h) => mundo.setHora(h)); mundo.setHora(hora); } catch (e) { falha('setHora: ' + e); }
+      try { mundo.update(0.016, 1.0); mundo.update(0.016); } catch (e) { falha('update: ' + e); }
+      return R;
+    }
+
+    // ---------------------------------------------------------------- loop + painel
+    const info = document.getElementById('info');
+    let quadros = 0, fps = 0, tFps = performance.now(), ultimo = performance.now(), tempo = 0;
+    function loop() {
+      const agora = performance.now(); const dt = Math.min(0.1, (agora - ultimo) / 1000); ultimo = agora; tempo += dt;
+      if (orbita) esf.theta += dt * 0.12;
+      camera.position.setFromSpherical(esf).add(alvo); camera.lookAt(alvo);
+      mundo.update(dt, tempo);
+      renderer.info.reset();
+      renderer.render(scene, camera);
+      quadros++;
+      if (agora - tFps > 1000) { fps = Math.round(quadros * 1000 / (agora - tFps)); quadros = 0; tFps = agora; }
+      const r = renderer.info.render, m = renderer.info.memory;
+      info.textContent = `${qualidade} · ${fps} fps · ${atual}\nchamadas ${r.calls} · tri ${(r.triangles / 1000).toFixed(0)}k\ngeo ${m.geometries} · tex ${m.textures} · prog ${renderer.info.programs.length}\nhora ${mundo.hora != null ? mundo.hora.toFixed(1) : hora} · criar ${tCriar.toFixed(0)} ms`;
+      window.__info = { fps, calls: r.calls, tris: r.triangles, geos: m.geometries, tex: m.textures, programas: renderer.info.programs.length, tCriar };
+      requestAnimationFrame(loop);
+    }
+    requestAnimationFrame(loop);
+    if (P.has('teste')) {
+      let R;
+      try { R = testar(); } catch (e) { R = { ok: false, erro: String(e && e.stack || e) }; }
+      window.__teste = R;
+      const s = document.getElementById('saida'); s.style.display = 'block'; s.textContent = JSON.stringify(R, null, 1);
+    }
+    window.__stats = () => {
+      const out = [];
+      scene.traverse((o) => {
+        if (!o.geometry || !o.visible) return;
+        const g = o.geometry; const tri = (g.index ? g.index.count : g.attributes.position.count) / 3;
+        const n = o.isInstancedMesh ? o.count : 1;
+        out.push({ nome: o.name || o.type, mat: o.material && o.material.type, tri: Math.round(tri), inst: n, total: Math.round(tri * n), sombra: !!o.castShadow });
+      });
+      return out.sort((a, b) => b.total - a.total);
+    };
+    if (P.get('ui') === '0') { document.getElementById('barra').style.display = 'none'; }
+    if (P.get('info') === '0') { document.getElementById('info').style.display = 'none'; }
+    window.__pronto = true;
+  </script>
+</body>
+</html>

@@ -1,0 +1,21 @@
+{
+  "id": "/campus/",
+  "name": "Campus — Allan",
+  "short_name": "Campus",
+  "description": "O campus das agentes do Allan: cada sistema é uma pessoa trabalhando.",
+  "lang": "pt-BR",
+  "dir": "ltr",
+  "start_url": "/campus/",
+  "scope": "/campus/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#fbf1e3",
+  "theme_color": "#f8d9b4",
+  "categories": ["productivity", "business"],
+  "icons": [
+    { "src": "/campus/icones/icone-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
+    { "src": "/campus/icones/icone-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
+    { "src": "/campus/icones/icone-maskable-192.png", "sizes": "192x192", "type": "image/png", "purpose": "maskable" },
+    { "src": "/campus/icones/icone-maskable-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ]
+}
