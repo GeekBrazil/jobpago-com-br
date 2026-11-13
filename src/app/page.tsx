@@ -180,7 +180,7 @@ export default function Home() {
         <div className="text-center max-w-4xl mx-auto relative z-10">
           {/* BADGE DE CONFIANÇA PIX DIRETO */}
           <div className="inline-flex items-center gap-2 px-3.5 sm:px-4 py-1.5 rounded-full glass-panel border border-amber-500/30 text-amber-300 text-[10px] sm:text-xs font-bold tracking-wider sm:tracking-widest uppercase mb-5 sm:mb-6 shadow-xl">
-            <span className="w-2 h-2 rounded-full bg-amber-400 animate-pulse shrink-0"></span>
+            <span className="w-2 h-2 rounded-full bg-amber-400 motion-safe:animate-pulse shrink-0"></span>
             <span>{L(idioma, "PIX COMBINADO DIRETO ENTRE AS PARTES · 0% DE COMISSÕES", "PIX ACORDADO DIRECTO ENTRE LAS PARTES · 0% DE COMISIONES", "PIX PAID DIRECTLY BETWEEN THE PARTIES · 0% COMMISSION")}</span>
           </div>
 
@@ -545,7 +545,7 @@ export default function Home() {
             </a>
           </div>
         </div>
-        <p className="max-w-7xl mx-auto mt-4 text-[11px] text-slate-500 leading-relaxed">62.685.514 ALLAN CANDIDO · CNPJ 62.685.514/0001-85 · Rua Leontino Antonio de Souza, 85, Água Santa, Angra dos Reis/RJ, CEP 23915-505</p>
+        <p className="max-w-7xl mx-auto mt-4 text-[11px] text-slate-400 leading-relaxed">62.685.514 ALLAN CANDIDO · CNPJ 62.685.514/0001-85 · Rua Leontino Antonio de Souza, 85, Água Santa, Angra dos Reis/RJ, CEP 23915-505</p>
       </footer>
 
       {/* ── DOCK INFERIOR ESTILO iOS (MOBILE) ── */}

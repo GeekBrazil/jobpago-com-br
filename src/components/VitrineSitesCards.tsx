@@ -98,12 +98,16 @@ export function CardSiteComPrint({
           <img
             src={meta.screenshotUrl}
             alt={meta.titulo}
-            className="w-full h-full object-cover opacity-90 group-hover:scale-105 group-hover:opacity-100 transition-all duration-500"
+            className="w-full h-full object-cover opacity-90 group-hover:scale-105 group-hover:opacity-100 transition-transform transition-opacity duration-500 motion-reduce:transform-none"
             loading="lazy"
+            decoding="async"
+            onError={(e) => {
+              e.currentTarget.style.opacity = "0";
+            }}
           />
-          <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/25 to-transparent" />
-          <span className="absolute bottom-3 left-4 px-2.5 py-1 rounded-lg bg-slate-950/85 border border-white/15 text-[10px] font-mono font-bold text-cyan-300 uppercase">
-            📸 PRINT AUTOMÁTICO · AO VIVO
+          <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/35 to-transparent" />
+          <span className="absolute bottom-3 left-4 px-2.5 py-1 rounded-lg bg-slate-950/90 border border-white/20 text-[10px] font-mono font-bold text-cyan-200 uppercase">
+            PRINT AO VIVO
           </span>
         </div>
 
@@ -236,3 +240,4 @@ export function CampoSitesPortfolio({
     </div>
   );
 }
+
