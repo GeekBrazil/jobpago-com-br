@@ -121,7 +121,7 @@ async function boot() {
   ui.loader.passo('Chamando as meninas', 0.5);
 
   // ---- quem existe (estado ao vivo > roster estático > memória) ----
-  const resp = await Promise.race([promessaEstado, new Promise((r) => setTimeout(() => r(null), 4500))]);
+  const resp = await Promise.race([promessaEstado, new Promise((r) => setTimeout(() => r(null), 900))]);
   let lista = null;
   if (resp?.ok) {
     lista = listaDe(resp.r);
