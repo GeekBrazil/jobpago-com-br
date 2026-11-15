@@ -91,6 +91,7 @@ export const competencia = (c: number) => `${MESES[(c % 100) - 1]}/${Math.floor(
 /* Paradas principais da Expedição JobPago (Fortaleza → Paraty, pelo litoral). */
 export const CIDADES_DESTAQUE = [
   { ibge: "2304400", nome: "Fortaleza", uf: "CE" },
+  { ibge: "2301000", nome: "Aquiraz", uf: "CE" },
   { ibge: "2408102", nome: "Natal", uf: "RN" },
   { ibge: "2507507", nome: "João Pessoa", uf: "PB" },
   { ibge: "2611606", nome: "Recife", uf: "PE" },

@@ -49,9 +49,9 @@ export async function generateMetadata(): Promise<Metadata> {
     images: ["/icon_flutuante.png"],
   },
   icons: {
-    icon: "/icon.png",
-    shortcut: "/icon.png",
-    apple: "/icon.png",
+    icon: "/icon-192.png",
+    shortcut: "/icon-192.png",
+    apple: "/icon-192.png",
   },
   manifest: "/manifest.json",
   appleWebApp: {
@@ -130,6 +130,7 @@ export default async function RootLayout({
               <IdiomaFlutuante />
             </IdiomaProvider>
             <IndicacaoNoWhats />
+            <Script src="/pwa.js" strategy="afterInteractive" />
             {/* rastreio próprio + passo de 1 toque antes do WhatsApp — arquivo único servido pelo allancandido.com */}
             <Script src="https://allancandido.com/r.js" data-site="jobpago" data-cor="#F59E0B" strategy="afterInteractive" />
             {/* chat de atendimento — widget único servido pelo allancandido.com (substitui o Dify) */}

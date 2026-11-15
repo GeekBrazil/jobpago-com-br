@@ -51,6 +51,45 @@ export default function RefugioConteudo() {
           {L(idioma, "O que registramos na visita está em", "Lo que registramos en la visita está en", "What we record on the visit is at")}{" "}
           <Link href="/#refugio-estrada" className="underline hover:text-amber-400">{L(idioma, "Onde dormir", "Dónde dormir", "Where to sleep")}</Link>.
         </p>
+
+        {/* CASE OFICIAL VERIFICADO NA ROTA: CASA ROSA (AQUIRAZ/CE) */}
+        <div className="mt-8 glass-panel rounded-3xl p-6 border border-pink-500/40 bg-gradient-to-r from-pink-500/10 via-slate-950/80 to-cyan-500/10 flex flex-col lg:flex-row items-start lg:items-center justify-between gap-4">
+          <div className="max-w-2xl">
+            <div className="flex flex-wrap items-center gap-2 mb-2">
+              <span className="px-3 py-1 rounded-full bg-pink-500/20 border border-pink-400/40 text-pink-300 text-[11px] font-mono font-bold uppercase">
+                🏡 {L(idioma, "Hospedagem Oficial Verificada · Prainha (Aquiraz/CE)", "Hospedaje Oficial Verificado · Prainha (Aquiraz/CE)", "Verified Partner Lodging · Prainha (Aquiraz/CE)")}
+              </span>
+              <span className="px-2.5 py-1 rounded-full bg-cyan-500/15 border border-cyan-400/35 text-cyan-300 text-[10px] font-mono font-bold uppercase">
+                ⚡ Case 3D + Pix Direto
+              </span>
+            </div>
+            <h3 className="text-lg sm:text-xl font-black text-white">
+              Casa Rosa · Refúgio Pé na Areia em 3D (Aquiraz / CE)
+            </h3>
+            <p className="mt-1 text-xs sm:text-sm text-slate-300 leading-relaxed">
+              {L(
+                idioma,
+                "Veja na prática como uma hospedagem parceira da rota recebe reservas diretas no Pix (0% comissão) com réplica 3D interativa, som do mar da Prainha e painel Micro-SaaS próprio desenvolvido por Allan Cândido.",
+                "Mirá en la práctica cómo un hospedaje socio de la ruta recibe reservas directas por Pix (0% comisión) con réplica 3D interactiva y panel propio desarrollado por Allan Cândido.",
+                "See in practice how a route partner lodging takes direct Pix bookings (0% commission) with an interactive 3D replica and custom Micro-SaaS built by Allan Cândido."
+              )}
+            </p>
+          </div>
+          <div className="flex flex-wrap items-center gap-2.5 shrink-0">
+            <Link
+              href="/casarosa?ref=allan"
+              className="btn-primary-amalfi px-4 py-2.5 rounded-xl text-xs font-black"
+            >
+              🏖️ {L(idioma, "Abrir Casa Rosa 3D →", "Abrir Casa Rosa 3D →", "Open Casa Rosa 3D →")}
+            </Link>
+            <Link
+              href="/allan"
+              className="btn-secondary-glass px-4 py-2.5 rounded-xl text-xs font-bold text-cyan-300 border-cyan-500/35 hover:border-cyan-400"
+            >
+              💻 {L(idioma, "Ver Perfil de Allan Cândido →", "Ver Perfil de Allan Cândido →", "See Allan Cândido's Profile →")}
+            </Link>
+          </div>
+        </div>
       </section>
 
       <section className="mt-14" aria-labelledby="cadastro">

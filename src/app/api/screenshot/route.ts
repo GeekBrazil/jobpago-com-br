@@ -5,6 +5,7 @@ import { join } from "path";
 export const runtime = "nodejs";
 
 const LOCAL_MAP: Array<{ match: string; file: string }> = [
+  { match: "casarosa", file: "public/vitrine/cassarosa-hero.webp" },
   { match: "cassarosa", file: "public/vitrine/cassarosa-hero.webp" },
   { match: "campus", file: "public/vitrine/campus-cards.webp" },
   { match: "visiteprado", file: "public/vitrine/visiteprado-720.webp" },

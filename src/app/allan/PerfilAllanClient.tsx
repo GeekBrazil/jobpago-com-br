@@ -18,9 +18,9 @@ const CENAS_KEYNOTE = [
   {
     tempo: 0,
     tag: "01 · RÉPLICA 3D + PIX DIRETO",
-    titulo: "Cassa Rosa 3D",
+    titulo: "Casa Rosa 3D",
     sub: "Seu cliente gira o chalé em 3D, ouve o mar e reserva no seu Pix sem comissão",
-    href: "/cassarosa",
+    href: "/casarosa?ref=allan",
   },
   {
     tempo: 3.5,
@@ -59,7 +59,37 @@ export default function PerfilAllanClient() {
   const [abaAtiva, setAbaAtiva] = useState<"todos" | "software" | "ia" | "drone" | "foto360">("todos");
   const [cenaAtiva, setCenaAtiva] = useState(0);
   const [comSomKeynote, setComSomKeynote] = useState(false);
+  const [modalBastidoresCasaRosa, setModalBastidoresCasaRosa] = useState(false);
+  const [statusCasaRosa, setStatusCasaRosa] = useState({
+    carregado: false,
+    valorFimDeSemana: 1200,
+    valorFeriado: 1600,
+    datasBloqueadas: 0,
+    totalReservas: 0,
+  });
   const videoRef = useRef<HTMLVideoElement | null>(null);
+
+  useEffect(() => {
+    let cancelado = false;
+    Promise.allSettled([
+      fetch("/casarosa/api/admin/config").then((r) => (r.ok ? r.json() : null)),
+      fetch("/casarosa/api/admin/reservas").then((r) => (r.ok ? r.json() : null)),
+    ]).then(([cfgRes, resRes]) => {
+      if (cancelado) return;
+      const cfg = cfgRes.status === "fulfilled" ? cfgRes.value?.config : null;
+      const metricas = resRes.status === "fulfilled" ? resRes.value?.metricas : null;
+      setStatusCasaRosa({
+        carregado: true,
+        valorFimDeSemana: Number(cfg?.valorPadraoFimDeSemana) || 1200,
+        valorFeriado: Number(cfg?.valorFeriado) || 1600,
+        datasBloqueadas: Array.isArray(cfg?.datasBloqueadas) ? cfg.datasBloqueadas.length : 0,
+        totalReservas: Number(metricas?.totalReservas) || 0,
+      });
+    });
+    return () => {
+      cancelado = true;
+    };
+  }, []);
 
   useEffect(() => {
     let frameCount = 0;
@@ -423,17 +453,50 @@ export default function PerfilAllanClient() {
                   <li>✓ Vídeos verticais lado a lado, galeria de fotos reais e som ambiente</li>
                   <li>✓ Botões estilo jogo / aplicativo que levam o cliente direto para o seu WhatsApp e Pix</li>
                 </ul>
+
+                {/* TELEMETRIA AO VIVO DA CASA ROSA (CONECTADA À API /casarosa/api/admin/config) */}
+                <div className="mt-4 rounded-2xl bg-slate-950/85 border border-pink-500/35 p-3.5 text-xs">
+                  <div className="flex items-center justify-between gap-2 flex-wrap">
+                    <span className="inline-flex items-center gap-1.5 font-mono font-bold text-emerald-300 text-[11px] uppercase">
+                      <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
+                      Status Ao Vivo · Prainha (Aquiraz/CE)
+                    </span>
+                    <span className="font-mono text-[11px] text-pink-300 font-bold">
+                      {statusCasaRosa.datasBloqueadas === 0
+                        ? "✓ Datas Livres para Reserva"
+                        : `${statusCasaRosa.datasBloqueadas} datas reservadas · Agenda Ativa`}
+                    </span>
+                  </div>
+                  <div className="mt-2 grid grid-cols-3 gap-2 pt-2 border-t border-white/10 text-[11px]">
+                    <div>
+                      <span className="text-slate-400 block">Fim de Semana</span>
+                      <strong className="text-white">R$ {statusCasaRosa.valorFimDeSemana.toLocaleString("pt-BR")}</strong>
+                    </div>
+                    <div>
+                      <span className="text-slate-400 block">Capacidade</span>
+                      <strong className="text-white">Até 18 pessoas</strong>
+                    </div>
+                    <div>
+                      <span className="text-slate-400 block">Comissão</span>
+                      <strong className="text-emerald-300">0% (Pix Direto)</strong>
+                    </div>
+                  </div>
+                </div>
               </div>
-              <div className="mt-6 pt-4 border-t border-white/10 flex items-center justify-between flex-wrap gap-3">
-                <span className="text-xs text-slate-400">
-                  Prova real pronta: <strong className="text-white">Cassa Rosa</strong>
-                </span>
+              <div className="mt-6 pt-4 border-t border-white/10 flex flex-col sm:flex-row sm:items-center justify-between gap-2.5">
                 <Link
-                  href="/cassarosa"
-                  className="btn-secondary-glass px-4 py-2 rounded-xl text-xs font-bold text-pink-300 border-pink-500/35 hover:border-pink-400"
+                  href="/casarosa?ref=allan"
+                  className="btn-secondary-glass px-4 py-2.5 rounded-xl text-xs font-bold text-pink-300 border-pink-500/40 hover:border-pink-400 flex items-center justify-center gap-1.5"
                 >
-                  Testar Réplica 3D Cassa Rosa ao Vivo →
+                  <span>🏖️ Abrir Tour 3D &amp; Reservar →</span>
                 </Link>
+                <button
+                  type="button"
+                  onClick={() => setModalBastidoresCasaRosa(true)}
+                  className="btn-secondary-glass px-4 py-2.5 rounded-xl text-xs font-bold text-cyan-300 border-cyan-500/35 hover:border-cyan-400 cursor-pointer flex items-center justify-center gap-1.5"
+                >
+                  <span>💻 Ver Bastidores (Micro-SaaS)</span>
+                </button>
               </div>
             </div>
 
@@ -831,14 +894,15 @@ export default function PerfilAllanClient() {
           {[
             {
               tag: "RÉPLICA 3D + RESERVA DIRETA PIX",
-              titulo: "Cassa Rosa · Refúgio Pé na Areia 3D",
-              url: "jobpago.com.br/cassarosa",
-              href: "/cassarosa",
+              titulo: "Casa Rosa · Refúgio Pé na Areia 3D",
+              url: "jobpago.com.br/casarosa",
+              href: "/casarosa?ref=allan",
               imagem: "/vitrine/cassarosa-hero.webp",
               cor: "border-pink-500/40",
-              desc: "O visitante gira o chalé em 3D pelo celular, escuta o som das ondas do mar, assiste aos vídeos verticais lado a lado e faz a reserva direto no Pix da pousada, sem pagar comissão.",
-              cta: "Abrir Cassa Rosa 3D →",
+              desc: `O visitante gira o chalé em 3D pelo celular, escuta o som das ondas do mar, assiste aos vídeos verticais e faz a reserva direto no Pix (Pacote FDS R$ ${statusCasaRosa.valorFimDeSemana.toLocaleString("pt-BR")} · até 18 pessoas ·Datas Livres na Prainha, Aquiraz/CE).`,
+              cta: "🏖️ Abrir Tour 3D & Reservar →",
               externo: false,
+              temBastidores: true,
             },
             {
               tag: "GLOBO 3D EM TEMPO REAL NO NAVEGADOR",
@@ -930,7 +994,7 @@ export default function PerfilAllanClient() {
                 </div>
               </div>
 
-              <div className="px-5 pb-5">
+              <div className="px-5 pb-5 space-y-2">
                 {proj.externo ? (
                   <a
                     href={proj.href}
@@ -947,6 +1011,15 @@ export default function PerfilAllanClient() {
                   >
                     <span>{proj.cta}</span>
                   </Link>
+                )}
+                {"temBastidores" in proj && proj.temBastidores && (
+                  <button
+                    type="button"
+                    onClick={() => setModalBastidoresCasaRosa(true)}
+                    className="w-full py-2 px-3 rounded-xl text-[11px] font-mono font-bold text-cyan-300 bg-cyan-500/10 border border-cyan-500/30 hover:border-cyan-400 cursor-pointer flex items-center justify-center gap-1.5"
+                  >
+                    <span>💻 Ver Bastidores (Painel Micro-SaaS + Grupos FB)</span>
+                  </button>
                 )}
               </div>
             </div>
@@ -990,6 +1063,97 @@ export default function PerfilAllanClient() {
           </Link>
         </div>
       </section>
+
+      {/* ====================================================================
+          MODAL INTERATIVO DE BASTIDORES DO MICRO-SAAS DA CASA ROSA
+          ==================================================================== */}
+      {modalBastidoresCasaRosa && (
+        <div
+          className="fixed inset-0 z-50 bg-slate-950/85 backdrop-blur-md flex items-center justify-center p-4 overflow-y-auto"
+          onClick={() => setModalBastidoresCasaRosa(false)}
+        >
+          <div
+            className="glass-panel rounded-3xl max-w-3xl w-full p-6 sm:p-8 border border-pink-500/40 bg-slate-950 shadow-2xl relative my-8"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <div className="flex items-start justify-between gap-4 pb-4 border-b border-white/10">
+              <div>
+                <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-pink-500/15 border border-pink-500/35 text-pink-300 text-[11px] font-mono font-bold uppercase">
+                  💻 BASTIDORES DO SISTEMA · CASA ROSA MICRO-SAAS
+                </span>
+                <h3 className="text-xl sm:text-2xl font-black text-white mt-2">
+                  O Que o Dono do Negócio Recebe Por Trás do Site 3D
+                </h3>
+                <p className="text-xs sm:text-sm text-slate-300 mt-1">
+                  Além da vitrine 3D a 120 FPS com som do mar, a Casa Rosa conta com um painel administrativo próprio e rastreamento integrado ao JobPago:
+                </p>
+              </div>
+              <button
+                type="button"
+                onClick={() => setModalBastidoresCasaRosa(false)}
+                className="px-3 py-1.5 rounded-xl bg-white/10 hover:bg-white/20 text-xs font-bold text-white cursor-pointer"
+              >
+                ✕ Fechar
+              </button>
+            </div>
+
+            <div className="mt-5 grid grid-cols-1 sm:grid-cols-3 gap-4">
+              <div className="rounded-2xl bg-white/[0.04] border border-pink-500/30 p-4">
+                <span className="text-[10px] font-mono font-bold text-pink-300 uppercase">Módulo 01 · Reservas Pix</span>
+                <h4 className="text-sm font-black text-white mt-1">Controle de Sinais 50% &amp; Comprovantes</h4>
+                <p className="text-xs text-slate-300 mt-1.5 leading-relaxed">
+                  Gera protocolo único, calcula o sinal de 50% no Pix do proprietário, recebe o comprovante anexado e etiqueta reservas vindas por <code className="text-cyan-300">?ref=allan</code>.
+                </p>
+              </div>
+
+              <div className="rounded-2xl bg-white/[0.04] border border-cyan-500/30 p-4">
+                <span className="text-[10px] font-mono font-bold text-cyan-300 uppercase">Módulo 02 · Agenda &amp; Preços</span>
+                <h4 className="text-sm font-black text-white mt-1">Tarifário &amp; Bloqueio em Tempo Real</h4>
+                <p className="text-xs text-slate-300 mt-1.5 leading-relaxed">
+                  O proprietário altera o valor do pacote de fim de semana (atual: <strong>R$ {statusCasaRosa.valorFimDeSemana.toLocaleString("pt-BR")}</strong>) e bloqueia datas com 1 clique pelo celular.
+                </p>
+              </div>
+
+              <div className="rounded-2xl bg-white/[0.04] border border-emerald-500/30 p-4">
+                <span className="text-[10px] font-mono font-bold text-emerald-300 uppercase">Módulo 03 · Divulgação</span>
+                <h4 className="text-sm font-black text-white mt-1">Publicador de Grupos do Facebook &amp; WhatsApp</h4>
+                <p className="text-xs text-slate-300 mt-1.5 leading-relaxed">
+                  Gera textos persuasivos anti-bloqueio, baixa o kit de fotos reais e controla a fila diária de grupos do Facebook para lotar os fins de semana.
+                </p>
+              </div>
+            </div>
+
+            <div className="mt-6 pt-4 border-t border-white/10 flex flex-wrap items-center justify-between gap-3">
+              <div className="flex flex-wrap items-center gap-2">
+                <Link
+                  href="/casarosa?ref=allan"
+                  className="btn-secondary-glass px-4 py-2.5 rounded-xl text-xs font-bold text-pink-300 border-pink-500/40 hover:border-pink-400"
+                >
+                  🏖️ Abrir Site 3D da Casa Rosa →
+                </Link>
+                <Link
+                  href="/casarosa/admin"
+                  className="btn-secondary-glass px-4 py-2.5 rounded-xl text-xs font-bold text-slate-200 border-white/15 hover:border-white/40"
+                >
+                  🔐 Ver Tela do Painel Admin →
+                </Link>
+              </div>
+              <button
+                type="button"
+                onClick={() => {
+                  setModalBastidoresCasaRosa(false);
+                  abrirWhats(
+                    "Olá Allan! Vi os bastidores do Micro-SaaS da Casa Rosa no seu perfil do JobPago e quero um sistema 3D com painel próprio para o meu negócio."
+                  );
+                }}
+                className="btn-primary-amalfi px-5 py-2.5 rounded-xl text-xs font-black cursor-pointer"
+              >
+                💬 Quero um Sistema Igual para Meu Negócio →
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

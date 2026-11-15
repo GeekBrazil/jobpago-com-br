@@ -147,6 +147,41 @@ export default async function RelatorioCidadePage({ params }: Props) {
           </div>
         )}
 
+        {(ibge === "2301000" || ibge === "2304400") && (
+          <div className="mt-6 p-5 sm:p-6 rounded-3xl bg-gradient-to-r from-pink-500/15 via-slate-900/90 to-cyan-500/10 border border-pink-500/40 flex flex-col lg:flex-row items-start lg:items-center justify-between gap-4 shadow-xl">
+            <div className="max-w-2xl">
+              <div className="flex flex-wrap items-center gap-2 mb-1.5">
+                <span className="px-3 py-0.5 rounded-full bg-pink-500/20 border border-pink-400/40 text-pink-300 text-[11px] font-mono font-bold uppercase">
+                  🏡 Hospedagem Parceira Verificada · Prainha (Aquiraz/CE)
+                </span>
+                <span className="px-2.5 py-0.5 rounded-full bg-cyan-500/15 border border-cyan-400/30 text-cyan-300 text-[10px] font-mono font-bold uppercase">
+                  Case Oficial 3D · Allan Cândido
+                </span>
+              </div>
+              <h2 className="text-lg sm:text-xl font-black text-white">
+                Casa Rosa · Chalé &amp; Refúgio Pé na Areia 3D (Até 18 pessoas · Pix Direto)
+              </h2>
+              <p className="text-xs sm:text-sm text-slate-300 mt-1">
+                Explore o chalé em 3D com som do mar da Prainha, piscina privativa, sinuca, pebolim e reserva direta no Pix sem comissão. Sistema 3D e Micro-SaaS desenvolvidos por Allan Cândido.
+              </p>
+            </div>
+            <div className="flex flex-wrap items-center gap-2.5 shrink-0">
+              <Link
+                href="/casarosa?ref=allan"
+                className="btn-primary-amalfi px-4 py-2.5 rounded-xl text-xs font-black"
+              >
+                🏖️ Abrir Tour 3D Casa Rosa →
+              </Link>
+              <Link
+                href="/allan"
+                className="btn-secondary-glass px-4 py-2.5 rounded-xl text-xs font-bold text-cyan-300 border-cyan-500/35 hover:border-cyan-400"
+              >
+                ⚡ Ver Perfil de Allan Cândido →
+              </Link>
+            </div>
+          </div>
+        )}
+
         {/* NÚMEROS DE ABERTURA */}
         <section className="mt-8 grid gap-4 sm:grid-cols-3" aria-label={t("Resumo", "Resumen", "Summary")}>
           <div className="glass-panel rounded-3xl p-6 flex flex-col justify-between">

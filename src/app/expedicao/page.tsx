@@ -130,6 +130,38 @@ export default async function ExpedicaoPage() {
               );
             })}
           </ol>
+
+          {/* REFÚGIO PARCEIRO VERIFICADO NA SAÍDA DA EXPEDIÇÃO (FORTALEZA / AQUIRAZ - CE) */}
+          <div className="mt-6 glass-panel rounded-3xl p-5 sm:p-6 border border-pink-500/40 bg-gradient-to-r from-pink-500/12 via-slate-950/85 to-cyan-500/10 flex flex-col lg:flex-row items-start lg:items-center justify-between gap-4">
+            <div className="max-w-2xl">
+              <div className="flex flex-wrap items-center gap-2 mb-1.5">
+                <span className="px-3 py-0.5 rounded-full bg-pink-500/20 border border-pink-400/40 text-pink-300 text-[11px] font-mono font-bold uppercase">
+                  🏡 {t("Refúgio Verificado · Trecho 01 (Fortaleza → Aquiraz/CE)", "Refugio Verificado · Tramo 01 (Fortaleza → Aquiraz/CE)", "Verified Refuge · Leg 01 (Fortaleza → Aquiraz/CE)")}
+                </span>
+                <span className="px-2.5 py-0.5 rounded-full bg-cyan-500/15 border border-cyan-400/35 text-cyan-300 text-[10px] font-mono font-bold uppercase">
+                  Case 3D · Allan Cândido
+                </span>
+              </div>
+              <h3 className="text-lg font-black text-white">
+                Casa Rosa · Refúgio Pé na Areia 3D na Prainha (Aquiraz/CE)
+              </h3>
+              <p className="text-xs sm:text-sm text-slate-300 mt-1">
+                {t(
+                  "Hospedagem parceira na largada da rota costeira com réplica 3D interativa, som do mar da Prainha e reserva direta no Pix (0% comissão) construída por Allan Cândido.",
+                  "Hospedaje socio en la largada de la ruta costera con réplica 3D interactiva y reserva directa por Pix construida por Allan Cândido.",
+                  "Partner lodging at the start of the coastal route with an interactive 3D replica and direct Pix booking built by Allan Cândido."
+                )}
+              </p>
+            </div>
+            <div className="flex flex-wrap items-center gap-2.5 shrink-0">
+              <Link href="/casarosa?ref=allan" className="btn-primary-amalfi px-4 py-2.5 rounded-xl text-xs font-black">
+                🏖️ {t("Abrir Casa Rosa 3D →", "Abrir Casa Rosa 3D →", "Open Casa Rosa 3D →")}
+              </Link>
+              <Link href="/allan" className="btn-secondary-glass px-4 py-2.5 rounded-xl text-xs font-bold text-cyan-300 border-cyan-500/35 hover:border-cyan-400">
+                ⚡ {t("Perfil de Allan Cândido →", "Perfil de Allan Cândido →", "Allan Cândido's Profile →")}
+              </Link>
+            </div>
+          </div>
         </section>
 
         <section className="mt-14 grid gap-6 lg:grid-cols-2">
