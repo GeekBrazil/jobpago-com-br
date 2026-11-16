@@ -905,6 +905,17 @@ export default function PerfilAllanClient() {
               temBastidores: true,
             },
             {
+              tag: "LANÇAMENTO 3D TÁTIL · VISTA EXPLODIDA",
+              titulo: "BLIP® Pocket Arcade · Console 3D",
+              url: "allancandido.com/sites/blip",
+              href: "https://allancandido.com/sites/blip",
+              imagem: "/vitrine/blip-3d.webp",
+              cor: "border-orange-500/45",
+              desc: "Console 3D interativo no navegador: gire em 360°, separe 7 camadas internas em vista explodida, troque entre 5 cores ao vivo e jogue na tela 1-bit.",
+              cta: "Abrir Console BLIP 3D ↗",
+              externo: true,
+            },
+            {
               tag: "GLOBO 3D EM TEMPO REAL NO NAVEGADOR",
               titulo: "CarbonTrace · Planeta 3D Interativo",
               url: "allancandido.com/portfolio/carbontrace",
