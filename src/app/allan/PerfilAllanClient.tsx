@@ -927,6 +927,17 @@ export default function PerfilAllanClient() {
               externo: true,
             },
             {
+              tag: "MUNDO PROCEDURAL 3D POR SEED · AURORA",
+              titulo: "NORTHING® Ilha 3D · Amanhecer à Noite",
+              url: "allancandido.com/sites/northing",
+              href: "https://allancandido.com/sites/northing",
+              imagem: "/vitrine/northing-3d.webp",
+              cor: "border-teal-500/45",
+              desc: "Ilha low-poly inteira gerada em Three.js a partir de um único número seed: traçar nova ilha morfa relevo, pinheiros e farol com ciclo de aurora boreal.",
+              cta: "Explorar Ilha NORTHING ↗",
+              externo: true,
+            },
+            {
               tag: "GLOBO 3D EM TEMPO REAL NO NAVEGADOR",
               titulo: "CarbonTrace · Planeta 3D Interativo",
               url: "allancandido.com/portfolio/carbontrace",
