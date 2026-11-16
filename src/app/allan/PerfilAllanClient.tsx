@@ -916,6 +916,17 @@ export default function PerfilAllanClient() {
               externo: true,
             },
             {
+              tag: "RISOGRAFIA 4 TINTAS · SHADER HALFTONE",
+              titulo: "SUNBIRD® Casa de Chás · Narrativa Tátil",
+              url: "allancandido.com/sites/sunbird",
+              href: "https://allancandido.com/sites/sunbird",
+              imagem: "/vitrine/sunbird-3d.webp",
+              cor: "border-rose-500/45",
+              desc: "Experiência editorial em 4 tintas sobre papel com shader halftone GLSL que desalinha no scroll e bule interativo de segurar para servir.",
+              cta: "Abrir História SUNBIRD ↗",
+              externo: true,
+            },
+            {
               tag: "GLOBO 3D EM TEMPO REAL NO NAVEGADOR",
               titulo: "CarbonTrace · Planeta 3D Interativo",
               url: "allancandido.com/portfolio/carbontrace",
