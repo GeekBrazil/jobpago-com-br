@@ -155,7 +155,7 @@ export default function Home() {
 
             <Link
               href="/refugio"
-              className="hidden sm:inline-flex btn-secondary-glass text-sm px-4 py-2.5 rounded-2xl shrink-0 cursor-pointer whitespace-nowrap border-amber-500/30 hover:border-amber-400 text-amber-300 items-center gap-1.5 font-bold"
+              className="hidden lg:inline-flex btn-secondary-glass text-sm px-4 py-2.5 rounded-2xl shrink-0 cursor-pointer whitespace-nowrap border-amber-500/30 hover:border-amber-400 text-amber-300 items-center gap-1.5 font-bold"
               title={L(idioma, "Receba a visita da expedição no seu estabelecimento", "Recibí la visita de la expedición en tu establecimiento", "Get an expedition visit at your business")}
             >
               <Icon name="tent" width={18} height={18} />
@@ -164,7 +164,7 @@ export default function Home() {
 
             <Link
               href="/disponibilidade"
-              className="hidden sm:inline-flex btn-primary-amalfi text-sm px-5 py-2.5 rounded-2xl shrink-0 cursor-pointer whitespace-nowrap items-center gap-1.5 font-black"
+              className="hidden lg:inline-flex btn-primary-amalfi text-sm px-5 py-2.5 rounded-2xl shrink-0 cursor-pointer whitespace-nowrap items-center gap-1.5 font-black"
             >
               <span>{L(idioma, "Oferecer meu serviço", "Ofrecer mi servicio", "Offer my service")}</span>
             </Link>
