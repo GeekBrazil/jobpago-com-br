@@ -62,6 +62,31 @@ export default function MapaRota({
         .bindPopup(`<strong>${c.nome} · ${c.uf}</strong>${link}`)
         .addTo(mapa);
     }
+
+    // Arcos de Fluxo (estilo Stripe/GitHub) conectando as cidades paradas da rota
+    if (paradas.length >= 2) {
+      for (let i = 0; i < paradas.length - 1; i++) {
+        const a = paradas[i];
+        const b = paradas[i + 1];
+        const dLat = b.lat - a.lat;
+        const dLon = b.lon - a.lon;
+        const ctrlLat = (a.lat + b.lat) / 2 - dLon * 0.18;
+        const ctrlLon = (a.lon + b.lon) / 2 + dLat * 0.18;
+        const arcPts: [number, number][] = [];
+        for (let s = 0; s <= 24; s++) {
+          const u = s / 24;
+          const lat = (1 - u) * (1 - u) * a.lat + 2 * (1 - u) * u * ctrlLat + u * u * b.lat;
+          const lon = (1 - u) * (1 - u) * a.lon + 2 * (1 - u) * u * ctrlLon + u * u * b.lon;
+          arcPts.push([lat, lon]);
+        }
+        L.polyline(arcPts, {
+          color: i === paradas.length - 2 ? "#fb7185" : "#38bdf8",
+          weight: 2.5,
+          opacity: 0.78,
+          dashArray: "6, 4",
+        }).addTo(mapa);
+      }
+    }
     mapa.fitBounds(L.latLngBounds(geometria), { padding: [20, 20] });
     return () => { mapa.remove(); };
     // eslint-disable-next-line react-hooks/exhaustive-deps
