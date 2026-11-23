@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect } from "react";
 import Link from "next/link";
 import { useIdioma } from "@/components/useIdioma";
 import { L } from "@/lib/i18n";
@@ -14,51 +14,11 @@ function abrirWhats(msg: string) {
   else window.open(url, "_blank", "noopener,noreferrer");
 }
 
-const CENAS_KEYNOTE = [
-  {
-    tempo: 0,
-    tag: "01 · RÉPLICA 3D + PIX DIRETO",
-    titulo: "Casa Rosa 3D",
-    sub: "Seu cliente gira o chalé em 3D, ouve o mar e reserva no seu Pix sem comissão",
-    href: "/casarosa?ref=allan",
-  },
-  {
-    tempo: 3.5,
-    tag: "02 · GLOBO 3D INTERATIVO",
-    titulo: "CarbonTrace 3D",
-    sub: "Planeta 3D em tempo real no navegador com milhares de pontos clicáveis",
-    href: "https://allancandido.com/portfolio/carbontrace/",
-  },
-  {
-    tempo: 7.0,
-    tag: "03 · O CAMPUS & MOTORES 3D",
-    titulo: "O Campus & Masterclass 3D",
-    sub: "Ambiente de ensino interativo e 6 arquiteturas 3D rodando a 120 FPS",
-    href: "https://allancandido.com/portfolio/masterclass-3d/",
-  },
-  {
-    tempo: 10.5,
-    tag: "04 · DASHBOARDS AUTOMÁTICOS",
-    titulo: "Painéis & Mapas de Calor",
-    sub: "Gráficos, preços e alertas que se atualizam sozinhos todos os dias",
-    href: "https://allancandido.com/ferramentas",
-  },
-  {
-    tempo: 14.0,
-    tag: "05 · PLATAFORMAS COM MAPA GPS",
-    titulo: "JobPago & VisitePrado",
-    sub: "Portais completos com login, mapa ao vivo, QR Code e print automático de sites",
-    href: "/",
-  },
-];
-
 export default function PerfilAllanClient() {
   const [idioma] = useIdioma();
   const [xrayActive, setXrayActive] = useState(false);
   const [fps, setFps] = useState(120);
   const [abaAtiva, setAbaAtiva] = useState<"todos" | "software" | "ia" | "drone" | "foto360">("todos");
-  const [cenaAtiva, setCenaAtiva] = useState(0);
-  const [comSomKeynote, setComSomKeynote] = useState(false);
   const [modalBastidoresCasaRosa, setModalBastidoresCasaRosa] = useState(false);
   const [statusCasaRosa, setStatusCasaRosa] = useState({
     carregado: false,
@@ -67,7 +27,6 @@ export default function PerfilAllanClient() {
     datasBloqueadas: 0,
     totalReservas: 0,
   });
-  const videoRef = useRef<HTMLVideoElement | null>(null);
 
   useEffect(() => {
     let cancelado = false;
@@ -111,24 +70,6 @@ export default function PerfilAllanClient() {
   }, []);
 
   const t = (pt: string, es: string, en: string) => L(idioma, pt, es, en);
-
-  function irParaCena(idx: number) {
-    setCenaAtiva(idx);
-    if (videoRef.current) {
-      videoRef.current.currentTime = CENAS_KEYNOTE[idx].tempo;
-      videoRef.current.play().catch(() => {});
-    }
-  }
-
-  function alternarSomKeynote() {
-    if (!videoRef.current) return;
-    const novoSom = !comSomKeynote;
-    videoRef.current.muted = !novoSom;
-    if (novoSom) {
-      videoRef.current.play().catch(() => {});
-    }
-    setComSomKeynote(novoSom);
-  }
 
   return (
     <div className="relative">
@@ -306,102 +247,6 @@ export default function PerfilAllanClient() {
       </section>
 
       {/* ====================================================================
-          KEYNOTE SHOWCASE VIDEO (ESTILO APPLE / TESLA LAUNCH)
-          Projetos 3D, Dashboards, O Campus e Portais rolando e sendo clicados
-          ==================================================================== */}
-      <section id="keynote-video" className="mt-10 glass-panel rounded-3xl p-5 sm:p-8 border border-cyan-500/35 shadow-2xl relative overflow-hidden">
-        <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-5">
-          <div>
-            <span className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-cyan-500/15 border border-cyan-500/35 text-cyan-300 text-[11px] font-mono font-bold uppercase tracking-wider">
-              🎬 APRESENTAÇÃO KEYNOTE · PROJETOS EM AÇÃO NO NAVEGADOR
-            </span>
-            <h2 className="text-xl sm:text-3xl font-black text-white mt-2">
-              Veja os Sites 3D, os Dashboards e O Campus Funcionando na Prática
-            </h2>
-            <p className="text-xs sm:text-sm text-slate-300 mt-1">
-              Assista aos projetos rolando e sendo clicados em tempo real (com trilha sonora estilo Keynote) ou clique em qualquer cena abaixo para pular direto.
-            </p>
-          </div>
-
-          <div className="flex items-center gap-2 shrink-0 flex-wrap">
-            <button
-              type="button"
-              onClick={alternarSomKeynote}
-              className={`px-4 py-2.5 rounded-xl text-xs font-black border transition-all cursor-pointer flex items-center gap-2 ${
-                comSomKeynote
-                  ? "bg-amber-400 text-slate-950 border-amber-300 shadow-lg"
-                  : "bg-white/[0.06] text-amber-300 border-amber-500/40 hover:border-amber-400"
-              }`}
-            >
-              <span>{comSomKeynote ? "🔊 Música Keynote Ativa" : "🔈 Ativar Música de Keynote"}</span>
-            </button>
-            <a
-              href="/vitrine/keynote-allan-3d.mp4"
-              download="Keynote-Projetos-Allan-Candido.mp4"
-              className="btn-secondary-glass px-4 py-2.5 rounded-xl text-xs font-bold text-slate-200 border-white/15 hover:border-white/40"
-            >
-              ⬇ Baixar Vídeo (.MP4)
-            </a>
-          </div>
-        </div>
-
-        {/* PLAYER DE VÍDEO KEYNOTE */}
-        <div className="rounded-2xl overflow-hidden border border-white/15 bg-slate-950 shadow-2xl relative">
-          <video
-            ref={videoRef}
-            src="/vitrine/keynote-allan-3d.mp4"
-            autoPlay
-            loop
-            muted={!comSomKeynote}
-            playsInline
-            controls
-            onTimeUpdate={(e) => {
-              const tAtual = e.currentTarget.currentTime;
-              const idx = Math.min(CENAS_KEYNOTE.length - 1, Math.floor(tAtual / 3.5));
-              if (idx !== cenaAtiva) setCenaAtiva(idx);
-            }}
-            className="w-full h-auto max-h-[540px] object-contain mx-auto"
-          />
-        </div>
-
-        {/* SELETOR DE CENAS DO KEYNOTE (CLIQUE PARA PULAR OU ABRIR O PROJETO) */}
-        <div className="mt-5 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-3">
-          {CENAS_KEYNOTE.map((c, idx) => {
-            const ativo = cenaAtiva === idx;
-            return (
-              <div
-                key={c.titulo}
-                onClick={() => irParaCena(idx)}
-                className={`rounded-2xl p-3.5 border transition-all cursor-pointer flex flex-col justify-between ${
-                  ativo
-                    ? "bg-cyan-500/15 border-cyan-400 shadow-[0_0_20px_rgba(6,182,212,0.2)]"
-                    : "bg-white/[0.03] border-white/10 hover:border-white/30"
-                }`}
-              >
-                <div>
-                  <span className="text-[10px] font-mono font-bold text-cyan-300 uppercase block">{c.tag}</span>
-                  <p className="text-sm font-black text-white mt-1">{c.titulo}</p>
-                  <p className="text-[11px] text-slate-300 mt-1 leading-snug">{c.sub}</p>
-                </div>
-                <div className="mt-3 pt-2 border-t border-white/10 flex items-center justify-between text-[11px] font-mono">
-                  <span className="text-amber-300">{ativo ? "▶ Passando agora" : "⏭ Ver no vídeo"}</span>
-                  <a
-                    href={c.href}
-                    target={c.href.startsWith("http") ? "_blank" : undefined}
-                    rel={c.href.startsWith("http") ? "noopener noreferrer" : undefined}
-                    onClick={(e) => e.stopPropagation()}
-                    className="text-cyan-300 hover:underline font-bold"
-                  >
-                    Abrir site ↗
-                  </a>
-                </div>
-              </div>
-            );
-          })}
-        </div>
-      </section>
-
-      {/* ====================================================================
           FRENTE 1: O QUE EU DEIXO PRONTO E FUNCIONANDO PARA O SEU NEGÓCIO
           (Linguagem clara para empresários e leigos, focada nos resultados reais)
           ==================================================================== */}
@@ -559,15 +404,15 @@ export default function PerfilAllanClient() {
               </div>
               <div className="mt-6 pt-4 border-t border-white/10 flex items-center justify-between flex-wrap gap-3">
                 <span className="text-xs text-slate-400">
-                  Prova real: <strong className="text-white">CarbonTrace 3D & Painéis ao Vivo</strong>
+                  Prova real: <strong className="text-white">Painéis Públicos AllanCandido.com</strong>
                 </span>
                 <a
-                  href="https://allancandido.com/portfolio/carbontrace/"
+                  href="https://allancandido.com/ferramentas"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="btn-secondary-glass px-4 py-2 rounded-xl text-xs font-bold text-cyan-300 border-cyan-500/35 hover:border-cyan-400"
                 >
-                  Abrir Globo 3D CarbonTrace ↗
+                  Abrir Painéis ao Vivo ↗
                 </a>
               </div>
             </div>
@@ -595,16 +440,14 @@ export default function PerfilAllanClient() {
               </div>
               <div className="mt-6 pt-4 border-t border-white/10 flex items-center justify-between flex-wrap gap-3">
                 <span className="text-xs text-slate-400">
-                  Prova real: <strong className="text-white">Masterclass 3D & O Campus</strong>
+                  Prova real: <strong className="text-white">Economize Moto Peças (Fachada 3D)</strong>
                 </span>
-                <a
-                  href="https://allancandido.com/portfolio/masterclass-3d/"
-                  target="_blank"
-                  rel="noopener noreferrer"
+                <Link
+                  href="/economize"
                   className="btn-secondary-glass px-4 py-2 rounded-xl text-xs font-bold text-emerald-300 border-emerald-500/35 hover:border-emerald-400"
                 >
-                  Explorar Masterclass 3D Ao Vivo ↗
-                </a>
+                  Abrir Site Economize Moto Peças →
+                </Link>
               </div>
             </div>
           </div>
@@ -899,7 +742,7 @@ export default function PerfilAllanClient() {
               href: "/economize",
               imagem: "/vitrine/economize-motopecas.webp",
               cor: "border-orange-500/45",
-              desc: "Fachada interativa em LED contínuo fiel à loja, controle de movimento e suavidade do arco-íris e 2 cenários 3D ao vivo (Oficina com engrenagens sob luz quente e Rodovia Noturna CE-040).",
+              desc: "Fachada interativa em LED contínuo fiel à loja, controle de movimento e suavidade do arco-íris e 2 cenários 3D ao vivo (Oficina com engrenagens sob luz quente e Rodovia Noturna).",
               cta: "Abrir Site Economize Moto Peças →",
               externo: false,
             },
@@ -908,10 +751,10 @@ export default function PerfilAllanClient() {
               titulo: "Casa Rosa · Refúgio Pé na Areia 3D",
               url: "jobpago.com.br/casarosa",
               href: "/casarosa?ref=allan",
-              imagem: "/vitrine/cassarosa-hero.webp",
+              imagem: "/vitrine/casarosa-real.webp",
               cor: "border-pink-500/40",
-              desc: `O visitante gira o chalé em 3D pelo celular, escuta o som das ondas do mar, assiste aos vídeos verticais e faz a reserva direto no Pix (Pacote FDS R$ ${statusCasaRosa.valorFimDeSemana.toLocaleString("pt-BR")} · até 18 pessoas ·Datas Livres na Prainha, Aquiraz/CE).`,
-              cta: "🏖️ Abrir Tour 3D & Reservar →",
+              desc: `Tour interativo do chalé na Prainha (Aquiraz/CE) com vídeos reais, som ambiente e reserva direta no Pix sem comissão de plataformas (Pacote FDS R$ ${statusCasaRosa.valorFimDeSemana.toLocaleString("pt-BR")} · até 18 pessoas).`,
+              cta: "Abrir Site Casa Rosa →",
               externo: false,
               temBastidores: true,
             },
@@ -920,21 +763,43 @@ export default function PerfilAllanClient() {
               titulo: "VisiteAquiraz.com.br · Guia Completo",
               url: "visiteaquiraz.com.br",
               href: "https://visiteaquiraz.com.br",
-              imagem: "/vitrine/visiteaquiraz.webp",
+              imagem: "/vitrine/visiteaquiraz-real.webp",
               cor: "border-emerald-500/40",
-              desc: "Guia oficial de praias, pousadas, gastronomia e passeios em Aquiraz (Prainha, Porto das Dunas, Iguape e Presídio) com reserva direta sem intermediários.",
+              desc: "Guia de praias, pousadas, gastronomia e passeios em Aquiraz (Prainha, Porto das Dunas, Iguape e Presídio) com contato direto.",
               cta: "Visitar VisiteAquiraz.com.br ↗",
               externo: true,
             },
             {
-              tag: "PORTAL INSTITUCIONAL & SITES 3D",
-              titulo: "AllanCandido.com · Estúdio & Dados",
+              tag: "PORTAL INSTITUCIONAL & DADOS",
+              titulo: "AllanCandido.com · Imóveis & Dados",
               url: "allancandido.com",
               href: "https://allancandido.com",
-              imagem: "/vitrine/allancandido.webp",
+              imagem: "/vitrine/allancandido-real.webp",
               cor: "border-amber-500/45",
-              desc: "Plataforma principal reunindo sites 3D sob medida, imóveis de alto padrão, leilões judiciais e inteligência de dados públicos de 5.570 municípios.",
+              desc: "Plataforma principal reunindo sites sob medida, imóveis, leilões judiciais e painéis públicos de 5.570 municípios.",
               cta: "Abrir AllanCandido.com ↗",
+              externo: true,
+            },
+            {
+              tag: "PLATAFORMA COM MAPA GPS & QR CODE",
+              titulo: "JobPago.com.br · Rede de Negócios",
+              url: "jobpago.com.br",
+              href: "/",
+              imagem: "/vitrine/jobpago-real.webp",
+              cor: "border-amber-500/40",
+              desc: "Conecta viajantes, profissionais remotos e negócios locais com mapa GPS da rota, relatórios por cidade e pagamento direto no Pix.",
+              cta: "Explorar Plataforma →",
+              externo: false,
+            },
+            {
+              tag: "PORTAL DE TURISMO & MAPA DE PRAIAS",
+              titulo: "VisitePrado.com.br · Costa das Baleias",
+              url: "visiteprado.com.br",
+              href: "https://www.visiteprado.com.br",
+              imagem: "/vitrine/visiteprado-real.webp",
+              cor: "border-cyan-500/40",
+              desc: "Portal turístico com mapa interativo de praias, falésias, pousadas e passeios em Prado, Cumuruxatiba e Corumbau (BA).",
+              cta: "Visitar Portal ao Vivo ↗",
               externo: true,
             },
             {
@@ -955,7 +820,7 @@ export default function PerfilAllanClient() {
               href: "https://allancandido.com/sites/sunbird",
               imagem: "/vitrine/sunbird-3d.webp",
               cor: "border-rose-500/45",
-              desc: "Experiência editorial em 4 tintas sobre papel com shader halftone GLSL que desalinha no scroll e bule interativo de segurar para servir.",
+              desc: "Experiência editorial em 4 tintas sobre papel com shader halftone GLSL que reage no scroll e bule interativo.",
               cta: "Abrir História SUNBIRD ↗",
               externo: true,
             },
@@ -966,63 +831,8 @@ export default function PerfilAllanClient() {
               href: "https://allancandido.com/sites/northing",
               imagem: "/vitrine/northing-3d.webp",
               cor: "border-teal-500/45",
-              desc: "Ilha low-poly inteira gerada em Three.js a partir de um único número seed: traçar nova ilha morfa relevo, pinheiros e farol com ciclo de aurora boreal.",
+              desc: "Ilha 3D gerada em Three.js a partir de um número seed: cada seed cria relevo, pinheiros e farol com ciclo de aurora boreal.",
               cta: "Explorar Ilha NORTHING ↗",
-              externo: true,
-            },
-            {
-              tag: "GLOBO 3D EM TEMPO REAL NO NAVEGADOR",
-              titulo: "CarbonTrace · Planeta 3D Interativo",
-              url: "allancandido.com/portfolio/carbontrace",
-              href: "https://allancandido.com/portfolio/carbontrace/",
-              imagem: "/vitrine/carbontrace-earthrise.webp",
-              cor: "border-cyan-500/40",
-              desc: "Globo terrestre 3D interativo que mostra milhares de pontos no mapa mundial em tempo real. Você gira o planeta, clica em qualquer ponto e vê o painel completo na hora.",
-              cta: "Abrir Globo 3D ao Vivo ↗",
-              externo: true,
-            },
-            {
-              tag: "QG VIRTUAL 3D DAS AGENTES DE IA",
-              titulo: "O Campus 3D das Agentes & Robôs",
-              url: "jobpago.com.br/campus",
-              href: "/campus/",
-              imagem: "/vitrine/campus-cards.webp",
-              cor: "border-emerald-500/40",
-              desc: "Escritório virtual 3D interativo estilo Apple Park com a rotina das agentes de IA (Sofia, Jarvis) trabalhando em tempo real, telemetria de tarefas e Quadro do Dinheiro.",
-              cta: "Entrar no Campus 3D →",
-              externo: false,
-            },
-            {
-              tag: "DASHBOARDS QUE ATUALIZAM SOZINHOS",
-              titulo: "Painéis de Controle & Mapas de Calor",
-              url: "allancandido.com/ferramentas",
-              href: "https://allancandido.com/ferramentas",
-              imagem: "/vitrine/ferramentas-720.webp",
-              cor: "border-amber-500/40",
-              desc: "Painéis visuais que buscam informações oficiais todos os dias sozinhos, pintam mapas de calor das 5.570 cidades brasileiras e comparam municípios lado a lado.",
-              cta: "Ver Dashboards ao Vivo ↗",
-              externo: true,
-            },
-            {
-              tag: "PLATAFORMA COM MAPA GPS & QR CODE",
-              titulo: "JobPago.com.br · Rede de Negócios & Renda",
-              url: "jobpago.com.br",
-              href: "/",
-              imagem: "/vitrine/jobpago-720.webp",
-              cor: "border-amber-500/40",
-              desc: "Conecta viajantes, profissionais remotos e negócios físicos ou 100% online. Inclui mapa GPS da rota Fortaleza → Paraty, vitrine automática de sites e contratação por Pix.",
-              cta: "Explorar Plataforma →",
-              externo: false,
-            },
-            {
-              tag: "PORTAL DE TURISMO & MAPA DE PRAIAS",
-              titulo: "VisitePrado.com.br · Costa das Baleias",
-              url: "visiteprado.com.br",
-              href: "https://www.visiteprado.com.br",
-              imagem: "/vitrine/visiteprado-720.webp",
-              cor: "border-cyan-500/40",
-              desc: "Portal turístico completo com mapa interativo de praias, falésias, pousadas e passeios de barco em Prado, Cumuruxatiba e Corumbau (BA).",
-              cta: "Visitar Portal ao Vivo ↗",
               externo: true,
             },
           ].map((proj) => (
