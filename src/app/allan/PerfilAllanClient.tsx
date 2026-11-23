@@ -893,6 +893,17 @@ export default function PerfilAllanClient() {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {[
             {
+              tag: "LETREIRO LED ARCO-ÍRIS · CENÁRIOS 3D",
+              titulo: "Economize Moto Peças · Litoral Leste",
+              url: "jobpago.com.br/economize",
+              href: "/economize",
+              imagem: "/vitrine/economize-motopecas.webp",
+              cor: "border-orange-500/45",
+              desc: "Fachada interativa em LED contínuo fiel à loja, controle de movimento e suavidade do arco-íris e 2 cenários 3D ao vivo (Oficina com engrenagens sob luz quente e Rodovia Noturna CE-040).",
+              cta: "Abrir Site Economize Moto Peças →",
+              externo: false,
+            },
+            {
               tag: "RÉPLICA 3D + RESERVA DIRETA PIX",
               titulo: "Casa Rosa · Refúgio Pé na Areia 3D",
               url: "jobpago.com.br/casarosa",
@@ -903,6 +914,28 @@ export default function PerfilAllanClient() {
               cta: "🏖️ Abrir Tour 3D & Reservar →",
               externo: false,
               temBastidores: true,
+            },
+            {
+              tag: "PORTAL DE TURISMO · LITORAL CEARÁ",
+              titulo: "VisiteAquiraz.com.br · Guia Completo",
+              url: "visiteaquiraz.com.br",
+              href: "https://visiteaquiraz.com.br",
+              imagem: "/vitrine/visiteaquiraz.webp",
+              cor: "border-emerald-500/40",
+              desc: "Guia oficial de praias, pousadas, gastronomia e passeios em Aquiraz (Prainha, Porto das Dunas, Iguape e Presídio) com reserva direta sem intermediários.",
+              cta: "Visitar VisiteAquiraz.com.br ↗",
+              externo: true,
+            },
+            {
+              tag: "PORTAL INSTITUCIONAL & SITES 3D",
+              titulo: "AllanCandido.com · Estúdio & Dados",
+              url: "allancandido.com",
+              href: "https://allancandido.com",
+              imagem: "/vitrine/allancandido.webp",
+              cor: "border-amber-500/45",
+              desc: "Plataforma principal reunindo sites 3D sob medida, imóveis de alto padrão, leilões judiciais e inteligência de dados públicos de 5.570 municípios.",
+              cta: "Abrir AllanCandido.com ↗",
+              externo: true,
             },
             {
               tag: "LANÇAMENTO 3D TÁTIL · VISTA EXPLODIDA",
