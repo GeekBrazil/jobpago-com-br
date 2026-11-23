@@ -70,7 +70,7 @@ export default function Home() {
     fetchJobs();
 
     // nível real do viajante logado (reputação fica no banco, não no navegador)
-    fetch("/api/viajante")
+    fetch("/api/viajante?optional=1")
       .then((r) => (r.ok ? r.json() : null))
       .then((d) => { if (d?.logado) setViajante({ nome: d.nome, nivel: d.nivel }); })
       .catch(() => {});
@@ -81,7 +81,7 @@ export default function Home() {
 
 
   return (
-    <div className="min-h-screen text-slate-100 selection:bg-amber-500 selection:text-black">
+    <div className="min-h-screen overflow-x-clip text-slate-100 selection:bg-amber-500 selection:text-black">
 
       {/* ── HEADER RESPONSIVO ESTILO iOS / DESKTOP ── */}
       <header className="sticky top-0 z-40 glass-panel border-b border-white/10 backdrop-blur-2xl bg-[#07090e]/80">
@@ -108,7 +108,7 @@ export default function Home() {
           </Link>
 
           {/* NAVEGAÇÃO CENTRAL (DESKTOP) */}
-          <nav className="hidden xl:flex items-center gap-6 text-xs font-bold text-slate-300 uppercase tracking-wider">
+          <nav className="hidden xl:flex items-center gap-5 text-xs font-bold text-slate-300 uppercase tracking-wider whitespace-nowrap">
             <Link href="/como-funciona" className="hover:text-amber-400 transition-colors">
               {L(idioma, "Como Funciona", "Cómo funciona", "How it works")}
             </Link>
@@ -121,22 +121,13 @@ export default function Home() {
             <a href="#mapa-gps" className="hover:text-amber-400 transition-colors">
               {L(idioma, "Mapa GPS", "Mapa GPS", "GPS map")}
             </a>
-            <a href="#nomade-space" className="hover:text-amber-400 transition-colors">
-              {L(idioma, "Infra Nômade", "Infra nómade", "Nomad infra")}
-            </a>
-            <Link href="/cadastrar-servico" className="hover:text-amber-400 transition-colors text-amber-400/90 flex items-center gap-1">
-              <span>+ {L(idioma, "Oferecer ou Contratar", "Ofrecer o contratar", "Offer or hire")}</span>
-            </Link>
-            <a href="#guildas-leaderboard" className="hover:text-amber-300 transition-colors text-amber-400/90 flex items-center gap-1">
-              <span>{L(idioma, "Alta Honra", "Alto Honor", "High Honour")}</span>
-            </a>
             <a href="#refugio-estrada" className="hover:text-amber-400 transition-colors">
               {L(idioma, "Onde dormir", "Dónde dormir", "Where to sleep")}
             </a>
           </nav>
 
           {/* AÇÕES DIREITAS: PERFIL VIAJANTE + BOTÕES DESKTOP */}
-          <div className="flex items-center gap-1.5 sm:gap-3 shrink-0">
+          <div className="flex items-center gap-1.5 sm:gap-2.5 shrink-0">
             <Link
               href="/viajante"
               className="flex items-center gap-1.5 sm:gap-2 glass-card rounded-2xl py-1.5 px-2 sm:px-3 hover:border-amber-500/40 border-white/10 active:scale-95 transition-transform shrink-0"
@@ -155,18 +146,18 @@ export default function Home() {
 
             <Link
               href="/refugio"
-              className="hidden lg:inline-flex btn-secondary-glass text-sm px-4 py-2.5 rounded-2xl shrink-0 cursor-pointer whitespace-nowrap border-amber-500/30 hover:border-amber-400 text-amber-300 items-center gap-1.5 font-bold"
+              className="hidden lg:inline-flex btn-secondary-glass text-xs px-3.5 py-2.5 rounded-2xl shrink-0 cursor-pointer whitespace-nowrap border-amber-500/30 hover:border-amber-400 text-amber-300 items-center gap-1.5 font-bold"
               title={L(idioma, "Receba a visita da expedição no seu estabelecimento", "Recibí la visita de la expedición en tu establecimiento", "Get an expedition visit at your business")}
             >
-              <Icon name="tent" width={18} height={18} />
-              <span>{L(idioma, "Pedir Visita (Estabelecimento)", "Pedir Visita (Negocio)", "Request Visit (Business)")}</span>
+              <Icon name="tent" width={16} height={16} />
+              <span>{L(idioma, "Pedir Visita", "Pedir Visita", "Request Visit")}</span>
             </Link>
 
             <Link
               href="/disponibilidade"
-              className="hidden lg:inline-flex btn-primary-amalfi text-sm px-5 py-2.5 rounded-2xl shrink-0 cursor-pointer whitespace-nowrap items-center gap-1.5 font-black"
+              className="hidden lg:inline-flex btn-primary-amalfi text-xs px-4 py-2.5 rounded-2xl shrink-0 cursor-pointer whitespace-nowrap items-center gap-1.5 font-black"
             >
-              <span>{L(idioma, "Oferecer meu serviço", "Ofrecer mi servicio", "Offer my service")}</span>
+              <span>{L(idioma, "Oferecer serviço", "Ofrecer servicio", "Offer service")}</span>
             </Link>
 
             <MenuNavegacao />

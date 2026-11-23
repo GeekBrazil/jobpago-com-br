@@ -347,7 +347,7 @@ export default function EcossistemaIANegocios({ idioma }: Props) {
                   href="/allan"
                   className="btn-secondary-glass rounded-xl px-4 py-2.5 text-xs font-bold text-amber-300 border-amber-500/30 hover:border-amber-400"
                 >
-                  {L(idioma, "Ver Perfil Allan (Software, IA, Drone & 360°)", "Ver Perfil Allan (Software, IA, Dron y 360°)", "Allan's Profile (Software, AI, Drone & 360°)")} →
+                  {L(idioma, "Ver Perfil Allan (Software, Automação, Drone & 360°)", "Ver Perfil Allan (Software, Automatización, Dron y 360°)", "Allan's Profile (Software, Automation, Drone & 360°)")} →
                 </Link>
                 <Link
                   href="/cadastrar-servico?tipo=contratante"

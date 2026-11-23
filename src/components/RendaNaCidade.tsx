@@ -163,19 +163,25 @@ export default function RendaNaCidade({ ibgeInicial = "3303807" }: { ibgeInicial
         </div>
 
         <h2 id="renda-titulo" className="mt-3 text-3xl sm:text-5xl font-black tracking-tight leading-tight">
-          {L(idioma, "Salário de admissão em", "Salario de ingreso en", "Starting pay in")}{" "}
-          <label className="sr-only" htmlFor="renda-setor">{L(idioma, "Setor", "Sector", "Sector")}</label>
-          <select
-            id="renda-setor"
-            value={secao}
-            onChange={(e) => setSecao(e.target.value)}
-            className="block sm:inline w-full sm:w-auto my-1 bg-transparent border-b-2 border-amber-400 text-amber-300 font-black focus:outline-none text-lg sm:text-5xl pr-6"
-          >
-            {(dados?.setores ?? []).map((s) => (
-              <option key={s.secao} value={s.secao} className="bg-slate-900 text-base">{nomeSetor(s)}</option>
-            ))}
-          </select>{" "}
-          {L(idioma, "em", "en", "in")} {dados ? `${dados.cidade} - ${dados.uf}` : "…"}
+          {dados ? (
+            <>
+              {L(idioma, "Salário de admissão em", "Salario de ingreso en", "Starting pay in")}{" "}
+              <label className="sr-only" htmlFor="renda-setor">{L(idioma, "Setor", "Sector", "Sector")}</label>
+              <select
+                id="renda-setor"
+                value={secao}
+                onChange={(e) => setSecao(e.target.value)}
+                className="block sm:inline w-full sm:w-auto my-1 bg-transparent border-b-2 border-amber-400 text-amber-300 font-black focus:outline-none text-lg sm:text-5xl pr-6"
+              >
+                {(dados.setores ?? []).map((s) => (
+                  <option key={s.secao} value={s.secao} className="bg-slate-900 text-base">{nomeSetor(s)}</option>
+                ))}
+              </select>{" "}
+              {L(idioma, "em", "en", "in")} {`${dados.cidade} - ${dados.uf}`}
+            </>
+          ) : (
+            L(idioma, "Salário de admissão por setor na sua cidade", "Salario de ingreso por sector en tu ciudad", "Starting pay by sector in your town")
+          )}
         </h2>
 
         <div className="mt-8 grid gap-6 lg:grid-cols-[1fr_1fr] items-start">
