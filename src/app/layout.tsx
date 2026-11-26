@@ -40,13 +40,22 @@ export async function generateMetadata(): Promise<Metadata> {
     siteName: "JobPago",
     locale: i === "es" ? "es_AR" : i === "en" ? "en_US" : "pt_BR",
     type: "website",
-    images: [{ url: "/icon_flutuante.png", width: 512, height: 512, alt: "JobPago — Renda na viagem" }],
+    images: [
+      {
+        url: "https://www.jobpago.com.br/og-jobpago.jpg?v=20261126",
+        secureUrl: "https://www.jobpago.com.br/og-jobpago.jpg?v=20261126",
+        type: "image/jpeg",
+        width: 1200,
+        height: 630,
+        alt: "JobPago — Renda na viagem e comércio local com Pix direto",
+      },
+    ],
   },
   twitter: {
     card: "summary_large_image",
     title,
     description,
-    images: ["/icon_flutuante.png"],
+    images: ["https://www.jobpago.com.br/og-jobpago.jpg?v=20261126"],
   },
   icons: {
     icon: "/icon-192.png",
